@@ -1,0 +1,104 @@
+import { useEffect, useState } from 'react';
+import { api, type Redemption, type Stats } from '../api/client';
+
+export function DashboardPage() {
+  const [stats, setStats] = useState<Stats | null>(null);
+  const [recent, setRecent] = useState<Redemption[]>([]);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    Promise.all([api.stats(), api.redemptions()])
+      .then(([s, r]) => {
+        setStats(s);
+        setRecent(r.items.slice(0, 5));
+      })
+      .catch((e) => setError(e.message));
+  }, []);
+
+  if (error) return <div className="error">{error}</div>;
+  if (!stats) return <p className="muted">Loading…</p>;
+
+  const maxTier = Math.max(1, ...stats.membersByTier.map((t) => t.count));
+
+  return (
+    <>
+      <header className="page-head">
+        <h1>Dashboard</h1>
+        <p className="muted sm">Program health at a glance.</p>
+      </header>
+
+      <div className="kpi-grid">
+        <Kpi label="Members" value={stats.totalMembers} sub={`${stats.activeMembers} active`} />
+        <Kpi label="Points issued" value={stats.pointsIssued} />
+        <Kpi label="Points redeemed" value={stats.pointsRedeemed} />
+        <Kpi
+          label="Outstanding"
+          value={stats.outstandingPoints}
+          sub="program liability"
+          accent
+        />
+      </div>
+
+      <div className="two-col">
+        <section className="card">
+          <h2>Members by tier</h2>
+          <div className="bars">
+            {stats.membersByTier.map((t) => (
+              <div key={t.levelId} className="bar-row">
+                <span className="bar-label">
+                  {t.name}
+                  <span className="muted xs"> ≥{t.threshold}</span>
+                </span>
+                <div className="bar-track">
+                  <div
+                    className="bar-fill"
+                    style={{ width: `${(t.count / maxTier) * 100}%` }}
+                  />
+                </div>
+                <span className="bar-value">{t.count}</span>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="card">
+          <h2>Recent redemptions</h2>
+          {recent.length === 0 && <p className="muted sm">No redemptions yet.</p>}
+          <ul className="plain-list">
+            {recent.map((r) => (
+              <li key={r.issuedRewardId}>
+                <div>
+                  <strong>{r.rewardName}</strong>
+                  <p className="muted xs">
+                    {r.customerName} · {new Date(r.createdAt).toLocaleDateString()}
+                  </p>
+                </div>
+                <code className="chip">{r.couponCode}</code>
+              </li>
+            ))}
+          </ul>
+        </section>
+      </div>
+    </>
+  );
+}
+
+function Kpi({
+  label,
+  value,
+  sub,
+  accent,
+}: {
+  label: string;
+  value: number;
+  sub?: string;
+  accent?: boolean;
+}) {
+  return (
+    <div className={`kpi ${accent ? 'accent' : ''}`}>
+      <p className="kpi-label">{label}</p>
+      <p className="kpi-value">{value.toLocaleString()}</p>
+      {sub && <p className="muted xs">{sub}</p>}
+    </div>
+  );
+}

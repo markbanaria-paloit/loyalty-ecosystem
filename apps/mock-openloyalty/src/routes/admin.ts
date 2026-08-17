@@ -1,0 +1,310 @@
+/**
+ * Admin endpoints, matching the real OpenLoyalty spec:
+ *   GET  /api/{storeCode}/member                       (members list)
+ *   GET  /api/{storeCode}/member/{member}
+ *   POST /api/{storeCode}/member/{member}/activate|deactivate
+ *   POST /api/{storeCode}/points/add                   ({ transfer: {...} })
+ *   POST /api/{storeCode}/points/spend
+ *   GET  /api/{storeCode}/points                       (all transfers)
+ *   GET  /api/{storeCode}/tier                         (tiers list)
+ *   GET  /api/{storeCode}/reward                       (rewards list)
+ *   POST /api/{storeCode}/reward                       (create)
+ *   PUT  /api/{storeCode}/reward/{reward}              (update)
+ *   POST /api/{storeCode}/reward/{reward}/activate|deactivate
+ *   GET  /api/{storeCode}/redemption                   (issued rewards)
+ *
+ * Plus one non-spec convenience route for the admin cockpit dashboard:
+ *   GET  /api/{storeCode}/admin/stats
+ */
+import { Router } from 'express';
+import { randomUUID } from 'node:crypto';
+import {
+  addPointsInternal,
+  getStore,
+  listEnvelope,
+  serializeCustomer,
+  serializeReward,
+  sortedTiers,
+  spendPointsInternal,
+  tierThreshold,
+  type Reward,
+} from '../data.js';
+import { requireAdmin, type AuthedRequest } from '../auth.js';
+
+export const adminRouter = Router();
+
+/* ----------------------------- Members ----------------------------- */
+
+adminRouter.get('/api/:storeCode/member', requireAdmin, (req: AuthedRequest, res) => {
+  const store = getStore(req.params.storeCode);
+  const items = [...store.customers.values()]
+    .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
+    .map((c) => serializeCustomer(store, c));
+  res.json(listEnvelope(items));
+});
+
+adminRouter.get(
+  '/api/:storeCode/member/:member',
+  requireAdmin,
+  (req: AuthedRequest, res) => {
+    const store = getStore(req.params.storeCode);
+    const customer = store.customers.get(req.params.member);
+    if (!customer) {
+      res.status(404).json({ code: 404, message: 'Member not found' });
+      return;
+    }
+    res.json(serializeCustomer(store, customer));
+  },
+);
+
+for (const action of ['activate', 'deactivate'] as const) {
+  adminRouter.post(
+    `/api/:storeCode/member/:member/${action}`,
+    requireAdmin,
+    (req: AuthedRequest, res) => {
+      const store = getStore(req.params.storeCode);
+      const customer = store.customers.get(req.params.member);
+      if (!customer) {
+        res.status(404).json({ code: 404, message: 'Member not found' });
+        return;
+      }
+      customer.active = action === 'activate';
+      res.json({ customerId: customer.customerId, active: customer.active });
+    },
+  );
+}
+
+/* ------------------------------ Points ----------------------------- */
+
+/** Spec wraps the payload as `{ transfer: { customer, points, comment } }`. */
+function readTransferBody(body: unknown): {
+  customer?: string;
+  points?: unknown;
+  comment?: string;
+} {
+  const b = (body ?? {}) as Record<string, unknown>;
+  return (b.transfer ?? b) as { customer?: string; points?: unknown; comment?: string };
+}
+
+adminRouter.post(
+  '/api/:storeCode/points/add',
+  requireAdmin,
+  (req: AuthedRequest, res) => {
+    const store = getStore(req.params.storeCode);
+    const { customer, points, comment } = readTransferBody(req.body);
+    if (!customer || !store.customers.has(customer)) {
+      res.status(404).json({ code: 404, message: 'Member not found' });
+      return;
+    }
+    const value = Number(points);
+    if (!Number.isFinite(value) || value <= 0) {
+      res.status(400).json({ code: 400, message: 'points must be > 0' });
+      return;
+    }
+    const transfer = addPointsInternal(
+      store,
+      customer,
+      value,
+      comment ?? 'Points added',
+    );
+    res.json({ transferId: transfer.transferId });
+  },
+);
+
+adminRouter.post(
+  '/api/:storeCode/points/spend',
+  requireAdmin,
+  (req: AuthedRequest, res) => {
+    const store = getStore(req.params.storeCode);
+    const { customer, points, comment } = readTransferBody(req.body);
+    const member = customer ? store.customers.get(customer) : undefined;
+    if (!member) {
+      res.status(404).json({ code: 404, message: 'Member not found' });
+      return;
+    }
+    const value = Number(points);
+    if (!Number.isFinite(value) || value <= 0) {
+      res.status(400).json({ code: 400, message: 'points must be > 0' });
+      return;
+    }
+    if (member.activePoints < value) {
+      res.status(400).json({ code: 400, message: 'Not enough points' });
+      return;
+    }
+    const transfer = spendPointsInternal(
+      store,
+      member.customerId,
+      value,
+      comment ?? 'Points spent',
+    );
+    res.json({ transferId: transfer.transferId });
+  },
+);
+
+/** All transfers in the store, newest first, enriched with member names. */
+adminRouter.get('/api/:storeCode/points', requireAdmin, (req: AuthedRequest, res) => {
+  const store = getStore(req.params.storeCode);
+  const items = [...store.transfers.values()]
+    .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
+    .map((t) => {
+      const customer = store.customers.get(t.accountId);
+      return {
+        ...t,
+        customerName: customer
+          ? `${customer.firstName} ${customer.lastName}`.trim()
+          : 'Unknown',
+        customerEmail: customer?.email ?? null,
+      };
+    });
+  res.json(listEnvelope(items));
+});
+
+/* ------------------------------- Tiers ----------------------------- */
+
+adminRouter.get('/api/:storeCode/tier', requireAdmin, (req: AuthedRequest, res) => {
+  const store = getStore(req.params.storeCode);
+  res.json(listEnvelope(sortedTiers(store)));
+});
+
+/* ------------------------------ Rewards ---------------------------- */
+
+adminRouter.get('/api/:storeCode/reward', requireAdmin, (req: AuthedRequest, res) => {
+  const store = getStore(req.params.storeCode);
+  const items = [...store.rewards.values()].map((r) => serializeReward(r));
+  res.json(listEnvelope(items));
+});
+
+adminRouter.post('/api/:storeCode/reward', requireAdmin, (req: AuthedRequest, res) => {
+  const store = getStore(req.params.storeCode);
+  const { name, shortDescription, costInPoints, levels, usageLimit } =
+    req.body ?? {};
+  const cost = Number(costInPoints);
+  if (!name || !Number.isFinite(cost) || cost <= 0) {
+    res
+      .status(400)
+      .json({ code: 400, message: 'name and a positive costInPoints are required' });
+    return;
+  }
+  const reward: Reward = {
+    rewardId: randomUUID(),
+    reward: String(name).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
+    name,
+    shortDescription: shortDescription ?? '',
+    costInPoints: cost,
+    active: true,
+    featured: false,
+    public: true,
+    levels: Array.isArray(levels) ? levels : [],
+    usageLimit:
+      usageLimit === null || usageLimit === undefined || usageLimit === ''
+        ? null
+        : Number(usageLimit),
+    createdAt: new Date().toISOString(),
+  };
+  store.rewards.set(reward.rewardId, reward);
+  res.status(201).json(serializeReward(reward));
+});
+
+adminRouter.put(
+  '/api/:storeCode/reward/:reward',
+  requireAdmin,
+  (req: AuthedRequest, res) => {
+    const store = getStore(req.params.storeCode);
+    const reward = store.rewards.get(req.params.reward);
+    if (!reward) {
+      res.status(404).json({ code: 404, message: 'Reward not found' });
+      return;
+    }
+    const { name, shortDescription, costInPoints, levels, usageLimit, featured } =
+      req.body ?? {};
+    if (name !== undefined) reward.name = name;
+    if (shortDescription !== undefined) reward.shortDescription = shortDescription;
+    if (costInPoints !== undefined) reward.costInPoints = Number(costInPoints);
+    if (levels !== undefined) reward.levels = Array.isArray(levels) ? levels : [];
+    if (featured !== undefined) reward.featured = Boolean(featured);
+    if (usageLimit !== undefined) {
+      reward.usageLimit =
+        usageLimit === null || usageLimit === '' ? null : Number(usageLimit);
+    }
+    res.json(serializeReward(reward));
+  },
+);
+
+for (const action of ['activate', 'deactivate'] as const) {
+  adminRouter.post(
+    `/api/:storeCode/reward/:reward/${action}`,
+    requireAdmin,
+    (req: AuthedRequest, res) => {
+      const store = getStore(req.params.storeCode);
+      const reward = store.rewards.get(req.params.reward);
+      if (!reward) {
+        res.status(404).json({ code: 404, message: 'Reward not found' });
+        return;
+      }
+      reward.active = action === 'activate';
+      res.json(serializeReward(reward));
+    },
+  );
+}
+
+/* ---------------------------- Redemptions -------------------------- */
+
+adminRouter.get(
+  '/api/:storeCode/redemption',
+  requireAdmin,
+  (req: AuthedRequest, res) => {
+    const store = getStore(req.params.storeCode);
+    const items = [...store.issuedRewards.values()]
+      .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
+      .map((r) => {
+        const customer = store.customers.get(r.customerId);
+        const reward = store.rewards.get(r.rewardId);
+        return {
+          ...r,
+          customerName: customer
+            ? `${customer.firstName} ${customer.lastName}`.trim()
+            : 'Unknown',
+          rewardName: reward?.name ?? 'Unknown',
+          costInPoints: reward?.costInPoints ?? 0,
+        };
+      });
+    res.json(listEnvelope(items));
+  },
+);
+
+/* ------------------------- Cockpit dashboard ----------------------- *
+ * Not part of the OpenLoyalty spec — an aggregate the admin UI needs.
+ * Against a real instance this would come from the Analytics endpoints.
+ * ------------------------------------------------------------------- */
+
+adminRouter.get(
+  '/api/:storeCode/admin/stats',
+  requireAdmin,
+  (req: AuthedRequest, res) => {
+    const store = getStore(req.params.storeCode);
+    const customers = [...store.customers.values()];
+    const transfers = [...store.transfers.values()].filter((t) => !t.cancelled);
+
+    const sum = (type: 'adding' | 'spending') =>
+      transfers.filter((t) => t.type === type).reduce((acc, t) => acc + t.value, 0);
+
+    const membersByTier = sortedTiers(store).map((tier) => ({
+      levelId: tier.levelId,
+      name: tier.name,
+      threshold: tierThreshold(tier),
+      count: customers.filter((c) => c.levelId === tier.levelId).length,
+    }));
+
+    res.json({
+      totalMembers: customers.length,
+      activeMembers: customers.filter((c) => c.active).length,
+      pointsIssued: sum('adding'),
+      pointsRedeemed: sum('spending'),
+      // Points sitting on member balances — the program's liability.
+      outstandingPoints: customers.reduce((acc, c) => acc + c.activePoints, 0),
+      totalRedemptions: store.issuedRewards.size,
+      activeRewards: [...store.rewards.values()].filter((r) => r.active).length,
+      membersByTier,
+    });
+  },
+);
