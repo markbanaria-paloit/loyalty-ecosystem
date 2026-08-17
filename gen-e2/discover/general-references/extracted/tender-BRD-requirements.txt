@@ -1,0 +1,1336 @@
+
+BUSINESS REQUIREMENTS DOCUMENT
+Provision of Services for the Configuration, Integration, and Implementation of NTUC
+Club's Customer Loyalty Programme — Request for Vendor Proposal
+
+
+
+
+                                        Page 1 of 22
+NTUC Club — Loyalty Programme BRD                                                Confidential — Tender Use Only
+
+
+
+1. Document Guidelines
+
+1.1 Purpose of the Document
+This document is issued to prospective vendors to support preparation of a proposal / quotation. It defines
+the business background, phased requirements, non-functional expectations, compliance obligations and
+security standards for the NTUC Club loyalty programme platform. NTUC Club has not pre-selected a
+platform, architecture or vendor; vendors are invited to propose the solution design and technical approach
+that best meets these requirements, and to highlight where alternative approaches may better serve the
+stated objectives.
+Vendors should read this BRD together with the Tender documents and any commercial terms issued
+separately. Where this BRD and the CT conflict on commercial or procurement process matters, the CT shall
+prevail; where they conflict on functional/technical scope, vendors should flag the discrepancy for
+clarification.
+
+1.2 Distribution
+This document is issued to shortlisted vendors invited to respond to the Closed Tender CT00008 (CT) for the
+NTUC Club loyalty programme platform, and to internal stakeholders listed.
+
+1.3 How to Use This Document
+  • Requirements are numbered (e.g. BR-P1-001) for traceability between this BRD, vendor proposals, and
+    the eventual solution design / test plan.
+  • Requirements are tagged by priority: Must Have (mandatory for the relevant phase), Should Have, Could
+    Have, or flagged for a later phase (Phase 2 / Phase 3).
+  • Sections marked "Vendor to Propose" indicate NTUC Club is deliberately not prescribing a solution and
+    wants to see the vendor's recommended approach, with trade-offs, in the proposal.
+  • Compliance requirements applicable to this engagement are set out separately from this document, in
+    the accompanying 10. Statement of Compliance v1.0.docx.
+      Vendors are required to review and respond to this document in full as part of their proposal
+      submission, indicating their compliance status against each requirement, with remarks where relevant.
+      Any deviation, qualification or exclusion should be substantiated and will be reviewed by NTUC Club as
+      part of proposal evaluation.
+
+
+
+
+                                                  Page 2 of 22
+NTUC Club — Loyalty Programme BRD                                                    Confidential — Tender Use Only
+
+
+
+2. Introduction
+
+NTUC Club is seeking a vendor to configure, integrate and implement a loyalty programme technology
+platform for its portfolio of leisure, recreation and lifestyle destinations ("the Club's touchpoint"), with all
+business units (including Downtown East (DE), D’Resort, MICE, NTUC Club Clubhouses, Orchid Country Club
+(OCC), Aranda Country Club (ACC), Wild Wild Wet (WWW), My Golf Kaki (MGK), D’Resort), and its
+participating tenants. The programme is intended to capture first-party member data, change customer
+behaviour in ways that grow revenue and margin, and channel value to participating tenants.
+
+The programme will be delivered in three phases:
+
+  • Phase 1 — MVP: a simple, free-to-join, two-tier points programme rolled out to participating tenants at
+    the 4 NTUC Club Clubhouses, Orchid Country Club, Aranda Country Club and Downtown East (DE). Scope
+    covers participating tenants at these locations only and excludes business units. Targeted Go-Live: 1
+    December 2026.
+  • Phase 2 — Growth & Engagement: deeper systems integration (parking, POS, other facilities),
+    missions/challenges, and expansion of tiering and partner offers, covering all business units (including
+    Downtown East (DE), D’Resort, MICE, NTUC Club Clubhouses, Orchid Country Club (OCC), Aranda
+    Country Club (ACC), Wild Wild Wet (WWW), My Golf Kaki (MGK), D’Resort), and its participating tenants.
+  • Phase 3 — Mature Ecosystem: advanced personalisation, gamification, an experience marketplace,
+    member community features and referral mechanics.
+NTUC Club is not prescribing the underlying platform or architecture. Vendors are asked to propose a solution
+— white-label or otherwise — that provides a stable foundation of core member benefits at launch while
+remaining highly configurable for evolving marketing benefits, without requiring major platform
+redevelopment as the programme matures.
+
+Proposals should include a 3-year roadmap, timeline and cost breakdown covering the Phase 1, together with
+ongoing support and enhancement costs. For Phase 2 and 3, a budgetary estimate is required based on 3
+years of operation.
+
+
+
+3. Business Background
+
+3.1 Why This Programme Is Needed
+  • Capture first-party member data to better serve NTUC members.
+  • Change customer behaviour in ways that drive revenue and margin.
+  • Give greater value back to participating tenants.
+
+3.2 Key Customer Segments
+Families, PMEs (Professionals, Managers and Executives), and DINKs/Silvers (dual-income-no-kids and
+senior/retiree households).
+
+3.3 Customer Proposition
+Brand promise: “Your Third Place Rewards You More”
+
+Your favourite place to eat, play and connect — the more you visit, the more rewarding every visit becomes.
+Members earn points, enjoy member-exclusive perks, and unlock greater benefits over time. Tagline direction
+
+
+                                                    Page 3 of 22
+NTUC Club — Loyalty Programme BRD                                               Confidential — Tender Use Only
+
+
+
+under consideration: “Your next visit will always be more rewarding,” potentially reinforced by visit-based
+accelerators (e.g. bonus value for multiple same-day receipts across different tenants) and campaign-driven
+stamp-card mechanics.
+
+3.4 Expected Programme Outcomes
+  • Allow NTUC Club to track every visitor across every touchpoint.
+  • Enable NTUC Club to channel customers to tenants, including its own businesses.
+  • Reward the Club's most loyal customers.
+  • Increase visit frequency and repeat purchase.
+  • Grow member penetration and engagement.
+
+
+4. Project Objectives
+
+  • Deliver a branded loyalty platform under the NTUC Club identity, whether through a white-label or
+    equivalent configurable solution that is easy to use for members and administrators, and that can scale
+    and grow with the programme as it develops.
+  • Deliver a stable foundation of core member benefits at launch, while enabling highly configurable,
+    evolving marketing benefits that adapt to changing customer needs, business priorities and market
+    conditions — without requiring major platform redevelopment.
+  • Deliver the approved Minimum Viable Product (MVP) to Go-Live by 1 December 2026, covering its
+    participating tenants in the 4 NTUC Club Clubhouses, OCC, ACC and Downtown East (DE) – Phase 1.
+  • This programme should eventually cover all business units (including Downtown East (DE), D’Resort,
+    MICE, NTUC Club Clubhouses, Orchid Country Club (OCC), Aranda Country Club (ACC), Wild Wild Wet
+    (WWW), My Golf Kaki (MGK), D’Resort), and its participating tenants – Phase 2 and Phase 3.
+  • Establish a single loyalty programme framework that can be adopted across all NTUC Club business units
+    and its participating tenants.
+  • Vendors should recommend their preferred approach for delivering the solution as a mobile application,
+    noting any implications for integration. The MVP scope has been properly defined in this document and
+    is expected to be delivered in full, ideally benchmarked against comparable programmes (e.g. Changi
+    Rewards App) in terms of usability and feature maturity. Where Vendors see value in additional
+    capabilities beyond this scope, these may be proposed separately for discussion.
+
+
+5. Scope of Engagement
+
+5.1 In Scope
+  • Loyalty programme solution design covering membership, tiering, points accrual and redemption,
+    rewards, promotions and customer journeys.
+  • Platform configuration and setup: programme rules, earn/burn mechanics, member tiers, rewards
+    catalogue, and administration and reporting tools.
+  • Integration to our CRM based on Salesforce.
+  • Integration to NTUC Club’s marketing automation platform(s) for automated, triggered and personalised
+    member communications, segmentation and campaign performance reporting.
+
+
+
+
+                                                  Page 4 of 22
+NTUC Club — Loyalty Programme BRD                                                            Confidential — Tender Use Only
+
+
+
+  • The scope of this tender includes delivering an integrated Customer Identity and Access Management
+    platform (encompassing SSO) to support mandatory SingPass/MyInfo authentication. The platform will
+    also accommodate standard login methods, including Google, Apple ID, email address, and mobile
+    phone number verification.
+  • Data extraction capability enabling member, transaction, points, tier, campaign and consent data to be
+    exported and imported into NTUC Club’s central data warehouse for enterprise analytics and reporting.
+  • Data integration with the NTUC HQ system on membership verification of union members for all Union
+    members, including migration and reconciliation of existing member and transaction data where
+    applicable.
+  • Consolidate customer data across loyalty transactions, bookings, events, facility visits, and member
+    activities to provide a unified customer view.
+  • Support real-time synchronisation of NTUC membership status to automatically update loyalty eligibility
+    and member benefits.
+  • Provide API integrations, scheduled data feeds, and data export capabilities for seamless integration
+    with applicable systems integrated.
+  • End-to-end testing, User Acceptance Testing (UAT), defect resolution and production readiness
+    validation.
+  • Deployment, launch support and stabilisation-period issue resolution.
+  • Administrator and user training, and delivery of system documentation, operating procedures and
+    support guides.
+  • Post-implementation warranty, maintenance and technical support for an agreed period after go-live.
+  • Systems integration (from Phase 2 onward): POS, payment gateway, corporate website, parking,
+    ticketing and other relevant platforms.
+
+5.2 Out of Scope (for this tender)
+  • Physical parking hardware/system replacement — Phase 1 uses physical coupons; system integration
+    with the existing parking vendor (Wei Long) is a Phase 2 item.
+  • Redemption via the Links catalogue / points-to-purchase conversion — targeted for Phase 3.
+  • Integration with the existing NTUC Club corporate website — is a Phase 2 item.
+  • Tenant-facing self-service reporting portals — not required at launch; tenants will not have direct access
+    to their own reports.
+
+5.3 Phasing Overview
+ Phase                Objective                                       Focus
+
+                      Acquire members; drive fast, simple sign-       Build membership base and transaction capture.
+ Phase 1 MVP
+                      ups; establish visit and spend habits.          Launch fast and simple.
+
+                                                                      Drive behavioural change through frequency, cross-
+ Phase 2 Growth       Increase visit frequency and customer
+                                                                      spend and tier recognition; deeper systems
+ & Engagement         lifetime value.
+                                                                      integration.
+
+                                                                      Build a lifestyle ecosystem that increases customer
+ Phase 3 Mature       Maximise revenue, profitability and
+                                                                      lifetime value and creates emotional loyalty beyond
+ Ecosystem            emotional loyalty.
+                                                                      points and discounts.
+
+
+
+
+                                                       Page 5 of 22
+NTUC Club — Loyalty Programme BRD                                                          Confidential — Tender Use Only
+
+
+
+6. Stakeholders & Governance
+
+ Stakeholder / Team                 Role in Programme                              Notes
+
+                                    Programme owner; defines MVP success           To confirm mandatory report set and
+ Marketing
+                                    criteria, customer proposition, campaigns.     MVP benchmark.
+
+                                    Monitors the loyalty programme post go-
+ Future Loyalty Team                                                               Team formation in progress.
+                                    live.
+
+                                                                                   Vendor to support with case tools /
+ Customer Experience (CX)           Handles member enquiries and disputes.
+                                                                                   admin console.
+
+                                    Reward funding, points liability accounting,   Points liability accounting treatment
+ Finance
+                                    reconciliation, reporting.                     to be confirmed.
+
+ Tenants / Participating            Fund and/or fulfil selected rewards;           Participation basis (opt-in vs
+ Merchants                          participate in earn/burn at point of sale.     mandated) to be confirmed.
+
+                                    Data integration, SingPass/MyInfo baseline     Group cybersecurity and data policies
+ NTUC HQ / Group IT
+                                    identity, group cybersecurity standards.       apply.
+
+                                    Platform development and configuration,
+                                                                                   Refer to Vendor Deliverables in the
+ Vendor (this tender)               integration, testing, deployment, training,
+                                                                                   document.
+                                    support, maintenance.
+
+
+
+7. Member Benefits Framework
+
+The loyalty programme must provide members with a mix of two categories of benefit:
+
+7.1 Core Benefits (Mandatory at Launch)
+  • Points earning and redemption
+  • Welcome rewards
+  • Birthday rewards
+  • Parking privileges integration
+  • Member-only promotions
+  • Tier-based recognition and benefits
+  • Digital membership card
+
+7.2 Flexible Marketing Benefits (Vendor to offer Recommendation)
+The platform must support highly configurable, campaign-based benefits that can evolve over time without
+significant development effort. Indicative examples — vendors are encouraged to propose innovative
+engagement and reward mechanisms beyond this list:
+
+  • Bonus point campaigns
+  • Visit frequency rewards
+  • Cross-property incentives
+  • Event access and invitations
+  • Partner and tenant funded promotions
+
+
+                                                         Page 6 of 22
+NTUC Club — Loyalty Programme BRD                                                     Confidential — Tender Use Only
+
+
+
+  • Surprise-and-delight rewards
+  • Seasonal campaigns
+  • Gamification mechanics
+  • Challenges and missions
+
+
+8. Business Requirements — Phase 1 (MVP)
+
+Objective: acquire members and drive fast, simple sign-ups; establish visit and spend habits across
+participating tenants at multiple locations, outside of Downtown East (DE). Target: Go-Live by 1 December
+2026. The first year is deliberately about building membership scale, not introducing complex mechanics.
+
+8.1 Systems Integration
+Req ID        Requirement                  Description / Acceptance Criteria                                      Priority
+
+                                           Platform supports transaction capture at participating tenants via
+                                           a dedicated QR scanner/device provided to each participating
+                                           tenant, similar to the Changi Rewards App model: the member
+                                           presents their digital membership QR code at checkout, the
+                                           tenant scans it using the provided scanner (or scanner app), and
+              POS integration (tenant QR
+BR-P1-001                                  the qualifying transaction amount is captured and credited as          Must Have
+              scanner model)
+                                           points. Vendor to propose the scanner/device form factor (e.g.
+                                           handheld scanner, tablet-based app, or POS-integrated scanning)
+                                           and the process for issuing, onboarding and supporting scanners
+                                           across participating tenants at scale, including fallback
+                                           procedures if a tenant's scanner is offline.
+
+                                           Provide bi-directional integration with Salesforce CRM to ensure
+BR-P1-002a    CRM integration              synchronized member profiles, consent records, and campaign            Must Have
+                                           orchestration between the solution and CRM platform.
+
+                                           Bi-directional integration with NTUC's CRM system(s) for unified
+                                           member profile, consent and campaign orchestration. Integration
+                                           with NTUC Club’s marketing automation platform(s) to enable
+                                           automated, triggered and personalised member communications
+                                           across email, SMS and push. Must synchronise member profile,
+              Marketing automation
+BR-P1-002b                                 tier status, points balance, transaction events and channel-level      Must Have
+              integration
+                                           marketing consent, and support audience segmentation,
+                                           campaign triggers (e.g. enrolment, tier upgrade, points expiry,
+                                           birthday, lapsed visit) and closed-loop campaign performance
+                                           reporting. Vendor to state supported platforms and integration
+                                           method.
+
+                                           Member, transaction, points, tier, campaign and consent data
+                                           must be extractable for import into NTUC Club’s central data
+                                           warehouse. Vendor to provide automated, scheduled bulk export
+              Data extraction to central
+BR-P1-002c                                 and/or API-based extracts (full and incremental/delta) in standard     Must Have
+              data warehouse
+                                           machine-readable formats (e.g. CSV, JSON, Parquet), with a
+                                           published data dictionary and schema, in line with PDPA and
+                                           NTUC Group data governance and security requirements.
+
+
+8.2 Membership & Tiering
+
+
+
+
+                                                    Page 7 of 22
+NTUC Club — Loyalty Programme BRD                                                       Confidential — Tender Use Only
+
+
+
+Req ID        Requirement                  Description / Acceptance Criteria                                        Priority
+
+                                           Membership is free to join at launch. Vendor to support a future
+BR-P1-003     Free membership              rule change (Year 2+) where Tier 2 retention requires a points           Must Have
+                                           deduction / renewal spend, without re-platforming.
+
+                                           Programme supports two tiers at launch: Tier 1 – Member
+                                           (default) and Tier 2 – Premium (spend-based / NTUC member
+BR-P1-004     Two-tier structure           auto-placement). Eligibility criteria (spend thresholds, qualifying      Must Have
+                                           period) must be configurable by an administrator, not hard-
+                                           coded.
+
+                                           NTUC members can be automatically placed into Tier 2 on
+                                           enrolment, subject to eligibility rules to be finalised. Platform
+              Automatic NTUC member
+BR-P1-005                                  must support alternative rule sets (e.g. spend-based qualification       Must Have
+              tier placement
+                                           for non-NTUC members) so the final policy can be configured
+                                           without redevelopment.
+
+                                           Administrators can configure qualifying spend thresholds (e.g.
+              Configurable tier            minimum consecutive-month spend, rolling annual average
+BR-P1-006     qualification & retention    spend), qualification windows, and downgrade/retention rules             Must Have
+              rules                        (e.g. annual spend renewal) via an admin console, without vendor
+                                           development effort.
+
+                                           Both tiers earn at the same underlying rebate yield (i.e. earn
+                                           value per dollar spent is consistent across members); tier
+              Consistent rebate yield
+BR-P1-007                                  differentiation is delivered through redemption value and                Must Have
+              across tiers
+                                           ancillary benefits, not differential earn rates, unless configured
+                                           otherwise by NTUC Club.
+
+
+8.3 Points Earning
+Req ID        Requirement                  Description / Acceptance Criteria                                        Priority
+
+                                           Base earn rate of $1 qualifying spend = 1 point, configurable by
+BR-P1-008     Simple earn rate                                                                                      Must Have
+                                           an administrator (rate, rounding rules) without code changes.
+
+                                           Platform must allow NTUC Club flexible configuration rule
+                                           settings; to configure whether points are calculated before or
+BR-P1-009     Configurable earn basis      after discounts, and whether GST and service charges are                 Must Have
+                                           included in the points calculation, as an admin-configurable rule
+                                           per merchant/category.
+
+                                           Administrators can flag specific product/category codes or
+BR-P1-010     Exclusion rules              transaction types (e.g. gift cards, vouchers) as excluded from           Must Have
+                                           points earning.
+
+                                           Points expire 12 months from the date earned, with automated
+BR-P1-011     Points expiry                member notification ahead of expiry. Expiry period must be               Must Have
+                                           configurable.
+
+                                           When a qualifying transaction is refunded or reversed, the
+                                           platform must automatically reverse the associated points (or flag
+BR-P1-012     Refund / reversal handling                                                                            Must Have
+                                           for manual adjustment where the points have already been
+                                           redeemed), maintaining an auditable ledger.
+
+                                           Platform supports configurable point multipliers (e.g. 2x, 3x)
+BR-P1-013     Points multipliers           applicable to specific transactions, campaigns, tiers or time            Must Have
+                                           windows (used for birthday and welcome mechanics below).
+
+
+
+
+                                                    Page 8 of 22
+NTUC Club — Loyalty Programme BRD                                                       Confidential — Tender Use Only
+
+
+
+8.4 Redemption
+Req ID        Requirement                   Description / Acceptance Criteria                                       Priority
+
+                                            Members can convert accumulated points into
+              Points-to-voucher             vouchers/discounts per a configurable conversion table (e.g.
+BR-P1-014                                                                                                           Must Have
+              conversion                    1,000 points = $5 or $10 voucher, per the rebate-yield scenario
+                                            adopted).
+
+                                            Platform must record and report which party funds each reward
+BR-P1-015     Reward funding attribution    (NTUC Club, tenant, or co-funded) to support reconciliation and         Must Have
+                                            settlement; final funding policy to be confirmed.
+
+                                            Issued vouchers/rewards expire 12 months from issuance by
+BR-P1-016     Reward/voucher expiry                                                                                 Must Have
+                                            default; expiry period configurable per reward type.
+
+              Multiple redemptions per      Members can redeem more than one reward/voucher within a
+BR-P1-017                                                                                                           Must Have
+              transaction                   single transaction.
+
+                                            Redemption is available via the digital membership channel
+BR-P1-018     Redemption channel            (app/web) and, where applicable, at participating tenant point-of-      Must Have
+                                            sale.
+
+
+8.5 Digital Membership & Member Profile
+Req ID        Requirement                   Description / Acceptance Criteria                                       Priority
+
+                                            A digital membership card (QR/barcode or equivalent) is available
+BR-P1-019     Digital membership card                                                                               Must Have
+                                            to every member, viewable in-app and/or via a mobile web view.
+
+                                            Member enrolment should support SingPass / MyInfo as the
+                                            baseline identity and data-capture method, consistent with
+                                            NTUC's current standard, retrieving only the MyInfo data fields
+                                            necessary for enrolment and programme administration.
+              SingPass / MyInfo enrolment
+BR-P1-020                                                                                                           Must Have
+              baseline                      In addition to SingPass / MyInfo, the platform must support
+                                            alternative enrolment and login methods, including Google email
+                                            account, Apple ID, email address and mobile phone number (OTP-
+                                            based), so that non-SingPass users can join and access the
+                                            programme.
+
+                                            Platform captures and maintains a basic member profile (identity,
+                                            contact, consent preferences, tier status, points balance,
+BR-P1-021     Basic member profile                                                                                  Must Have
+                                            transaction history) with self-service update of contact and
+                                            marketing-consent preferences.
+
+                                            Members can view and manage marketing consent (channel-
+              Consent & preference
+BR-P1-022                                   level: email, SMS, push, etc.) in line with PDPA and Do Not Call        Must Have
+              management
+                                            Registry requirements.
+
+
+8.6 Welcome & Birthday Rewards
+Req ID        Requirement                   Description / Acceptance Criteria                                       Priority
+
+                                            New members automatically receive a configurable welcome
+                                            bonus (points and/or a digital bundle of deals) funded from NTUC
+BR-P1-023     Welcome bonus                                                                                         Must Have
+                                            Club-owned assets, valid for a configurable period (e.g. 30 days)
+                                            at participating tenants.
+
+
+
+
+                                                     Page 9 of 22
+NTUC Club — Loyalty Programme BRD                                                     Confidential — Tender Use Only
+
+
+
+Req ID        Requirement                Description / Acceptance Criteria                                        Priority
+
+                                         Birthday rewards are triggered on the member's first qualifying
+                                         transaction during their birthday month, applying a configurable
+BR-P1-024     Birthday rewards           points multiplier (e.g. 2x for Tier 1, 3x for Tier 2). Platform must     Must Have
+                                         support future change to a fixed birthday-date trigger without
+                                         redevelopment.
+
+
+8.7 Parking Privileges
+Req ID        Requirement                Description / Acceptance Criteria                                        Priority
+
+                                         Members receive a free parking entitlement, capped monthly by
+              Free parking entitlement   tier (Tier 1: 1 hour/month; Tier 2: 2 hours/month). Phase 1 is
+BR-P1-025                                                                                                         Must Have
+              (Phase 1: manual)          fulfilled via a physical/printed coupon issued through the loyalty
+                                         channel; no live parking-system integration is required in Phase 1.
+
+
+8.8 Promotions & Reporting
+Req ID        Requirement                Description / Acceptance Criteria                                        Priority
+
+                                         Administrators can create and target promotions restricted to
+BR-P1-026     Member-only promotions     loyalty members (all members or by tier/segment), independent            Must Have
+                                         of the core points engine.
+
+                                         Self-service reporting dashboard for internal stakeholders
+                                         (Marketing, Finance) covering membership, transactions, points
+                                         issued/redeemed/expired, campaign performance, and reward
+                                         funding/liability. Approximately 20 report types are anticipated at
+                                         launch, including Finance reports; the exact report catalogue will
+BR-P1-027     Reporting dashboard                                                                                 Must Have
+                                         be finalised with vendor input. In addition to the mandatory
+                                         reporting dashboards, the reporting platform shall either
+                                         integrate with, or support the import/upload of external data
+                                         from, NTUC HQ's Analytics Platform (Insights) to enable
+                                         consolidated reporting, analytics, and cross-platform insights.
+
+                                         Role-based access to reports; tenants do not have direct self-
+BR-P1-028     Report access control                                                                               Must Have
+                                         service access to their own reports in Phase 1.
+
+                                         Reports are generated on a self-service, on-demand basis rather
+              Self-service, on-demand                                                                             Should
+BR-P1-029                                than a fixed push schedule, with export to common formats
+              reporting                                                                                           Have
+                                         (CSV/Excel/PDF).
+
+
+8.9 Phase 1 Focus KPIs
+  • Member acquisition
+  • Activation rate
+  • First redemption rate
+  • Database growth
+
+
+9. Business Requirements — Phase 2 (Growth & Engagement)
+
+
+
+
+                                                  Page 10 of 22
+NTUC Club — Loyalty Programme BRD                                                         Confidential — Tender Use Only
+
+
+
+Objective: increase visit frequency and customer lifetime value, extending the programme to other NTUC Club
+facilities beyond Downtown East (DE). Tier benefits in this phase should reward loyalty through increasing
+levels of Convenience, Recognition, Access, Value and Exclusivity.
+
+9.1 Systems Integration
+Note: tenant POS/QR-scanner transaction capture (BR-P1-001) and CRM integration (BR-P1-002) are delivered
+at Phase 1 launch. Phase 2 extends the integration landscape as follows.
+
+Req ID        Requirement                    Description / Acceptance Criteria                                        Priority
+
+                                             Live integration with the carpark system (with existing parking
+BR-P2-001     Parking system integration     integration vendor) to apply member parking entitlements                 Must Have
+                                             automatically, replacing the Phase 1 physical coupon process.
+
+              Payment gateway                Integration with relevant payment gateway(s) where required to           Should
+BR-P2-002
+              integration                    support earn/burn at checkout or in-app redemption purchases.            Have
+
+              Corporate website              Integration of loyalty enrolment, profile and redemption                 Should
+BR-P2-003
+              integration                    touchpoints with the NTUC Club corporate website.                        Have
+
+              Ticketing / facility booking   Integration with ticketing and facility booking systems to support
+BR-P2-004                                                                                                             Must Have
+              integration                    priority bookings, early access and tier-based booking privileges.
+
+                                             All Phase 2 integrations delivered via documented, versioned
+BR-P2-005     API-based extensibility        APIs, enabling future business units to onboard without custom           Must Have
+                                             point-to-point integration.
+
+
+9.2 Tiering, Benefits & Partner Offers
+Req ID        Requirement                    Description / Acceptance Criteria                                        Priority
+
+                                             Parking privileges integrated to the carpark system; priority
+              Expanded tier benefits (Tier
+BR-P2-006                                    bookings and early access to other facilities; exclusive events at       Must Have
+              1/2)
+                                             different venues; partner offers.
+
+                                             Platform supports configuration of a higher qualifying-spend tier
+              Higher-value Tier 3            (e.g. $5,000 - $8,000 qualifying spend per the tiered framework          Should
+BR-P2-007
+              groundwork                     with distinct earn/redemption values, ready for launch. Full Tier 3      Have
+                                             member experience (VIP perks) is delivered in Phase 3.
+
+                                             Configurable rules to reward spend or visits across multiple NTUC
+BR-P2-008     Cross-property incentives                                                                               Must Have
+                                             Club properties/business units, not only Downtown East (DE).
+
+
+9.3 Missions, Challenges & Bonus Points Engine
+Req ID        Requirement                    Description / Acceptance Criteria                                        Priority
+
+                                             Configurable mission/challenge mechanics (e.g. “Dine + Play”,
+              Missions & challenges          “Visit 3 times this month”, “Spend $200 in a month”) with
+BR-P2-009                                                                                                             Must Have
+              engine                         progress tracking visible to members and configurable rewards on
+                                             completion.
+
+                                             Configurable bonus-point campaigns (e.g. double-points
+BR-P2-010     Bonus points engine            weekends, off-peak incentives, partner promotions) schedulable           Must Have
+                                             by admin without vendor development.
+
+
+
+
+                                                     Page 11 of 22
+NTUC Club — Loyalty Programme BRD                                                     Confidential — Tender Use Only
+
+
+
+Req ID        Requirement                 Description / Acceptance Criteria                                       Priority
+
+                                          Support for exclusive previews, family days and a Member
+                                                                                                                  Should
+BR-P2-011     Member events               Appreciation Month, including event access management tied to
+                                                                                                                  Have
+                                          membership/tier status.
+
+
+9.4 Phase 2 Focus KPIs
+  • Frequency uplift
+  • Repeat visits
+  • Tier migration
+  • Incremental spending
+
+
+10. Business Requirements — Phase 3 (Mature Ecosystem)
+
+Objective: maximise revenue, profitability and emotional loyalty by building a lifestyle ecosystem around the
+programme, beyond points and discounts.
+
+10.1 Advanced Features
+Req ID        Requirement                 Description / Acceptance Criteria                                       Priority
+
+                                          Full launch of Tier 3 (High-Value Customer), including higher-
+BR-P3-001     VIP Tier 3 launch                                                                                   Must Have
+                                          value perks and VIP experiences, per the tiered framework.
+
+                                          Behaviour-based, personalised offers and communications driven          Should
+BR-P3-002     Personalisation engine
+                                          by member transaction and engagement history.                           Have
+
+                                          Badges, achievement levels, challenges and leaderboards to              Should
+BR-P3-003     Gamification
+                                          sustain engagement.                                                     Have
+
+                                          Members can redeem points for experiences, workshops, events            Should
+BR-P3-004     Experience marketplace
+                                          and partner products, extending beyond simple vouchers.                 Have
+
+                                          Ability to use points to directly purchase vouchers via the Links
+              Links catalogue purchase
+BR-P3-005                                 catalogue is a Phase 3 requirement; Phase 1 solution design             Must Have
+              (deferred)
+                                          should not preclude this integration later.
+
+                                          Configurable categorisation features to organise programme
+BR-P3-006     Categorisation features     entities (e.g. rewards, vouchers, campaigns, merchants, events,         Must Have
+                                          and content) for easier management and administration.
+
+                                          Member-refers-friend mechanic where both referrer and referee           Should
+BR-P3-007     Referral programme
+                                          earn rewards on qualifying referral completion.                         Have
+
+
+10.2 Phase 3 Focus KPIs
+  • Customer Lifetime Value (CLV)
+  • Revenue uplift
+  • Retention
+  • Member profitability
+
+10.3 Roadmap Summary
+
+                                                  Page 12 of 22
+NTUC Club — Loyalty Programme BRD                                                        Confidential — Tender Use Only
+
+
+
+ Phase                Roadmap Statement
+
+ Phase 1              Build membership and transaction capture.
+
+ Phase 2              Drive behavioural change through frequency, cross-spend and tier recognition.
+
+                      Build a lifestyle ecosystem that increases customer lifetime value and creates emotional loyalty beyond
+ Phase 3
+                      points and discounts.
+
+
+
+11. Tier Structure & Rebate Yield Scenarios
+
+The tier structure below reflects the current three-tier design (One / Two – NTUC Member / Three – High-
+Value Customer), all earning at $1 spend = 1 point. Tier 3 is scoped to launch in Phase 2. NTUC Club is
+evaluating two rebate-yield scenarios; the redemption value per 1,000 points differs between them, but earn
+mechanics and tier structure are otherwise identical. The final scenario adopted will directly drive the
+platform's redemption conversion table and cost/liability model, so it is provided here for vendor cost-
+modelling purposes.
+
+Reward points are valid for 1 year from the date earned and expire automatically thereafter. To maintain Tier
+2 membership into the following membership year, members must redeem 1,000 points before the expiry
+date (subject to confirmation).
+
+11.1 Scenario 1 — 0.5% Rebate Yield
+
+
+
+
+11.2 Scenario 2 — 1% Rebate Yield
+
+
+
+
+                                                       Page 13 of 22
+NTUC Club — Loyalty Programme BRD                                                         Confidential — Tender Use Only
+
+
+
+
+11.3 Scenario Comparison — Conclusion
+The table below summarises how the two scenarios compare at a glance, to support NTUC Club's final
+decision on which rebate yield to adopt.
+
+ Dimension                          Scenario 1 — 0.5% Rebate Yield            Scenario 2 — 1% Rebate Yield
+
+                                    0.5% of qualifying spend returned as      1% of qualifying spend returned as
+ Redemption rebate yield
+                                    voucher value                             voucher value
+
+ Tier One / Two voucher value
+                                    $5 voucher                                $10 voucher
+ per 1,000 points
+
+ Tier Three voucher value per       $10 voucher (1% yield at Tier 3) —        $15 voucher (1.5% yield at Tier 3) —
+ 1,000 points                       Phase 2                                   Phase 2
+
+ Relative cost to NTUC Club /       Lower reward funding and points-          Approximately double the redemption
+ tenants                            liability exposure                        cost and points liability of Scenario 1
+
+                                    More conservative; may feel less          More competitive and easier to market;
+ Perceived member value             compelling against comparable             stronger pull for member acquisition
+                                    mall/attraction loyalty programmes        and activation
+
+                                                                              Better supports Phase 1 focus KPIs of
+                                    Supports steady, lower-risk
+ Alignment with Phase 1 KPIs                                                  acquisition, activation and first
+                                    membership growth
+                                                                              redemption, at higher cost
+
+                                                                              Higher deferred-revenue / points-
+ Finance / liability                Lower deferred-revenue / points-
+                                                                              liability balance; Finance to confirm
+ consideration                      liability balance to manage.
+                                                                              funding and reserve approach
+
+                                                                              Preferred if NTUC Club prioritises faster
+                                    Preferred if NTUC Club prioritises cost
+ Recommendation                                                               member acquisition and a more
+                                    control in Phase 1
+                                                                              compelling launch proposition
+
+
+Final scenario selection is an open item for NTUC Club to confirm; the platform's redemption conversion table
+must remain admin-configurable so either scenario, or a revised variant, can be applied without vendor
+rework.
+
+
+                                                        Page 14 of 22
+NTUC Club — Loyalty Programme BRD                                                             Confidential — Tender Use Only
+
+
+
+11.4 Comparative Summary by Tier
+                                                                               Voucher per 1,000 pts          Voucher per 1,000
+ Tier                    Qualifying Spend           Points per $1
+                                                                               (Scenario 1)                   pts (Scenario 2)
+
+ One — Occasional
+                         None (default)             1 point                    $5 (0.5% yield)                $10 (1% yield)
+ Shopper
+
+ Two — NTUC
+                         $1,500 min annual
+ Member / Frequent                                  1 point                    $5 (0.5% yield)                $10 (1% yield)
+                         spend
+ Spender
+
+ Three — High-Value      $5,000–$8,000                                         $10 (1% yield) — to            $15 (1.5% yield) —
+                                                    1 point
+ Customer                qualifying spend                                      launch Phase 2                 to launch Phase 2
+
+
+Implication for vendors: the redemption conversion table settings must be a fully admin-configurable
+parameter, not hard-coded, since NTUC Club has not finalised which rebate-yield scenario (or a variant) will be
+adopted, and this may be revisited between phases.
+
+11.5 Tier Benefit Comparison (Phase 1 Launch Benefits)
+ Benefit                      Tier One                            Tier Two (NTUC Member)              Tier Three
+
+                              Digital bundle of deals, valid
+                                                                  Digital insider pack with
+ Welcome package              30 days at participating                                                To launch in Phase 2
+                                                                  curated voucher booklet
+                              tenants
+
+                              2x points multiplier on first       3x points multiplier on first
+ Birthday perks                                                                                       To launch in Phase 2
+                              transaction in birthday month       transaction in birthday month
+
+                              1-hour comp parking, capped         2-hour comp parking, capped
+ Parking benefits                                                                                     To launch in Phase 2
+                              at 2/month                          at 2/month
+
+ Facility booking             —                                   Early-bird booking privileges       To launch in Phase 2
+
+                              2x Day Passes to WWW per            4x Day Passes to WWW per
+ Day passes                                                                                           To launch in Phase 2
+                              year                                year
+
+ Resort discount              —                                   Up to 35% off D'Resort room         To launch in Phase 2
+
+
+
+12. Non-Functional Requirements
+
+12.1 Performance & Scalability
+Req ID        Requirement                      Description / Acceptance Criteria                                          Priority
+
+                                               Platform must support growth from an initial NTUC member base
+NFR-001       Member base scalability          to a group-wide member base across all NTUC Club business units            Must Have
+                                               within the 3-year roadmap, without re-platforming.
+
+                                               Platform must handle peak transaction volumes (e.g. public
+                                               holiday / school holiday footfall and water park/resort facilities)
+NFR-002       Transaction throughput                                                                                      Must Have
+                                               without degradation to enrolment, earn or redemption response
+                                               times.
+
+
+
+
+                                                         Page 15 of 22
+NTUC Club — Loyalty Programme BRD                                                      Confidential — Tender Use Only
+
+
+
+Req ID        Requirement                  Description / Acceptance Criteria                                       Priority
+
+                                           Member-facing actions (balance check, redemption, digital card
+NFR-003       Response time                display) should complete within an acceptable response time             Must Have
+                                           under normal and peak load; vendor to propose target SLA.
+
+                                           Vendor to propose an architecture (cloud-hosted preferred) that
+              Elastic / cloud-based                                                                                Vendor to
+NFR-004                                    scales elastically with demand and supports future business-unit
+              architecture                                                                                         Propose
+                                           onboarding via configuration rather than custom builds.
+
+
+12.2 Availability & Resilience
+Req ID        Requirement                  Description / Acceptance Criteria                                       Priority
+
+                                           Production system availability target of 99.5% or better for
+NFR-005       Service availability         member-facing services, excluding scheduled maintenance                 Must Have
+                                           windows; vendor to propose and commit to an SLA.
+
+                                           Documented backup schedule and disaster recovery plan with
+                                           defined Recovery Time Objective (RTO) and Recovery Point
+NFR-006       Backup & disaster recovery                                                                           Must Have
+                                           Objective (RPO); vendor to propose target figures appropriate to
+                                           a member/loyalty ledger system.
+
+                                           Where a dependent system (e.g. POS, parking gantry) is
+                                                                                                                   Should
+NFR-007       Graceful degradation         unavailable, the platform should queue/reconcile transactions
+                                                                                                                   Have
+                                           rather than lose points-earning events.
+
+
+12.3 Usability & Accessibility
+Req ID        Requirement                  Description / Acceptance Criteria                                       Priority
+
+                                           Sign-up and login flow should be completable in a small number
+              Simple, low-friction         of steps, leveraging SingPass/MyInfo to minimise manual data
+NFR-008                                                                                                            Must Have
+              enrolment                    entry, with Google email account, Apple ID, email address and
+                                           mobile phone number as supported alternatives.
+
+                                           Digital membership card, enrolment and redemption flows must
+NFR-009       Mobile-first design          be optimised for mobile devices, reflecting expected usage at           Must Have
+                                           physical points of presence.
+
+                                           Vendor to advise on support for English and other locally relevant
+                                                                                                                   Nice to
+NFR-010       Multi-language support       languages, given the family/multi-generational customer
+                                                                                                                   Have
+                                           segments targeted.
+
+
+12.4 Configurability & Extensibility
+Req ID        Requirement                  Description / Acceptance Criteria                                       Priority
+
+                                           Marketing administrators must be able to configure earn rules,
+              No-code / low-code           tier criteria, promotions, missions and reward catalogues without
+NFR-011                                                                                                            Must Have
+              campaign configuration       vendor development effort or code deployment, within guardrails
+                                           set by NTUC Club.
+
+                                           Architecture must support incremental enablement of Phase 2
+NFR-012       Modular, phased rollout      and Phase 3 features (integrations, gamification, marketplace)          Must Have
+                                           without disruptive migration of Phase 1 member data or history.
+
+
+
+
+                                                   Page 16 of 22
+NTUC Club — Loyalty Programme BRD                                                     Confidential — Tender Use Only
+
+
+
+Req ID        Requirement                  Description / Acceptance Criteria                                      Priority
+
+                                           All integration points must be exposed via documented,
+NFR-013       Open, documented APIs        versioned APIs to support future business units and third-party        Must Have
+                                           partner integrations.
+
+
+12.5 Security & Compliance
+The proposed solution shall comply with applicable data protection legislation.
+
+The Tenderer shall possess at least one of the following certifications:
+       • ISO/IEC 27001 Information Security Management System certification; or
+       • SOC 2 Type II certification.
+
+Supporting documents shall be submitted together with the proposal -
+        • User Identity and access management
+        • Audit logging capabilities
+        • Cybersecurity controls implemented
+        • Encryption for data in transit and at rest
+        • Vulnerability management process
+        • Incident response process
+        • Backup and disaster recovery procedures
+
+Detailed security and compliance requirements are addressed separately from this document, via the
+accompanying NTUC Club IT Outsource Security Requirement Checklist v3.xlsx spreadsheet.
+
+Vendors are required to complete this checklist in full as part of their proposal submission, indicating their
+compliance status (Compliant / Partially Compliant / Not Compliant / Not Applicable) against each
+requirement, with remarks where relevant.
+
+Any Non-Compliance, Partial Compliance or Not-Applicable response should be substantiated and will be
+reviewed by NTUC Club as part of proposal evaluation.
+
+
+
+13. Reporting, Data & Systems Integration Requirements
+
+13.1 Reporting Requirements
+Approximately 20 report types are anticipated at launch, spanning Marketing and Finance needs. Indicative
+report categories (final catalogue to be confirmed with Marketing and Finance during solution design —
+vendors to propose what reports/dashboards needed for this). Example as per below:
+
+  • Membership: new sign-ups, active/inactive members, tier distribution, tier migration.
+  • Transactions: points earned, points redeemed, points expired, transaction volume and value by
+    tenant/location.
+  • Campaigns: promotion performance, welcome/birthday redemption rates, mission/challenge
+    completion (Phase 2+).
+  • Finance: points liability outstanding, reward funding/settlement by tenant, redemption cost by channel.
+  • Operations/CX: member enquiry and dispute volumes and resolution status (if surfaced from the loyalty
+    platform).
+
+
+
+
+                                                   Page 17 of 22
+NTUC Club — Loyalty Programme BRD                                                     Confidential — Tender Use Only
+
+
+
+  • The reporting platform shall either integrate directly with or provide the capability to import/upload
+    external data from, NTUC HQ's Analytics Platform (Insights), enabling consolidated reporting, analytics,
+    and cross-platform insights.
+Reports are to be accessed via a self-service dashboard rather than a fixed distribution schedule. Tenants do
+not require direct access to their own reports.
+
+13.2 Data Integration with NTUC HQ Systems
+Req ID        Requirement                  Description / Acceptance Criteria                                      Priority
+
+                                           Migration of existing member and transaction data from current
+              Member/transaction data
+BR-DI-001                                  systems, where applicable, with defined data mapping, cleansing        Must Have
+              migration
+                                           and validation rules.
+
+              Data validation &            Post-migration validation and reconciliation process with sign-off
+BR-DI-002                                                                                                         Must Have
+              reconciliation               criteria before cutover.
+
+                                           Definition of system of record for member identity and consent,
+                                           with a documented, scheduled or event-driven synchronisation
+                                           mechanism between the loyalty platform and NTUC HQ systems.
+
+                                           All data fields migrated and synchronised with NTUC HQ systems
+                                           must be accurately mapped to the corresponding fields in the
+                                           loyalty platform and integrated systems to ensure data
+              Ongoing sync with NTUC HQ
+BR-DI-003                                  consistency, integrity, and to prevent discrepancies in the            Must Have
+              system
+                                           retrieval and reporting of member data.
+
+                                           The solution shall also define the data elements to be shared,
+                                           including but not limited to benefit redemption, voucher
+                                           utilisation, loyalty programme participation, and member
+                                           engagement metrics, to support member value tracking,
+                                           reporting, and analytics.
+
+                                           Integration with SingPass / MyInfo for identity verification and
+                                           data pre-fill at enrolment, retrieving only the minimum necessary
+                                           data fields, in line with SNDGO/GovTech National Digital Identity
+                                           (NDI) technical and API usage requirements.
+              SingPass / MyInfo
+BR-DI-004                                                                                                         Must Have
+              integration
+                                           SingPass / MyInfo is the baseline method; the platform must also
+                                           support alternative enrolment and login via Google email
+                                           account, Apple ID, email address and mobile phone number (OTP-
+                                           based).
+
+                                           Platform must support extraction of member, transaction, points,
+                                           tier, campaign and consent data for import into NTUC Club’s
+                                           central data warehouse. Vendor to provide documented,
+              Data extraction to central   automated and scheduled bulk export / API-based extract
+BR-DI-005                                                                                                         Must Have
+              data warehouse               capability (including full and incremental / delta extracts) in
+                                           standard machine-readable formats, supporting downstream
+                                           analytics and reporting. Data extraction must comply with PDPA
+                                           and NTUC Group data governance and security requirements.
+
+                                           Integration with NTUC Club’s marketing automation platform(s)
+              Marketing automation
+BR-DI-006                                  to enable automated, triggered and personalised member                 Must Have
+              integration
+                                           communications across email, SMS and push channels.
+
+              Customer Identity and        The scope of this tender includes delivering an integrated
+BR-DI-007                                                                                                         Must Have
+              Access Management            Customer Identity and Access Management platform
+
+
+
+
+                                                   Page 18 of 22
+NTUC Club — Loyalty Programme BRD                                                           Confidential — Tender Use Only
+
+
+
+Req ID        Requirement                     Description / Acceptance Criteria                                         Priority
+
+              platform (encompassing          (encompassing SSO) solution to support mandatory SingPass /
+              SSO) integration                MyInfo authentication, accommodating standard login methods
+                                              including Google, Apple ID, email and mobile verification.
+
+
+13.3 Systems Integration Landscape (Phase 2+)
+ System                             Integration Purpose                                                      Phase
+
+                                    Transaction capture for points earning — via a QR scanner/device
+ POS (tenant point-of-sale)         issued to each participating tenant, member presents digital QR          Phase 1
+                                    at checkout (Changi Rewards-style model)
+
+ Parking system (Wei Long)          Automated application of parking entitlements at gantry                  Phase 2
+
+ CRM                                Unified member profile, consent, campaign orchestration                  Phase 1
+
+                                    Automated, triggered and personalised member communications
+ Marketing automation platform      (email, SMS, push); segmentation, campaign triggers and closed-          Phase 1
+                                    loop campaign reporting
+
+                                    Scheduled bulk / API-based extraction of member, transaction,
+ Central data warehouse             points, tier, campaign and consent data for enterprise analytics         Phase 1
+                                    and reporting
+
+                                    Integrated Customer Identity and Access Management platform
+                                    (encompassing SSO) n providing SingPass / MyInfo authentication
+ Customer Identity and Access
+                                    and standard login methods; single sign-on and identity
+ Management platform                                                                                         Phase 1
+                                    management across NTUC Club digital touchpoints, credential
+ (encompassing SSO) integration
+                                    and session management, identity linking and consent attribute
+                                    propagation
+
+ Payment gateway                    Earn/burn at checkout, in-app purchase of redemption items               Phase 2
+
+ Corporate website                  Enrolment, profile and redemption touchpoints                            Phase 2
+
+ Ticketing / facility booking       Priority booking, early access, tier-based privileges                    Phase 2
+
+ Links catalogue                    Points-to-voucher direct purchase                                        Phase 3
+
+ Mobile App (Vendor to              Potential shared identity / unified access layer — architectural
+                                                                                                             Phase 1
+ propose)                           decision pending
+
+
+13.4 Financial & Accounting Considerations
+  • Points liability: the platform must support accounting for deferred revenue / points liability of customer
+    loyalty programmes, including outstanding liability reporting by tier and expiry cohort.
+  • Reward funding and settlement: where tenants co-fund rewards, the platform must support
+    settlement/reconciliation reporting between NTUC Club and participating tenants.
+  • GST treatment of points issuance and redemption should be confirmed with NTUC Club Finance and
+    reflected in report design.
+
+
+14. Vendor Deliverables
+
+
+
+                                                       Page 19 of 22
+NTUC Club — Loyalty Programme BRD                                                      Confidential — Tender Use Only
+
+
+
+Vendors are asked to submit a proposal to deliver a simple, configured, tested and operational loyalty
+platform, inclusive of Phase 2 and Phase 3 enhancements, launch support and ongoing enhancements as set
+out in this BRD. Proposals must include a timeline and cost breakdown for a 3-year plan, covering:
+
+ #        Deliverable                           Description
+
+                                                Detailed solution design covering membership, tiering, points
+                                                accrual and redemption, rewards, promotions and customer
+ 1        Loyalty Programme Solution Design
+                                                journeys; functional and technical specifications aligned to this
+                                                BRD.
+
+                                                Configuration of the loyalty platform including programme rules,
+ 2        Platform Configuration & Setup        earning and redemption mechanics, member tiers, rewards
+                                                catalogue, and administration/reporting tools.
+
+                                                Integration with identified systems (CRM, POS, payment gateway,
+ 3        Systems Integration (Phase 2)         website, mobile app, parking, ticketing and other relevant
+                                                platforms); development and testing of APIs and data interfaces.
+
+          Data Integration with NTUC HQ         Migration of existing member and transaction data where
+ 4
+          System                                applicable; data validation and reconciliation.
+
+                                                End-to-end system testing, User Acceptance Testing (UAT), defect
+ 5        Testing & Quality Assurance
+                                                resolution, and production readiness validation.
+
+                                                Deployment of the solution into the production environment;
+ 6        Launch & Deployment                   launch support and issue resolution during the stabilisation
+                                                period.
+
+                                                Administrator and user training; delivery of system
+ 7        Training & Documentation
+                                                documentation, operating procedures and support guides.
+
+                                                Warranty, maintenance and technical support for an agreed
+ 8        Post-Implementation Support
+                                                period after go-live.
+
+
+
+
+15. Implementation Roadmap & Indicative Timeline
+
+Vendors should propose a detailed project plan; the indicative milestones below reflect NTUC Club's target
+dates and are provided as a planning baseline.
+
+ Milestone                    Target Timing              Notes
+
+ Vendor selection &                                      Following evaluation of vendor proposals against
+                              Q3 2026
+ contract award                                          “Success Metrics / KPIs Summary” criteria.
+
+ Solution design sign-off     Q3 2026                    Includes resolution of open items that affect design.
+
+ Phase 1 configuration &                                 Core benefits, 2-tier structure, digital card, reporting
+                              Q3–Q4 2026
+ build                                                   dashboard.
+
+ UAT & production
+                              Q4 2026                    End-to-end testing and defect resolution.
+ readiness
+
+                                                         4 NTUC Club Clubhouses, Downtown East (DE) and its
+ Phase 1 go-live (MVP)        1 December 2026
+                                                         participating tenants.
+
+
+
+
+                                                   Page 20 of 22
+NTUC Club — Loyalty Programme BRD                                                          Confidential — Tender Use Only
+
+
+
+ Milestone                    Target Timing                   Notes
+
+ Phase 2 planning &                                           POS/receipt capture, parking, CRM, ticketing
+                              2027
+ integration build                                            integrations; Tier 3 groundwork.
+
+                                                              Other facilities onboarded; missions/challenges;
+ Phase 2 go-live              2027
+                                                              bonus points engine.
+
+                                                              Personalisation, gamification, experience
+ Phase 3 planning & build     2028
+                                                              marketplace, referral programme.
+
+ Phase 3 go-live              2028                            Full VIP Tier 3 and mature ecosystem features.
+
+
+Vendors should present cost estimates broken down by phase (one-off configuration/integration cost vs.
+recurring licensing/support cost) across this 3-year plan.
+
+
+
+16. Success Metrics / KPIs Summary
+
+ Phase                        Key KPIs
+
+ Phase 1                      Member acquisition; activation rate; first redemption rate; database growth.
+
+ Phase 2                      Frequency uplift; repeat visits; tier migration; incremental spending.
+
+ Phase 3                      Customer Lifetime Value (CLV); revenue uplift; retention; member profitability.
+
+
+
+17. Assumptions, Dependencies & Constraints
+
+17.1 Assumptions
+  • The programme is organisation-wide in intent (not limited to Downtown East (DE)), with Phase 1
+    onboarding DE tenants first.
+  • SingPass/MyInfo will be the baseline identity and data-capture mechanism for member enrolment,
+    consistent with current NTUC standards.
+  • NTUC Club will provide the funding policy, final tier qualification criteria and rebate-yield scenario
+    decision in time to inform solution design sign-off.
+  • Existing member/transaction data (where it exists) will be made available by NTUC HQ systems for
+    migration in a reasonable format.
+
+17.2 Dependencies
+  • Existing Parking Integration vendor (Wei Long) cooperation for Phase 2 carpark system integration.
+  • Tenant participation agreements (opt-in basis, POS/receipt-capture cooperation) being in place ahead of
+    each phase.
+  • SNDGO/GovTech approval and API access for SingPass/MyInfo integration.
+
+17.3 Constraints
+  • Phase 1 MVP must go live by 1 December 2026.
+
+
+
+                                                        Page 21 of 22
+NTUC Club — Loyalty Programme BRD                                                   Confidential — Tender Use Only
+
+
+
+  • Managing bespoke POS integration at every individual tenant is not operationally viable; Phase 2 capture
+    approach must be scalable across many tenants.
+  • Budget and resourcing for a 3-year phased roadmap, to be confirmed through the vendor cost proposal
+    and internal budget approval.
+  • Member, transaction and behavioural data shall remain the property of NTUC Club and must be
+    accessible through standard integration and export mechanisms.
+  • The solution shall support bi-directional integration with NTUC's CRM systems for unified member
+    profiles, consent management, campaign orchestration and member behaviour insights.
+  • The solution must comply with applicable PDPA and NTUC Club information security requirements.
+
+
+18. Vendor Proposal & Evaluation Requirements
+
+Vendors should structure their proposal to address each of the following. NTUC Club will evaluate proposals
+on a combination of functional fit, technical approach, commercial cost and vendor track record; weighting to
+be confirmed in the CT covering letter. Security and compliance posture will be evaluated separately via the
+completed IT Outsource Security Requirement Checklist (see Section 12.5).
+
+ Area              Weight (indicative)         What Vendors Should Demonstrate
+
+                                               Coverage of Phase 1 Must Have requirements at launch;
+ Functional fit    To be confirmed in CT       credible roadmap for Phase 2/3; configurability without
+                                               redevelopment.
+
+ Technical                                     Scalability, integration approach (especially POS/receipt
+                   To be confirmed in CT
+ architecture                                  capture at scale), API strategy, hosting model.
+
+ Delivery track                                Relevant reference implementations, especially loyalty/CRM
+                   To be confirmed in CT
+ record                                        platforms integrated with SingPass/MyInfo in Singapore.
+
+                                               3-year cost breakdown (one-off vs. recurring), transparency
+ Commercial        To be confirmed in CT       of pricing model (e.g. per-member, per-transaction, flat
+                                               licence).
+
+ Support &                                     Post-launch support model, SLAs, escalation path, and
+                   To be confirmed in CT
+ governance                                    proposed roles/responsibilities split with NTUC Club.
+
+
+
+
+                                                 Page 22 of 22
+10. Statement of Compliance

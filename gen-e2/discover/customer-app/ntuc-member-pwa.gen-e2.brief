@@ -1,0 +1,240 @@
+{
+  "meta": {
+    "title": "NTUC Club Loyalty — Member PWA — Product Brief",
+    "owner": "[HUMAN TO ASSIGN] — PALO IT Discovery Lead",
+    "date": "2026-08-17",
+    "version": "v1.0",
+    "status": "draft",
+    "scope": "Member platform only (apps/pwa). The Merchant/tenant scanner app, Admin cockpit and Campaign Studio are separate engagements sharing gen-e2/discover/general-references/.",
+    "sources": [
+      "BRD — 'Provision of Services for the Configuration, Integration, and Implementation of NTUC Club's Customer Loyalty Programme', 22pp (gen-e2/discover/general-references/extracted/tender-BRD-requirements.txt)",
+      "PALO IT solutioning deck, Phase 1 scope (gen-e2/discover/general-references/extracted/solutioning.txt)",
+      "NC-CT00008 Statement of Compliance response template (gen-e2/discover/general-references/extracted/tender-statement-of-compliance.txt)",
+      "Repository README and apps/pwa source, read 2026-08-17"
+    ]
+  },
+
+  "businessContext": "NTUC Club operates a portfolio of leisure, recreation and lifestyle destinations in Singapore — Downtown East, D'Resort, MICE, four NTUC Club Clubhouses, Orchid Country Club, Aranda Country Club, Wild Wild Wet and My Golf Kaki — alongside participating tenants at those sites. It has no first-party view of who visits, how often, or across which properties. Closed tender NC-CT00008 seeks a vendor to configure, integrate and implement a loyalty platform to capture that data, shift customer behaviour toward greater frequency and cross-property spend, and channel value to participating tenants. PALO IT is proposing Open Loyalty as the engine, operated headlessly, with PALO IT building the Member and Merchant platforms and the integration layer. The programme runs in three phases; Phase 1 is a deliberately simple free two-tier points programme covering participating tenants at the four Clubhouses, Orchid Country Club, Aranda Country Club and Downtown East, with a hard go-live of 1 December 2026. This brief covers the Member platform — the surface on which every Phase 1 member benefit is either delivered or made visible.",
+
+  "vision": {
+    "statement": "Every visit ends with a member feeling more recognised than when they walked in.",
+    "boundaryRule": "This is not a discount app that members only open once they are already standing at the till.",
+    "market": {
+      "addressable": "NTUC Club visitors across seven Singapore leisure properties and their participating tenants, with priority acquisition from NTUC's existing union membership base (auto-placed into Tier 2). Phase 1 launch footprint covers participating tenants at the 4 Clubhouses, OCC, ACC and Downtown East. Absolute member-base figures are not stated in the BRD — NFR-001 requires scaling 'from an initial NTUC member base to a group-wide member base' within 3 years without re-platforming.",
+      "segments": ["Families", "PMEs (Professionals, Managers and Executives)", "DINKs and Silvers (dual-income-no-kids and senior/retiree households)"]
+    }
+  },
+
+  "objectives": [
+    "Acquire members fast and with minimal friction — Phase 1 is explicitly about building membership scale, not introducing complex mechanics (BRD §8).",
+    "Make the digital membership card the single instrument a member presents to earn, to redeem, and to be identified — the pivot of all three Phase 1 member journeys.",
+    "Deliver every mandatory launch benefit (points, welcome reward, birthday reward, parking privilege, member-only promotions, tier recognition, digital card) on a member-facing surface by 1 December 2026.",
+    "Make points, tiers, expiry and reversals legible enough that members trust the balance they are shown — the precondition for the first-redemption KPI.",
+    "Give members real, channel-level control of marketing consent in line with PDPA and the Do Not Call Registry.",
+    "Hold the member experience configurable, not hard-coded, so earn rates, tier thresholds, conversion tables and expiry windows can change without redevelopment (NFR-011, NFR-012)."
+  ],
+
+  "targetDemographic": [
+    {
+      "segment": "Families",
+      "description": "Named as a key customer segment in BRD §3.2. Multi-generational groups visiting Downtown East, Wild Wild Wet and the Clubhouses. Implied by NFR-010 (multi-language, 'given the family/multi-generational customer segments targeted'). No behavioural research exists — needs, visit patterns and who in the household holds the membership are all unvalidated."
+    },
+    {
+      "segment": "PMEs (Professionals, Managers and Executives)",
+      "description": "Named in BRD §3.2. Overlaps heavily with the NTUC union membership base that receives automatic Tier 2 placement (BR-P1-005). No research exists on what recognition means to this group or whether Tier 2 status carries perceived value."
+    },
+    {
+      "segment": "DINKs and Silvers",
+      "description": "Named in BRD §3.2. Dual-income-no-kids households and senior/retiree members. The senior sub-segment is the highest-risk group for a SingPass-first, mobile-first, installable-PWA enrolment model, and is the segment most likely to need the non-SingPass alternatives. Entirely unvalidated."
+    },
+    {
+      "segment": "NTUC union members (cross-cutting)",
+      "description": "Not a BRD-named segment but functionally distinct: auto-placed into Tier 2 on enrolment subject to eligibility rules still to be finalised, and identity-matched against the NTUC HQ system (Athena) at sign-up. Their enrolment path, and what happens when the match fails, differ materially from a non-union member's."
+    }
+  ],
+
+  "stakeholders": [
+    { "name": "Marketing", "role": "Programme owner — defines MVP success criteria, customer proposition and campaigns", "organisation": "NTUC Club", "type": "decision-maker", "notes": "Still to confirm the mandatory report set and the MVP benchmark. BRD §4 names the Changi Rewards App as the intended usability and feature-maturity benchmark." },
+    { "name": "Future Loyalty Team", "role": "Post-go-live programme monitoring", "organisation": "NTUC Club", "type": "impacted", "notes": "Team formation in progress — does not exist yet. No named individual to interview; operating model for post-launch member support is undefined." },
+    { "name": "Customer Experience (CX)", "role": "Handles member enquiries and disputes", "organisation": "NTUC Club", "type": "impacted", "notes": "Vendor to support with case tools / admin console. CX is the recovery path for every failure mode this brief identifies (failed identity match, disputed points, expired vouchers) — a primary research target." },
+    { "name": "Finance", "role": "Reward funding, points liability accounting, reconciliation, reporting", "organisation": "NTUC Club", "type": "approver", "notes": "Points liability accounting treatment to be confirmed. Owns the rebate-yield decision that sets the member-visible conversion rate." },
+    { "name": "Tenants / Participating Merchants", "role": "Fund and/or fulfil selected rewards; operate the QR scanner at point of sale", "organisation": "External — participating tenants at the 4 Clubhouses, OCC, ACC and DE", "type": "impacted", "notes": "Participation basis (opt-in vs mandated) not yet confirmed. Tenant staff are the counterparty in the member's earn and redeem moments — the member experience is only as good as the till-side flow." },
+    { "name": "NTUC HQ / Group IT", "role": "Data integration, SingPass/MyInfo baseline identity, group cybersecurity standards", "organisation": "NTUC Enterprise", "type": "approver", "notes": "Owns the Athena membership system against which union status is verified. Group cybersecurity and data policies apply. Gatekeeper for the identity-matching design." },
+    { "name": "SNDGO / GovTech", "role": "SingPass / MyInfo API approval and access", "organisation": "Government of Singapore", "type": "external-dependency", "notes": "BRD §17.2 lists SNDGO/GovTech approval and API access as a named dependency. Lead time is outside NTUC Club's and PALO IT's control and lands on the critical path to 1 Dec 2026." },
+    { "name": "Open Loyalty", "role": "Loyalty engine vendor — points, tiers, campaigns, rules, webhooks", "organisation": "External (partner-operated SaaS, AWS)", "type": "supplier", "notes": "Operated headlessly. Constrains what the member surface can express: anything the engine cannot model must be built in the integration layer or not promised to members." },
+    { "name": "PALO IT", "role": "Vendor — Member and Merchant platforms, integration layer, testing, deployment, training, support", "organisation": "PALO IT", "type": "delivery", "notes": "This engagement." }
+  ],
+
+  "problemSignals": [
+    {
+      "id": "s1",
+      "icon": "🪪",
+      "title": "The instrument the whole programme turns on does not exist",
+      "description": "The digital membership card (QR/barcode) is the member's identity at enrolment, the earn instrument at checkout, and the redeem instrument at the counter — all three Phase 1 member journeys in the solutioning deck pivot on it. The current Member PWA has four pages (login, dashboard, rewards, history) and renders no card of any kind. Everything downstream of 'member presents their QR at the till' is undesigned.",
+      "confidence": "validated",
+      "source": "BR-P1-019 (Must Have); solutioning.txt Member journeys — Enrolment, Earn, Redemption; direct inspection of apps/pwa/src/pages (4 pages, 607 LOC total), 2026-08-17"
+    },
+    {
+      "id": "s2",
+      "icon": "🔑",
+      "title": "Five front doors, one member, and no designed path for when the match fails",
+      "description": "Enrolment must support SingPass/MyInfo as baseline plus Google, Apple ID, email and mobile OTP, behind a CIAM/SSO platform, while NFR-008 demands a 'small number of steps'. Behind each door, the profile service must deterministically match the member against Salesforce and NTUC HQ (Athena) to resolve union status and Tier 2 auto-placement — resolving to link, create, or an exception queue. The exception queue is named in the solutioning deck but has no member-facing experience at all: a member whose identity cannot be resolved is stranded at the moment of highest acquisition intent. Current PWA supports email + password only.",
+      "confidence": "strong-signal",
+      "source": "BR-P1-020, BR-DI-004, BR-DI-007, NFR-008 (all Must Have); solutioning.txt 'One Member, One Identity' and Member Registration steps 1–4; apps/pwa/src/api/client.ts (login/register only)"
+    },
+    {
+      "id": "s3",
+      "icon": "🎖️",
+      "title": "Tier 2 is a status with no felt difference at the moment of earning",
+      "description": "BR-P1-007 mandates that both tiers earn at the same rebate yield — differentiation is delivered only through redemption value and ancillary benefits, not earn rate. A member auto-placed into Tier 2 for being a union member is told they are Premium, then watches identical points land for identical spend. The tier's actual value (higher voucher value at Tier 3 only in Phase 2, early-bird booking, 4x day passes, 35% D'Resort discount) is either deferred or invisible on the member surface. Whether Tier 2 reads as recognition or as a label is unknown.",
+      "confidence": "assumption",
+      "source": "BR-P1-004, BR-P1-005, BR-P1-007; BRD §11.4 Comparative Summary by Tier; BRD §11.5 Tier Benefit Comparison"
+    },
+    {
+      "id": "s4",
+      "icon": "⏳",
+      "title": "Points expiry and reversal are trust events being handled as ledger rows",
+      "description": "Points expire 12 months from the date earned with mandatory notification ahead of expiry (BR-P1-011). Refunded transactions must automatically reverse points, or flag for manual adjustment where the points are already spent, on an auditable ledger (BR-P1-012). These are the two moments where a member's balance goes down through no action of their own. The current PWA renders history as raw transfer rows labelled with `comment ?? type` and a signed value — no expiry horizon, no reversal explanation, no way for a member to see which points are about to lapse.",
+      "confidence": "strong-signal",
+      "source": "BR-P1-011, BR-P1-012, BR-P1-016 (all Must Have); apps/pwa/src/pages/DashboardPage.tsx and HistoryPage.tsx; apps/pwa/src/api/client.ts Transaction interface"
+    },
+    {
+      "id": "s5",
+      "icon": "🎟️",
+      "title": "The redemption moment is split across two surfaces and it is unclear who drives it",
+      "description": "BR-P1-018 requires redemption via the digital channel and, where applicable, at tenant point-of-sale. BR-P1-017 allows multiple redemptions in a single transaction. The solutioning deck's redemption journey has the member ask for a reward in the moment, staff scan the member's card, and a voucher be issued and auto-invalidated on use — a staff-driven flow. But the rewards catalogue in the PWA is a member-driven flow returning a coupon code. Which surface initiates, what the member sees when staff redeem on their behalf, and how a member combines several vouchers at one till are all open.",
+      "confidence": "hypothesis",
+      "source": "BR-P1-014, BR-P1-017, BR-P1-018; solutioning.txt Member: Redemption journey; apps/pwa/src/pages/RewardsPage.tsx"
+    },
+    {
+      "id": "s6",
+      "icon": "🅿️",
+      "title": "The parking benefit breaks the digital loop by design",
+      "description": "Members receive free parking capped monthly by tier (Tier 1: 1 hour, Tier 2: 2 hours), and in Phase 1 this is fulfilled with a physical, printed coupon issued through the loyalty channel — no parking-system integration until Phase 2. It is the only mandatory launch benefit that cannot complete inside the app. How a member obtains, carries, and redeems a paper coupon issued digitally, and how the monthly cap is tracked and shown, is entirely undefined. BRD §11.5 also states the cap as 'capped at 2/month' for both tiers, contradicting the 1 hour / 2 hour split in BR-P1-025.",
+      "confidence": "strong-signal",
+      "source": "BR-P1-025 (Must Have); BRD §11.5 Tier Benefit Comparison; BRD §5.2 Out of Scope; BR-P2-001"
+    },
+    {
+      "id": "s7",
+      "icon": "👥",
+      "title": "Three customer segments named, none researched",
+      "description": "Families, PMEs and DINKs/Silvers are asserted in BRD §3.2 with no supporting research, no sizing, no behavioural data and no stated differences in what each wants from the programme. The BRD's own §17.1 assumptions contain nothing about member needs. Every design decision on the member surface currently rests on segment labels rather than evidence — and the Silvers sub-segment in particular is the group most exposed by a SingPass-first, installable-PWA model.",
+      "confidence": "assumption",
+      "source": "BRD §3.2 Key Customer Segments; NFR-010; absence of any research artefact in the tender pack or the repository"
+    },
+    {
+      "id": "s8",
+      "icon": "💱",
+      "title": "The member-facing value of a point is a number the client has not chosen",
+      "description": "NTUC Club is evaluating two rebate-yield scenarios — 1,000 points buys either a $5 or a $10 voucher, a 2x difference in perceived value — and the BRD explicitly leaves final selection open, requiring the conversion table stay admin-configurable. The member proposition ('the more you visit, the more rewarding every visit becomes') cannot be designed, tested or written against an undecided exchange rate, and the first-redemption KPI is directly sensitive to it.",
+      "confidence": "validated",
+      "source": "BRD §11.1–§11.4 Rebate Yield Scenarios; §11.3 'Final scenario selection is an open item for NTUC Club to confirm'; BR-P1-014"
+    },
+    {
+      "id": "s9",
+      "icon": "🛡️",
+      "title": "PDPA consent is a legal obligation with no surface to carry it",
+      "description": "Members must be able to view and manage marketing consent at channel level (email, SMS, push) in line with PDPA and the Do Not Call Registry, and self-serve updates to contact details. Consent must additionally propagate bi-directionally to Salesforce and the marketing automation platform, and be extractable to the data warehouse. No profile or consent screen exists in the Member PWA, and consent capture at enrolment — including what MyInfo fields are retrieved and what the member is told about them — is undesigned.",
+      "confidence": "validated",
+      "source": "BR-P1-021, BR-P1-022 (Must Have); BR-P1-002a, BR-P1-002b, BR-P1-002c; BRD §12.5; absence of any profile route in apps/pwa/src/App.tsx"
+    },
+    {
+      "id": "s10",
+      "icon": "📶",
+      "title": "The card is needed exactly where the network is worst",
+      "description": "NFR-009 requires the digital membership card, enrolment and redemption flows to be optimised for mobile 'reflecting expected usage at physical points of presence'. Those points of presence are tills inside clubhouses, a water park and a resort — indoor, crowded, and at peak on public and school holidays (NFR-002). NFR-007 asks for graceful degradation so points-earning events are not lost when a dependent system is down, and the solutioning deck gives the tenant scanner an offline queue. No equivalent guarantee is stated for the member's side: whether the card renders with no connectivity, and what a member does when it does not, is unaddressed.",
+      "confidence": "assumption",
+      "source": "NFR-002, NFR-007, NFR-009; solutioning.txt 'Offline Fallback' (tenant app only); repo README (vite-plugin-pwa / Workbox offline app shell present)"
+    }
+  ],
+
+  "features": [
+    { "id": "f1",  "name": "Digital membership card",                      "description": "QR/barcode card available to every member, viewable in-app and via mobile web. Presented at checkout to earn and at the counter to redeem. Must render fast, at the top of the app, and legibly under poor lighting and poor connectivity.", "phase": "MVP", "evidenceLink": "s1" },
+    { "id": "f2",  "name": "Multi-path enrolment and sign-in",             "description": "SingPass/MyInfo as baseline, plus Google, Apple ID, email and mobile OTP, behind the CIAM/SSO platform. Includes the member-facing consequences of identity resolution: union-status confirmation, Tier 2 auto-placement, and a designed path for the exception queue when matching fails.", "phase": "MVP", "evidenceLink": "s2" },
+    { "id": "f3",  "name": "Points balance and tier standing",             "description": "Current active points, earned and redeemed totals, tier badge and progress to the next tier. Exists in skeleton form today; needs the tier proposition, qualification window and retention rule made legible.", "phase": "MVP", "evidenceLink": "s3" },
+    { "id": "f4",  "name": "Points ledger with expiry and reversal transparency", "description": "Activity history that explains why a balance changed, shows which points lapse when against the 12-month horizon, and states plainly when a refund has reversed an earning. Replaces the raw transfer list.", "phase": "MVP", "evidenceLink": "s4" },
+    { "id": "f5",  "name": "Rewards catalogue and points-to-voucher redemption", "description": "Browse the reward catalogue with affordability against the member's balance, redeem points for a voucher per the admin-configurable conversion table, and support more than one redemption within a single transaction.", "phase": "MVP", "evidenceLink": "s5" },
+    { "id": "f6",  "name": "Voucher wallet",                                "description": "Issued vouchers held in the app with their own QR, showing expiry (12 months from issuance by default, configurable per reward type) and auto-invalidating the moment they are consumed at the till.", "phase": "MVP", "evidenceLink": "s5" },
+    { "id": "f7",  "name": "Welcome and birthday recognition",              "description": "Welcome bonus — points and/or a digital bundle of deals valid for a configurable period — surfaced on first landing after enrolment. Birthday multiplier (2x Tier 1, 3x Tier 2) applied on the first qualifying transaction in the birthday month, made visible before and after it fires.", "phase": "MVP", "evidenceLink": "s3" },
+    { "id": "f8",  "name": "Parking entitlement coupon",                    "description": "Monthly free-parking entitlement issued through the loyalty channel as a physical/printed coupon in Phase 1, with the remaining monthly allowance visible in-app. Designed so the Phase 2 switch to live gantry integration does not change the member's mental model.", "phase": "MVP", "evidenceLink": "s6" },
+    { "id": "f9",  "name": "Member profile and channel-level consent",      "description": "Self-service update of contact details and marketing consent per channel (email, SMS, push) in line with PDPA and the Do Not Call Registry, including what was captured from MyInfo at enrolment and why.", "phase": "MVP", "evidenceLink": "s9" },
+    { "id": "f10", "name": "Member-only promotions surface",                "description": "In-app display of promotions targeted at all members or by tier/segment, created by administrators independently of the core points engine.", "phase": "MVP", "evidenceLink": "s3" },
+    { "id": "f11", "name": "Expiry and lifecycle notifications",            "description": "Member notification ahead of points expiry, plus enrolment, tier-upgrade, birthday and lapsed-visit triggers, delivered through the marketing automation platform across email, SMS and push, respecting the consent set in f9.", "phase": "MVP", "evidenceLink": "s4" },
+    { "id": "f12", "name": "Installable, offline-capable app shell",        "description": "PWA install prompt, service worker and offline app shell so the membership card and voucher wallet remain presentable at a till with degraded connectivity. Partially present in the repository today; the offline guarantee for the card specifically is not established.", "phase": "MVP", "evidenceLink": "s10" },
+    { "id": "f13", "name": "Missions, challenges and progress tracking",    "description": "Member-visible progress against configurable missions and challenges ('Dine + Play', 'Visit 3 times this month'), with rewards on completion.", "phase": "Phase 2", "evidenceLink": "s3" },
+    { "id": "f14", "name": "Live parking entitlement",                      "description": "Automatic application of the parking entitlement at the gantry, replacing the Phase 1 physical coupon.", "phase": "Phase 2", "evidenceLink": "s6" },
+    { "id": "f15", "name": "Cross-property incentives and expanded tiers",  "description": "Member-facing rewards for spend or visits across multiple NTUC Club properties; Tier 3 groundwork; priority and early-access booking privileges.", "phase": "Phase 2", "evidenceLink": "s3" },
+    { "id": "f16", "name": "Personalisation, gamification and marketplace", "description": "Behaviour-based personalised offers, badges and leaderboards, an experience marketplace redeeming points for experiences and workshops, and member referral mechanics.", "phase": "Phase 3", "evidenceLink": "s7" }
+  ],
+
+  "roadmap": {
+    "phases": [
+      {
+        "name": "Phase 1 — MVP",
+        "timeline": "Solution design sign-off Q3 2026; configuration and build Q3–Q4 2026; UAT Q4 2026; go-live 1 December 2026",
+        "goal": "Acquire members and establish visit and spend habits at participating tenants across the 4 Clubhouses, Orchid Country Club, Aranda Country Club and Downtown East. Deliberately simple: free to join, two tiers, one earn rate. Build membership scale rather than mechanics.",
+        "features": ["f1", "f2", "f3", "f4", "f5", "f6", "f7", "f8", "f9", "f10", "f11", "f12"],
+        "pricing": "Free to join. Vendor to support a Year 2+ rule change where Tier 2 retention requires a points deduction or renewal spend, without re-platforming (BR-P1-003)."
+      },
+      {
+        "name": "Phase 2 — Growth & Engagement",
+        "timeline": "Planning and integration build 2027; go-live 2027",
+        "goal": "Increase visit frequency and customer lifetime value; extend to all business units; deeper systems integration (parking, payment gateway, corporate website, ticketing).",
+        "features": ["f13", "f14", "f15"],
+        "pricing": "Free to join; Tier 3 introduced at $5,000–$8,000 qualifying spend."
+      },
+      {
+        "name": "Phase 3 — Mature Ecosystem",
+        "timeline": "Planning and build 2028; go-live 2028",
+        "goal": "Maximise revenue, profitability and emotional loyalty by building a lifestyle ecosystem beyond points and discounts.",
+        "features": ["f16"],
+        "pricing": "To be determined."
+      }
+    ]
+  },
+
+  "isIsNot": {
+    "is": [
+      "The member's proof of identity at a tenant till — the one thing they present to earn and to redeem.",
+      "A wallet: points, vouchers, tier standing and entitlements in one place, with an honest account of what changed and why.",
+      "The surface where NTUC union membership becomes a visible, felt benefit rather than a database flag.",
+      "A PDPA-grade consent control that a member can actually operate.",
+      "Installable and usable at a counter with a queue behind you, on a bad connection."
+    ],
+    "isNot": [
+      "A re-skin of the Open Loyalty backoffice — the engine is headless and stays that way.",
+      "A transaction-initiating device. The tenant's scanner captures the sale; the member presents identity.",
+      "A payment app. No card-on-file, no checkout, no payment gateway in Phase 1.",
+      "A booking, ticketing or facility-reservation app — those are Phase 2 integrations.",
+      "A campaign management tool. Marketers configure in the admin console and Campaign Studio, not here.",
+      "A tenant reporting portal. Tenants have no self-service access in Phase 1 (BR-P1-028)."
+    ]
+  },
+
+  "guidingPrinciples": [
+    { "id": 1, "title": "The card opens instantly, or the programme fails at the till",           "description": "There is a queue behind the member. The membership card must be reachable in one action from a cold start and must render without a network round-trip. Everything else in the app can be slower than this." },
+    { "id": 2, "title": "Never show a member a number they cannot explain",                       "description": "Balances, expiry horizons, reversals and conversion rates must each carry their reason on the same screen as the figure. A points programme loses trust at the moment a balance drops unexplained — expiry and refund reversal are both mandatory Phase 1 mechanics." },
+    { "id": 3, "title": "Recognition before transaction",                                          "description": "The brand promise is 'Your Third Place Rewards You More'. If the first thing a member sees is a balance rather than an acknowledgement of who they are and what they have earned, the programme reads as a discount scheme. Tier 2 members earn no faster than Tier 1 — recognition has to do the work the earn rate does not." },
+    { "id": 4, "title": "One identity, many doors",                                                 "description": "Five sign-in paths converge on one member record matched across Salesforce and NTUC HQ. The member should never have to know which door they came through, and must never be stranded when the match fails." },
+    { "id": 5, "title": "Consent is a control, not a checkbox",                                     "description": "Channel-level consent is a PDPA and DNC obligation, but it is also the member's only lever over how the programme reaches them. Treat it as a first-class setting, legible and reversible, not an enrolment formality." },
+    { "id": 6, "title": "Design for the rule that has not been decided yet",                        "description": "Rebate yield, tier qualification thresholds, expiry windows and the conversion table are all admin-configurable by mandate and several are still open at the client. No member-facing copy, layout or mental model may assume a specific number." }
+  ],
+
+  "regulatory": [
+    { "body": "PDPA (Personal Data Protection Act, Singapore)",        "requirement": "Lawful collection, use and disclosure of member personal data; channel-level marketing consent management; data extraction to the central data warehouse must comply.", "status": "in-scope", "notes": "BR-P1-022, BR-P1-002c, BR-DI-005, BRD §17.3. Directly shapes the enrolment and profile surfaces (f2, f9)." },
+    { "body": "Do Not Call (DNC) Registry, Singapore",                  "requirement": "Marketing consent handling must respect DNC registration for voice, SMS and fax channels.", "status": "in-scope", "notes": "BR-P1-022. Constrains what channel toggles can promise and how SMS consent is captured." },
+    { "body": "SNDGO / GovTech — National Digital Identity (NDI)",     "requirement": "SingPass/MyInfo integration must follow NDI technical and API usage requirements, retrieving only the minimum necessary data fields.", "status": "in-scope", "notes": "BR-DI-004, BR-P1-020. Approval and API access are a named external dependency (BRD §17.2) on the critical path to 1 Dec 2026. Data minimisation directly limits what enrolment can pre-fill." },
+    { "body": "ISO/IEC 27001 or SOC 2 Type II",                        "requirement": "Tenderer must hold at least one certification; supporting evidence on IAM, audit logging, cybersecurity controls, encryption in transit and at rest, vulnerability management, incident response, and backup/DR must accompany the proposal.", "status": "in-scope", "notes": "BRD §12.5. Vendor-level obligation rather than a member-surface one, but constrains auth token handling — the repository's current pattern of holding the OpenLoyalty token in localStorage is explicitly flagged as dev-grade and is not production-acceptable." },
+    { "body": "NTUC Group data governance and cybersecurity standards", "requirement": "Group policies apply to all member, transaction and behavioural data; that data remains the property of NTUC Club and must be accessible via standard integration and export mechanisms.", "status": "in-scope", "notes": "BRD §6, §12.5, §17.3. Completion of the NTUC Club IT Outsource Security Requirement Checklist v3.xlsx is a proposal submission requirement — that spreadsheet is not in the ingested pack." },
+    { "body": "GST treatment of points issuance and redemption",        "requirement": "To be confirmed with NTUC Club Finance and reflected in report design; earn basis must be configurable as to whether GST and service charges are included.", "status": "tbd", "notes": "BRD §13.4, BR-P1-009. Affects what 'qualifying spend' means to a member and therefore what the app can honestly state a member will earn." }
+  ],
+
+  "successMetrics": [
+    { "id": "m1", "metric": "Member acquisition",       "target": "[CLIENT TO CONFIRM — no numeric target stated in the BRD]", "timeframe": "By and following go-live, 1 December 2026", "rationale": "Named Phase 1 KPI (BRD §8.9, §16). Phase 1 is explicitly about building membership scale; enrolment friction (f2) is the dominant lever on the member surface." },
+    { "id": "m2", "metric": "Activation rate",          "target": "[CLIENT TO CONFIRM — definition of 'activated' also unstated]", "timeframe": "First 90 days post-launch", "rationale": "Named Phase 1 KPI. The definition matters as much as the target: activation could mean first card presentation, first points earned, or first app open after enrolment — each implies a different member surface priority." },
+    { "id": "m3", "metric": "First redemption rate",    "target": "[CLIENT TO CONFIRM]", "timeframe": "First 90 days post-launch", "rationale": "Named Phase 1 KPI and the metric most directly sensitive to the unresolved rebate-yield decision (s8) — at 0.5% yield a member needs $1,000 of spend to reach a $5 voucher." },
+    { "id": "m4", "metric": "Database growth",          "target": "[CLIENT TO CONFIRM]", "timeframe": "Rolling, through the 3-year roadmap", "rationale": "Named Phase 1 KPI. Tied to first-party data capture, one of the three stated reasons the programme exists (BRD §3.1)." },
+    { "id": "m5", "metric": "Member-facing response time", "target": "[VENDOR TO PROPOSE SLA] — balance check, redemption and digital card display under normal and peak load", "timeframe": "At go-live and sustained", "rationale": "NFR-003 requires the vendor to propose the target. The digital card is the latency-critical path (guiding principle 1) and peak load is public and school holiday footfall (NFR-002)." },
+    { "id": "m6", "metric": "Service availability",     "target": "99.5% or better for member-facing services, excluding scheduled maintenance; vendor to commit to an SLA", "timeframe": "Ongoing from go-live", "rationale": "NFR-005, Must Have. The only NFR with a stated numeric floor." }
+  ]
+}

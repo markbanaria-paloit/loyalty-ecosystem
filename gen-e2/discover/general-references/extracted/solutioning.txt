@@ -1,0 +1,463 @@
+SCOPE AND SOLUTION
+Building a Loyalty Ecosystem worth growing into, together
+By bringing PALO IT's delivery expertise and Open Loyalty's proven gamification engine, we open up possibilities for what NTUC Club’s
+Loyalty Programme can become.
+
+
+   T H E A M B I T I O N | P HA S E 3 & B EY O ND    T H E T O O L K I T : PR O VE N L O Y A L I T Y A ND G A M I FI CA T I O N M E CH A NI C S T HA T M A K E I T RE A L
+
+   This is the end state we're building toward -
+   not a feature list, but the moment the
+   programme stops competing on discounts              Points                          Tiers                           Coupons                                              Automations
+   and starts competing on experience.
+   Personalisation, play and community turn a          Currency for every              Recognise your best
+                                                       action                          members                         Targeted, time-boxed                                 Right message, right
+   points scheme into a lifestyle ecosystem                                                                            offers                                               moment
+   members feel part of.
+
+      Personalised journeys
+      Offers and missions shaped by real               Wheel of                                                        Referrals                                            Achievements
+      member behaviour, not broadcast promos.          Fortune                                                                                        Badges
+                                                       Surprise & delight                                              Members as growth              Status beyond spend   Milestones to be
+                                                                                                                       engine                                               proud of
+      Play, not just earn
+      Streaks, challenges and badges turn
+      everyday visits into habits worth repeating.
+                                                                                      Leaderboards                     Streaks &
+                                                                                      Friendly competition             Challenges
+      A living community
+                                                                                                                       Visits become habits
+      Referral loops and an experience
+      marketplace extend loyalty beyond the
+      transaction.
+SCOPE AND SOLUTION
+Tackling Phase 1 First
+As a first step, PALO IT will build the Member and Merchant platforms as well as the integration layer bridging it to Open Loyalty’s engine
+(API, webhooks, admin dashboard), creating a seamless launch experience for users.
+
+This is simple by design to hit the 1 Dec launch date – a free, two-tier points programme before future scaling.
+
+
+
+          Member Enrolment & Profile                         Free, Two-Tier Points Programme                       Tenant Transaction Capture
+
+  • SingPass/MyInfo as baseline sign-up, plus       • Free to join - Tier 1 Member & Tier 2 Premium,   • QR scanner/device at each participating tenant
+    Google, Apple, email & mobile OTP                 with NTUC union member auto-placement
+                                                                                                       • Auto points crediting, with refund/reversal and
+  • Digital membership card (QR/barcode); self-     • Admin-configurable qualification, retention &      exclusion-rule handling
+    service profile & PDPA consent controls           earn rates (e.g. $1 = 1 pt baseline)
+
+
+
+
+          Rewards & Redemption                               Core Systems Integration                              Promotions & Reporting
+
+  • Points-to-voucher conversion, welcome bonus     • Bi-directional Salesforce CRM sync; marketing    • Member-only, tier/segment-targeted
+    & birthday multipliers                            automation platform integration                    promotions
+  • Monthly parking entitlement (physical           • Data warehouse extracts; CIAM/ SSO with          • Self-service dashboard
+    coupon); 12-month expiry on points & rewards      SingPass authentication
+                                                    • Data integration with the NTUC HQ system
+                                                      (union member validation & migration)
+• PHASE 1
+
+Personas and Journeys
+              MEMBER                         MERCHANT / TENANT                         PROGRAMME ADMIN
+  Clubhouse guests, union members,        Tenant staff and cashiers across the         NTUC Club Loyalty, Marketing
+              families                      various NTUC Club touchpoints                   and CRM Owners
+
+
+
+
+ Enrolment · Singpass, email or social   Onboarding · scanner device issued,      Configure · tiering, accrual and expiry
+ sign-in, CRM ID match, digital card     account activated, flow training         rules, member segments
+
+ Earn · scan card at payment, upload     Scan and confirm · member QR             Campaigns · trigger events, promotions,
+ receipt, tier-based accrual             scanned at checkout, spend confirmed     personalised communications
+
+ Redemption · browse rewards, QR         Fallback · offline queueing and manual   Monitor · dashboards for enrolments,
+ voucher issued and consumed in-club     entry so no sale is lost                 redemptions and transactions
+• PHASE 1 JOURNEYS
+
+Member: Enrolment
+
+
+
+
+Spark the moment         Sign In, Instantly                  One Member, One ID                 Welcomed like a VIP
+Posters and QR prompts   Singpass, Google, Apple ID or       Identity is resolved and matched   Members land straight into their
+turn a casual visit/     email - members join with a login   across CRM and NTUC HQ             digital card with welcome points
+comms into an instant    they already trust.                 System (Athena) with union         already credited. Union members
+app download.                                                members mapped automatically.      auto-placed into Tier 2
+• PHASE 1 JOURNEYS
+
+Member: Earn
+
+
+
+
+Show Up and Shop         Tap to Identify                     Points, in Real Time            Reversal
+Members browse and       One QR presented at checkout.       Earn rates apply instantly by   Refunds are detected and the
+buy exactly as they do   The digital Loyalty Card does the   tier and spend.                 matching points reversed
+today.                   work.                                                               without any manual clean-up.
+• PHASE 1 JOURNEYS
+
+Member: Redemption
+
+
+
+
+A member spots a reward        One Scan Away                          Reward, Delivered             Instant Savings
+they want and asks for it in   Staff scan the digital loyalty card.   A digital voucher with its    The transaction is discounted on
+the moment                                                            own QR is awarded instantly   the spot based on the voucher.
+                                                                      and auto-invalidated the      Value the member sees
+                                                                      moment it's used.             immediately.
+• PHASE 1 JOURNEYS
+
+Merchant / Tenant: Onboarding &
+Transactions
+                               Staff Onboarding
+                               Tenant staff issued scanner
+                               device/app; account activated
+                               and trained on the flow
+
+
+
+                               Scan Customer QR
+                               Staff scans the member’s
+                               digital QR at checkout with
+                               the provided scanner/device                Confirm Transaction                    Points Land Instantly
+                                                                          Qualifying spend confirmed;            Credited to the member in real
+                                                                          points calculated per active           time, with confirmation shown
+                                                                          tier and campaign rules                to both staff and member.
+
+
+
+
+Offline Fallback - if the scanner is offline, the transaction is queued locally and points are credited automatically once connectivity resumes;
+manual entry remains available as a backup so no sale is lost.
+• PHASE 1 JOURNEYS
+
+Programme Admin: Configure and
+Manage
+
+
+
+
+Set Up Membership Tiers                                    Configure Earn Rules
+• Configure tier structure & thresholds                    • Set base earn rate & exclusions
+• Auto upgrade union members to Tier 2 with segmentation   • Automate welcome & birthday bonuses
+  rules live in the admin console, not in code.
+• Set qualification & downgrade rules
+• PHASE 1 JOURNEYS
+
+Programme Admin: Configure and
+Manage
+
+
+
+Build Reward & Voucher Catalogue   Manage Points Wallets                   Monitor Dashboard & Export Data
+• Create vouchers, discounts &     • Set points expiry & pending periods   • Track members, spend & tier
+  coupons                          • Auto-reverse points on refunds          movement
+• Set redemption limits & expiry                                           • Export data feeds for CRM &
+                                                                             warehouse
+4.1   Technical Approach
+      Solution Architecture & Hosting
+TECHNICAL APPROACH
+Proposed Tech Stack
+
+ Front End & Back End        Storage & Database         Cloud & DevOps
+                                                             Terraform
+      ReactJS                                                Infrastructure as Code
+      Progressive Web App
+                                  PostgreSQL
+                                  Primary data store         Microsoft Azure
+                                                             Cloud Platform
+      Flutter                     Redis
+      Mobile App                  Caching layer              GitHub Actions
+                                                             CI/CD pipelines
+      Node.js                     Azure Blob Storage         GitHub Enterprise
+      NestJS framework            File storage               Source control
+
+
+
+
+                            AI Assistance               Security
+ Authentication
+                                  GitHub CoPilot
+                                  AI Pair Programming       Microsoft Defender
+                                                            Threat protection
+
+
+      Google Login          Testing                         Microsoft Sentinel
+                                                            SIEM & monitoring
+                                 Playwright
+                                 End-to-end testing
+      Apple Login
+• TECHNICAL
+AAPPROACH
+  dynamic loyalty programme that integrates with your systems
+
+
+
+
+Your Customer                       One Member,                               Event-driven                    Dynamic Rewards
+Engagement Hub                      One Identity                              Communications                  Configuration
+Develop new ways to engage your     Deterministic matching against            Outbound webhooks on every      A configurable catalogue: vouchers,
+customers directly in the loyalty   Salesforce CRM and NTUC HQ at             member and ledger mutation      tenant-funded offers, welcome and
+portal without code. Every          enrolment, resolving to link, create or   delivered as triggers to NTUC   birthday rewards, seasonal drops.
+campaign can be simulated and       exception queue; canonical ID and         Club's marketing automation     Add, retire or reprice rewards as the
+tested in a separate environment    cross-reference layer keep the            platform                        programme learns what members
+                                    member addressable across app,                                            respond to
+                                    loyalty platform, CRM and warehouse
+• TECHNICAL
+  APPROACH
+Solution Overview                                                      Member and                     Authentication                 Backend Services                      NTUC System
+                                                                       Tenant App
+
+
+
+                                                                                                                                                                            Salesforce
+                                                                                                                               Profile and Data Sync Service
+Member and Tenant App
+
+Member app
+PWA app for registration and display of digital loyalty card,
+member points and rewards catalog                                                                Sign in with email
+                                                                                                                                                                            NTUC HQ
+
+Tenant app
+PWA app for publishing transactions to the loyalty platform
+                                                                                                                       Integration Service         Notification Service
+
+Authentication                                                                                                                                                            Email, SMS, etc
+
+
+Members download the app and enrol or Sign in with Singpass / Google
+/ Apple or Email
+
+
+Backend Services
+
+Profile Service
+A service responsible for storing the users' loyalty profile, then
+mapping the loyaltoy id to user ids across multiple systems of                                                            User Loyalty
+record. Used by the notification service when dispatching                                                                                             Event Triggers
+                                                                                                                            Record
+messages to get the channel ID. Publishes loyalty data like total
+points and tier to multiple systems of record
+
+Integration Service
+Integrates the loyalty engine to the applications and publishes                                                                  Campaign Configuration
+transactions from the tenant app into the loyaltyplatform
+
+Notification Service
+An API service that accepts webhook requests from OpenLoyalty                       Campaign Admin                                       Loyalty Platform
+and creates notifications that are sent to the marketing
+platform.
+• TECHNICAL
+  APPROACH
+Solution Overview                                             Member and                     Authentication                 Backend Services                      NTUC System
+                                                              Tenant App
+
+
+
+                                                                                                                                                                   Salesforce
+                                                                                                                      Profile and Data Sync Service
+
+Loyalty Platform
+
+Main engine that handles transaction ingestion, points                                  Sign in with email
+assignment and redemption, rules configuration                                                                                                                     NTUC HQ
+
+
+                                                                                                              Integration Service         Notification Service
+
+Campaign Admin                                                                                                                                                   Email, SMS, etc
+
+A web app used by NTUC Club staff to configure the
+tiering system, configure the rewards as well as create and
+track campaigns .
+
+
+
+
+                                                                                                                 User Loyalty
+                                                                                                                                             Event Triggers
+                                                                                                                   Record
+
+
+
+
+                                                                                                                        Campaign Configuration
+
+
+
+
+                                                                           Campaign Admin                                       Loyalty Platform
+• TECHNICAL
+  APPROACH
+Member                                                                Member and                      Authentication                   Backend Services                          NTUC System
+
+
+
+Registration
+                                                                      Tenant App
+
+
+
+                                                                                                                                                                                  Salesforce
+                                                                                                                               Profile and Data Sync Service            3
+                                                                                             1                         2
+                                                                                                                                4                             8
+
+
+Member Registration                                                                              Sign in with email
+                                                                                                                                                                                  NTUC HQ
+
+1.   User authenticates through any of the available channels
+                                                                                                                       Integration Service          Notification Service
+2.   User successfully authenticated. The profile service initiates
+                                                                                                                                                                            9
+     profile matching.                                                             6
+                                                                                                                                5                                               Email, SMS, etc
+3.   The user is matched to a salesforce Id and an NTUC Id using
+     the SingPass id or email and/or another field
+
+4.   A loyalty ID is assigned, the ID mapping is stored. The
+     integration service is called to create the member record with
+     NTUC membership status included.
+                                                                                                                                                              7
+5.   The member is created in the loyalty platform, and the
+     welcome points are awarded. Auto promotion happens if the
+     user is an NTUC member
+                                                                                                                           User Loyalty
+                                                                                                                                                       Event Triggers
+6.   User lands on dashboard and sees welcome points                                                                         Record
+
+7.   Enrolment successful event is dispatched
+
+8.   Notification services matches loyalty id to channel id
+                                                                                                                                    Campaign Configuration
+9.   Message dispatched to marketing automation
+
+
+                                                                                   Campaign Admin                                         Loyalty Platform
+• TECHNICAL
+  APPROACH
+Earn, Redeem,                                                                Member and                     Authentication                  Backend Services                          NTUC System
+
+
+
+Reconcile
+                                                                             Tenant App
+
+
+
+                                                                                                                                                                                       Salesforce
+                                                                                                                                     Profile and Data Sync Service           7
+
+                                                                                                                                     6                             4
+
+
+Earn / Redeem                                                                                          Sign in with email
+                                                                                                                                                                                       NTUC HQ
+
+1.   Customer completes a purchase, presents loyalty card. Tenant
+     scans loyalty card. Tenant app calls integration service to post                                                        Integration Service         Notification Service
+     the transaction.
+                                                                                                                                                                                 5
+                                                                                          1
+                                                                                                                                     2                                               Email, SMS, etc
+2.   The transaction is picked up by the integration service and
+     calls the loyalty platform. The loyalty platform calculates
+     and checks from events such as tier promotion
+
+3.   Event triggers dispatched
+
+
+Notify
+                                                                                                                                                                   3
+
+
+4. Notification calls profile service to match loyalty id with channel id.
+                                                                                                                                User Loyalty
+                                                                                                                                                            Event Triggers
+5. Notification service dispatches message to marketing automation                                                                Record
+
+
+
+ Reconciliation
+                                                                                                                                         Campaign Configuration
+6. Profile service fetches loyalty records
+
+7. Profile service updates NTUC System with loyalty data
+                                                                                          Campaign Admin                                       Loyalty Platform
+• TECHNICAL APPROACH
+System Landscape Diagram
+CHANNELS                                                Member App                                                         Tenant Scanner App
+PAL O-IT, AZ URE                                        iOS & Android                                                      Device at the till
+
+
+
+
+EDGE, API &                                             Front Door + WAF                                                   Entra External ID
+ID ENTITY - AZ URE                                      TLS, DDoS, CDN                                                     CIAM - SingPass/MyInfo, social login
+
+
+
+
+APP LICATION - AZ URE                                   Integration                                    Profile and Data Sync                             Notification
+KUBER NETES & FUNCTIONS                                 Orchestrates app     Open Loyalty              ID matching, data sync                            Push/SMS/email, scheduled jobs
+
+
+
+
+DATA - AZ URE P AAS, PR IVATE                           Postgres                  Cache for Redis                   Service Bus                    Blob Storage + Key Vault
+END POINTS                                              Transactional data        Session & rate-limit state        Async events, retries          Assets, secrets & keys
+
+
+
+
+Site-to-Site VPN (IPsec, BGP) - Azure VNet to AWS VPC- Only cross-cloud, latency-sensitive hop: earn, redeem, balance check, enrolment sync
+
+
+LOYAL TY PLATFORM - AWS, OPENL OYALTY                   OpenLoyalty Engine                             OpenLoyalty Admin Console                         Amazon RDS
+(PARTNER-OPERATED SAAS)                                                                                                                                  Loyalty engine datastore, managed
+                                                        API & webhooks, rules, tiers, campaigns        Staff web portal, provided by OpenLoyalty
+                                                                                                                                                         by OpenLoyalty
+
+
+
+
+SYSTEMS WE CONN ECT TO                                  Salesforce                Marketing Automation                       NTUC HQ System                       Data Warehouse
+- NTUC / ENTERPRI SE                                    Public API                Public API                                 Private link / ExpressRoute          Private link / ExpressRoute
+• TECHNICAL
+Cloud and Network Architecture
+  APPROACH                        For a higher-resolution image, please refer to
+                                 the architecture diagram attached separately.
+TECHNICAL APPROACH
+
+Tenant Solution & Onboarding
+• Scan with any mobile device
+     o For phase 1, the tenants will be able to login to
+       the tenant app through any device, scan the
+       loyalty id, then input the transaction amount in
+       order to complete a transaction.
+
+• Hardware Integration (Phase 2 – For exploration)
+     o Hardware solutions will be explored to record
+       richer transaction data such as SKUs,
+       transaction ID and other details coming from
+       the POS
+
+• Training
+      o Digital training materials will be provided to
+        each tenant in order to educate staff in
+        performing earn, redemption, reversal and
+        offline fallback
+
+• App Access
+     o Every new tenant will be provided access to the
+       tenant app, where they can administer earn and
+       redeem transactions
+

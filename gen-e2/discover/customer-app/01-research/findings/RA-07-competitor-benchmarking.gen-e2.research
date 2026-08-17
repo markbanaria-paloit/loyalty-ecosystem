@@ -1,0 +1,438 @@
+{
+  "meta": {
+    "title": "RA-07 — Singapore loyalty competitor benchmarking",
+    "studyType": "Competitor analysis / desk research (autonomous)",
+    "cycle": "NTUC Club Loyalty • Discovery cycle 1 • Week 1",
+    "researcher": "Gen-e2 Research Agent (desk research; human review pending)",
+    "lastUpdated": "2026-08-17",
+    "summary": "Five Singapore programmes benchmarked against NTUC Club Phase 1: 0.5% is confirmed as the standard entry-tier rebate across mall and airport estates (Changi Rewards Member, CapitaStar, FRx Basic), but it is the rate a repeat customer escapes — every comparator that runs tiers escalates to 1–4%, and the two Singapore clubhouse estates most structurally like NTUC Club (HomeTeamNS 1%, SAFRA an explicitly stated 2%) pay two to four times more; the defensible reading of I004 is therefore that 0.5% is not too low as an entry rate but is indefensible as a terminal one, and that the market's own answer to a flat-earn tier structure is FRx's redemption-value uplift — a mechanism BR-P1-007 already permits and the BRD has assigned to Tier 3 in Phase 2 rather than Tier 2 at launch.",
+
+    "researchBrief": {
+      "question": "How do comparable Singapore programmes — Changi Rewards above all, as the client's named benchmark (BRD §4) — solve the card, earn and redeem moments; how do they differentiate tiers; how do they disclose expiry; and where does NTUC Club's proposed rebate yield sit against the market? (Gap G07.)",
+      "informs": ["RAID I004 (rebate-yield decision)", "RAID H008 (0.5% and the first-redemption KPI)", "RAID A005 (earn/redemption economics)", "RAID R004 (hollow Tier 2)", "RAID A003 (SingPass dominance)", "RAID A004 (QR presentation behaviour)", "RAID I011 (receipt upload)"],
+      "method": "Desk research against each programme's own published terms and conditions, FAQs and marketing pages, corroborated where possible by operator press releases and app-store listings. No participants. No PDFs re-read — the NTUC baseline is taken from gen-e2/discover/general-references/extracted/tender-BRD-requirements.txt.",
+      "outputFormat": "Comparison across five dimensions — card/earn/redeem moment, enrolment paths, tier differentiation under flat earn rates, expiry disclosure, effective rebate yield as a comparable percentage — plus a benchmarked position on I004.",
+      "allSourcesAccessed": "2026-08-17"
+    },
+
+    "comparatorSelection": {
+      "rationale": "NTUC Club is simultaneously two things the Singapore market treats as separate categories: a multi-property leisure estate with participating third-party tenants (like a mall or airport), and an affinity membership club with clubhouses and a captive union-adjacent base (like SAFRA or HomeTeamNS). Comparators were chosen to cover both, because the two categories price rebate yield very differently and NTUC Club's Phase 1 design borrows the earn mechanic from one and the member base from the other.",
+      "selected": [
+        { "programme": "Changi Rewards (Changi Airport Group)", "why": "Named by the client in BRD §4 as the usability and feature-maturity benchmark, and named again in BR-P1-001 as the model for the tenant QR-scanner earn mechanic. A multi-property retail, F&B and attraction estate with third-party tenants and >2 million members. Analysed in depth as required by the plan.", "type": "Landlord / tenant estate" },
+        { "programme": "CapitaStar (CapitaLand)", "why": "The largest Singapore mall loyalty programme (>1.8 million members) across 15+ malls of third-party tenants. It is the volume benchmark for the earn moment and — since going receiptless in July 2025 — the market's clearest statement about where the card moment is heading.", "type": "Landlord / tenant estate" },
+        { "programme": "FRx / Frasers Experience (Frasers Property Singapore)", "why": "A ten-plus mall estate of third-party tenants, and the only Singapore programme found that differentiates a status tier by redemption value rather than earn rate — which is precisely the mechanism BR-P1-007 mandates for NTUC Club. It is therefore the single most load-bearing comparator for the tier question.", "type": "Landlord / tenant estate" },
+        { "programme": "HomeTeamNS (Rewards+ / +HPoints)", "why": "The closest structural twin to NTUC Club: an affinity membership organisation with a clubhouse estate, participating in-clubhouse tenants, facility bookings, F&B, a digital membership card in-app, and a defined eligible population. Runs a real points programme with a published conversion rate.", "type": "Affinity clubhouse estate" },
+        { "programme": "SAFRA", "why": "The other Singapore affinity clubhouse estate — seven clubhouses, tenant and partner merchants, a defined eligible population — and the only comparator that publishes its rebate as a percentage in its own marketing copy, which makes it directly quotable against the BRD's own units. Also the longest-running precedent for withdrawing physical membership cards from an older membership base.", "type": "Affinity clubhouse estate" }
+      ],
+      "consideredAndExcluded": [
+        { "programme": "Mandai Wildlife Reserve (Friends of Mandai / WildPass)", "why": "Excluded as a points comparator because it does not run one. Mandai monetises through paid annual access memberships (Friends of Mandai, from ~S$465 for a family) and a free WildPass discount tier; tiers differ by which parks are included and by F&B and retail discount rates (10–20%), not by accrual. It also ran and then dropped a coalition points programme — mandai.com states the yuu points programme 'has officially ended and yuu points will no longer be issued when spending or purchasing at Mandai Wildlife Reserve'. Retained in this record as a negative finding: Singapore attraction estates comparable to Wild Wild Wet and D'Resort monetise loyalty through access and discount entitlements, not points." },
+        { "programme": "PAssion Card (People's Association)", "why": "Structurally the closest analogue to NTUC union-member auto-placement — a mass affinity card conferring status on a third-party programme. Its CapitaStar tie-up is documented but the published FAQ governing it covers a period that ended 31 August 2018, so its terms cannot be treated as current. Cited once, explicitly as historical, because the mechanism it used is directly relevant: the affinity tier was given a 1.5x earn multiplier, i.e. an earn-rate differentiator of exactly the kind BR-P1-007 forbids." },
+        { "programme": "Star Rewards / Suntec+, and credit-card-linked mall programmes", "why": "Excluded as not comparable: either single-property, or the rebate is funded by a card issuer rather than the estate operator, which makes the yield figure non-comparable to a tenant-funded programme." }
+      ]
+    },
+
+    "ntucBaseline": {
+      "note": "The figures this benchmark is measured against, taken from the BRD extract. Cited so every comparison below is against a stated requirement, not a recollection.",
+      "source": "gen-e2/discover/general-references/extracted/tender-BRD-requirements.txt",
+      "earn": "BR-P1-008: base earn rate $1 qualifying spend = 1 point, admin-configurable (rate, rounding).",
+      "redeem": "BR-P1-014 and §11.3/§11.4: 1,000 points = $5 voucher (Scenario 1, 0.5% yield) or $10 voucher (Scenario 2, 1% yield). Selection open.",
+      "tiers": "BR-P1-004: Tier 1 – Member (default) and Tier 2 – Premium. §11.4: Tier 2 qualifying spend $1,500 min annual, or NTUC-member auto-placement (BR-P1-005).",
+      "tierEarnRule": "BR-P1-007: 'Both tiers earn at the same underlying rebate yield ... tier differentiation is delivered through redemption value and ancillary benefits, not differential earn rates.'",
+      "tierRedemptionValue": "§11.4: Tier 1 and Tier 2 receive the SAME voucher value per 1,000 points under both scenarios. The redemption-value differentiator BR-P1-007 names is only applied at Tier 3 — which §11.4 scopes to Phase 2.",
+      "expiry": "BR-P1-011: points expire 12 months from the date earned, with automated member notification ahead of expiry; period configurable. BR-P1-016: vouchers expire 12 months from issuance by default.",
+      "cardMoment": "BR-P1-001: member presents their digital membership QR code at checkout; the tenant scans it with a provided scanner; the qualifying amount is captured and credited. Explicitly 'similar to the Changi Rewards App model'.",
+      "enrolment": "BR-P1-020 / BR-DI-004 / BR-DI-007: SingPass/MyInfo as baseline plus Google, Apple ID, email and mobile OTP behind a CIAM/SSO platform.",
+      "membershipFee": "BR-P1-003: free to join at launch."
+    },
+
+    "yieldComparison": {
+      "note": "Effective rebate yield = the dollar value a member gets back per dollar of qualifying spend, at the programme's own published conversion, ignoring promotions and co-brand cards. Expressed as a percentage so it is directly comparable to the BRD §11 unit. Confidence and source type are stated per row because this figure feeds a pricing decision.",
+      "rows": [
+        {
+          "programme": "NTUC Club Phase 1 — Scenario 1 (proposed)",
+          "type": "Affinity clubhouse estate, free to join, tenant spend",
+          "earn": "$1 = 1 point, per-dollar granularity",
+          "redeem": "1,000 points = $5 voucher",
+          "entryYield": "0.5%",
+          "topYield": "0.5% — identical at Tier 1 and Tier 2",
+          "tierMechanism": "None economic in Phase 1. Ancillary benefits only.",
+          "confidence": "validated",
+          "sourceType": "client document (BRD §11.3, §11.4)"
+        },
+        {
+          "programme": "NTUC Club Phase 1 — Scenario 2 (proposed)",
+          "type": "Affinity clubhouse estate, free to join, tenant spend",
+          "earn": "$1 = 1 point, per-dollar granularity",
+          "redeem": "1,000 points = $10 voucher",
+          "entryYield": "1.0%",
+          "topYield": "1.0% — identical at Tier 1 and Tier 2",
+          "tierMechanism": "None economic in Phase 1. Ancillary benefits only.",
+          "confidence": "validated",
+          "sourceType": "client document (BRD §11.3, §11.4)"
+        },
+        {
+          "programme": "Changi Rewards",
+          "type": "Airport retail / F&B / attraction estate, free to join, tenant spend",
+          "earn": "10 points per block of S$10 nett spend (T&C §4.2a), i.e. 1 point per S$1 but rounded DOWN to the nearest S$10 block — a S$19 receipt earns 10 points, so realised yield is at or below the headline",
+          "redeem": "1,000 points = $5 Changi e-Voucher; 1,500 points = $5 e-Voucher Flexi (T&C §5.7.2)",
+          "entryYield": "0.5% — Changi Airport Group states this figure itself: 'Member: 0.5% rebate (10 points per S$10)'",
+          "topYield": "4.0% at Monarch. Gold 1% (S$4,000 spend), Platinum 3% (S$8,000), Monarch 4% (S$25,000, by invitation)",
+          "tierMechanism": "Earn multiplier — 1x / 2x / 6x / 8x. This is the mechanism BR-P1-007 forbids.",
+          "confidence": "validated",
+          "sourceType": "PRIMARY — operator T&C and operator benefits page"
+        },
+        {
+          "programme": "CapitaStar",
+          "type": "Mall estate, free to join, tenant spend, >1.8m members",
+          "earn": "5 STAR$ per S$1 at most retailers; 1 STAR$ per S$1 in selected Education/Hobbies & Leisure/Sports, Foodcourt, Medical, Hypermarket, Supermarket and Specialty Mart categories. Minimum S$20 single receipt (S$10 for eCapitaVoucher or Jewel). Caps: 3 qualifying purchases daily, 20 per rolling 7 days, 5,000 STAR$ per day (T&C §2.2.2, §2.7)",
+          "redeem": "5,000 STAR$ = S$5 eCapitaVoucher (1,000 STAR$ = S$1)",
+          "entryYield": "0.5% at standard retail; 0.1% in foodcourt, supermarket, medical and the other listed categories",
+          "topYield": "0.5% base — no status tiers exist. Higher rebates (to ~1.5%+) come from co-brand cards and campaigns, funded outside the base programme.",
+          "tierMechanism": "None. CapitaStar has no status tiers — and correspondingly makes no status claim to any member.",
+          "confidence": "strong-signal",
+          "sourceType": "MIXED — T&C are PRIMARY for caps, minimum spend and expiry, but CapitaStar's own T&C decline to publish the earn and redemption rates (§5.4: 'the number of STAR$ required for the Redemption ... shall be determined by Us'). The 5 STAR$/S$1 and 5,000 STAR$ = S$5 figures are corroborated from a CapitaStar campaign page and an operator FAQ, not from the governing T&C. Treat as strong-signal, not validated."
+        },
+        {
+          "programme": "FRx / Frasers Experience",
+          "type": "Mall estate, free to join, tenant spend",
+          "earn": "Points earned 'for each nett purchase value of $20 in a single transaction' (T&C Annex 2 §3.1(a)); operator material states $20 = 20 FRx Points then 10 further points per $10, i.e. 1 point per $1 in $10 blocks above a $20 floor. Supermarket: $20 = 4 points (0.2 points per $1)",
+          "redeem": "Minimum 500 FRx Points. 500 points = $2.50 FRx Gift Card (Basic) or $5.00 FRx Gift Card (Elite)",
+          "entryYield": "0.5% (Basic)",
+          "topYield": "1.0% (Elite) — reported qualification is $8,000 accumulated spend in a redemption year",
+          "tierMechanism": "REDEMPTION VALUE — the same 500 points is worth twice as much to an Elite member. This is the only live Singapore precedent found for the mechanism BR-P1-007 prescribes.",
+          "confidence": "strong-signal",
+          "sourceType": "MIXED — earn basis, QR capture, expiry and the no-retroactive-credit rule are PRIMARY from the FRx Terms of Use. The $2.50 / $5.00 split and the $8,000 Elite threshold are SECONDARY: they appear consistently in operator-adjacent material but the FRx public site is JavaScript-rendered and the governing T&C states the operator sets conversion at its discretion without publishing a figure. FLAGGED FOR VERIFICATION before this figure is used in a client-facing pricing argument."
+        },
+        {
+          "programme": "HomeTeamNS (Rewards+)",
+          "type": "Affinity clubhouse estate, PAID membership, clubhouse tenants and own facilities",
+          "earn": "1 +HPoint per S$1, minimum S$10 per single transaction, capped at $500 per day. Infinity members earn 2x for life",
+          "redeem": "100 +HPoints = $1; 1,000 +HPoints = $10 digital voucher",
+          "entryYield": "1.0%",
+          "topYield": "2.0% for Infinity members",
+          "tierMechanism": "Earn multiplier (2x), but PURCHASED as a one-off lifetime upgrade rather than earned by spend. Would violate BR-P1-007 if replicated.",
+          "confidence": "strong-signal",
+          "sourceType": "PRIMARY — operator programme pages. Note an unresolved contradiction in HomeTeamNS's own published material, recorded under 'Evidence limits' below."
+        },
+        {
+          "programme": "SAFRA",
+          "type": "Affinity clubhouse estate, PAID membership (~$27–60/yr equivalent), clubhouse and participating partner outlets",
+          "earn": "'one (1) SAFRAPOINT for every S$1.00 spent at all Participating Outlets' (SAFRAPoints T&C). Double points in the member's birthday month",
+          "redeem": "'Every 100 SAFRAPoints is worth $2 in value (equivalent to 2% rebate)' — SAFRA's own words",
+          "entryYield": "2.0%",
+          "topYield": "2.0%, rising to an effective 4.0% in the birthday month",
+          "tierMechanism": "None on earn. SAFRA's membership classes (Ordinary A/B, Associate, Family) are eligibility categories, not spend tiers — SAFRA's own FAQ notes that only Ordinary (A) members have a differentiating right, the vote.",
+          "confidence": "validated",
+          "sourceType": "PRIMARY — operator T&C for the earn rate and expiry; operator marketing page for the '2% rebate' statement"
+        }
+      ]
+    },
+
+    "sources": [
+      { "id": "CR-TC", "name": "Changi Rewards — Terms and Conditions", "url": "https://www.changiairport.com/en/rewards/changi-rewards-terms-and-conditions.html", "type": "primary", "accessed": "2026-08-17" },
+      { "id": "CR-BEN", "name": "Changi Rewards — Membership Benefits & Privileges (tier table with stated rebate percentages)", "url": "https://www.changiairport.com/en/rewards/benefits-and-privileges.html", "type": "primary", "accessed": "2026-08-17" },
+      { "id": "CR-FAQ", "name": "Changi Rewards — Membership FAQs", "url": "https://www.changiairport.com/en/rewards/faq.html", "type": "primary", "accessed": "2026-08-17" },
+      { "id": "CR-GST", "name": "Changi Rewards — GST Absorption: How It Works & Outlets", "url": "https://www.changiairport.com/en/rewards/benefits-and-privileges/how-it-works.html", "type": "primary", "accessed": "2026-08-17" },
+      { "id": "CR-MON", "name": "Changi Airport — press release, refreshed Changi Rewards and Monarch tier (Sept 2024)", "url": "https://www.mynewsdesk.com/sg/changiairport/pressreleases/changi-airport-refreshes-loyalty-programme-changi-rewards-with-host-of-exciting-changes-to-elevate-customer-experience-3345446", "type": "primary", "accessed": "2026-08-17" },
+      { "id": "CS-TC", "name": "CapitaStar — Privacy Policy & Programme Terms", "url": "https://www.capitastar.com/international/en/policy-and-terms/capitastar-policy-and-terms.html", "type": "primary", "accessed": "2026-08-17" },
+      { "id": "CS-REC", "name": "CapitaLand — news release, 'CapitaStar Goes Receiptless' (8 July 2025)", "url": "https://www.capitaland.com/en/about-capitaland/newsroom/news-releases/international/2025/july/Capitastar-goes-receiptless.html", "type": "primary", "accessed": "2026-08-17" },
+      { "id": "CS-EARN", "name": "CapitaStar — Unlimited STAR$ Earn Campaign, Jan 2026 (states 5 STAR$ per dollar)", "url": "https://www.capitastar.com/sg/en/Unlimited-STAR-Earn-Campaign-Jan2026.html", "type": "primary-promotional", "accessed": "2026-08-17" },
+      { "id": "CS-PAS", "name": "CapitaLand — PAssion Card / CapitaStar Rewards Programme FAQ (HISTORICAL: programme period ended 31 Aug 2018)", "url": "https://www.capitaland.com/content/dam/capitaland-sites/capitastar/CapitaStarFAQ.pdf", "type": "primary-historical", "accessed": "2026-08-17" },
+      { "id": "FRX-TC", "name": "Frasers Experience — Terms of Use (FRx Programme terms, Annex 2)", "url": "https://www.frasersexperience.com/terms-of-use", "type": "primary", "accessed": "2026-08-17" },
+      { "id": "FRX-APP", "name": "Frasers Experience (FRx) — Apple App Store listing, operator description and user reviews (4.5 stars, ~5,700 ratings)", "url": "https://apps.apple.com/sg/app/frasers-experience-frx/id6443769620", "type": "primary-operator-listing", "accessed": "2026-08-17" },
+      { "id": "FRX-SEC", "name": "Secondary coverage of FRx Basic vs Elite redemption values and the $8,000 Elite threshold (aggregated search results; not confirmed against the governing T&C)", "url": "https://www.frasersexperience.com/content/frasersexperience/frx/en/whats-on/blog/track-your-membership-at-a-glance.html", "type": "secondary", "accessed": "2026-08-17" },
+      { "id": "HTNS-RW", "name": "HomeTeamNS — Rewards+ / Earning +HPoints", "url": "https://www.hometeamns.sg/hometeamns-rewards/", "type": "primary", "accessed": "2026-08-17" },
+      { "id": "HTNS-SSS", "name": "HomeTeamNS — Spend, Snap, Save! (receipt-scan earn mechanic)", "url": "https://www.hometeamns.sg/spend-snap-save/", "type": "primary", "accessed": "2026-08-17" },
+      { "id": "HTNS-INF", "name": "HomeTeamNS — Infinity Membership", "url": "https://www.hometeamns.sg/infinity-membership/", "type": "primary", "accessed": "2026-08-17" },
+      { "id": "SAF-TC", "name": "SAFRA — SAFRAPoints Terms & Conditions", "url": "https://www.safra.sg/promotions/safrapoints-rewards-vouchers/safrapoints-terms-conditions", "type": "primary", "accessed": "2026-08-17" },
+      { "id": "SAF-MKT", "name": "SAFRA — SAFRAPOINTS & Rewards Vouchers (states 'equivalent to 2% rebate')", "url": "https://www.safra.sg/promotions/safrapoints-rewards-vouchers", "type": "primary", "accessed": "2026-08-17" },
+      { "id": "SAF-FAQ", "name": "SAFRA — Membership FAQs (membership classes; cessation of physical cards from 3 Oct 2020)", "url": "https://www.safra.sg/faq/safra-membership-FAQs", "type": "primary", "accessed": "2026-08-17" },
+      { "id": "MAN-MEM", "name": "Mandai Wildlife Reserve — Memberships", "url": "https://www.mandai.com/en/memberships.html", "type": "primary", "accessed": "2026-08-17" },
+      { "id": "MAN-YUU", "name": "Mandai Wildlife Reserve — yuu Rewards Club (records the end of yuu points at Mandai)", "url": "https://www.mandai.com/en/yuu.html", "type": "primary", "accessed": "2026-08-17" },
+      { "id": "NTUC-BRD", "name": "NTUC Club Loyalty Programme BRD, tender NC-CT00008 — plain-text extract", "url": "gen-e2/discover/general-references/extracted/tender-BRD-requirements.txt", "type": "client-document", "accessed": "2026-08-17" }
+    ]
+  },
+
+  "groups": [
+    {
+      "id": "rebate-yield",
+      "title": "Effective Rebate Yield — the I004 decision",
+      "description": "Where NTUC Club's two scenarios sit against the market, expressed in the BRD's own unit. The decisive divergence is by programme TYPE, not by programme: landlord/tenant estates cluster at 0.5% entry, affinity clubhouse estates at 1–2%. NTUC Club has the earn mechanic of the first and the member base of the second.",
+      "insights": [
+        {
+          "id": "half-percent-is-the-mall-entry-rate",
+          "title": "0.5% is precisely the Singapore mall and airport entry rate — three independent estates converge on it exactly",
+          "summary": "Changi Rewards Member tier, CapitaStar standard retail and FRx Basic all return exactly S$5 per S$1,000 of qualifying spend. Changi Airport Group publishes the figure as '0.5% rebate' in its own tier table, in the same unit the BRD uses. The BRD's stated worry at §11.3 — that Scenario 1 'may feel less compelling against comparable mall/attraction loyalty programmes' — is therefore NOT supported for mall and attraction programmes. Against that comparator set, 0.5% is not below market; it IS the market.",
+          "references": [
+            { "id": "yld-ref-1", "sourceId": "CR-BEN", "filePath": "https://www.changiairport.com/en/rewards/benefits-and-privileges.html", "range": { "start": { "line": 0, "character": 0 }, "end": { "line": 0, "character": 0 } }, "note": "PRIMARY. Changi Airport Group's own tier table states the entry rebate as a percentage, in the same unit as BRD §11 — the most directly comparable published figure available for the client's own named benchmark. Accessed 2026-08-17.", "excerpt": "\"Member: 0.5% rebate (10 points per S$10)\"" },
+            { "id": "yld-ref-2", "sourceId": "CR-TC", "filePath": "https://www.changiairport.com/en/rewards/changi-rewards-terms-and-conditions.html", "range": { "start": { "line": 0, "character": 0 }, "end": { "line": 0, "character": 0 } }, "note": "PRIMARY. T&C §4.2a establishes the earn rate and §5.7.2 the conversion, so the 0.5% is derivable from the governing terms and not only from marketing copy: 1,000 points requires S$1,000 of spend and buys a S$5 voucher. Accessed 2026-08-17.", "excerpt": "\"Every 1,000 Changi Rewards points = $5 Changi e-Voucher. Every 1,500 Changi Rewards points = $5 Changi e-Voucher Flexi\" (§5.7.2)" },
+            { "id": "yld-ref-3", "sourceId": "CS-EARN", "filePath": "https://www.capitastar.com/sg/en/Unlimited-STAR-Earn-Campaign-Jan2026.html", "range": { "start": { "line": 0, "character": 0 }, "end": { "line": 0, "character": 0 } }, "note": "PRIMARY-PROMOTIONAL, corroborated by the historical PAssion/CapitaStar FAQ which uses the identical arithmetic ('$20 x 5 STAR$'). 5 STAR$ per S$1 against 5,000 STAR$ per S$5 voucher gives 0.5%. Flagged as strong-signal rather than validated because CapitaStar's governing T&C §5.4 explicitly declines to publish the conversion. Accessed 2026-08-17.", "excerpt": "\"5 STAR$ for every dollar spend, starting from S$1 ... with a minimum S$20 spend in a single receipt\"" },
+            { "id": "yld-ref-4", "sourceId": "FRX-TC", "filePath": "https://www.frasersexperience.com/terms-of-use", "range": { "start": { "line": 0, "character": 0 }, "end": { "line": 0, "character": 0 } }, "note": "PRIMARY for the earn basis. The 500 points = $2.50 Basic conversion that completes the 0.5% calculation is SECONDARY and is flagged for verification. Accessed 2026-08-17.", "excerpt": "\"Member shall be entitled to earn points ... for each nett purchase value of $20 in a single transaction\" (Annex 2, §3.1(a))" }
+          ]
+        },
+        {
+          "id": "clubhouse-estates-pay-double-to-quadruple",
+          "title": "The two Singapore clubhouse estates most like NTUC Club pay 1% and 2% — two to four times Scenario 1",
+          "summary": "HomeTeamNS returns 1% (100 +HPoints = $1) and SAFRA states its own rate as '2% rebate' in marketing copy. Both are affinity membership organisations running clubhouse estates with participating tenants and F&B — the category NTUC Club actually belongs to. Crucially, both charge a membership subscription, and both earn predominantly on their own operated spend rather than purely on third-party tenant spend. NTUC Club is proposing to be free to join (BR-P1-003) while earning on tenant spend, which removes both of the funding mechanisms that let SAFRA and HomeTeamNS pay more. The gap is real, but it is a structural gap, not evidence that NTUC Club is simply underpaying.",
+          "references": [
+            { "id": "yld-ref-5", "sourceId": "SAF-MKT", "filePath": "https://www.safra.sg/promotions/safrapoints-rewards-vouchers", "range": { "start": { "line": 0, "character": 0 }, "end": { "line": 0, "character": 0 } }, "note": "PRIMARY. The only comparator that states its rebate as a percentage in its own member-facing copy — directly quotable against BRD §11's unit. Accessed 2026-08-17.", "excerpt": "\"Every $1 spent = 1 SAFRAPoint earned\" / \"Every 100 SAFRAPoints is worth $2 in value (equivalent to 2% rebate)\"" },
+            { "id": "yld-ref-6", "sourceId": "HTNS-RW", "filePath": "https://www.hometeamns.sg/hometeamns-rewards/", "range": { "start": { "line": 0, "character": 0 }, "end": { "line": 0, "character": 0 } }, "note": "PRIMARY. 1 point per dollar against 100 points per dollar of value gives exactly 1.0% — the same figure as NTUC Scenario 2, at the closest structural peer in the set. Accessed 2026-08-17.", "excerpt": "\"For every $1 spent, you earn 1 +HPoint\" / \"100 +HPoints = $1 redemption\" / \"1,000+ HPoints = Redeem a $10 Voucher\"" },
+            { "id": "yld-ref-7", "sourceId": "SAF-TC", "filePath": "https://www.safra.sg/promotions/safrapoints-rewards-vouchers/safrapoints-terms-conditions", "range": { "start": { "line": 0, "character": 0 }, "end": { "line": 0, "character": 0 } }, "note": "PRIMARY. Confirms the earn rate in the governing terms rather than only in marketing, and confirms that earning extends to participating partner outlets and not only SAFRA's own facilities. Accessed 2026-08-17.", "excerpt": "\"one (1) SAFRAPOINT for every S$1.00 spent at all Participating Outlets\"" }
+          ]
+        },
+        {
+          "id": "half-percent-is-an-entry-rate-nobody-stays-on",
+          "title": "In every tiered comparator 0.5% is the rate a repeat customer escapes, not the rate a repeat customer lives on",
+          "summary": "At Changi Rewards a member reaching S$4,000 of annual spend moves to 1%, S$8,000 to 3%, and S$25,000 to 4%. At FRx, $8,000 of annual spend doubles redemption value to 1%. NTUC Club's own Tier 2 threshold is $1,500 of annual spend — the lowest first-upgrade threshold in the entire comparator set, less than half of Changi's — and it buys no increase in yield whatsoever. A member who spends more at NTUC Club properties gets more points but never a better rate. This, rather than the absolute level of 0.5%, is where NTUC Phase 1 diverges from the market.",
+          "references": [
+            { "id": "yld-ref-8", "sourceId": "CR-BEN", "filePath": "https://www.changiairport.com/en/rewards/benefits-and-privileges.html", "range": { "start": { "line": 0, "character": 0 }, "end": { "line": 0, "character": 0 } }, "note": "PRIMARY. Establishes the escalator and its thresholds — the structural feature NTUC Phase 1 lacks entirely. Accessed 2026-08-17.", "excerpt": "\"Gold: Accumulated Nett Spend of S$4,000 — 1% rebate (20 points per S$10); Platinum: S$8,000 — 3% rebate (60 points per S$10); Monarch: 4% rebate (8X points), by invitation, min S$25,000\"" },
+            { "id": "yld-ref-9", "sourceId": "NTUC-BRD", "filePath": "gen-e2/discover/general-references/extracted/tender-BRD-requirements.txt", "range": { "start": { "line": 803, "character": 0 }, "end": { "line": 821, "character": 0 } }, "note": "CLIENT DOCUMENT. BRD §11.4 sets Tier 2 qualification at $1,500 min annual spend while giving Tier 1 and Tier 2 the identical voucher value per 1,000 points under both scenarios — the lowest upgrade threshold in the comparator set attached to the smallest upgrade reward in the comparator set (zero).", "excerpt": "\"Two — NTUC Member / Frequent Spender | $1,500 min annual spend | 1 point | $5 (0.5% yield) | $10 (1% yield)\" — identical to the Tier One row" },
+            { "id": "yld-ref-10", "sourceId": "FRX-SEC", "filePath": "https://www.frasersexperience.com/content/frasersexperience/frx/en/whats-on/blog/track-your-membership-at-a-glance.html", "range": { "start": { "line": 0, "character": 0 }, "end": { "line": 0, "character": 0 } }, "note": "SECONDARY — reported consistently across operator-adjacent sources but NOT confirmed in the FRx governing T&C, which reserves conversion rates to the operator's discretion. Verify before quoting to the client. Accessed 2026-08-17.", "excerpt": "Reported: $8,000 accumulated annual spend qualifies a member for FRx Elite the following redemption year; Elite redeems 500 FRx Points for a $5 gift card against Basic's $2.50." }
+          ]
+        },
+        {
+          "id": "changi-headline-benefit-is-not-points",
+          "title": "At the client's named benchmark the largest member benefit is not the points — it is 9% GST absorption",
+          "summary": "Changi Rewards members pay no GST at participating public-area outlets in Terminals 1–4, a benefit worth 9/109 of the ticket price — roughly 8.3% — against a 0.5% points rebate. It requires the same action as earning: scanning the membership card before payment. Changi has therefore solved the 'why would I present my card' problem with something sixteen times larger than the points. NTUC Club has no equivalent instant, at-till benefit in Phase 1, and BR-P1-009 leaves even the question of whether GST is included in the earn basis unresolved. Any argument that NTUC Club's 0.5% is 'the same as Changi' understates the gap in what a member actually receives for presenting the card.",
+          "references": [
+            { "id": "yld-ref-11", "sourceId": "CR-GST", "filePath": "https://www.changiairport.com/en/rewards/benefits-and-privileges/how-it-works.html", "range": { "start": { "line": 0, "character": 0 }, "end": { "line": 0, "character": 0 } }, "note": "PRIMARY. Establishes both the magnitude of the benefit and that it is gated on the same card-presentation action as points earning — the reason card presentation is habitual at Changi. Accessed 2026-08-17.", "excerpt": "\"GST amount = 9 / 109 × (outlet retail selling price)\" — a S$100 item yields an S$8.26 discount. \"Only Changi Rewards members are eligible for the GST-absorbed shopping\" and members must \"scan your Changi Rewards card upon payment to enjoy GST-absorption.\"" }
+          ]
+        },
+        {
+          "id": "i004-benchmarked-position",
+          "title": "The benchmarked position on I004: 0.5% is defensible as an entry rate but not as a terminal one, and the market's answer is a Tier 2 redemption uplift",
+          "summary": "Three options, benchmarked. (a) Flat 0.5% both tiers, as currently drafted: matches the mall market's entry rate but is the only design in the comparator set with no escalator and no economic tier difference — cheapest, weakest on the first-redemption KPI, and it leaves 'Premium' meaning nothing. (b) Flat 1.0% both tiers (Scenario 2): matches HomeTeamNS, the closest structural peer, and matches Changi Gold — the tier a genuine repeat visitor reaches; strongest acquisition pull, roughly double the liability, and still no tier differentiation. (c) 0.5% at Tier 1 and 1.0% at Tier 2 via redemption value — 1,000 points buying a $5 voucher at Tier 1 and a $10 voucher at Tier 2. This is exactly the FRx Basic/Elite mechanism, the only live Singapore precedent for the differentiator BR-P1-007 actually prescribes; it costs less than a flat 1% because only Tier 2 spend earns at the higher rate; it gives Tier 2 economic content at the moment of redemption; and it requires no new mechanic, because BRD §11.4 already specifies exactly this uplift — it has simply assigned it to Tier 3 in Phase 2 rather than Tier 2 at launch. On the market evidence, (c) is the recommended position and (a) is the weakest. Note that this is a recommendation on evidence, not a decision: I004 remains the client's, and RA-02 must still test perceived value with members before it is settled.",
+          "references": [
+            { "id": "yld-ref-12", "sourceId": "NTUC-BRD", "filePath": "gen-e2/discover/general-references/extracted/tender-BRD-requirements.txt", "range": { "start": { "line": 380, "character": 0 }, "end": { "line": 386, "character": 0 } }, "note": "CLIENT DOCUMENT. BR-P1-007 does not forbid a tier differential — it forbids an EARN differential and explicitly names redemption value as the permitted lever. Option (c) is compliant with the requirement as written, and its 'unless configured otherwise' clause leaves further latitude.", "excerpt": "\"Both tiers earn at the same underlying rebate yield ... tier differentiation is delivered through redemption value and ancillary benefits, not differential earn rates, unless configured otherwise by NTUC Club.\"" },
+            { "id": "yld-ref-13", "sourceId": "NTUC-BRD", "filePath": "gen-e2/discover/general-references/extracted/tender-BRD-requirements.txt", "range": { "start": { "line": 818, "character": 0 }, "end": { "line": 820, "character": 0 } }, "note": "CLIENT DOCUMENT. The $10-per-1,000-points uplift already exists in the BRD's own tier table — assigned to Tier 3 under Scenario 1. Option (c) moves an existing, costed mechanic forward to Tier 2 rather than inventing one.", "excerpt": "\"Three — High-Value Customer | $5,000–$8,000 qualifying spend | 1 point | $10 (1% yield) — to launch Phase 2\"" },
+            { "id": "yld-ref-14", "sourceId": "FRX-APP", "filePath": "https://apps.apple.com/sg/app/frasers-experience-frx/id6443769620", "range": { "start": { "line": 0, "character": 0 }, "end": { "line": 0, "character": 0 } }, "note": "PRIMARY-OPERATOR-LISTING. Frasers markets Elite membership as the reason to keep spending, confirming the redemption-value uplift is used as the tier's public proposition and not merely a back-office setting. Accessed 2026-08-17.", "excerpt": "\"Enjoy double points during your birthday month or join the FRx Elite Club for even greater benefits!\"" }
+          ]
+        }
+      ]
+    },
+
+    {
+      "id": "tier-differentiation",
+      "title": "Tier Differentiation Where Earn Rates Are Flat",
+      "description": "The sharp question the plan sets: BR-P1-007 gives Tier 1 and Tier 2 identical earn rates, and BRD §11.4 then gives them identical redemption values too. This group tests whether any Singapore comparator operates a named status tier on that basis. None does.",
+      "insights": [
+        {
+          "id": "no-comparator-runs-a-hollow-status-tier",
+          "title": "No Singapore comparator operates a named status tier that differs in neither earn rate nor redemption value — NTUC Phase 1 would be the first",
+          "summary": "Across the five programmes examined, every named status tier carries an economic difference. Changi Rewards differentiates by earn multiplier (1x/2x/6x/8x). HomeTeamNS Infinity differentiates by earn multiplier (2x for life). FRx differentiates by redemption value (500 points worth $2.50 or $5.00). CapitaStar has no status tiers at all — and correspondingly never tells a member they are premium. SAFRA's membership classes are eligibility categories, not spend tiers. NTUC Club Phase 1 as drafted would call a member 'Premium', place a large auto-enrolled union cohort in it, and give that label no economic content of any kind. This corroborates RAID R004 from the market rather than from intuition.",
+          "references": [
+            { "id": "tier-ref-1", "sourceId": "CR-BEN", "filePath": "https://www.changiairport.com/en/rewards/benefits-and-privileges.html", "range": { "start": { "line": 0, "character": 0 }, "end": { "line": 0, "character": 0 } }, "note": "PRIMARY. The client's own named benchmark differentiates tiers by exactly the mechanism BR-P1-007 forbids. Any claim that NTUC Club is 'benchmarked against Changi Rewards' on tiering is, on the published terms, false. Accessed 2026-08-17.", "excerpt": "Member 0.5% / Gold 1% (2x) / Platinum 3% (6x) / Monarch 4% (8x) — each tier's differentiator is the points multiplier." },
+            { "id": "tier-ref-2", "sourceId": "HTNS-INF", "filePath": "https://www.hometeamns.sg/infinity-membership/", "range": { "start": { "line": 0, "character": 0 }, "end": { "line": 0, "character": 0 } }, "note": "PRIMARY. The other affinity clubhouse estate also uses an earn multiplier as its tier differentiator — and sells it, which is a further signal that members are understood to value accrual rate over ancillary perks. Accessed 2026-08-17.", "excerpt": "\"Earn DOUBLE +HPoints for life\" — an Infinity benefit, alongside complimentary family membership, 20% off gym rates and reciprocal SAFRA / Civil Service Club access." },
+            { "id": "tier-ref-3", "sourceId": "CS-TC", "filePath": "https://www.capitastar.com/international/en/policy-and-terms/capitastar-policy-and-terms.html", "range": { "start": { "line": 0, "character": 0 }, "end": { "line": 0, "character": 0 } }, "note": "PRIMARY. The largest programme in the set (1.8m members) runs no status tiers whatsoever. The negative case is instructive: if you cannot make a tier mean something, the market alternative is not to claim one. Accessed 2026-08-17.", "excerpt": "The programme terms contain no tier structure — membership is a single undifferentiated class." },
+            { "id": "tier-ref-4", "sourceId": "SAF-FAQ", "filePath": "https://www.safra.sg/faq/safra-membership-FAQs", "range": { "start": { "line": 0, "character": 0 }, "end": { "line": 0, "character": 0 } }, "note": "PRIMARY. SAFRA's classes are eligibility categories derived from NS status, not achievement tiers — and SAFRA is candid that they are near-identical in benefit. A precedent for describing an affinity category honestly rather than dressing it as status. Accessed 2026-08-17.", "excerpt": "Only Ordinary (A) members retain a differentiating right — the right to vote; other classes receive substantially identical benefits." }
+          ]
+        },
+        {
+          "id": "frx-is-the-only-precedent-for-br-p1-007",
+          "title": "FRx is the only live Singapore precedent for BR-P1-007's prescribed mechanism, and it works by doubling redemption value",
+          "summary": "FRx Elite members redeem the same 500 FRx Points for a $5 gift card where Basic members get $2.50 — an exact 2x uplift delivered entirely at the redemption moment, with no change to the earn rate. This is the mechanism BR-P1-007 names, demonstrated in market. It is worth noting that the tier is felt at the point where a member converts, which is later and less frequent than the point where they earn — so the recognition it delivers is real but delayed. Any NTUC design adopting it must make the Tier 2 conversion advantage visible in the catalogue and on the balance, not only discoverable at checkout.",
+          "references": [
+            { "id": "tier-ref-5", "sourceId": "FRX-SEC", "filePath": "https://www.frasersexperience.com/content/frasersexperience/frx/en/whats-on/blog/track-your-membership-at-a-glance.html", "range": { "start": { "line": 0, "character": 0 }, "end": { "line": 0, "character": 0 } }, "note": "SECONDARY — consistent across operator-adjacent sources but not confirmed in the FRx governing T&C, which reserves conversion rates to operator discretion (Annex 2 §3.2(a)). This is the single most load-bearing figure in this study for the tier argument and it MUST be verified before it is put in front of the client. Accessed 2026-08-17.", "excerpt": "Reported: 500 FRx Points = $2.50 FRx Gift Card (Basic) / $5.00 FRx Gift Card (Elite); minimum redemption 500 points." },
+            { "id": "tier-ref-6", "sourceId": "FRX-TC", "filePath": "https://www.frasersexperience.com/terms-of-use", "range": { "start": { "line": 0, "character": 0 }, "end": { "line": 0, "character": 0 } }, "note": "PRIMARY. Confirms that FRx's earn basis is uniform across members — the differentiation genuinely sits on the redemption side, exactly as BR-P1-007 requires of NTUC. Accessed 2026-08-17.", "excerpt": "\"Member shall be entitled to earn points ... for each nett purchase value of $20 in a single transaction\" (§3.1(a)) — stated without tier qualification." }
+          ]
+        },
+        {
+          "id": "tier-two-will-be-the-majority-tier",
+          "title": "NTUC Club's Tier 2 threshold is the lowest in the comparator set, so the hollow-tier risk is a majority-of-members risk, not an edge case",
+          "summary": "Tier 2 qualifies at $1,500 of annual spend against Changi Gold's S$4,000 and FRx Elite's reported $8,000 — and on top of that every eligible NTUC union member is auto-placed there on enrolment (BR-P1-005). Tier 2 will therefore hold a large share of the member base from day one. A tier that is both crowded and economically empty is worse than no tier: it converts a status claim into a visible non-event for the largest identifiable cohort in the programme. This sharpens R004 from a design concern to a proposition risk, and it makes the union-member interviews in RA-02 the decisive test.",
+          "references": [
+            { "id": "tier-ref-7", "sourceId": "NTUC-BRD", "filePath": "gen-e2/discover/general-references/extracted/tender-BRD-requirements.txt", "range": { "start": { "line": 366, "character": 0 }, "end": { "line": 372, "character": 0 } }, "note": "CLIENT DOCUMENT. Auto-placement plus the lowest threshold in the set means Tier 2 is the default state for a large population, not an achievement.", "excerpt": "BR-P1-005: \"NTUC members can be automatically placed into Tier 2 on enrolment, subject to eligibility rules to be finalised.\"" },
+            { "id": "tier-ref-8", "sourceId": "CS-PAS", "filePath": "https://www.capitaland.com/content/dam/capitaland-sites/capitastar/CapitaStarFAQ.pdf", "range": { "start": { "line": 0, "character": 0 }, "end": { "line": 0, "character": 0 } }, "note": "PRIMARY but HISTORICAL — this programme period ran 3 Sept 2013 to 31 Aug 2018 and must not be cited as current. Included because it is the closest documented Singapore precedent for the exact structure NTUC proposes (a mass affinity card conferring status on a points programme) and because the differentiator it chose was an earn multiplier, i.e. the lever BR-P1-007 removes. Accessed 2026-08-17.", "excerpt": "\"PAssion Card – CAPITASTAR Members will get to earn 1.5 times STAR$ daily ... For example, if you spend $20 at retail outlets ... you will be able to earn 150 STAR$ ($20 x 5 STAR$ x 1.5 times for PAssion Card – CAPITASTAR Members).\"" }
+          ]
+        }
+      ]
+    },
+
+    {
+      "id": "card-moment",
+      "title": "The Card, Earn and Redeem Moment",
+      "description": "How each programme handles the instant of payment, and what it does for a member who paid without earning. The Singapore market has split into three incompatible answers, and BR-P1-001 has chosen the one that places the most burden on the member. The recovery-path insight was not an explicit RA-07 success criterion but emerged consistently across all five comparators and bears directly on RAID A004 and I011.",
+      "insights": [
+        {
+          "id": "three-answers-to-the-card-moment",
+          "title": "The Singapore market runs three incompatible models of the card moment, and NTUC has chosen the most demanding of the three",
+          "summary": "Model A — present before payment, scanned by staff or by the member: Changi Rewards (card must be presented prior to purchase) and SAFRA (membership card presented at point of sale prior to payment). Model B — member self-scans an in-app QR at the point of payment: FRx. Model C — no presentation at all, earning is automatic on a linked payment method: CapitaStar since 8 July 2025. BR-P1-001 specifies Model A with a tenant-operated scanner. That is a defensible choice, and it is what Changi does — but Changi underwrites the behaviour with a 9% GST benefit attached to the same scan, and CapitaStar, the largest programme in the market, has concluded the presentation moment is friction worth engineering away entirely.",
+          "references": [
+            { "id": "card-ref-1", "sourceId": "CR-TC", "filePath": "https://www.changiairport.com/en/rewards/changi-rewards-terms-and-conditions.html", "range": { "start": { "line": 0, "character": 0 }, "end": { "line": 0, "character": 0 } }, "note": "PRIMARY. Model A stated as a binding condition, twice — once for points and once for the GST benefit. Accessed 2026-08-17.", "excerpt": "\"The Changi Rewards Card must be presented prior to all purchases in order to be entitled to the benefits\" (§3.3); \"Cardholders must present their Changi Rewards Card prior to making payment\" (§3.12)" },
+            { "id": "card-ref-2", "sourceId": "CS-REC", "filePath": "https://www.capitaland.com/en/about-capitaland/newsroom/news-releases/international/2025/july/Capitastar-goes-receiptless.html", "range": { "start": { "line": 0, "character": 0 }, "end": { "line": 0, "character": 0 } }, "note": "PRIMARY. The most significant directional signal in this study: the largest Singapore mall programme (1.8m members) removed the member's action from the earn moment altogether, on an explicit convenience rationale, in July 2025. Accessed 2026-08-17.", "excerpt": "Members earn STAR$ automatically at checkout via linked payment methods — Mastercard, DBS/POSB payment modes, ShopBack Pay, eCapitaVoucher — described as \"a hassle-free and receipt-less scheme\". CapitaStar has \"over 1.8 million members\"." },
+            { "id": "card-ref-3", "sourceId": "FRX-TC", "filePath": "https://www.frasersexperience.com/terms-of-use", "range": { "start": { "line": 0, "character": 0 }, "end": { "line": 0, "character": 0 } }, "note": "PRIMARY. Model B, with no fallback — and see the recovery-paths group for the consequence, which is visible in the app's public reviews. Accessed 2026-08-17.", "excerpt": "\"Members who scan their member QR code in the App at the point of payment at participating FRx Merchants\" earn points; members cannot earn retroactively if they fail to scan (Annex 2, §3.1(c))" },
+            { "id": "card-ref-4", "sourceId": "SAF-TC", "filePath": "https://www.safra.sg/promotions/safrapoints-rewards-vouchers/safrapoints-terms-conditions", "range": { "start": { "line": 0, "character": 0 }, "end": { "line": 0, "character": 0 } }, "note": "PRIMARY. Model A at the closest structural peer, and — unlike FRx — with a generous recovery window attached. Accessed 2026-08-17.", "excerpt": "Members must \"present his/her valid membership card at the point of sale prior to making any payment\"; if unable to present, members have 14 days to return to the outlet to claim points." }
+          ]
+        },
+        {
+          "id": "physical-cards-already-withdrawn-at-both-peers",
+          "title": "Both the named benchmark and the closest structural peer have already withdrawn physical membership cards in favour of an in-app e-card",
+          "summary": "Changi Rewards states plainly that it no longer prints physical cards and that the e-Card lives in the Changi App or on the website. SAFRA ceased issuing physical membership cards on 3 October 2020 and directs members to download an e-card from the SAFRA mobile app — across a membership base of NS veterans that skews substantially older than the general population. This is a real precedent for NTUC Club's card-only-in-app model and it lowers the novelty risk in H003. It is emphatically NOT evidence that the transition is frictionless: neither operator publishes completion or assistance data, and the fact that SAFRA still honours legacy physical cards ('Physical cards remain valid until revoked') suggests a long tail was expected. The precedent supports the direction, not the assumption that seniors will complete it unaided.",
+          "references": [
+            { "id": "card-ref-5", "sourceId": "CR-FAQ", "filePath": "https://www.changiairport.com/en/rewards/faq.html", "range": { "start": { "line": 0, "character": 0 }, "end": { "line": 0, "character": 0 } }, "note": "PRIMARY. Digital-only card at the client's named benchmark. Accessed 2026-08-17.", "excerpt": "\"Changi Rewards has gone digital and ... we do not print any more physical cards.\" Members access \"your Changi Rewards e-Card through the Changi App or Changi Rewards website.\"" },
+            { "id": "card-ref-6", "sourceId": "SAF-FAQ", "filePath": "https://www.safra.sg/faq/safra-membership-FAQs", "range": { "start": { "line": 0, "character": 0 }, "end": { "line": 0, "character": 0 } }, "note": "PRIMARY. A six-year-old precedent for withdrawing the physical card from an older affinity membership base — the closest available analogue to the Silvers concern in H003, with the caveat that no completion data is published. Accessed 2026-08-17.", "excerpt": "\"With effect from 3rd October 2020, SAFRA will cease the issuance of physical membership cards.\" Members must \"log in to the SAFRA Mobile App\" to download their \"e-card\". \"Physical cards remain valid until revoked.\"" }
+          ]
+        },
+        {
+          "id": "no-comparator-supports-multi-voucher-redemption",
+          "title": "No comparator publishes support for combining several vouchers in one transaction, which BR-P1-017 requires",
+          "summary": "BR-P1-017 mandates that members can redeem more than one reward within a single transaction. None of the five programmes examined publishes terms describing this. CapitaStar caps eCapitaVoucher usage at S$1,000 per transaction and caps the in-app wallet at S$1,000, which implies stacking within a ceiling but does not describe combining discrete redemptions. Changi, FRx, SAFRA and HomeTeamNS describe single-voucher redemption only. This is a genuine gap in the market evidence rather than a finding against NTUC: it means BR-P1-017 has no benchmark to be designed against, and the multi-voucher behaviour must be settled from the Open Loyalty capability spike (RA-05) and the till observation (RA-03), not from the market.",
+          "references": [
+            { "id": "card-ref-7", "sourceId": "CS-TC", "filePath": "https://www.capitastar.com/international/en/policy-and-terms/capitastar-policy-and-terms.html", "range": { "start": { "line": 0, "character": 0 }, "end": { "line": 0, "character": 0 } }, "note": "PRIMARY. The closest thing to a published multi-voucher position in the set — a wallet with a transaction ceiling rather than a stated stacking rule. Recorded as an absence of evidence, not as evidence of absence. Accessed 2026-08-17.", "excerpt": "\"The maximum amount of eCapitaVoucher you can utilise at every single transaction is $1,000\"; the in-app wallet \"can hold a maximum of S$1,000 eCapitaVouchers at any one time.\"" }
+          ]
+        },
+        {
+          "id": "four-of-five-comparators-have-a-recovery-path",
+          "title": "Four of five comparators give a member who forgot the card a way to claim points afterwards — NTUC Phase 1 has none",
+          "summary": "Changi Rewards accepts receipts submitted through a webform within 7 days. SAFRA lets a member return to the outlet within 14 days. HomeTeamNS is built entirely around retrospective capture — photograph the receipt in-app by 11.59pm the next day, credited in 3–5 working days. CapitaStar has removed the failure mode rather than the recovery, by earning automatically from the linked payment method. FRx alone offers nothing, and FRx alone draws public complaints about it. NTUC Club Phase 1 currently matches FRx: BR-P1-001 describes tenant-side QR scanning only, and the receipt-upload path mentioned in the solutioning deck is unscoped (RAID I011). On this evidence the recovery path is not a nice-to-have — it is the market standard, and its absence is the single clearest gap between BR-P1-001 and every comparator except the one that is criticised for it.",
+          "references": [
+            { "id": "rec-ref-1", "sourceId": "CR-FAQ", "filePath": "https://www.changiairport.com/en/rewards/faq.html", "range": { "start": { "line": 0, "character": 0 }, "end": { "line": 0, "character": 0 } }, "note": "PRIMARY. The client's named benchmark — the one BR-P1-001 says it is modelled on — has a retrospective claim path that BR-P1-001 does not reproduce. Accessed 2026-08-17.", "excerpt": "\"You may submit your receipts for the qualifying transactions through the Contact Us webform ... Such receipt(s) must be in good condition and not more than seven (7) days old from the receipt date.\"" },
+            { "id": "rec-ref-2", "sourceId": "HTNS-SSS", "filePath": "https://www.hometeamns.sg/spend-snap-save/", "range": { "start": { "line": 0, "character": 0 }, "end": { "line": 0, "character": 0 } }, "note": "PRIMARY. At the closest structural peer, receipt capture is not a fallback — it is the primary earn mechanic for tenant spend, which is precisely the spend NTUC Club Phase 1 is built on. Accessed 2026-08-17.", "excerpt": "\"Earn +HPoints at over 22 participating tenants across the Clubhouses.\" \"A minimum spend of $10 in a single receipt is required, capped at $500 daily.\" \"All Receipts must be submitted no later than the next day of purchase (11.59pm).\" Credit takes \"up to 3 - 5 working days\"." },
+            { "id": "rec-ref-3", "sourceId": "FRX-APP", "filePath": "https://apps.apple.com/sg/app/frasers-experience-frx/id6443769620", "range": { "start": { "line": 0, "character": 0 }, "end": { "line": 0, "character": 0 } }, "note": "SECONDARY (user reviews on a primary operator listing; 4.5 stars from ~5,700 ratings). Read as a directional signal about member reaction to a scan-or-lose model, not as a measured finding. Directly relevant to A004: this is what happens when the presentation moment is the only earn path. Accessed 2026-08-17.", "excerpt": "Recurring review themes include: members cannot scan merchant receipts to earn points — merchants must award points through their own systems during the transaction; and dissatisfaction with daily point caps." },
+            { "id": "rec-ref-4", "sourceId": "SAF-TC", "filePath": "https://www.safra.sg/promotions/safrapoints-rewards-vouchers/safrapoints-terms-conditions", "range": { "start": { "line": 0, "character": 0 }, "end": { "line": 0, "character": 0 } }, "note": "PRIMARY. A 14-day in-person recovery window — the most generous in the set, at the peer whose estate most resembles NTUC Club's clubhouses. Accessed 2026-08-17.", "excerpt": "If unable to present the card at point of sale, members have 14 days to return to the outlet to claim points." }
+          ]
+        }
+      ]
+    },
+
+    {
+      "id": "expiry-disclosure",
+      "title": "Points Expiry and How It Is Disclosed",
+      "description": "Every comparator expires points. What differs is the shape of the expiry — cohort or rolling — and whether the member is warned. NTUC Club's requirement is the most member-favourable in the set and simultaneously the hardest to display.",
+      "insights": [
+        {
+          "id": "ntuc-expiry-terms-are-at-the-generous-end",
+          "title": "NTUC Club's 12-month rolling expiry with mandated advance notification is the most member-favourable term in the comparator set",
+          "summary": "Changi Rewards expires points 12 months from the date of deposit and its T&C states that extension requests 'will not be entertained'. CapitaStar expires by quarterly cohort — one calendar year from the last day of the quarter in which the points were credited — with no extension and no reinstatement. FRx runs a fixed redemption year of 1 October to 30 September with a three-month grace period. SAFRA is by some distance the harshest: everything earned between 1 January and 30 November dies on 31 December of the same year, so a point earned in November lives one month. HomeTeamNS expires by monthly cohort at one calendar year. Against all of these, BR-P1-011's 12 months from date earned is at the generous end — and none of the five publishes any commitment to notify a member before expiry, which BR-P1-011 mandates. NTUC Club would be ahead of every comparator on disclosure. This materially de-risks H004 and is a proposition asset worth designing visibly rather than burying in a settings screen.",
+          "references": [
+            { "id": "exp-ref-1", "sourceId": "SAF-TC", "filePath": "https://www.safra.sg/promotions/safrapoints-rewards-vouchers/safrapoints-terms-conditions", "range": { "start": { "line": 0, "character": 0 }, "end": { "line": 0, "character": 0 } }, "note": "PRIMARY. The harshest term found, at the peer paying the highest yield — a reminder that headline rebate and effective realised value are different things, and that a high rate with a short fuse can be worth less than a lower rate with a long one. Accessed 2026-08-17.", "excerpt": "\"SAFRAPOINTS earned between 1 January and 30 November will expire on 31 December of the same calendar year. SAFRAPOINTS earned in the month of December will expire on 31 December of the following year.\"" },
+            { "id": "exp-ref-2", "sourceId": "CR-TC", "filePath": "https://www.changiairport.com/en/rewards/changi-rewards-terms-and-conditions.html", "range": { "start": { "line": 0, "character": 0 }, "end": { "line": 0, "character": 0 } }, "note": "PRIMARY. Same 12-month horizon as BR-P1-011, but with an explicit no-extension clause and — per the FAQ — no described notification mechanism. Accessed 2026-08-17.", "excerpt": "\"Changi Rewards points are valid for redemption from the date of issuance ... until the end of the last day of the 12th Month\" and points not redeemed \"will expire automatically. Requests for an extension ... will not be entertained.\" (§5.4)" },
+            { "id": "exp-ref-3", "sourceId": "CR-FAQ", "filePath": "https://www.changiairport.com/en/rewards/faq.html", "range": { "start": { "line": 0, "character": 0 }, "end": { "line": 0, "character": 0 } }, "note": "PRIMARY, and an absence worth recording precisely: the FAQ describes the expiry rule and tells members to check their own balance, but describes no proactive pre-expiry notification. Members self-monitor. Accessed 2026-08-17.", "excerpt": "\"Changi Rewards points earned must be redeemed within 12 months from the date of deposit, expiring by the last day of the rolling 12th month. Any unutilised points will expire and be forfeited.\" No notification commitment is stated." },
+            { "id": "exp-ref-4", "sourceId": "FRX-TC", "filePath": "https://www.frasersexperience.com/terms-of-use", "range": { "start": { "line": 0, "character": 0 }, "end": { "line": 0, "character": 0 } }, "note": "PRIMARY. A fixed annual window plus a grace period — the only comparator that publishes a grace period, and a mechanic worth noting as a softener NTUC could adopt without changing the 12-month horizon. Accessed 2026-08-17.", "excerpt": "\"FRx Points accumulated by the Member shall be valid only for the Redemption Year in which it is earned\" (§3.1(f)); points not redeemed \"will expire and cannot be rolled over upon expiry ... save that the Member shall be given a three (3) month grace period\" (§3.2(e)). Redemption Year = 1 October to 30 September." }
+          ]
+        },
+        {
+          "id": "rolling-per-transaction-expiry-is-the-hardest-to-display",
+          "title": "Three of five comparators expire points in cohorts, which is what makes 'which points lapse when' displayable — NTUC's per-transaction rolling model is the hardest variant to show a member",
+          "summary": "CapitaStar expires by calendar quarter, HomeTeamNS by calendar month, FRx by a single fixed annual window. A cohort model collapses a member's balance into a handful of buckets with one date each, which is straightforward to render and to notify against. BR-P1-011 instead expires each earning 12 months from its own date, which means a member's balance is a continuous distribution of expiry dates rather than a small set of buckets. That is more generous to the member and considerably harder to express in the interface and, critically, may be harder to extract from Open Loyalty — expiry-cohort visibility is already flagged as unverified in RAID R008 and is a named objective of RA-05. If the engine cannot express per-earning expiry, the design fallback is to present a cohort view, and the market shows that members accept cohort models. Worth carrying into RA-05 as an explicit question rather than discovering it during build.",
+          "references": [
+            { "id": "exp-ref-5", "sourceId": "CS-TC", "filePath": "https://www.capitastar.com/international/en/policy-and-terms/capitastar-policy-and-terms.html", "range": { "start": { "line": 0, "character": 0 }, "end": { "line": 0, "character": 0 } }, "note": "PRIMARY. The clearest published cohort model in the set, with a worked example on the operator's own page — a directly reusable disclosure pattern for f4 if NTUC has to fall back from per-earning expiry. Accessed 2026-08-17.", "excerpt": "\"STAR$ credited to Your Account will expire one calendar year from the last day of the relevant calendar quarter during which the STAR$ was first credited\" (§3.1), illustrated as \"1 Jan 2024–31 Mar 2024 [expires] 31 Mar 2025\". \"The validity period of STAR$ shall not be extended, and expired STAR$ will not be reinstated\" (§3.2)." },
+            { "id": "exp-ref-6", "sourceId": "HTNS-RW", "filePath": "https://www.hometeamns.sg/hometeamns-rewards/", "range": { "start": { "line": 0, "character": 0 }, "end": { "line": 0, "character": 0 } }, "note": "PRIMARY. A monthly cohort — finer-grained than CapitaStar's quarterly but still bucketed, and still far simpler to display than per-transaction rolling. Accessed 2026-08-17.", "excerpt": "\"+HPoints credited in your account in a certain month of a calendar year will expire one calendar year from the last day of that month.\"" }
+          ]
+        }
+      ]
+    },
+
+    {
+      "id": "enrolment",
+      "title": "Enrolment Paths and Identity",
+      "description": "How members get in, and what identity assurance each programme demands. The finding here contradicts an existing assumption in the RAID log.",
+      "insights": [
+        {
+          "id": "no-comparator-uses-singpass",
+          "title": "None of the five comparators offers SingPass or MyInfo enrolment — the market standard is email or app registration with a low age floor",
+          "summary": "Changi Rewards enrols through the Changi App or the Changi Rewards website using a Changi Account built on an email address, minimum age 16. CapitaStar enrols at mall customer service counters, self-service kiosks, its website or its app, minimum age 16, with an identity document possibly required. FRx enrols in-app, minimum age 18 and Singapore residency. SAFRA and HomeTeamNS run eligibility-verified membership applications, which is a different problem — they must verify NS status, not merely identity. No comparable Singapore consumer loyalty programme found in this study uses the national digital identity for enrolment. This directly qualifies RAID A003: SingPass may well be the right choice for NTUC Club because the programme has a genuine identity-matching requirement against Athena that the malls do not have, but the assumption that SingPass 'will be the dominant enrolment path in practice' has no market support and should not be justified by appeal to Singapore norms. It should be justified by the union-verification requirement, or not at all.",
+          "references": [
+            { "id": "enr-ref-1", "sourceId": "CR-FAQ", "filePath": "https://www.changiairport.com/en/rewards/faq.html", "range": { "start": { "line": 0, "character": 0 }, "end": { "line": 0, "character": 0 } }, "note": "PRIMARY. The client's named benchmark uses email registration, not SingPass. Recorded as an explicit absence: the FAQ makes no mention of SingPass, MyInfo, counter sign-up or any alternative identity verification. Accessed 2026-08-17.", "excerpt": "Sign-up channels are \"download the Changi App or visit Changi Rewards website\"; registration uses an email address which \"becomes your Changi Account\", plus date of birth and email activation. Minimum age \"16 years old and above at the time of application\"." },
+            { "id": "enr-ref-2", "sourceId": "CS-TC", "filePath": "https://www.capitastar.com/international/en/policy-and-terms/capitastar-policy-and-terms.html", "range": { "start": { "line": 0, "character": 0 }, "end": { "line": 0, "character": 0 } }, "note": "PRIMARY. Multi-channel enrolment including physical counters and kiosks — a path NTUC Club has not considered and which is directly relevant to the Silvers sub-segment, given the club estate already has staffed reception points. Accessed 2026-08-17.", "excerpt": "\"eligible persons may participate ... by signing up at the customer service counters located in Participating Malls ... or by such other means as determined by Us\" (§1.1); minimum age \"at least sixteen (16) years old\" (§1.2); \"Each eligible person is entitled to maintain only one (1) CapitaStar Rewards Programme Account\"." },
+            { "id": "enr-ref-3", "sourceId": "FRX-TC", "filePath": "https://www.frasersexperience.com/terms-of-use", "range": { "start": { "line": 0, "character": 0 }, "end": { "line": 0, "character": 0 } }, "note": "PRIMARY. App-only enrolment with an 18+ floor and a residency condition — the most restrictive in the set, and notable because FRx is also the programme with the most member friction complaints. Accessed 2026-08-17.", "excerpt": "\"Only individuals aged 18 and above and who are residing in Singapore are eligible to apply\" (Annex 2, §2.2); members who download the App become \"entitled to (i) participate in the FRx Programme and enjoy membership benefits\" (§2.1(vi))." }
+          ]
+        },
+        {
+          "id": "counter-enrolment-is-a-live-market-pattern",
+          "title": "CapitaStar still enrols members at staffed counters and self-service kiosks, which NTUC Club's five digital front doors do not include",
+          "summary": "BR-P1-020 specifies SingPass/MyInfo plus Google, Apple ID, email and mobile OTP — five doors, all of them digital and all of them requiring the member to operate their own phone. CapitaStar, a programme with 1.8 million members, still lists mall customer service counters and self-service kiosks among its enrolment channels. NTUC Club's estate has staffed reception at every clubhouse, Downtown East and the country clubs. An assisted enrolment path is not in the requirements and is not in the current PWA, and it is the obvious mitigation for the Silvers exposure in H003 — a member can be enrolled by a staff member and walk away with a working card. Worth raising in RA-04 and testing in RA-08 rather than treating enrolment as an exclusively self-service problem.",
+          "references": [
+            { "id": "enr-ref-4", "sourceId": "CS-TC", "filePath": "https://www.capitastar.com/international/en/policy-and-terms/capitastar-policy-and-terms.html", "range": { "start": { "line": 0, "character": 0 }, "end": { "line": 0, "character": 0 } }, "note": "PRIMARY. Physical enrolment channels published in the governing terms of the largest programme in the market — evidence that assisted enrolment is a current pattern, not a legacy one. Accessed 2026-08-17.", "excerpt": "\"signing up at the customer service counters located in Participating Malls\"; registration also possible via self-service kiosks, website and mobile app." },
+            { "id": "enr-ref-5", "sourceId": "NTUC-BRD", "filePath": "gen-e2/discover/general-references/extracted/tender-BRD-requirements.txt", "range": { "start": { "line": 292, "character": 0 }, "end": { "line": 313, "character": 0 } }, "note": "CLIENT DOCUMENT. BR-P1-001 gives every participating tenant a scanner or scanner app. That device is already at the counter and already connected to the platform — the assisted-enrolment capability may be closer to free than it appears.", "excerpt": "BR-P1-001 requires \"a dedicated QR scanner/device provided to each participating tenant\" with the vendor to propose \"the process for issuing, onboarding and supporting scanners across participating tenants at scale\"." }
+          ]
+        }
+      ]
+    },
+
+    {
+      "id": "evidence-limits",
+      "title": "Evidence Limits, Ambiguities and Unpublished Terms",
+      "description": "Recorded explicitly because this study feeds a pricing decision. Everything below is a place where a programme's terms are ambiguous, unpublished, contradictory or only secondarily sourced. Nothing here should be inferred past what is stated.",
+      "insights": [
+        {
+          "id": "operators-routinely-withhold-conversion-rates",
+          "title": "Three of five programmes decline to publish their conversion rate in the governing terms, reserving it to operator discretion",
+          "summary": "CapitaStar's terms state that the number of STAR$ required for a reward 'shall be determined by Us'. SAFRA's SAFRAPoints T&C says the same and gives no rate — the 2% figure appears only in marketing copy. FRx reserves the conversion to operator discretion in Annex 2 §3.2(a). Only Changi Rewards publishes its conversion rate in the binding terms. This has two consequences for NTUC. First, every non-Changi yield figure in this study is derived from marketing pages or campaign material rather than from contract, and could change without notice — the comparison is directionally sound but the individual figures are not contractual. Second, it is itself a benchmark: the market norm is to hold the conversion table as a configurable operator decision, exactly as BRD §11.3 and BR-P1-014 require. NTUC Club's insistence that the conversion table stay admin-configurable is orthodox, not unusual.",
+          "references": [
+            { "id": "lim-ref-1", "sourceId": "CS-TC", "filePath": "https://www.capitastar.com/international/en/policy-and-terms/capitastar-policy-and-terms.html", "range": { "start": { "line": 0, "character": 0 }, "end": { "line": 0, "character": 0 } }, "note": "PRIMARY. The reason the CapitaStar yield in this study is tagged strong-signal rather than validated. Accessed 2026-08-17.", "excerpt": "\"The list of Rewards, Prizes and the number of STAR$ required for the Redemption of the respective Rewards and/or Prizes shall be determined by Us\" (§5.4)." },
+            { "id": "lim-ref-2", "sourceId": "SAF-TC", "filePath": "https://www.safra.sg/promotions/safrapoints-rewards-vouchers/safrapoints-terms-conditions", "range": { "start": { "line": 0, "character": 0 }, "end": { "line": 0, "character": 0 } }, "note": "PRIMARY. SAFRA's binding terms do not contain the 2% figure; only the marketing page does. The figure is quotable as SAFRA's own claim, but not as a contractual rate. Accessed 2026-08-17.", "excerpt": "\"The list of Rewards and the number of SAFRAPOINTS required for the redemption of the respective Rewards shall be determined by SAFRA from time to time\" — no conversion rate stated." }
+          ]
+        },
+        {
+          "id": "hometeamns-contradicts-itself-on-tenant-spend",
+          "title": "HomeTeamNS's own published material contradicts itself on whether clubhouse tenant spend earns points — recorded as unresolved, not reconciled",
+          "summary": "The HomeTeamNS Rewards+ page lists exclusions that include 'expenses at clubhouse tenants, external partners', while the Spend, Snap, Save page states 'Earn +HPoints at over 22 participating tenants across the Clubhouses'. The most plausible reading is that designated participating tenants earn and all other tenant and partner spend does not, but that is an inference and the pages as published do not say so. This matters directly to NTUC Club, because NTUC Club's entire Phase 1 earn model is third-party tenant spend and because BR-P1-015 requires reward funding attribution per party. If the closest structural peer restricts or excludes tenant-spend earning, the funding question behind BR-P1-015 is more live than the BRD treats it. Flagged as an unresolved ambiguity requiring either direct confirmation with HomeTeamNS or removal from any client-facing argument.",
+          "references": [
+            { "id": "lim-ref-3", "sourceId": "HTNS-RW", "filePath": "https://www.hometeamns.sg/hometeamns-rewards/", "range": { "start": { "line": 0, "character": 0 }, "end": { "line": 0, "character": 0 } }, "note": "PRIMARY, and directly contradicted by the operator's own Spend, Snap, Save page. Both accessed 2026-08-17. Do not resolve this by choosing the convenient reading.", "excerpt": "Exclusions list: points are not awarded for \"spending made at Slot Machines, purchase of discounted vouchers ..., payment of car park fees, fines, expenses at clubhouse tenants, external partners and fees for lost and damaged cards\"." },
+            { "id": "lim-ref-4", "sourceId": "HTNS-SSS", "filePath": "https://www.hometeamns.sg/spend-snap-save/", "range": { "start": { "line": 0, "character": 0 }, "end": { "line": 0, "character": 0 } }, "note": "PRIMARY. States the opposite of the exclusions list on the sibling page. Accessed 2026-08-17.", "excerpt": "\"Earn +HPoints at over 22 participating tenants across the Clubhouses.\"" }
+          ]
+        },
+        {
+          "id": "frx-tier-figures-are-secondary-only",
+          "title": "The FRx Basic/Elite redemption split and the $8,000 Elite threshold are secondary-sourced and must be verified before client use",
+          "summary": "The FRx public site is JavaScript-rendered and could not be read directly; its governing Terms of Use reserve conversion rates to operator discretion without publishing figures. The $2.50 versus $5.00 per 500 points split and the $8,000 annual spend threshold are reported consistently across operator-adjacent material and are internally consistent with FRx's published earn basis, but they are not confirmed from a primary FRx document. Because the FRx precedent is the load-bearing evidence for the recommended Option (c) on I004, this verification is not optional. The fastest route is to install the FRx app and read the in-app redemption catalogue and membership tab directly, or to email FRHelp@frasersproperty.com.",
+          "references": [
+            { "id": "lim-ref-5", "sourceId": "FRX-TC", "filePath": "https://www.frasersexperience.com/terms-of-use", "range": { "start": { "line": 0, "character": 0 }, "end": { "line": 0, "character": 0 } }, "note": "PRIMARY. Confirms that no conversion figure is available from the binding terms, which is why the tier figures had to be sourced secondarily. Accessed 2026-08-17.", "excerpt": "\"FPRM shall have the sole discretion to determine ... the number of FRx Points required for each Redeemable Reward\" (Annex 2, §3.2(a))." }
+          ]
+        },
+        {
+          "id": "no-published-activation-or-redemption-rates",
+          "title": "No comparator publishes activation, first-redemption or breakage rates, so the KPI targets behind I005 cannot be benchmarked from desk research",
+          "summary": "Member counts are published — Changi Rewards over two million, CapitaStar over 1.8 million — but no programme in the set publishes activation rate, first-redemption rate, points breakage or redemption frequency. RA-07 therefore cannot inform the numeric KPI targets that RAID I005 leaves open, and should not be cited as if it could. Those numbers have to come from NTUC Club's own commercial modelling and from the stakeholder interviews in RA-04. What RA-07 can say is narrower and still useful: the first-redemption threshold under Scenario 1 is $1,000 of spend for a $5 voucher, which is the same threshold a Changi Rewards Member tier customer faces — so the KPI is at least not being set against an unprecedented barrier.",
+          "references": [
+            { "id": "lim-ref-6", "sourceId": "CR-MON", "filePath": "https://www.mynewsdesk.com/sg/changiairport/pressreleases/changi-airport-refreshes-loyalty-programme-changi-rewards-with-host-of-exciting-changes-to-elevate-customer-experience-3345446", "range": { "start": { "line": 0, "character": 0 }, "end": { "line": 0, "character": 0 } }, "note": "PRIMARY operator press release. Member scale is published; engagement performance is not. Also the source for the Monarch tier's stated 4% rebate and the S$25,000 threshold. Accessed 2026-08-17.", "excerpt": "\"more than two million members\"; Monarch \"recognises the elite status of top Changi Rewards members who meet a minimum S$25,000 accumulative nett spend ... Monarch members can access a 4% rebate on their spending, in the form of eight times the amount of Changi Rewards points earned in the Member tier, without any points cap.\"" }
+          ]
+        }
+      ]
+    },
+
+    {
+      "id": "contradictions",
+      "title": "Contradictions With the Existing Knowledge Base",
+      "description": "Findings that conflict with, qualify or corroborate entries already in the product brief and RAID log. Flagged per the Research Agent contradiction-detection procedure. The RAID log itself has NOT been edited — these are proposals for central update.",
+      "insights": [
+        {
+          "id": "contradiction-a005-brd-premise",
+          "title": "CONTRADICTION — BRD §11.3's premise that 0.5% is uncompetitive against mall and attraction programmes is not supported; 0.5% is exactly the mall rate",
+          "summary": "⚠️ CONTRADICTION with RAID A005 and BRD §11.3. The BRD asserts that Scenario 1 'may feel less compelling against comparable mall/attraction loyalty programmes' and A005 carries that framing forward. The evidence is the opposite: Changi Rewards Member, CapitaStar standard retail and FRx Basic all return exactly 0.5%. The client's stated concern is misdirected. The genuine competitive gap is against the two Singapore clubhouse estates (HomeTeamNS 1%, SAFRA 2%) — which is a different and more uncomfortable comparison, because those are the organisations NTUC Club's members are most likely to already belong to. A005 should be re-stated with the correct comparator set rather than closed.",
+          "references": [
+            { "id": "con-ref-1", "sourceId": "NTUC-BRD", "filePath": "gen-e2/discover/general-references/extracted/tender-BRD-requirements.txt", "range": { "start": { "line": 770, "character": 0 }, "end": { "line": 772, "character": 0 } }, "note": "CLIENT DOCUMENT. The premise under challenge, in the client's own words.", "excerpt": "\"More conservative; may feel less compelling against comparable mall/attraction loyalty programmes\"" },
+            { "id": "con-ref-2", "sourceId": "CR-BEN", "filePath": "https://www.changiairport.com/en/rewards/benefits-and-privileges.html", "range": { "start": { "line": 0, "character": 0 }, "end": { "line": 0, "character": 0 } }, "note": "PRIMARY. The counter-evidence, from the client's own named benchmark, in the client's own unit. Accessed 2026-08-17.", "excerpt": "\"Member: 0.5% rebate\"" }
+          ]
+        },
+        {
+          "id": "contradiction-a003-singpass",
+          "title": "CONTRADICTION — no Singapore comparator uses SingPass for loyalty enrolment, so A003's market-norm justification does not hold",
+          "summary": "⚠️ CONTRADICTION with RAID A003. A003 assumes SingPass/MyInfo 'will be the dominant enrolment path in practice, justifying its treatment as the baseline'. Five comparators, none of which offers it; all use email, app or counter registration at a 16 or 18 age floor. SingPass may still be the right decision for NTUC Club because of the Athena union-verification requirement, which no mall programme has — but the justification must be that requirement, not prevailing practice. A003's validation plan already routes to RA-02; this finding says the assumption should be re-worded before it is tested, so that participants are asked about a real choice rather than a presumed default. It also raises the stakes on R001: if SingPass approval slips and the market shows social/email enrolment is the norm anyway, the fallback is less damaging than R001 currently implies.",
+          "references": [
+            { "id": "con-ref-3", "sourceId": "CR-FAQ", "filePath": "https://www.changiairport.com/en/rewards/faq.html", "range": { "start": { "line": 0, "character": 0 }, "end": { "line": 0, "character": 0 } }, "note": "PRIMARY. An explicit absence at the named benchmark. Accessed 2026-08-17.", "excerpt": "Sign-up is via the Changi App or website using an email-based Changi Account. No mention of SingPass, MyInfo or any national-identity path." }
+          ]
+        },
+        {
+          "id": "contradiction-a004-card-presentation",
+          "title": "PARTIAL CONTRADICTION — A004 assumes the Changi card-presentation behaviour transfers, but the largest programme in the market has abandoned it and the one that mandates it draws complaints",
+          "summary": "⚠️ PARTIAL CONTRADICTION with RAID A004. A004 assumes members will readily present a QR at a tenant till because 'the Changi Rewards behaviour transfers'. Two qualifications. First, Changi's presentation behaviour is underwritten by 9% GST absorption gated on the same scan — a benefit roughly sixteen times the points value, which NTUC Club has no equivalent of. Second, CapitaStar (1.8 million members) removed the presentation moment entirely in July 2025 on a convenience rationale, and FRx — the one comparator that mandates in-app QR scanning with no retroactive path — attracts recurring public complaints about exactly that. A004 is not disproved; contextual inquiry (RA-03) remains the test. But the assumption's stated evidence base is weaker than it appears, and its alternative branch — that earning depends on retrospective capture — now has four of five comparators supporting it as at least a necessary backstop.",
+          "references": [
+            { "id": "con-ref-4", "sourceId": "CS-REC", "filePath": "https://www.capitaland.com/en/about-capitaland/newsroom/news-releases/international/2025/july/Capitastar-goes-receiptless.html", "range": { "start": { "line": 0, "character": 0 }, "end": { "line": 0, "character": 0 } }, "note": "PRIMARY. The largest programme in the market moving away from the behaviour A004 assumes. Accessed 2026-08-17.", "excerpt": "Receiptless automatic earning from linked payment methods, live 8 July 2025, across a base of \"over 1.8 million members\"." },
+            { "id": "con-ref-5", "sourceId": "CR-GST", "filePath": "https://www.changiairport.com/en/rewards/benefits-and-privileges/how-it-works.html", "range": { "start": { "line": 0, "character": 0 }, "end": { "line": 0, "character": 0 } }, "note": "PRIMARY. The reason Changi's presentation behaviour is not directly transferable — the scan buys ~8.3% off the ticket, not 0.5% in points. Accessed 2026-08-17.", "excerpt": "Members must \"scan your Changi Rewards card upon payment to enjoy GST-absorption\"; a S$100 item yields an S$8.26 discount." }
+          ]
+        },
+        {
+          "id": "corroboration-r004",
+          "title": "CORROBORATION — R004's hollow-Tier-2 risk is confirmed by the market: no Singapore comparator runs a status tier with no economic content",
+          "summary": "R004 currently rests on reasoning about BR-P1-007. This study raises it to a market-evidenced risk with a likelihood higher than the 'medium' currently logged. Every named status tier in the comparator set carries either an earn multiplier or a redemption-value uplift; the one programme with no economic tier difference (CapitaStar) also makes no status claim. NTUC Club Phase 1 would be alone in the set in doing both — claiming 'Premium' and delivering nothing measurable — and it would do so to the largest identifiable cohort in the programme, because Tier 2 combines the lowest spend threshold in the set ($1,500) with automatic union-member placement. Recommend R004's likelihood be raised to high and its mitigation extended to include the FRx redemption-value mechanic, which resolves R004 and I004 with the same decision.",
+          "references": [
+            { "id": "con-ref-6", "sourceId": "NTUC-BRD", "filePath": "gen-e2/discover/general-references/extracted/tender-BRD-requirements.txt", "range": { "start": { "line": 803, "character": 0 }, "end": { "line": 821, "character": 0 } }, "note": "CLIENT DOCUMENT. The Tier One and Tier Two rows of §11.4 are identical in every economic column under both scenarios.", "excerpt": "Tier One and Tier Two both: \"1 point\" per $1; \"$5 (0.5% yield)\" under Scenario 1; \"$10 (1% yield)\" under Scenario 2." },
+            { "id": "con-ref-7", "sourceId": "CR-BEN", "filePath": "https://www.changiairport.com/en/rewards/benefits-and-privileges.html", "range": { "start": { "line": 0, "character": 0 }, "end": { "line": 0, "character": 0 } }, "note": "PRIMARY. The benchmark the client selected does the opposite of what BR-P1-007 mandates. Accessed 2026-08-17.", "excerpt": "Every Changi Rewards tier is differentiated by a points multiplier, and the tier table is published to members as a rebate percentage ladder: 0.5% / 1% / 3% / 4%." }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,98 @@
+{
+  "meta": {
+    "title": "{{PRODUCT_NAME}} — RAID Log",
+    "owner": "{{OWNER_NAME}}",
+    "dateCreated": "{{YYYY-MM-DD}}",
+    "version": "v1.0"
+  },
+  "categories": [
+    { "id": "clinical-regulatory", "label": "Clinical & Regulatory", "colour": "#FEE2E2" },
+    { "id": "data-technical",      "label": "Data & Technical",       "colour": "#DBEAFE" },
+    { "id": "user-market",         "label": "User & Market",          "colour": "#D1FAE5" },
+    { "id": "commercial",          "label": "Commercial",             "colour": "#FEF3C7" },
+    { "id": "operational",         "label": "Operational",            "colour": "#F3F4F6" }
+  ],
+  "risks": [
+    {
+      "id": "R001",
+      "category": "{{CATEGORY_ID}}",
+      "description": "{{RISK_DESCRIPTION}}",
+      "impact": "high",
+      "likelihood": "medium",
+      "mitigation": "{{MITIGATION_PLAN}}",
+      "owner": "{{OWNER_NAME}}",
+      "status": "open",
+      "dateRaised": "{{YYYY-MM-DD}}",
+      "dateUpdated": "{{YYYY-MM-DD}}",
+      "tags": []
+    }
+  ],
+  "assumptions": [
+    {
+      "id": "A001",
+      "category": "{{CATEGORY_ID}}",
+      "description": "{{ASSUMPTION_DESCRIPTION}}",
+      "confidence": "assumption",
+      "impact": "high",
+      "status": "pending",
+      "validationPlan": "{{VALIDATION_PLAN}}",
+      "evidence": "{{EVIDENCE}}",
+      "alternatives": [
+        {
+          "description": "{{ALTERNATIVE_DESCRIPTION}}",
+          "pros": "{{PROS}}",
+          "cons": "{{CONS}}"
+        }
+      ],
+      "dateRaised": "{{YYYY-MM-DD}}",
+      "dateUpdated": "{{YYYY-MM-DD}}",
+      "tags": []
+    }
+  ],
+  "issues": [
+    {
+      "id": "I001",
+      "category": "{{CATEGORY_ID}}",
+      "description": "{{ISSUE_DESCRIPTION}}",
+      "impact": "high",
+      "severity": "major",
+      "resolution": "{{RESOLUTION_PLAN}}",
+      "owner": "{{OWNER_NAME}}",
+      "status": "open",
+      "dateRaised": "{{YYYY-MM-DD}}",
+      "dateUpdated": "{{YYYY-MM-DD}}",
+      "tags": []
+    }
+  ],
+  "dependencies": [
+    {
+      "id": "D001",
+      "category": "{{CATEGORY_ID}}",
+      "description": "{{DEPENDENCY_DESCRIPTION}}",
+      "type": "external",
+      "owner": "{{OWNER_NAME}}",
+      "targetDate": "{{YYYY-MM-DD}}",
+      "status": "pending",
+      "dateRaised": "{{YYYY-MM-DD}}",
+      "dateUpdated": "{{YYYY-MM-DD}}",
+      "tags": []
+    }
+  ],
+  "hypotheses": [
+    {
+      "id": "H001",
+      "statement": "We believe that {{PERSONA}} will {{BEHAVIOUR}} because {{EVIDENCE}}.",
+      "successCriteria": "{{SUCCESS_CRITERIA}}",
+      "testMethod": "prototype-test",
+      "status": "untested",
+      "impact": "high",
+      "conceptRef": "{{CONCEPT_FILE_PATH}}",
+      "learnings": "",
+      "linkedEvidence": [
+        "{{EVIDENCE_FILE_PATH}}"
+      ],
+      "dateCreated": "{{YYYY-MM-DD}}",
+      "dateTested": ""
+    }
+  ]
+}

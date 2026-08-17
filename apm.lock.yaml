@@ -1,0 +1,1335 @@
+lockfile_version: '1'
+generated_at: '2026-08-17T05:10:48.193463+00:00'
+apm_version: 0.28.0
+dependencies:
+- repo_url: global-palo-it/gen-e2-marketplace
+  materialization_repo_url: GLOBAL-PALO-IT/gen-e2-marketplace
+  name: gen-e2-edith
+  host: github.com
+  resolved_commit: 5aa7aa84a8f34943f4f1325b4ba1554cf3f0de0a
+  resolved_ref: main
+  version: 1.0.0
+  virtual_path: plugins/gen-e2-edith
+  is_virtual: true
+  package_type: marketplace_plugin
+  deployed_files:
+  - .claude/skills/gen-e2-arch
+  - .claude/skills/gen-e2-arch/SKILL.md
+  - .claude/skills/gen-e2-arch/references/arch-guide.md
+  - .claude/skills/gen-e2-arch/templates/arch.json
+  - .claude/skills/gen-e2-blueprint
+  - .claude/skills/gen-e2-blueprint/SKILL.md
+  - .claude/skills/gen-e2-blueprint/references/blueprint-guide.md
+  - .claude/skills/gen-e2-blueprint/templates/blueprint.json
+  - .claude/skills/gen-e2-brief
+  - .claude/skills/gen-e2-brief/SKILL.md
+  - .claude/skills/gen-e2-brief/references/brief-guide.md
+  - .claude/skills/gen-e2-brief/templates/brief.json
+  - .claude/skills/gen-e2-design-system
+  - .claude/skills/gen-e2-design-system/SKILL.md
+  - .claude/skills/gen-e2-design-system/references/design-system-guide.md
+  - .claude/skills/gen-e2-design-system/templates/design-system.json
+  - .claude/skills/gen-e2-flow
+  - .claude/skills/gen-e2-flow/SKILL.md
+  - .claude/skills/gen-e2-flow/references/flow-guide.md
+  - .claude/skills/gen-e2-flow/templates/flow.json
+  - .claude/skills/gen-e2-heuristic
+  - .claude/skills/gen-e2-heuristic/SKILL.md
+  - .claude/skills/gen-e2-heuristic/references/heuristic-guide.md
+  - .claude/skills/gen-e2-heuristic/templates/heuristic-evaluation.json
+  - .claude/skills/gen-e2-journey
+  - .claude/skills/gen-e2-journey/SKILL.md
+  - .claude/skills/gen-e2-journey/references/journey-guide.md
+  - .claude/skills/gen-e2-journey/templates/journey.json
+  - .claude/skills/gen-e2-persona
+  - .claude/skills/gen-e2-persona/SKILL.md
+  - .claude/skills/gen-e2-persona/references/persona-guide.md
+  - .claude/skills/gen-e2-persona/templates/persona.json
+  - .claude/skills/gen-e2-raid
+  - .claude/skills/gen-e2-raid/SKILL.md
+  - .claude/skills/gen-e2-raid/references/raid-guide.md
+  - .claude/skills/gen-e2-raid/templates/raid.json
+  - .claude/skills/gen-e2-research
+  - .claude/skills/gen-e2-research/SKILL.md
+  - .claude/skills/gen-e2-research/references/research-guide.md
+  - .claude/skills/gen-e2-research/templates/research.json
+  - .claude/skills/gen-e2-story
+  - .claude/skills/gen-e2-story/SKILL.md
+  - .claude/skills/gen-e2-story/references/story-guide.md
+  - .claude/skills/gen-e2-story/templates/story.gen-e2.story.md
+  - .claude/skills/gen-e2-storymap
+  - .claude/skills/gen-e2-storymap/SKILL.md
+  - .claude/skills/gen-e2-storymap/references/storymap-guide.md
+  - .claude/skills/gen-e2-storymap/templates/storymap.json
+  - .claude/skills/gen-e2-wireframe
+  - .claude/skills/gen-e2-wireframe/SKILL.md
+  - .claude/skills/gen-e2-wireframe/references/icons.md
+  - .claude/skills/gen-e2-wireframe/references/tokens.md
+  - .claude/skills/gen-e2-wireframe/references/wf-guide.md
+  - .claude/skills/gen-e2-wireframe/templates/wf.json
+  deployed_file_hashes:
+    .claude/skills/gen-e2-arch/SKILL.md: sha256:d3c3db2e9ae82fff7d05eee902189be39aa1677a4aa1b8d74bbe2af3abe9a66c
+    .claude/skills/gen-e2-arch/references/arch-guide.md: sha256:3d1006831e3985430719dfe9db960a0447e4198338e3f115ceadd351e367b8c1
+    .claude/skills/gen-e2-arch/templates/arch.json: sha256:5f139a2b2b305c0c82553edfd1c7d48ea81424b59139a9b45812b0f4baf65172
+    .claude/skills/gen-e2-blueprint/SKILL.md: sha256:7f54d2304e313e01c7d17747c612405566cfcf2a34e5ec594b5ac61d6bc367c3
+    .claude/skills/gen-e2-blueprint/references/blueprint-guide.md: sha256:73f29c0b59ce80fbe2facc7cbf5f1e9563e93edd567738c4b346340ae9bb70f1
+    .claude/skills/gen-e2-blueprint/templates/blueprint.json: sha256:28f5ea7f92c5c4ae8090ffcbb2c5400391f51c76b815c23fcc3798d6710109aa
+    .claude/skills/gen-e2-brief/SKILL.md: sha256:568d38475aa609c2fb98545ae42670800717245ceeaeaaecee9a5e09ab17ffb3
+    .claude/skills/gen-e2-brief/references/brief-guide.md: sha256:b7f2d7e31129d21cedda25358821f485728c4951c76767ff1b6e3ca4b09eb570
+    .claude/skills/gen-e2-brief/templates/brief.json: sha256:ea7c408c369d90e6ce9b033a0ff00e1e90594f5e1adb8a1c677c239d454d80c1
+    .claude/skills/gen-e2-design-system/SKILL.md: sha256:3398d342b625433749fbdf768466935d6cd01bb99210463beed65dd68ab05c0c
+    .claude/skills/gen-e2-design-system/references/design-system-guide.md: sha256:43ab2ee7c1bb8dcc358b0ac0e645526c4707a17aaf035eaa510bae31d211b3ba
+    .claude/skills/gen-e2-design-system/templates/design-system.json: sha256:93ced03ff96dc8720c5271f195826bc06873442cbb45f7dd401a9a8b69400523
+    .claude/skills/gen-e2-flow/SKILL.md: sha256:021dc2cdec81937e3ae4e6e41ea0bc94dcf1c0c30ae2dfbab773d520bfbb6d15
+    .claude/skills/gen-e2-flow/references/flow-guide.md: sha256:fd67122039e36497451357dc18924c6e2f7a3ab04475088a2f4c477e0e3be4db
+    .claude/skills/gen-e2-flow/templates/flow.json: sha256:d5628265b7b6a4967eeffdcc0146e8ad154c02a4ea6bf30b2666ad1173b2a034
+    .claude/skills/gen-e2-heuristic/SKILL.md: sha256:030c4b7ed5592171f1b78b44230c60235b4c2ee0788fe545d72f4eafe4a518d2
+    .claude/skills/gen-e2-heuristic/references/heuristic-guide.md: sha256:4b844ff475cd714af3bceecdaf061d9431b8e3c5710409b36ba5a60d6047aff5
+    .claude/skills/gen-e2-heuristic/templates/heuristic-evaluation.json: sha256:4058658104675ef362e9464fb22a670ae97c8854d3b0185861d41150a224ca25
+    .claude/skills/gen-e2-journey/SKILL.md: sha256:be18de7378d22fbb7f126e4fec0415331b5581d3a372765ee1f19e4f467270e3
+    .claude/skills/gen-e2-journey/references/journey-guide.md: sha256:1013fea841f3d7924e97e7b703aa315c7a68b8a749aed39ac79018a68484913b
+    .claude/skills/gen-e2-journey/templates/journey.json: sha256:0d446b4547e92fa8cceff0185dfe757280ad09bb3f6d0956899d6a352d2a37ad
+    .claude/skills/gen-e2-persona/SKILL.md: sha256:26cbec643da8b44e945572fa1fc3ff68aca4d2c299a5d6bc9e8e4b810f15d9d1
+    .claude/skills/gen-e2-persona/references/persona-guide.md: sha256:0045d56a2ff784fafcbe9f8b3dba3ef710a36e4a66847cab7bb5892209338195
+    .claude/skills/gen-e2-persona/templates/persona.json: sha256:c23ec4322c2f5731519636bd1bf97b48cd47b222aee1e7927a14e8b1458b3b31
+    .claude/skills/gen-e2-raid/SKILL.md: sha256:50e5cfee67d47327911eef42f3c553b647d5c99ca50beff8a2045a45556485df
+    .claude/skills/gen-e2-raid/references/raid-guide.md: sha256:bcc7efb0c6c136a3b39b88040104920e94cd28870b2afffc04eaff9ff99c9739
+    .claude/skills/gen-e2-raid/templates/raid.json: sha256:1fd057628f5bd113fe96c2f997e79c7f451e23baed79c40000e16bff08558221
+    .claude/skills/gen-e2-research/SKILL.md: sha256:f03ff8f8d8b22f4f57a32dc0f5792b5217f8ed109cbd6feac8939bbe81851883
+    .claude/skills/gen-e2-research/references/research-guide.md: sha256:42269cb2025ebbd31e015026b0112f39c3d9cceb9d0bad67ae16cfda4107cdd3
+    .claude/skills/gen-e2-research/templates/research.json: sha256:402773682a51b6c956c5b00557a2121a1a390fcad21989d8390d040b1ee344fe
+    .claude/skills/gen-e2-story/SKILL.md: sha256:93d9b8824dd23ec1d2cce6e9540f97dbc82022b50f4fc230497e94ca09b09ea1
+    .claude/skills/gen-e2-story/references/story-guide.md: sha256:811f047d71de8bf698545650e6d58e9c7854cd446570ea30bb3d4ff7cf477add
+    .claude/skills/gen-e2-story/templates/story.gen-e2.story.md: sha256:1ea7486377f0e0bb5aba7b9b73c85cff2052fae6c578bd5bc803163080fa35ae
+    .claude/skills/gen-e2-storymap/SKILL.md: sha256:07cc33aadd2fb1682b0d7479bfa29fee1da55ea1a19279597e5efc92485512f3
+    .claude/skills/gen-e2-storymap/references/storymap-guide.md: sha256:818d4461dcf17e023d6784cdb601b3df140d4aade862a8d2a80e7cb6b9db6793
+    .claude/skills/gen-e2-storymap/templates/storymap.json: sha256:cd91102441fe2ba7538842375fc206934d56ae7141fed8c2040cb50b96e24b55
+    .claude/skills/gen-e2-wireframe/SKILL.md: sha256:e79349bcb9c61683b1a4592e35bc0ee0ae775cfa5af778c85ea8fbb29fc46aea
+    .claude/skills/gen-e2-wireframe/references/icons.md: sha256:1d8452e742d86862d8681858735fb0062480cb2d9285e0c534235b1663f738ba
+    .claude/skills/gen-e2-wireframe/references/tokens.md: sha256:508abff2828fb451ef5779aa7200b9c34ec0d34024c9007191105a18f509c13b
+    .claude/skills/gen-e2-wireframe/references/wf-guide.md: sha256:36a762ba5f1717e4b350e5a498dbbbe05196ee87c1535b709e1179d564eda328
+    .claude/skills/gen-e2-wireframe/templates/wf.json: sha256:1523e0b446fb613921640ef64a40a5c7c9e04f2c1f48fdea3b0a906cac87930b
+  content_hash: sha256:0aa5be6787bc04669cff00fcb489b9e8fd4ae1e399809ab53dd903db91d2e66a
+  declared_license: MIT
+- repo_url: global-palo-it/gen-e2-marketplace
+  materialization_repo_url: GLOBAL-PALO-IT/gen-e2-marketplace
+  name: html-presentation
+  host: github.com
+  resolved_commit: 5aa7aa84a8f34943f4f1325b4ba1554cf3f0de0a
+  resolved_ref: main
+  version: 0.1.0
+  virtual_path: plugins/html-presentation
+  is_virtual: true
+  package_type: marketplace_plugin
+  deployed_files:
+  - .claude/skills/html-presentation
+  - .claude/skills/html-presentation/README.md
+  - .claude/skills/html-presentation/SKILL.md
+  - .claude/skills/html-presentation/reference/GEN_E2_DARK_TEMPLATE.md
+  - .claude/skills/html-presentation/reference/GEN_E2_LIGHT_TEMPLATE.md
+  - .claude/skills/html-presentation/reference/HTML_ARCHITECTURE.md
+  - .claude/skills/html-presentation/reference/PALO_IT_TEMPLATE.md
+  - .claude/skills/html-presentation/reference/assets/Gen-e2 Dark/palo-it-logo-large.png
+  - .claude/skills/html-presentation/reference/assets/Gen-e2 Dark/palo-it-logo.png
+  - .claude/skills/html-presentation/reference/assets/Gen-e2 Dark/palo-it-p-icon.png
+  - .claude/skills/html-presentation/reference/assets/Gen-e2 Dark/palo-it-p-icon.svg
+  - .claude/skills/html-presentation/reference/assets/Gen-e2 Light/palo-it-logo-large.png
+  - .claude/skills/html-presentation/reference/assets/Gen-e2 Light/palo-it-logo.png
+  - .claude/skills/html-presentation/reference/assets/Gen-e2 Light/palo-it-p-icon.png
+  - .claude/skills/html-presentation/reference/assets/Gen-e2 Light/palo-it-p-icon.svg
+  - .claude/skills/html-presentation/reference/assets/Palo IT/palo-it-logo-large.png
+  - .claude/skills/html-presentation/reference/assets/Palo IT/palo-it-logo.png
+  - .claude/skills/html-presentation/reference/assets/Palo IT/palo-it-p-icon.png
+  - .claude/skills/html-presentation/reference/assets/Palo IT/palo-it-p-icon.svg
+  - .claude/skills/html-presentation/reference/assets/palo-it-logo-large.png
+  - .claude/skills/html-presentation/reference/assets/palo-it-logo.png
+  - .claude/skills/html-presentation/reference/assets/palo-it-p-icon.png
+  - .claude/skills/html-presentation/reference/assets/palo-it-p-icon.svg
+  - .claude/skills/html-presentation/reference/gen-e2-light-slide-types-showcase.html
+  deployed_file_hashes:
+    .claude/skills/html-presentation/README.md: sha256:1b0b99b2654cb553e731551e2c7f98ab1f66d467cc9e31a5b89477aaf7fb01e9
+    .claude/skills/html-presentation/SKILL.md: sha256:e5f06b9a7bc98e30ba8d3118bbb50228216542878c8e93a7b9bc7f510effe6b8
+    .claude/skills/html-presentation/reference/GEN_E2_DARK_TEMPLATE.md: sha256:b415ab61071f90505d45a6062abd3332dff0bf4bdfe3002bf6fa993d08cac693
+    .claude/skills/html-presentation/reference/GEN_E2_LIGHT_TEMPLATE.md: sha256:22d552226a25c1b2cabfe9c66ed01010fd3dac35af992bcda513aa747e4e761a
+    .claude/skills/html-presentation/reference/HTML_ARCHITECTURE.md: sha256:8af95ceafdfeb0d87322b9bbd085f90672b525eea28d43b71ed21246d5927b42
+    .claude/skills/html-presentation/reference/PALO_IT_TEMPLATE.md: sha256:e0671557752cd2928de8653ca8bfb112750ae1c7c12783eb1498e66190cfc8d9
+    .claude/skills/html-presentation/reference/assets/Gen-e2 Dark/palo-it-logo-large.png: sha256:a7fd9dd1cd2853ffb0f8139af6eeb004e20fc4d7a0e6236667d44caa8f760c2a
+    .claude/skills/html-presentation/reference/assets/Gen-e2 Dark/palo-it-logo.png: sha256:16c0964c98c484d4895872560861aa32dce520b65e525083f4611dde75360ae7
+    .claude/skills/html-presentation/reference/assets/Gen-e2 Dark/palo-it-p-icon.png: sha256:59aa463d0468d0d5f7394d9b2dc86672681797c90fc55cf63253733bdb89b3fa
+    .claude/skills/html-presentation/reference/assets/Gen-e2 Dark/palo-it-p-icon.svg: sha256:7b992dd5fdf5e23bfa80f42a0b1ae0992a93377ff6aece5199a88ffe4bb91eec
+    .claude/skills/html-presentation/reference/assets/Gen-e2 Light/palo-it-logo-large.png: sha256:a7fd9dd1cd2853ffb0f8139af6eeb004e20fc4d7a0e6236667d44caa8f760c2a
+    .claude/skills/html-presentation/reference/assets/Gen-e2 Light/palo-it-logo.png: sha256:16c0964c98c484d4895872560861aa32dce520b65e525083f4611dde75360ae7
+    .claude/skills/html-presentation/reference/assets/Gen-e2 Light/palo-it-p-icon.png: sha256:59aa463d0468d0d5f7394d9b2dc86672681797c90fc55cf63253733bdb89b3fa
+    .claude/skills/html-presentation/reference/assets/Gen-e2 Light/palo-it-p-icon.svg: sha256:7b992dd5fdf5e23bfa80f42a0b1ae0992a93377ff6aece5199a88ffe4bb91eec
+    .claude/skills/html-presentation/reference/assets/Palo IT/palo-it-logo-large.png: sha256:a7fd9dd1cd2853ffb0f8139af6eeb004e20fc4d7a0e6236667d44caa8f760c2a
+    .claude/skills/html-presentation/reference/assets/Palo IT/palo-it-logo.png: sha256:16c0964c98c484d4895872560861aa32dce520b65e525083f4611dde75360ae7
+    .claude/skills/html-presentation/reference/assets/Palo IT/palo-it-p-icon.png: sha256:59aa463d0468d0d5f7394d9b2dc86672681797c90fc55cf63253733bdb89b3fa
+    .claude/skills/html-presentation/reference/assets/Palo IT/palo-it-p-icon.svg: sha256:7b992dd5fdf5e23bfa80f42a0b1ae0992a93377ff6aece5199a88ffe4bb91eec
+    .claude/skills/html-presentation/reference/assets/palo-it-logo-large.png: sha256:a7fd9dd1cd2853ffb0f8139af6eeb004e20fc4d7a0e6236667d44caa8f760c2a
+    .claude/skills/html-presentation/reference/assets/palo-it-logo.png: sha256:16c0964c98c484d4895872560861aa32dce520b65e525083f4611dde75360ae7
+    .claude/skills/html-presentation/reference/assets/palo-it-p-icon.png: sha256:59aa463d0468d0d5f7394d9b2dc86672681797c90fc55cf63253733bdb89b3fa
+    .claude/skills/html-presentation/reference/assets/palo-it-p-icon.svg: sha256:7b992dd5fdf5e23bfa80f42a0b1ae0992a93377ff6aece5199a88ffe4bb91eec
+    .claude/skills/html-presentation/reference/gen-e2-light-slide-types-showcase.html: sha256:85ad543f5c84b61ef543d6c480c44a699fd7d416fa8a4f828d168fd5e6353fb1
+  content_hash: sha256:b37ac0ec497f4590527f17b37d5d01fa5efa33f524485dcacd1f354a22bd729a
+  declared_license: MIT
+- repo_url: global-palo-it/gen-e2-marketplace
+  materialization_repo_url: GLOBAL-PALO-IT/gen-e2-marketplace
+  name: gen-e2-design
+  host: github.com
+  resolved_commit: 5aa7aa84a8f34943f4f1325b4ba1554cf3f0de0a
+  resolved_ref: main
+  version: 1.0.0
+  virtual_path: plugins/gen-e2-design
+  is_virtual: true
+  package_type: marketplace_plugin
+  deployed_files:
+  - .claude/agents/design-agent.md
+  - .claude/agents/ui-validator.md
+  - .claude/skills/accessibility
+  - .claude/skills/accessibility/SKILL.md
+  - .claude/skills/atomic-ui
+  - .claude/skills/atomic-ui/SKILL.md
+  - .claude/skills/atomic-ui/references/atomic-levels.md
+  - .claude/skills/atomic-ui/references/component-spec.md
+  - .claude/skills/atomic-ui/references/library-detection.md
+  - .claude/skills/content-design
+  - .claude/skills/content-design/SKILL.md
+  - .claude/skills/create-component-library-skill
+  - .claude/skills/create-component-library-skill/SKILL.md
+  - .claude/skills/create-component-library-skill/references/generated-rules-template.md
+  - .claude/skills/create-component-library-skill/references/generated-skill-template.md
+  - .claude/skills/create-component-library-skill/references/generated-stack-reference-template.md
+  - .claude/skills/create-component-library-skill/references/generation-procedure.md
+  - .claude/skills/create-component-library-skill/references/output-spec.md
+  - .claude/skills/create-component-library-skill/references/principles/accessibility-rules.md
+  - .claude/skills/create-component-library-skill/references/principles/component-anatomy.md
+  - .claude/skills/create-component-library-skill/references/principles/models-and-stubs.md
+  - .claude/skills/create-component-library-skill/references/principles/preview-catalog.md
+  - .claude/skills/create-component-library-skill/references/principles/state-modeling.md
+  - .claude/skills/create-component-library-skill/references/principles/testing-strategy.md
+  - .claude/skills/create-component-library-skill/references/principles/token-integration.md
+  - .claude/skills/create-component-library-skill/references/project-detection.md
+  - .claude/skills/create-design-system-skill
+  - .claude/skills/create-design-system-skill/SKILL.md
+  - .claude/skills/create-design-system-skill/references/extraction-guide.md
+  - .claude/skills/create-design-system-skill/references/hook-spec.md
+  - .claude/skills/create-design-system-skill/references/output-spec.md
+  - .claude/skills/create-design-system-skill/references/stack-detection.md
+  - .claude/skills/create-design-system-skill/references/stack-patterns.md
+  - .claude/skills/motion-interactions
+  - .claude/skills/motion-interactions/SKILL.md
+  - .claude/skills/motion-interactions/references/android.md
+  - .claude/skills/motion-interactions/references/cross-platform.md
+  - .claude/skills/motion-interactions/references/ios.md
+  - .claude/skills/motion-interactions/references/web.md
+  - .claude/skills/visual-quality
+  - .claude/skills/visual-quality/SKILL.md
+  deployed_file_hashes:
+    .claude/agents/design-agent.md: sha256:7418ef338e0b0834e4d07481f94536010eecb3f6a2b7ec5c4433adf91d23caf7
+    .claude/agents/ui-validator.md: sha256:7466780f1455bd38ae6c5a7069aab7af8c42e198bb8ed94d59e6725a1b1e5359
+    .claude/skills/accessibility/SKILL.md: sha256:d4a8a008dc3e4a90f79b224c88c62561e23968367b9f6de70782c404dcd8ec2e
+    .claude/skills/atomic-ui/SKILL.md: sha256:4cf71d78716a098e068b9974be2ddd1b83d72d3222d92d2331ef0b81fc62c66e
+    .claude/skills/atomic-ui/references/atomic-levels.md: sha256:1d4acd1aebd83b60489b9f07bdfb4bae1b347b10c29751518478c5fb6ba48edc
+    .claude/skills/atomic-ui/references/component-spec.md: sha256:5ea624e15efa34285ff3bda98446b9b86827ab9797e60335e3b091611ea2379f
+    .claude/skills/atomic-ui/references/library-detection.md: sha256:96f523dee69a6795801842793eaa1c906cfddc1cd84b1d7e71829bbfc3e10779
+    .claude/skills/content-design/SKILL.md: sha256:c4c4a8d76b2d9f87a1f968cd763b69d0b1598e0f6d46ac1b44cd3cbe8b643879
+    .claude/skills/create-component-library-skill/SKILL.md: sha256:fe1b9cf9a1e4c72374225975d34e84f2bdb429b17bd75e3e5d22589d51ed023a
+    .claude/skills/create-component-library-skill/references/generated-rules-template.md: sha256:72501fd0cb52e32ef64a13c7429c5f7270be6e9a2bfb3d4bedf3282a211f8ae2
+    .claude/skills/create-component-library-skill/references/generated-skill-template.md: sha256:e8da46b7ca6497b72065358c01a30fd3f9def2a94def13192e59b91b3d4250de
+    .claude/skills/create-component-library-skill/references/generated-stack-reference-template.md: sha256:f6d57b3d90d8b6fc9b439d06f1622e4653cdcf61f1ca11e458ee204616df974f
+    .claude/skills/create-component-library-skill/references/generation-procedure.md: sha256:e90a35c250cecbd2bddd3a3c0dec60ad748c55ebeda3d8d1031f17a67aeb7597
+    .claude/skills/create-component-library-skill/references/output-spec.md: sha256:83a5bb1370c8a840f6cf9636238470d64779867ecddcc52e4670fa5ad4cba559
+    .claude/skills/create-component-library-skill/references/principles/accessibility-rules.md: sha256:4521b56ad1c8121ad997bae895f5c8ab0288fdd5a7f06f0825ddf35a339c3b25
+    .claude/skills/create-component-library-skill/references/principles/component-anatomy.md: sha256:3e576b988d03f9fa2114fb939a1a01109f5dcfde8f7297172acf3f560e7d1cbb
+    .claude/skills/create-component-library-skill/references/principles/models-and-stubs.md: sha256:302cf321433e956a1c6874891d8d5d04109a70ee20218bc44ee107b4608516df
+    .claude/skills/create-component-library-skill/references/principles/preview-catalog.md: sha256:f9289f9572d8a3d1a1e5c3e8c5d5a0baf0a5b5c3d33ac3b1a63dca0f5d209393
+    .claude/skills/create-component-library-skill/references/principles/state-modeling.md: sha256:988a565709f82055bb0b1c7c684e50fa49e7fbb9f2de38387a1cd53c6cbfd300
+    .claude/skills/create-component-library-skill/references/principles/testing-strategy.md: sha256:7c5331ae37fbeba5097be3472158f68ceec87bfc70bdf58c0dd7294d59c5d7e6
+    .claude/skills/create-component-library-skill/references/principles/token-integration.md: sha256:bd3cc49d860bfa34004cd4cc9ec310a91992eeed4b57995b2d89666d253da347
+    .claude/skills/create-component-library-skill/references/project-detection.md: sha256:3eecc141f4ccf0e10539cf6065d760f4fc23ec581f38483b49ccc66bf7d3caf7
+    .claude/skills/create-design-system-skill/SKILL.md: sha256:2bf43b91d974ca98af8d8528db4b92c56f7347d4a0a863299359216363a2e59c
+    .claude/skills/create-design-system-skill/references/extraction-guide.md: sha256:5e2e560f512a5475058084caaf8d3ff96bb510181b2f4969f5740980193ab78f
+    .claude/skills/create-design-system-skill/references/hook-spec.md: sha256:8976c5fa6459dc447404fd38da11e560ec07e6c1e801a66b80e3067d0e9c3971
+    .claude/skills/create-design-system-skill/references/output-spec.md: sha256:20de2618032cda0a4f399f7ced429e7cdd2ccee3e07f7aa3a32e3bef3a01547f
+    .claude/skills/create-design-system-skill/references/stack-detection.md: sha256:69b31cfc7d3bfcd8869f223ea4c86add537d9f257313eac5efe2791aa59cda23
+    .claude/skills/create-design-system-skill/references/stack-patterns.md: sha256:c2b9656da5ea4dacbb075b0a3bdce32c7bdf385ac39709a36aace4bb339d1909
+    .claude/skills/motion-interactions/SKILL.md: sha256:ce36914e738d55018ff4fe2a562fd72f90d55c9028cf4770687ded032b4b48be
+    .claude/skills/motion-interactions/references/android.md: sha256:fa8b227dd2d7cafb27cccceaa281008bb33e5e84d263e986c8d65503f8452e85
+    .claude/skills/motion-interactions/references/cross-platform.md: sha256:57b282b3bb42d2bbb038ac494d8d2d81ecfaea83b4ff058c7c1a530566874155
+    .claude/skills/motion-interactions/references/ios.md: sha256:02932b7dad7a42916935968c487fcd9f76fed757c5807252360ed599f722426b
+    .claude/skills/motion-interactions/references/web.md: sha256:a79532a87856f944b893b224f18f91ecefeae92636a4347e99ceb18bd81ab6d6
+    .claude/skills/visual-quality/SKILL.md: sha256:c03e0e2d262a9ccee71d6154fe2650db986981606ca9fd724da2f3a108a1c940
+  content_hash: sha256:e599c611e165e5878de9f56ecb9fa4632ff91f066a73a34ad832c0d8f3355476
+  declared_license: MIT
+deployments:
+- kind: project-relative
+  target: claude
+  value: .claude/agents/design-agent.md
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-design
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-design
+  content_hash: sha256:7418ef338e0b0834e4d07481f94536010eecb3f6a2b7ec5c4433adf91d23caf7
+- kind: project-relative
+  target: claude
+  value: .claude/agents/ui-validator.md
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-design
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-design
+  content_hash: sha256:7466780f1455bd38ae6c5a7069aab7af8c42e198bb8ed94d59e6725a1b1e5359
+- kind: project-relative
+  target: claude
+  value: .claude/skills/accessibility
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-design
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-design
+  content_hash: null
+- kind: project-relative
+  target: claude
+  value: .claude/skills/accessibility/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-design
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-design
+  content_hash: sha256:d4a8a008dc3e4a90f79b224c88c62561e23968367b9f6de70782c404dcd8ec2e
+- kind: project-relative
+  target: claude
+  value: .claude/skills/atomic-ui
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-design
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-design
+  content_hash: null
+- kind: project-relative
+  target: claude
+  value: .claude/skills/atomic-ui/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-design
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-design
+  content_hash: sha256:4cf71d78716a098e068b9974be2ddd1b83d72d3222d92d2331ef0b81fc62c66e
+- kind: project-relative
+  target: claude
+  value: .claude/skills/atomic-ui/references/atomic-levels.md
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-design
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-design
+  content_hash: sha256:1d4acd1aebd83b60489b9f07bdfb4bae1b347b10c29751518478c5fb6ba48edc
+- kind: project-relative
+  target: claude
+  value: .claude/skills/atomic-ui/references/component-spec.md
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-design
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-design
+  content_hash: sha256:5ea624e15efa34285ff3bda98446b9b86827ab9797e60335e3b091611ea2379f
+- kind: project-relative
+  target: claude
+  value: .claude/skills/atomic-ui/references/library-detection.md
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-design
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-design
+  content_hash: sha256:96f523dee69a6795801842793eaa1c906cfddc1cd84b1d7e71829bbfc3e10779
+- kind: project-relative
+  target: claude
+  value: .claude/skills/content-design
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-design
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-design
+  content_hash: null
+- kind: project-relative
+  target: claude
+  value: .claude/skills/content-design/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-design
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-design
+  content_hash: sha256:c4c4a8d76b2d9f87a1f968cd763b69d0b1598e0f6d46ac1b44cd3cbe8b643879
+- kind: project-relative
+  target: claude
+  value: .claude/skills/create-component-library-skill
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-design
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-design
+  content_hash: null
+- kind: project-relative
+  target: claude
+  value: .claude/skills/create-component-library-skill/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-design
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-design
+  content_hash: sha256:fe1b9cf9a1e4c72374225975d34e84f2bdb429b17bd75e3e5d22589d51ed023a
+- kind: project-relative
+  target: claude
+  value: .claude/skills/create-component-library-skill/references/generated-rules-template.md
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-design
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-design
+  content_hash: sha256:72501fd0cb52e32ef64a13c7429c5f7270be6e9a2bfb3d4bedf3282a211f8ae2
+- kind: project-relative
+  target: claude
+  value: .claude/skills/create-component-library-skill/references/generated-skill-template.md
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-design
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-design
+  content_hash: sha256:e8da46b7ca6497b72065358c01a30fd3f9def2a94def13192e59b91b3d4250de
+- kind: project-relative
+  target: claude
+  value: .claude/skills/create-component-library-skill/references/generated-stack-reference-template.md
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-design
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-design
+  content_hash: sha256:f6d57b3d90d8b6fc9b439d06f1622e4653cdcf61f1ca11e458ee204616df974f
+- kind: project-relative
+  target: claude
+  value: .claude/skills/create-component-library-skill/references/generation-procedure.md
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-design
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-design
+  content_hash: sha256:e90a35c250cecbd2bddd3a3c0dec60ad748c55ebeda3d8d1031f17a67aeb7597
+- kind: project-relative
+  target: claude
+  value: .claude/skills/create-component-library-skill/references/output-spec.md
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-design
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-design
+  content_hash: sha256:83a5bb1370c8a840f6cf9636238470d64779867ecddcc52e4670fa5ad4cba559
+- kind: project-relative
+  target: claude
+  value: .claude/skills/create-component-library-skill/references/principles/accessibility-rules.md
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-design
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-design
+  content_hash: sha256:4521b56ad1c8121ad997bae895f5c8ab0288fdd5a7f06f0825ddf35a339c3b25
+- kind: project-relative
+  target: claude
+  value: .claude/skills/create-component-library-skill/references/principles/component-anatomy.md
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-design
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-design
+  content_hash: sha256:3e576b988d03f9fa2114fb939a1a01109f5dcfde8f7297172acf3f560e7d1cbb
+- kind: project-relative
+  target: claude
+  value: .claude/skills/create-component-library-skill/references/principles/models-and-stubs.md
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-design
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-design
+  content_hash: sha256:302cf321433e956a1c6874891d8d5d04109a70ee20218bc44ee107b4608516df
+- kind: project-relative
+  target: claude
+  value: .claude/skills/create-component-library-skill/references/principles/preview-catalog.md
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-design
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-design
+  content_hash: sha256:f9289f9572d8a3d1a1e5c3e8c5d5a0baf0a5b5c3d33ac3b1a63dca0f5d209393
+- kind: project-relative
+  target: claude
+  value: .claude/skills/create-component-library-skill/references/principles/state-modeling.md
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-design
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-design
+  content_hash: sha256:988a565709f82055bb0b1c7c684e50fa49e7fbb9f2de38387a1cd53c6cbfd300
+- kind: project-relative
+  target: claude
+  value: .claude/skills/create-component-library-skill/references/principles/testing-strategy.md
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-design
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-design
+  content_hash: sha256:7c5331ae37fbeba5097be3472158f68ceec87bfc70bdf58c0dd7294d59c5d7e6
+- kind: project-relative
+  target: claude
+  value: .claude/skills/create-component-library-skill/references/principles/token-integration.md
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-design
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-design
+  content_hash: sha256:bd3cc49d860bfa34004cd4cc9ec310a91992eeed4b57995b2d89666d253da347
+- kind: project-relative
+  target: claude
+  value: .claude/skills/create-component-library-skill/references/project-detection.md
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-design
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-design
+  content_hash: sha256:3eecc141f4ccf0e10539cf6065d760f4fc23ec581f38483b49ccc66bf7d3caf7
+- kind: project-relative
+  target: claude
+  value: .claude/skills/create-design-system-skill
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-design
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-design
+  content_hash: null
+- kind: project-relative
+  target: claude
+  value: .claude/skills/create-design-system-skill/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-design
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-design
+  content_hash: sha256:2bf43b91d974ca98af8d8528db4b92c56f7347d4a0a863299359216363a2e59c
+- kind: project-relative
+  target: claude
+  value: .claude/skills/create-design-system-skill/references/extraction-guide.md
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-design
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-design
+  content_hash: sha256:5e2e560f512a5475058084caaf8d3ff96bb510181b2f4969f5740980193ab78f
+- kind: project-relative
+  target: claude
+  value: .claude/skills/create-design-system-skill/references/hook-spec.md
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-design
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-design
+  content_hash: sha256:8976c5fa6459dc447404fd38da11e560ec07e6c1e801a66b80e3067d0e9c3971
+- kind: project-relative
+  target: claude
+  value: .claude/skills/create-design-system-skill/references/output-spec.md
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-design
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-design
+  content_hash: sha256:20de2618032cda0a4f399f7ced429e7cdd2ccee3e07f7aa3a32e3bef3a01547f
+- kind: project-relative
+  target: claude
+  value: .claude/skills/create-design-system-skill/references/stack-detection.md
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-design
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-design
+  content_hash: sha256:69b31cfc7d3bfcd8869f223ea4c86add537d9f257313eac5efe2791aa59cda23
+- kind: project-relative
+  target: claude
+  value: .claude/skills/create-design-system-skill/references/stack-patterns.md
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-design
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-design
+  content_hash: sha256:c2b9656da5ea4dacbb075b0a3bdce32c7bdf385ac39709a36aace4bb339d1909
+- kind: project-relative
+  target: claude
+  value: .claude/skills/gen-e2-arch
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  content_hash: null
+- kind: project-relative
+  target: claude
+  value: .claude/skills/gen-e2-arch/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  content_hash: sha256:d3c3db2e9ae82fff7d05eee902189be39aa1677a4aa1b8d74bbe2af3abe9a66c
+- kind: project-relative
+  target: claude
+  value: .claude/skills/gen-e2-arch/references/arch-guide.md
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  content_hash: sha256:3d1006831e3985430719dfe9db960a0447e4198338e3f115ceadd351e367b8c1
+- kind: project-relative
+  target: claude
+  value: .claude/skills/gen-e2-arch/templates/arch.json
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  content_hash: sha256:5f139a2b2b305c0c82553edfd1c7d48ea81424b59139a9b45812b0f4baf65172
+- kind: project-relative
+  target: claude
+  value: .claude/skills/gen-e2-blueprint
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  content_hash: null
+- kind: project-relative
+  target: claude
+  value: .claude/skills/gen-e2-blueprint/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  content_hash: sha256:7f54d2304e313e01c7d17747c612405566cfcf2a34e5ec594b5ac61d6bc367c3
+- kind: project-relative
+  target: claude
+  value: .claude/skills/gen-e2-blueprint/references/blueprint-guide.md
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  content_hash: sha256:73f29c0b59ce80fbe2facc7cbf5f1e9563e93edd567738c4b346340ae9bb70f1
+- kind: project-relative
+  target: claude
+  value: .claude/skills/gen-e2-blueprint/templates/blueprint.json
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  content_hash: sha256:28f5ea7f92c5c4ae8090ffcbb2c5400391f51c76b815c23fcc3798d6710109aa
+- kind: project-relative
+  target: claude
+  value: .claude/skills/gen-e2-brief
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  content_hash: null
+- kind: project-relative
+  target: claude
+  value: .claude/skills/gen-e2-brief/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  content_hash: sha256:568d38475aa609c2fb98545ae42670800717245ceeaeaaecee9a5e09ab17ffb3
+- kind: project-relative
+  target: claude
+  value: .claude/skills/gen-e2-brief/references/brief-guide.md
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  content_hash: sha256:b7f2d7e31129d21cedda25358821f485728c4951c76767ff1b6e3ca4b09eb570
+- kind: project-relative
+  target: claude
+  value: .claude/skills/gen-e2-brief/templates/brief.json
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  content_hash: sha256:ea7c408c369d90e6ce9b033a0ff00e1e90594f5e1adb8a1c677c239d454d80c1
+- kind: project-relative
+  target: claude
+  value: .claude/skills/gen-e2-design-system
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  content_hash: null
+- kind: project-relative
+  target: claude
+  value: .claude/skills/gen-e2-design-system/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  content_hash: sha256:3398d342b625433749fbdf768466935d6cd01bb99210463beed65dd68ab05c0c
+- kind: project-relative
+  target: claude
+  value: .claude/skills/gen-e2-design-system/references/design-system-guide.md
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  content_hash: sha256:43ab2ee7c1bb8dcc358b0ac0e645526c4707a17aaf035eaa510bae31d211b3ba
+- kind: project-relative
+  target: claude
+  value: .claude/skills/gen-e2-design-system/templates/design-system.json
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  content_hash: sha256:93ced03ff96dc8720c5271f195826bc06873442cbb45f7dd401a9a8b69400523
+- kind: project-relative
+  target: claude
+  value: .claude/skills/gen-e2-flow
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  content_hash: null
+- kind: project-relative
+  target: claude
+  value: .claude/skills/gen-e2-flow/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  content_hash: sha256:021dc2cdec81937e3ae4e6e41ea0bc94dcf1c0c30ae2dfbab773d520bfbb6d15
+- kind: project-relative
+  target: claude
+  value: .claude/skills/gen-e2-flow/references/flow-guide.md
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  content_hash: sha256:fd67122039e36497451357dc18924c6e2f7a3ab04475088a2f4c477e0e3be4db
+- kind: project-relative
+  target: claude
+  value: .claude/skills/gen-e2-flow/templates/flow.json
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  content_hash: sha256:d5628265b7b6a4967eeffdcc0146e8ad154c02a4ea6bf30b2666ad1173b2a034
+- kind: project-relative
+  target: claude
+  value: .claude/skills/gen-e2-heuristic
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  content_hash: null
+- kind: project-relative
+  target: claude
+  value: .claude/skills/gen-e2-heuristic/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  content_hash: sha256:030c4b7ed5592171f1b78b44230c60235b4c2ee0788fe545d72f4eafe4a518d2
+- kind: project-relative
+  target: claude
+  value: .claude/skills/gen-e2-heuristic/references/heuristic-guide.md
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  content_hash: sha256:4b844ff475cd714af3bceecdaf061d9431b8e3c5710409b36ba5a60d6047aff5
+- kind: project-relative
+  target: claude
+  value: .claude/skills/gen-e2-heuristic/templates/heuristic-evaluation.json
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  content_hash: sha256:4058658104675ef362e9464fb22a670ae97c8854d3b0185861d41150a224ca25
+- kind: project-relative
+  target: claude
+  value: .claude/skills/gen-e2-journey
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  content_hash: null
+- kind: project-relative
+  target: claude
+  value: .claude/skills/gen-e2-journey/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  content_hash: sha256:be18de7378d22fbb7f126e4fec0415331b5581d3a372765ee1f19e4f467270e3
+- kind: project-relative
+  target: claude
+  value: .claude/skills/gen-e2-journey/references/journey-guide.md
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  content_hash: sha256:1013fea841f3d7924e97e7b703aa315c7a68b8a749aed39ac79018a68484913b
+- kind: project-relative
+  target: claude
+  value: .claude/skills/gen-e2-journey/templates/journey.json
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  content_hash: sha256:0d446b4547e92fa8cceff0185dfe757280ad09bb3f6d0956899d6a352d2a37ad
+- kind: project-relative
+  target: claude
+  value: .claude/skills/gen-e2-persona
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  content_hash: null
+- kind: project-relative
+  target: claude
+  value: .claude/skills/gen-e2-persona/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  content_hash: sha256:26cbec643da8b44e945572fa1fc3ff68aca4d2c299a5d6bc9e8e4b810f15d9d1
+- kind: project-relative
+  target: claude
+  value: .claude/skills/gen-e2-persona/references/persona-guide.md
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  content_hash: sha256:0045d56a2ff784fafcbe9f8b3dba3ef710a36e4a66847cab7bb5892209338195
+- kind: project-relative
+  target: claude
+  value: .claude/skills/gen-e2-persona/templates/persona.json
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  content_hash: sha256:c23ec4322c2f5731519636bd1bf97b48cd47b222aee1e7927a14e8b1458b3b31
+- kind: project-relative
+  target: claude
+  value: .claude/skills/gen-e2-raid
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  content_hash: null
+- kind: project-relative
+  target: claude
+  value: .claude/skills/gen-e2-raid/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  content_hash: sha256:50e5cfee67d47327911eef42f3c553b647d5c99ca50beff8a2045a45556485df
+- kind: project-relative
+  target: claude
+  value: .claude/skills/gen-e2-raid/references/raid-guide.md
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  content_hash: sha256:bcc7efb0c6c136a3b39b88040104920e94cd28870b2afffc04eaff9ff99c9739
+- kind: project-relative
+  target: claude
+  value: .claude/skills/gen-e2-raid/templates/raid.json
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  content_hash: sha256:1fd057628f5bd113fe96c2f997e79c7f451e23baed79c40000e16bff08558221
+- kind: project-relative
+  target: claude
+  value: .claude/skills/gen-e2-research
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  content_hash: null
+- kind: project-relative
+  target: claude
+  value: .claude/skills/gen-e2-research/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  content_hash: sha256:f03ff8f8d8b22f4f57a32dc0f5792b5217f8ed109cbd6feac8939bbe81851883
+- kind: project-relative
+  target: claude
+  value: .claude/skills/gen-e2-research/references/research-guide.md
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  content_hash: sha256:42269cb2025ebbd31e015026b0112f39c3d9cceb9d0bad67ae16cfda4107cdd3
+- kind: project-relative
+  target: claude
+  value: .claude/skills/gen-e2-research/templates/research.json
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  content_hash: sha256:402773682a51b6c956c5b00557a2121a1a390fcad21989d8390d040b1ee344fe
+- kind: project-relative
+  target: claude
+  value: .claude/skills/gen-e2-story
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  content_hash: null
+- kind: project-relative
+  target: claude
+  value: .claude/skills/gen-e2-story/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  content_hash: sha256:93d9b8824dd23ec1d2cce6e9540f97dbc82022b50f4fc230497e94ca09b09ea1
+- kind: project-relative
+  target: claude
+  value: .claude/skills/gen-e2-story/references/story-guide.md
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  content_hash: sha256:811f047d71de8bf698545650e6d58e9c7854cd446570ea30bb3d4ff7cf477add
+- kind: project-relative
+  target: claude
+  value: .claude/skills/gen-e2-story/templates/story.gen-e2.story.md
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  content_hash: sha256:1ea7486377f0e0bb5aba7b9b73c85cff2052fae6c578bd5bc803163080fa35ae
+- kind: project-relative
+  target: claude
+  value: .claude/skills/gen-e2-storymap
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  content_hash: null
+- kind: project-relative
+  target: claude
+  value: .claude/skills/gen-e2-storymap/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  content_hash: sha256:07cc33aadd2fb1682b0d7479bfa29fee1da55ea1a19279597e5efc92485512f3
+- kind: project-relative
+  target: claude
+  value: .claude/skills/gen-e2-storymap/references/storymap-guide.md
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  content_hash: sha256:818d4461dcf17e023d6784cdb601b3df140d4aade862a8d2a80e7cb6b9db6793
+- kind: project-relative
+  target: claude
+  value: .claude/skills/gen-e2-storymap/templates/storymap.json
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  content_hash: sha256:cd91102441fe2ba7538842375fc206934d56ae7141fed8c2040cb50b96e24b55
+- kind: project-relative
+  target: claude
+  value: .claude/skills/gen-e2-wireframe
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  content_hash: null
+- kind: project-relative
+  target: claude
+  value: .claude/skills/gen-e2-wireframe/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  content_hash: sha256:e79349bcb9c61683b1a4592e35bc0ee0ae775cfa5af778c85ea8fbb29fc46aea
+- kind: project-relative
+  target: claude
+  value: .claude/skills/gen-e2-wireframe/references/icons.md
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  content_hash: sha256:1d8452e742d86862d8681858735fb0062480cb2d9285e0c534235b1663f738ba
+- kind: project-relative
+  target: claude
+  value: .claude/skills/gen-e2-wireframe/references/tokens.md
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  content_hash: sha256:508abff2828fb451ef5779aa7200b9c34ec0d34024c9007191105a18f509c13b
+- kind: project-relative
+  target: claude
+  value: .claude/skills/gen-e2-wireframe/references/wf-guide.md
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  content_hash: sha256:36a762ba5f1717e4b350e5a498dbbbe05196ee87c1535b709e1179d564eda328
+- kind: project-relative
+  target: claude
+  value: .claude/skills/gen-e2-wireframe/templates/wf.json
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-edith
+  content_hash: sha256:1523e0b446fb613921640ef64a40a5c7c9e04f2c1f48fdea3b0a906cac87930b
+- kind: project-relative
+  target: claude
+  value: .claude/skills/html-presentation
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/html-presentation
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/html-presentation
+  content_hash: null
+- kind: project-relative
+  target: claude
+  value: .claude/skills/html-presentation/README.md
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/html-presentation
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/html-presentation
+  content_hash: sha256:1b0b99b2654cb553e731551e2c7f98ab1f66d467cc9e31a5b89477aaf7fb01e9
+- kind: project-relative
+  target: claude
+  value: .claude/skills/html-presentation/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/html-presentation
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/html-presentation
+  content_hash: sha256:e5f06b9a7bc98e30ba8d3118bbb50228216542878c8e93a7b9bc7f510effe6b8
+- kind: project-relative
+  target: claude
+  value: .claude/skills/html-presentation/reference/GEN_E2_DARK_TEMPLATE.md
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/html-presentation
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/html-presentation
+  content_hash: sha256:b415ab61071f90505d45a6062abd3332dff0bf4bdfe3002bf6fa993d08cac693
+- kind: project-relative
+  target: claude
+  value: .claude/skills/html-presentation/reference/GEN_E2_LIGHT_TEMPLATE.md
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/html-presentation
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/html-presentation
+  content_hash: sha256:22d552226a25c1b2cabfe9c66ed01010fd3dac35af992bcda513aa747e4e761a
+- kind: project-relative
+  target: claude
+  value: .claude/skills/html-presentation/reference/HTML_ARCHITECTURE.md
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/html-presentation
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/html-presentation
+  content_hash: sha256:8af95ceafdfeb0d87322b9bbd085f90672b525eea28d43b71ed21246d5927b42
+- kind: project-relative
+  target: claude
+  value: .claude/skills/html-presentation/reference/PALO_IT_TEMPLATE.md
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/html-presentation
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/html-presentation
+  content_hash: sha256:e0671557752cd2928de8653ca8bfb112750ae1c7c12783eb1498e66190cfc8d9
+- kind: project-relative
+  target: claude
+  value: .claude/skills/html-presentation/reference/assets/Gen-e2 Dark/palo-it-logo-large.png
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/html-presentation
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/html-presentation
+  content_hash: sha256:a7fd9dd1cd2853ffb0f8139af6eeb004e20fc4d7a0e6236667d44caa8f760c2a
+- kind: project-relative
+  target: claude
+  value: .claude/skills/html-presentation/reference/assets/Gen-e2 Dark/palo-it-logo.png
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/html-presentation
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/html-presentation
+  content_hash: sha256:16c0964c98c484d4895872560861aa32dce520b65e525083f4611dde75360ae7
+- kind: project-relative
+  target: claude
+  value: .claude/skills/html-presentation/reference/assets/Gen-e2 Dark/palo-it-p-icon.png
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/html-presentation
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/html-presentation
+  content_hash: sha256:59aa463d0468d0d5f7394d9b2dc86672681797c90fc55cf63253733bdb89b3fa
+- kind: project-relative
+  target: claude
+  value: .claude/skills/html-presentation/reference/assets/Gen-e2 Dark/palo-it-p-icon.svg
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/html-presentation
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/html-presentation
+  content_hash: sha256:7b992dd5fdf5e23bfa80f42a0b1ae0992a93377ff6aece5199a88ffe4bb91eec
+- kind: project-relative
+  target: claude
+  value: .claude/skills/html-presentation/reference/assets/Gen-e2 Light/palo-it-logo-large.png
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/html-presentation
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/html-presentation
+  content_hash: sha256:a7fd9dd1cd2853ffb0f8139af6eeb004e20fc4d7a0e6236667d44caa8f760c2a
+- kind: project-relative
+  target: claude
+  value: .claude/skills/html-presentation/reference/assets/Gen-e2 Light/palo-it-logo.png
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/html-presentation
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/html-presentation
+  content_hash: sha256:16c0964c98c484d4895872560861aa32dce520b65e525083f4611dde75360ae7
+- kind: project-relative
+  target: claude
+  value: .claude/skills/html-presentation/reference/assets/Gen-e2 Light/palo-it-p-icon.png
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/html-presentation
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/html-presentation
+  content_hash: sha256:59aa463d0468d0d5f7394d9b2dc86672681797c90fc55cf63253733bdb89b3fa
+- kind: project-relative
+  target: claude
+  value: .claude/skills/html-presentation/reference/assets/Gen-e2 Light/palo-it-p-icon.svg
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/html-presentation
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/html-presentation
+  content_hash: sha256:7b992dd5fdf5e23bfa80f42a0b1ae0992a93377ff6aece5199a88ffe4bb91eec
+- kind: project-relative
+  target: claude
+  value: .claude/skills/html-presentation/reference/assets/Palo IT/palo-it-logo-large.png
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/html-presentation
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/html-presentation
+  content_hash: sha256:a7fd9dd1cd2853ffb0f8139af6eeb004e20fc4d7a0e6236667d44caa8f760c2a
+- kind: project-relative
+  target: claude
+  value: .claude/skills/html-presentation/reference/assets/Palo IT/palo-it-logo.png
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/html-presentation
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/html-presentation
+  content_hash: sha256:16c0964c98c484d4895872560861aa32dce520b65e525083f4611dde75360ae7
+- kind: project-relative
+  target: claude
+  value: .claude/skills/html-presentation/reference/assets/Palo IT/palo-it-p-icon.png
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/html-presentation
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/html-presentation
+  content_hash: sha256:59aa463d0468d0d5f7394d9b2dc86672681797c90fc55cf63253733bdb89b3fa
+- kind: project-relative
+  target: claude
+  value: .claude/skills/html-presentation/reference/assets/Palo IT/palo-it-p-icon.svg
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/html-presentation
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/html-presentation
+  content_hash: sha256:7b992dd5fdf5e23bfa80f42a0b1ae0992a93377ff6aece5199a88ffe4bb91eec
+- kind: project-relative
+  target: claude
+  value: .claude/skills/html-presentation/reference/assets/palo-it-logo-large.png
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/html-presentation
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/html-presentation
+  content_hash: sha256:a7fd9dd1cd2853ffb0f8139af6eeb004e20fc4d7a0e6236667d44caa8f760c2a
+- kind: project-relative
+  target: claude
+  value: .claude/skills/html-presentation/reference/assets/palo-it-logo.png
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/html-presentation
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/html-presentation
+  content_hash: sha256:16c0964c98c484d4895872560861aa32dce520b65e525083f4611dde75360ae7
+- kind: project-relative
+  target: claude
+  value: .claude/skills/html-presentation/reference/assets/palo-it-p-icon.png
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/html-presentation
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/html-presentation
+  content_hash: sha256:59aa463d0468d0d5f7394d9b2dc86672681797c90fc55cf63253733bdb89b3fa
+- kind: project-relative
+  target: claude
+  value: .claude/skills/html-presentation/reference/assets/palo-it-p-icon.svg
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/html-presentation
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/html-presentation
+  content_hash: sha256:7b992dd5fdf5e23bfa80f42a0b1ae0992a93377ff6aece5199a88ffe4bb91eec
+- kind: project-relative
+  target: claude
+  value: .claude/skills/html-presentation/reference/gen-e2-light-slide-types-showcase.html
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/html-presentation
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/html-presentation
+  content_hash: sha256:85ad543f5c84b61ef543d6c480c44a699fd7d416fa8a4f828d168fd5e6353fb1
+- kind: project-relative
+  target: claude
+  value: .claude/skills/motion-interactions
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-design
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-design
+  content_hash: null
+- kind: project-relative
+  target: claude
+  value: .claude/skills/motion-interactions/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-design
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-design
+  content_hash: sha256:ce36914e738d55018ff4fe2a562fd72f90d55c9028cf4770687ded032b4b48be
+- kind: project-relative
+  target: claude
+  value: .claude/skills/motion-interactions/references/android.md
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-design
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-design
+  content_hash: sha256:fa8b227dd2d7cafb27cccceaa281008bb33e5e84d263e986c8d65503f8452e85
+- kind: project-relative
+  target: claude
+  value: .claude/skills/motion-interactions/references/cross-platform.md
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-design
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-design
+  content_hash: sha256:57b282b3bb42d2bbb038ac494d8d2d81ecfaea83b4ff058c7c1a530566874155
+- kind: project-relative
+  target: claude
+  value: .claude/skills/motion-interactions/references/ios.md
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-design
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-design
+  content_hash: sha256:02932b7dad7a42916935968c487fcd9f76fed757c5807252360ed599f722426b
+- kind: project-relative
+  target: claude
+  value: .claude/skills/motion-interactions/references/web.md
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-design
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-design
+  content_hash: sha256:a79532a87856f944b893b224f18f91ecefeae92636a4347e99ceb18bd81ab6d6
+- kind: project-relative
+  target: claude
+  value: .claude/skills/visual-quality
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-design
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-design
+  content_hash: null
+- kind: project-relative
+  target: claude
+  value: .claude/skills/visual-quality/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - global-palo-it/gen-e2-marketplace/plugins/gen-e2-design
+  active_owner: global-palo-it/gen-e2-marketplace/plugins/gen-e2-design
+  content_hash: sha256:c03e0e2d262a9ccee71d6154fe2650db986981606ca9fd724da2f3a108a1c940

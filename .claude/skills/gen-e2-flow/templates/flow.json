@@ -1,0 +1,125 @@
+{
+  "meta": {
+    "id": "{{flow-kebab-id}}",
+    "title": "{{Flow Title}}",
+    "version": "v1.0",
+    "description": "{{One-sentence description of what this flow maps}}",
+    "tags": ["{{tag1}}", "{{tag2}}"],
+    "defaultActor": "{{default-actor-id}}"
+  },
+  "actors": [
+    { "id": "{{actor-id}}", "label": "{{Actor Label}}" },
+    { "id": "system", "label": "System" }
+  ],
+  "nodes": [
+    {
+      "id": "start",
+      "type": "start",
+      "label": "{{Trigger / Entry Point}}",
+      "actor": "{{actor-id}}",
+      "priority": "high",
+      "isPrimary": true
+    },
+    {
+      "id": "{{action-node-id}}",
+      "type": "action",
+      "label": "{{User Action or System Step}}",
+      "actor": "{{actor-id}}",
+      "priority": "high",
+      "isPrimary": true,
+      "notes": "{{Optional: context, assumptions, or caveats about this step}}",
+      "sourceRef": [
+        {
+          "file": "{{path/to/source-file or descriptive name}}",
+          "selector": "{{XPath | JSONPath | #L42-L89 | WHERE clause}}",
+          "count": "{{optional: occurrence count as a number — omit if not applicable}}"
+        }
+      ]
+    },
+    {
+      "id": "{{decision-node-id}}",
+      "type": "decision",
+      "label": "{{Decision Question?}}",
+      "actor": "system",
+      "priority": "medium",
+      "isPrimary": false
+    },
+    {
+      "id": "{{subflow-node-id}}",
+      "type": "subflow",
+      "label": "{{Subflow Name}}",
+      "actor": "{{actor-id}}",
+      "data": {
+        "subflowRef": "./{{NN}}-{{subflow-kebab-name}}.gen-e2.flow"
+      },
+      "refs": {
+        "journeys": ["{{path/to/related.gen-e2.jm}}"]
+      }
+    },
+    {
+      "id": "{{wireframe-node-id}}",
+      "type": "wireframe",
+      "label": "{{Screen Name}}",
+      "actor": "{{actor-id}}",
+      "data": {
+        "wfRef": "../06-wireframes/{{NN}}-{{screen-kebab-name}}.gen-e2.wf"
+      }
+    },
+    {
+      "id": "{{note-node-id}}",
+      "type": "note",
+      "label": "{{Annotation text — context, assumption, or caveat}}",
+      "data": {
+        "color": "{{yellow|blue|green|pink|purple|orange|leave blank for default}}",
+        "width": 200,
+        "height": 120
+      }
+    },
+    {
+      "id": "end",
+      "type": "end",
+      "label": "{{Completion / Exit Condition}}",
+      "actor": "{{actor-id}}",
+      "isPrimary": true
+    }
+  ],
+  "edges": [
+    {
+      "from": "start",
+      "to": "{{action-node-id}}",
+      "kind": "normal",
+      "priority": "main",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "from": "{{action-node-id}}",
+      "to": "{{decision-node-id}}",
+      "kind": "normal",
+      "priority": "main",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "from": "{{decision-node-id}}",
+      "to": "end",
+      "label": "{{Yes / Success condition}}",
+      "kind": "success",
+      "priority": "main",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "from": "{{decision-node-id}}",
+      "to": "{{action-node-id}}",
+      "label": "{{No / Retry condition}}",
+      "kind": "error",
+      "priority": "alt",
+      "sourceHandle": "bottom",
+      "targetHandle": "top"
+    }
+  ],
+  "layout": {
+    "direction": "LR"
+  }
+}

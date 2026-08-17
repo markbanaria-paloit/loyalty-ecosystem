@@ -1,0 +1,760 @@
+{
+  "meta": {
+    "title": "RA-05 — Open Loyalty capability: specification-based desk pass (live-instance spike NOT run)",
+    "studyType": "Desk / secondary research — API specification and vendor-documentation analysis. This is NOT the technical spike RA-05 calls for. RA-05's trigger is 'access to a real Open Loyalty instance, not the in-repo mock (RAID D005)' and that access does not exist. Nothing below is verified engine behaviour: the OpenAPI spec gives shapes, not semantics. Every verdict is a reading of documents and must be confirmed against a live tenant before any member-facing design commits to it. The live-instance spike remains OPEN.",
+    "cycle": "NTUC Club Member PWA • Discovery cycle 1 • Week 1",
+    "researcher": "Gen-e2 Research Agent (autonomous desk pass) — human review required before this is treated as validated input",
+    "lastUpdated": "2026-08-17",
+    "summary": "Reading the vendored 195-path OpenAPI spec against the five member-facing behaviours in RA-05's success criteria: refund reversal and voucher-wallet semantics are expressible in the engine with configuration; expiry-cohort visibility exists but only on a deprecated endpoint whose payload shape is undocumented; and two of the five things RA-05 asks about — multiple redemptions in one transaction (BR-P1-017) and two of the five BR-P1-002b notification triggers (birthday, lapsed visit) — have no engine mechanism at all and fall entirely to the integration layer as unbudgeted member-surface work."
+  },
+  "groups": [
+    {
+      "id": "capability-verdicts",
+      "title": "Capability Verdicts",
+      "description": "One insight per member-facing behaviour named in RA-05's success criteria, each rated native / native-with-configuration / integration-layer-work-required. Ratings describe what the specification and the vendor's public documentation permit, not what a running instance does. Confidence is tagged on every insight using the standard framework; nothing here is tagged 'validated' because no engine was exercised.",
+      "insights": [
+        {
+          "id": "verdict-expiry-cohorts",
+          "title": "Expiry-cohort visibility is NATIVE WITH CONFIGURATION for the data, but the only ready-made cohort breakdown sits on a deprecated endpoint — deriving it any other way is integration-layer work",
+          "summary": "VERDICT: native with configuration (partial) — with a named dependency on a deprecated route. [confidence: strong-signal for what the spec exposes; assumption for whether it is usable] Three separate mechanisms bear on 'which points lapse when'. (1) The 12-month rolling window of BR-P1-011 is configurable per wallet type: `PostWalletTypeRequestBody.walletType.unitDaysExpiryAfter` is an enum of `all_time_active | after_x_days | at_the_end_of_the_month | at_the_end_of_the_x_th_year | at_the_end_of_the_chosen_date`, with `unitDaysActiveCount` for the day count — so `after_x_days: 365` satisfies BR-P1-011's 'configurable' clause natively. (2) Per-cohort raw data is on the ledger: `components.schemas.Transfer` carries `expiresAt`, and the member-token route `GET /api/{storeCode}/member/points` (labelled Integration, not deprecated) is both filterable and `_orderBy`-sortable on `expiresAt`. (3) A pre-computed breakdown exists — `CustomerStatus.pointsExpiringBreakdown` (an object of `additionalProperties: {type: number}`) plus `pointsExpiringNextMonth` — and this is exactly the shape f4 needs. THE PROBLEM: `CustomerStatus` is referenced by exactly one path in the whole 195-path spec, `GET /api/{storeCode}/member/{member}/status`, and that path carries `deprecated: true` with no replacement anywhere in the document. Open Loyalty's own public API reference confirms the deprecation and does not name a successor, and does not document the key format of the breakdown map. SECOND PROBLEM: deriving cohorts from `/member/points` instead is not a simple read. `Transfer` exposes `value` but no remaining or consumed amount; spends and expiries are separate transfer rows. To state 'you have 300 points lapsing on 3 March' the integration layer must replicate the engine's consumption order — and neither the OpenAPI spec nor Open Loyalty's public wallet documentation states whether spending consumes FIFO, nearest-expiry, or something else. This is the single most load-bearing undocumented semantic in the whole desk pass.",
+          "references": [
+            {
+              "id": "expiry-ref-1",
+              "sourceId": "SPEC",
+              "filePath": "spec/openloyalty-openapi.json",
+              "range": { "start": { "line": 0, "character": 0 }, "end": { "line": 0, "character": 0 } },
+              "note": "Spec path components.schemas.CustomerStatus — the only carrier of a per-cohort expiry breakdown in the entire spec, and it is reachable only via a deprecated route. The file is minified to a single line; locate by JSON pointer, not line number.",
+              "excerpt": "\"pointsExpiringNextMonth\": {\"type\": \"number\", \"format\": \"float\"}, \"pointsExpiringBreakdown\": {\"type\": \"object\", \"additionalProperties\": {\"type\": \"number\", \"format\": \"float\"}}"
+            },
+            {
+              "id": "expiry-ref-2",
+              "sourceId": "SPEC",
+              "filePath": "spec/openloyalty-openapi.json",
+              "range": { "start": { "line": 0, "character": 0 }, "end": { "line": 0, "character": 0 } },
+              "note": "Spec path paths./api/{storeCode}/member/{member}/status.get — the deprecation. Confirms the cohort breakdown has no supported carrier.",
+              "excerpt": "\"summary\": \"Get member's loyalty status\", \"operationId\": \"memberGetStatus\", … \"deprecated\": true"
+            },
+            {
+              "id": "expiry-ref-3",
+              "sourceId": "SPEC",
+              "filePath": "spec/openloyalty-openapi.json",
+              "range": { "start": { "line": 0, "character": 0 }, "end": { "line": 0, "character": 0 } },
+              "note": "Spec path components.schemas.PostWalletTypeRequestBody — the configurability BR-P1-011 requires is genuinely native, at wallet-type level.",
+              "excerpt": "\"unitDaysExpiryAfter\": {\"enum\": [\"all_time_active\", \"after_x_days\", \"at_the_end_of_the_month\", \"at_the_end_of_the_x_th_year\", \"at_the_end_of_the_chosen_date\"]}"
+            },
+            {
+              "id": "expiry-ref-4",
+              "sourceId": "SPEC",
+              "filePath": "spec/openloyalty-openapi.json",
+              "range": { "start": { "line": 0, "character": 0 }, "end": { "line": 0, "character": 0 } },
+              "note": "Spec path components.schemas.Transfer — carries expiresAt but no remaining/consumed amount. This absence is why cohort derivation needs the engine's consumption order, which is undocumented.",
+              "excerpt": "\"expiresAt\": {\"type\": \"string\", \"format\": \"date-time\"}, \"value\": {\"type\": \"number\", \"format\": \"float\"}, \"cancelled\": {\"type\": \"boolean\"}, \"pending\": {\"type\": \"boolean\"}"
+            },
+            {
+              "id": "expiry-ref-5",
+              "sourceId": "DOC",
+              "filePath": "gen-e2/discover/customer-app/01-research/findings/RA-05-openloyalty-capability-desk-pass.gen-e2.research",
+              "range": { "start": { "line": 0, "character": 0 }, "end": { "line": 0, "character": 0 } },
+              "note": "Desk research: Open Loyalty public help centre, 'Wallet Types and Configuration' (https://help.openloyalty.io/members-and-activity/wallets/wallet-types-and-configuration.md), accessed 2026-08-17. Asked directly whether spending consumes FIFO or nearest-expiry and whether members can be shown which units expire when — both returned nothing. Self-referential filePath because the source is external; the citation is the finding.",
+              "excerpt": "Consumption order: not specified. Member-facing expiry information: not addressed."
+            },
+            {
+              "id": "expiry-ref-6",
+              "sourceId": "BRD",
+              "filePath": "gen-e2/discover/general-references/extracted/tender-BRD-requirements.txt",
+              "range": { "start": { "line": 405, "character": 0 }, "end": { "line": 408, "character": 0 } },
+              "note": "BR-P1-011, Must Have — the requirement this verdict serves. Note it demands both a configurable period and notification ahead of expiry; the configurability is native, the notification is covered under the webhook verdict.",
+              "excerpt": "\"Points expire 12 months from the date earned, with automated member notification ahead of expiry. Expiry period must be configurable.\""
+            }
+          ]
+        },
+        {
+          "id": "verdict-voucher-wallet",
+          "title": "The voucher wallet and its auto-invalidation are NATIVE WITH CONFIGURATION, but the engine issues a code string and no QR, and the member-token route to the wallet is deprecated",
+          "summary": "VERDICT: native with configuration for expiry and invalidation; integration-layer work for the QR and for member-scoped access. [confidence: strong-signal] The issued-voucher model is richer than the brief assumes. `components.schemas.issuedReward.issuedCoupon` carries `code`, `value`, `valueType` (`money | percentage`), `activeFrom`, `activeTo` and `usedAt` — so per-voucher expiry (BR-P1-016) and a used-at timestamp are both first-class. Expiry is settable per issuance, not just per reward type: the buy bodies `StaticCoupon`, `DynamicCoupon` and `ConversionCoupon` all accept `dateValid`, which satisfies BR-P1-016's 'configurable per reward type' and then some. Invalidation is a supported operation — `POST /api/{storeCode}/member/{member}/reward/redeem` ('Mark coupon as used'), reversible via `.../reward/reissue` ('Mark coupon as unused') — and two webhooks watch the lifecycle: `RewardRedemptionStatusChanged` and `CouponWillExpire`. THREE GAPS, none fatal, all PALO IT's. (a) No QR. The engine returns `issuedCoupon.code` as a string; choosing a symbology, rendering it, and making it legible at a till under bad lighting is member-surface work (brief guiding principle 1, feature f1/f6). Small, but it is not 'native'. (b) The member-token wallet read is deprecated: `GET /api/{storeCode}/member/reward/bought` carries `deprecated: true`. The live alternative, `GET /api/{storeCode}/redemption?customerId=…`, is Integration-labelled but member-agnostic, so the integration layer must broker it and enforce the member's own scope itself. (c) `/redemption`'s 20-odd filters cover `status`, `redemptionDate` and `cancelledAt` but include neither `usedAt` nor `activeTo` — so 'show me my unused, unexpired vouchers', the single most common voucher-wallet query, is a client-side filter over a paged list rather than a server-side one.",
+          "references": [
+            {
+              "id": "voucher-ref-1",
+              "sourceId": "SPEC",
+              "filePath": "spec/openloyalty-openapi.json",
+              "range": { "start": { "line": 0, "character": 0 }, "end": { "line": 0, "character": 0 } },
+              "note": "Spec path components.schemas.issuedReward.issuedCoupon — expiry window and used-at are native fields, which is more than RAID R008 assumed.",
+              "excerpt": "\"code\": {\"type\": \"string\"}, \"value\": {…}, \"activeFrom\": {\"format\": \"date-time\"}, \"activeTo\": {\"format\": \"date-time\"}, \"valueType\": {\"enum\": [\"money\", \"percentage\"]}, \"usedAt\": {\"format\": \"date-time\"}"
+            },
+            {
+              "id": "voucher-ref-2",
+              "sourceId": "SPEC",
+              "filePath": "spec/openloyalty-openapi.json",
+              "range": { "start": { "line": 0, "character": 0 }, "end": { "line": 0, "character": 0 } },
+              "note": "Spec path paths./api/{storeCode}/member/reward/bought.get — the member's own voucher wallet is a deprecated route. Any member-surface design that assumes a member token can read its own vouchers is building on a withdrawn contract.",
+              "excerpt": "\"summary\": \"Get logged member's bought rewards\", \"operationId\": \"memberGetBought\", … \"deprecated\": true"
+            },
+            {
+              "id": "voucher-ref-3",
+              "sourceId": "SPEC",
+              "filePath": "spec/openloyalty-openapi.json",
+              "range": { "start": { "line": 0, "character": 0 }, "end": { "line": 0, "character": 0 } },
+              "note": "Spec paths ./api/{storeCode}/member/{member}/reward/redeem and .../reissue — auto-invalidation on redemption is a supported, reversible engine operation, so s5's 'voucher auto-invalidated on use' is expressible.",
+              "excerpt": "\"summary\": \"Mark coupon as used\" … \"summary\": \"Mark coupon as unused\""
+            },
+            {
+              "id": "voucher-ref-4",
+              "sourceId": "BRIEF",
+              "filePath": "gen-e2/discover/customer-app/ntuc-member-pwa.gen-e2.brief",
+              "range": { "start": { "line": 156, "character": 0 }, "end": { "line": 156, "character": 0 } },
+              "note": "Feature f6 (voucher wallet) states exactly the behaviour this verdict tests — 'their own QR', 'expiry (12 months from issuance by default, configurable per reward type)', 'auto-invalidating the moment they are consumed'. Two of the three are native; the QR is ours.",
+              "excerpt": "\"Issued vouchers held in the app with their own QR, showing expiry … and auto-invalidating the moment they are consumed at the till.\""
+            }
+          ]
+        },
+        {
+          "id": "verdict-multi-redemption",
+          "title": "Multiple redemptions in one transaction (BR-P1-017) is INTEGRATION-LAYER WORK REQUIRED — the engine has no concept of a transaction that groups coupon usages",
+          "summary": "VERDICT: integration-layer work required. ESCALATE. [confidence: strong-signal] Three independent readings converge. (1) `components.schemas.RedeemCouponFormType` is `{ required: [couponCode], properties: { couponCode: string } }` — singular, required, one coupon per call. Open Loyalty's public API reference for 'Mark coupon as used' independently confirms one code per request and describes no bulk mechanism. (2) `components.schemas.PostTransaction` has no coupon, voucher or discount field anywhere in it — `header`, `items`, `customerData`, `channelId`, and nothing else. The engine's transaction model therefore cannot record that two vouchers were consumed against one sale, which means it cannot answer 'what did the member redeem on this bill' and cannot reconcile it for BR-P1-015 funding attribution either. (3) `POST /api/{storeCode}/redemption/status/bulk` is the only bulk endpoint in the reward domain, and it is the wrong one: it moves issued rewards through the fulfilment lifecycle (`issued … completed`), not coupon usage, and its own description states that per-item constraint violations are 'accepted and that item is reported as failed in the response' — explicitly non-atomic. CONSEQUENCE: stacking N vouchers at one till is N sequential `redeem` calls with no engine-side grouping, no atomicity and no rollback. Everything the member sees about a multi-voucher bill, and every partial-failure recovery when voucher 2 of 3 fails after voucher 1 has already been burned, is PALO IT's to design and build on both the member and merchant surfaces. A hold-then-commit pattern is conceivable — `POST /api/{storeCode}/points/block` and `POST /api/{storeCode}/points/{transfer}/cancel` exist — but no such pattern is documented for coupons, and `/points/block` operates on units, not vouchers. [that last sentence: hypothesis]",
+          "references": [
+            {
+              "id": "multi-ref-1",
+              "sourceId": "SPEC",
+              "filePath": "spec/openloyalty-openapi.json",
+              "range": { "start": { "line": 0, "character": 0 }, "end": { "line": 0, "character": 0 } },
+              "note": "Spec path components.schemas.RedeemCouponFormType — the whole schema. One string. This is the entire redemption contract, and BR-P1-017 asks for more than it can express.",
+              "excerpt": "{\"required\": [\"couponCode\"], \"properties\": {\"couponCode\": {\"type\": \"string\"}}, \"type\": \"object\"}"
+            },
+            {
+              "id": "multi-ref-2",
+              "sourceId": "SPEC",
+              "filePath": "spec/openloyalty-openapi.json",
+              "range": { "start": { "line": 0, "character": 0 }, "end": { "line": 0, "character": 0 } },
+              "note": "Spec path components.schemas.PostTransaction.transaction — the complete set of top-level properties. No coupon, voucher or discount field exists, so the sale and the redemptions can never be joined inside the engine.",
+              "excerpt": "\"properties\": {\"customerData\": {…}, \"items\": {…}, \"channelId\": {…}, \"header\": {…}}, \"additionalProperties\": false"
+            },
+            {
+              "id": "multi-ref-3",
+              "sourceId": "SPEC",
+              "filePath": "spec/openloyalty-openapi.json",
+              "range": { "start": { "line": 0, "character": 0 }, "end": { "line": 0, "character": 0 } },
+              "note": "Spec path components.schemas.BulkChangeIssuedRewardStatusRequestBody.description — the engine's own words on non-atomicity, in the only bulk reward endpoint that exists.",
+              "excerpt": "\"Violating one of the per-item constraints … is not rejected with a 400: the request is accepted and that item is reported as failed in the response.\""
+            },
+            {
+              "id": "multi-ref-4",
+              "sourceId": "BRD",
+              "filePath": "gen-e2/discover/general-references/extracted/tender-BRD-requirements.txt",
+              "range": { "start": { "line": 444, "character": 0 }, "end": { "line": 446, "character": 0 } },
+              "note": "BR-P1-017, Must Have — a one-line requirement with no engine mechanism behind it. This is the clearest unbudgeted-scope finding in the desk pass.",
+              "excerpt": "\"Multiple redemptions per transaction — Members can redeem more than one reward/voucher within a single transaction.\""
+            },
+            {
+              "id": "multi-ref-5",
+              "sourceId": "BRIEF",
+              "filePath": "gen-e2/discover/customer-app/ntuc-member-pwa.gen-e2.brief",
+              "range": { "start": { "line": 103, "character": 0 }, "end": { "line": 107, "character": 0 } },
+              "note": "Problem signal s5 already flagged 'how a member combines several vouchers at one till' as open, at confidence 'hypothesis'. This desk pass raises the engine half of that question to strong-signal: the engine will not help.",
+              "excerpt": "\"how a member combines several vouchers at one till are all open.\""
+            }
+          ]
+        },
+        {
+          "id": "verdict-refund-reversal",
+          "title": "Refund reversal is NATIVE WITH CONFIGURATION for the points, but the engine will not revert tier, will not flag the already-spent case, and will not tell the member which purchase was reversed",
+          "summary": "VERDICT: native with configuration for the reversal itself; integration-layer work for all three of BR-P1-012's surrounding obligations. [confidence: strong-signal for the mechanism, corroborated by vendor docs; assumption for the already-spent behaviour, which no source states] The mechanism is real: `PostTransaction.transaction.header.documentType` is an enum of `sell | return` with `linkedDocumentNumber` tying a return to its original, and `components.schemas.Rule.effects.effect` includes `cancel_transaction_effects`, paired with the `return_transaction` value in the campaign `trigger` enum. But reversal is NOT automatic — it requires an operator to have configured a campaign on the `return_transaction` trigger, and Open Loyalty's public campaign documentation adds two operational conditions the spec omits: the return must be matched to an existing transaction, and items must be added to the return transaction manually. GAP A — tier does not revert. The spec's own `Rule` description says it outright: 'cancel_transaction_effects reverses the points the original transaction earned and leaves the tier standing.' The vendor docs agree that returns 'do not revert the member's status or tier … nor adjust campaign limits or counters'. Commercially defensible, but the member surface must never claim tier standing reflects net spend, and CX needs an answer for the member who notices. GAP B — BR-P1-012's second clause has no home. The BRD requires the platform to 'flag for manual adjustment where the points have already been redeemed'. The engine's only lever is `WalletType.allowNegativeBalance`: either the balance goes negative, or (spec and docs both silent) the deduction fails. Neither is a flag, neither raises a case, neither is visible to CX. The exception queue, the CX workflow and the member-facing explanation are all integration-layer and service-design work. Admin remediation exists (`POST /api/{storeCode}/bulkAction/{type}` with `cancelTransfers` / `changeExpirationTransfers`, and `POST /api/{storeCode}/points/{transfer}/cancel`) but nothing in the engine surfaces the exception in the first place. GAP C — the reversal is unexplainable to the member without extra calls. A reversal lands in `GET /api/{storeCode}/member/{member}/history` as a `PointsWereCanceled` entry whose `flatVariables` carry `transferId`, `points`, `comment` and `activePoints` and NO `actionCause`. To say 'this reversal relates to your 3 March purchase at Tenant X' the integration layer must join each history row to `GET /api/{storeCode}/points/{transfer}` (which does carry `actionCause.transactionId`) and then to the transaction. Two extra round-trips per explained ledger row — directly against feature f4 and guiding principle 2, 'never show a member a number they cannot explain'.",
+          "references": [
+            {
+              "id": "refund-ref-1",
+              "sourceId": "SPEC",
+              "filePath": "spec/openloyalty-openapi.json",
+              "range": { "start": { "line": 0, "character": 0 }, "end": { "line": 0, "character": 0 } },
+              "note": "Spec path components.schemas.Rule.items.properties.effects.items.properties.effect.description — the engine documenting its own tier behaviour on a return. This is the sentence that decides Gap A.",
+              "excerpt": "\"A returned transaction does not take the tier back. `cancel_transaction_effects` reverses the points the original transaction earned and leaves the tier standing, along with the mark that protects it from an automatic downgrade.\""
+            },
+            {
+              "id": "refund-ref-2",
+              "sourceId": "SPEC",
+              "filePath": "spec/openloyalty-openapi.json",
+              "range": { "start": { "line": 0, "character": 0 }, "end": { "line": 0, "character": 0 } },
+              "note": "Spec paths components.schemas.PostTransaction.transaction.header and components.schemas.CampaignRequestBody.campaign.trigger — returns are first-class and there is a trigger for them, so the mechanism exists and only needs configuring.",
+              "excerpt": "\"documentType\": {\"enum\": [\"sell\", \"return\"]}, \"linkedDocumentNumber\": {\"description\": \"Used only for return transactions and refers to the original 'sell' document.\"} … \"trigger\": {\"enum\": [\"transaction\", \"return_transaction\", \"custom_event\", \"internal_event\", \"time\", \"achievement\", \"custom_event_unique_code\"]}"
+            },
+            {
+              "id": "refund-ref-3",
+              "sourceId": "SPEC",
+              "filePath": "spec/openloyalty-openapi.json",
+              "range": { "start": { "line": 0, "character": 0 }, "end": { "line": 0, "character": 0 } },
+              "note": "Spec path components.schemas.PointsWereCanceled.flatVariables — the complete set. The absence of actionCause is Gap C: the member ledger cannot self-explain a reversal.",
+              "excerpt": "\"required\": [\"transferId\", \"walletId\", \"walletTypeCode\", \"walletUnitSingularName\", \"walletUnitPluralName\", \"points\", \"activePoints\"] — no actionCause property present"
+            },
+            {
+              "id": "refund-ref-4",
+              "sourceId": "SPEC",
+              "filePath": "spec/openloyalty-openapi.json",
+              "range": { "start": { "line": 0, "character": 0 }, "end": { "line": 0, "character": 0 } },
+              "note": "Spec path components.schemas.PostWalletTypeRequestBody.walletType.allowNegativeBalance — the engine's only response to a reversal that exceeds the balance. It is a boolean, not a flag or a case.",
+              "excerpt": "\"allowNegativeBalance\": {\"description\": \"Indicates if negative balance is allowed\", \"type\": \"boolean\", \"default\": false}"
+            },
+            {
+              "id": "refund-ref-5",
+              "sourceId": "DOC",
+              "filePath": "gen-e2/discover/customer-app/01-research/findings/RA-05-openloyalty-capability-desk-pass.gen-e2.research",
+              "range": { "start": { "line": 0, "character": 0 }, "end": { "line": 0, "character": 0 } },
+              "note": "Desk research: Open Loyalty public help centre, 'Return Transaction' campaign trigger (https://help.openloyalty.io/main-features/campaigns/campaigns-and-referral-campaigns/creating-campaigns/trigger-types/return-transaction), accessed 2026-08-17. Independently corroborates that reversal is campaign-driven and that tier and campaign counters are untouched — two sources agreeing, which is why this insight is strong-signal rather than assumption.",
+              "excerpt": "\"Return transaction has to be matched with an existing transaction. Items must be manually added to the return transaction.\" … \"do not revert the member's status or tier if it was affected by the original transaction, nor adjust campaign limits or counters\""
+            },
+            {
+              "id": "refund-ref-6",
+              "sourceId": "BRD",
+              "filePath": "gen-e2/discover/general-references/extracted/tender-BRD-requirements.txt",
+              "range": { "start": { "line": 409, "character": 0 }, "end": { "line": 413, "character": 0 } },
+              "note": "BR-P1-012, Must Have. Its three clauses map to three different verdicts: automatic reversal = configurable, auditable ledger = native, flag-for-manual-adjustment = nothing.",
+              "excerpt": "\"the platform must automatically reverse the associated points (or flag for manual adjustment where the points have already been redeemed), maintaining an auditable ledger.\""
+            }
+          ]
+        },
+        {
+          "id": "verdict-webhook-coverage",
+          "title": "Webhooks cover three of the five BR-P1-002b notification triggers natively; birthday and lapsed visit have no engine event and are INTEGRATION-LAYER WORK REQUIRED",
+          "summary": "VERDICT: 3 native / 2 integration-layer work required. ESCALATE the two. [confidence: strong-signal — the spec's x-webhooks block and Open Loyalty's public 'What triggers a webhook' page enumerate the same set] The engine publishes 31 webhook events under `x-webhooks`, HMAC-signed (`x-webhook-hmac-signing`), each carrying a `messageId` for de-duplication, with one retry on a 4xx/5xx and — worth noting for availability — synchronous delivery that waits for the receiver's response. Mapping BR-P1-002b's five named campaign triggers: ENROLMENT → `CustomerRegistered` and `CustomerWasRegisteredWithoutActivation`, native. TIER UPGRADE → `CustomerLevelChanged`, native, and its payload carries `level.levelMoveUp` / `levelMoveDown` so an upgrade is distinguishable from a downgrade without inference. POINTS EXPIRY → `PointsWillExpire`, native with configuration; the payload carries `points`, `remainingUnits` and `pointsWillExpire`, and the vendor docs state it is 'sent X days before units expire' per an expiring-notifications setting — a setting that appears nowhere in the OpenAPI, because `GET /api/{storeCode}/settings` returns an untyped `additionalProperties: string` map. BIRTHDAY → no webhook exists. Two configurations get close and neither produces a semantically named event: a time-triggered campaign can use `TriggerStrategy.type: birthday`, but it emits the generic `CampaignEffectWasApplied`, which the Notification Service must decode by campaign id; and BR-P1-024's actual mechanic — a multiplier on the FIRST QUALIFYING TRANSACTION in the birthday month — is not the `birthday` trigger strategy at all but a `transaction`-triggered campaign with a date condition (`is_month_of_year` is in the operator enum and `birthDate` is a member field). Two different campaigns, both emitting the same anonymous effect event. LAPSED VISIT → no webhook, and no usable substitute. Segments can express lapsing perfectly well (the segment condition enum includes `last_purchase_n_days_before`, `last_transaction_between_days`, `purchase_period`), but the only segment webhook is `SegmentMembershipDropped`, and its payload is `WebhookSegment { segmentId, segmentName, previousCount, newCount }` — it does not name a member, and it fires on leaving a segment, not joining one. There is no per-member 'became lapsed' event anywhere in the 31. Origination falls to scheduled polling of `GET /api/{storeCode}/segment/{segment}/members` with local diffing and de-duplication.",
+          "references": [
+            {
+              "id": "webhook-ref-1",
+              "sourceId": "SPEC",
+              "filePath": "spec/openloyalty-openapi.json",
+              "range": { "start": { "line": 0, "character": 0 }, "end": { "line": 0, "character": 0 } },
+              "note": "Spec block x-webhooks — the full enumerated set of 31 event types. Read it as the complete list: neither a birthday event nor a per-member lapsed/inactivity event appears anywhere in it.",
+              "excerpt": "AchievementCreated, AchievementUpdated, CampaignCreated, CampaignUpdated, AvailablePointsAmountChanged, CouponWillExpire, CustomerBoughtReward, CustomerDeactivated, CustomerEmailWasChanged, CustomerLevelChanged, CustomerPhoneNumberWasChanged, CustomerRequestedPasswordReset, CustomerRequestedSendActivationCode, CustomerUpdated, CustomerWasRegisteredWithoutActivation, TransactionAssignedToCustomer, LevelWillExpire, PointsWillExpire, CustomerRegistered, TransactionRegistered, RewardRedemptionStatusChanged, RewardCreated, RewardUpdated, CampaignEffectWasApplied, MemberAchievementProgressWasChanged, MemberChallengeProgressWasChanged, UnitsTransferWasAdded, AchievementsWereProcessed, SegmentMembershipDropped, ChallengesWereProcessed, WalletBalanceUpdated"
+            },
+            {
+              "id": "webhook-ref-2",
+              "sourceId": "SPEC",
+              "filePath": "spec/openloyalty-openapi.json",
+              "range": { "start": { "line": 0, "character": 0 }, "end": { "line": 0, "character": 0 } },
+              "note": "Spec path components.schemas.WebhookSegment — the entire payload of SegmentMembershipDropped. Counts, not members. This is why a lapsed-visit segment cannot drive a per-member notification.",
+              "excerpt": "\"segmentId\": {…}, \"segmentName\": {…}, \"previousCount\": {\"type\": \"integer\"}, \"newCount\": {\"type\": \"integer\"}"
+            },
+            {
+              "id": "webhook-ref-3",
+              "sourceId": "SPEC",
+              "filePath": "spec/openloyalty-openapi.json",
+              "range": { "start": { "line": 0, "character": 0 }, "end": { "line": 0, "character": 0 } },
+              "note": "Spec path components.schemas.TriggerStrategy — birthday exists as a campaign trigger strategy, which is why the verdict is 'integration-layer work' rather than 'impossible'. The gap is the event, not the trigger.",
+              "excerpt": "\"type\": {\"enum\": [\"birthday\", \"registration_anniversary\", \"daily\", \"weekly\", \"monthly\"]}"
+            },
+            {
+              "id": "webhook-ref-4",
+              "sourceId": "SPEC",
+              "filePath": "spec/openloyalty-openapi.json",
+              "range": { "start": { "line": 0, "character": 0 }, "end": { "line": 0, "character": 0 } },
+              "note": "Spec path components.schemas.SegmentPart — lapsing is expressible as a segment condition. The capability exists; only the per-member event is missing.",
+              "excerpt": "\"last_purchase_n_days_before\", \"last_transaction_between_days\", \"last_custom_event_n_days_before\", \"purchase_period\", \"anniversary\""
+            },
+            {
+              "id": "webhook-ref-5",
+              "sourceId": "DOC",
+              "filePath": "gen-e2/discover/customer-app/01-research/findings/RA-05-openloyalty-capability-desk-pass.gen-e2.research",
+              "range": { "start": { "line": 0, "character": 0 }, "end": { "line": 0, "character": 0 } },
+              "note": "Desk research: Open Loyalty public help centre, 'What triggers a webhook' (https://help.openloyalty.io/integrations-and-data-exchange/webhooks/what-triggers-a-webhook.md), accessed 2026-08-17. Enumerates the same event set as x-webhooks with no birthday or lapsed event, and supplies the configurability detail the OpenAPI omits.",
+              "excerpt": "\"PointsWillExpire: Sent X days before units expire based on configured expiring notifications.\" … \"CouponWillExpire: Sent X days before a reward coupon expires per expiring notifications configuration.\""
+            },
+            {
+              "id": "webhook-ref-6",
+              "sourceId": "BRD",
+              "filePath": "gen-e2/discover/general-references/extracted/tender-BRD-requirements.txt",
+              "range": { "start": { "line": 318, "character": 0 }, "end": { "line": 331, "character": 0 } },
+              "note": "BR-P1-002b, Must Have — the five named campaign triggers this verdict is scored against. Three have events; two do not.",
+              "excerpt": "\"support audience segmentation, campaign triggers (e.g. enrolment, tier upgrade, points expiry, birthday, lapsed visit) and closed-loop campaign performance reporting.\""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "escalation",
+      "title": "Escalation — Unbudgeted Member-Surface Engineering",
+      "description": "RA-05's success criteria state: 'Anything in the integration-layer column is unbudgeted member-surface work and must be escalated the day it is found.' This group is that escalation, found 2026-08-17. Effort shapes are the agent's estimate of the SHAPE of the work — which components, which failure paths, which surfaces — not a sizing. Sizing requires an engineer with the delivery plan and is the human's to produce. All items are conditional on the live-instance spike confirming the desk reading.",
+      "insights": [
+        {
+          "id": "escalate-multi-redemption",
+          "title": "E1 — Multi-voucher redemption at a till must be orchestrated end to end by PALO IT, including the partial-failure path, and it touches both the member and merchant surfaces",
+          "summary": "HIGHEST PRIORITY ESCALATION. [confidence: strong-signal] BR-P1-017 is a Must Have with no engine mechanism. Shape of the work: (1) an integration-layer redemption orchestrator that accepts a set of coupon codes and calls `redeem` N times; (2) a compensating-action path using `.../reward/reissue` for when voucher k fails after vouchers 1..k-1 have been burned — reissue exists, so recovery is possible, but the decision logic, the idempotency keys and the audit trail are ours; (3) a member-facing model for 'these vouchers went on one bill' that the engine cannot store, which means PALO IT owns that record and its reconciliation against BR-P1-015 funding attribution; (4) a merchant-surface flow for staff scanning several vouchers in sequence with a queue behind them; (5) a rule for whether vouchers may be combined at all — a stacking policy the BRD does not state and the engine cannot enforce. This is not one component. It spans the member app, the merchant scanner, the integration layer and a reconciliation record, and every one of them has a peak-hour failure path. It also sits directly on top of the unresolved question in problem signal s5 about who initiates redemption — which means it cannot be scoped before RA-03 observes the till.",
+          "references": [
+            {
+              "id": "esc-multi-ref-1",
+              "sourceId": "PLAN",
+              "filePath": "gen-e2/discover/customer-app/01-research/02-research-plan.md",
+              "range": { "start": { "line": 137, "character": 0 }, "end": { "line": 148, "character": 0 } },
+              "note": "The RA-05 entry's own escalation instruction, which this group discharges.",
+              "excerpt": "\"Anything in the 'integration-layer' column is unbudgeted member-surface work and must be escalated the day it is found.\""
+            },
+            {
+              "id": "esc-multi-ref-2",
+              "sourceId": "PLAN",
+              "filePath": "gen-e2/discover/customer-app/01-research/02-research-plan.md",
+              "range": { "start": { "line": 225, "character": 0 }, "end": { "line": 227, "character": 0 } },
+              "note": "The sequencing note predicted exactly this class of finding and named multi-redemption as one of three things to check. It is the one that came back worst.",
+              "excerpt": "\"If Open Loyalty cannot natively express the expiry horizon, the voucher wallet or multi-redemption, that is unbudgeted member-surface engineering discovered at week 1 rather than week 12.\""
+            }
+          ]
+        },
+        {
+          "id": "escalate-notification-origination",
+          "title": "E2 — The Notification Service as architected cannot originate the birthday or lapsed-visit campaigns, because it is webhook-driven and neither trigger emits a webhook",
+          "summary": "SECOND PRIORITY ESCALATION, and a direct architectural contradiction. [confidence: strong-signal] ⚠️ CONTRADICTION: the solutioning deck defines the Notification Service as 'An API service that accepts webhook requests from OpenLoyalty and creates notifications that are sent to the marketing platform', and claims the platform provides 'outbound webhooks on every member and ledger mutation'. Both statements are true and neither is sufficient: birthday and lapsed visit are not member or ledger mutations, so no webhook exists for them, so a purely webhook-driven Notification Service cannot originate two of the five BR-P1-002b triggers. Shape of the work: a scheduler alongside the webhook receiver; for lapsed visit, periodic polling of `GET /api/{storeCode}/segment/{segment}/members` for a lapsed segment, diffed against local state to detect entry, with de-duplication so a member is not re-notified every poll; for birthday, either the same scheduler reading `birthDate` off the member record, or a `CampaignEffectWasApplied` subscription plus a campaign-id-to-semantic-event mapping table that the Campaign Studio and the Notification Service both have to agree on and keep in sync. The second option couples marketing configuration to notification code, which is the kind of coupling BRD NFR-011/NFR-012 exist to prevent. Both options add state, a scheduler and a failure mode (missed or duplicated notifications) to a service the deck draws as stateless.",
+          "references": [
+            {
+              "id": "esc-notif-ref-1",
+              "sourceId": "SOLUTIONING",
+              "filePath": "gen-e2/discover/general-references/extracted/solutioning.txt",
+              "range": { "start": { "line": 252, "character": 0 }, "end": { "line": 255, "character": 0 } },
+              "note": "The Notification Service definition. Webhook-in, notification-out, no scheduler. The contradiction is structural, not a wording problem.",
+              "excerpt": "\"Notification Service — An API service that accepts webhook requests from OpenLoyalty and creates notifications that are sent to the marketing platform.\""
+            },
+            {
+              "id": "esc-notif-ref-2",
+              "sourceId": "SOLUTIONING",
+              "filePath": "gen-e2/discover/general-references/extracted/solutioning.txt",
+              "range": { "start": { "line": 204, "character": 0 }, "end": { "line": 207, "character": 0 } },
+              "note": "The capability claim made to the client. Accurate as far as it goes; the gap is that two BRD-named triggers are outside the class of events it describes.",
+              "excerpt": "\"Outbound webhooks on every member and ledger mutation\""
+            },
+            {
+              "id": "esc-notif-ref-3",
+              "sourceId": "BRIEF",
+              "filePath": "gen-e2/discover/customer-app/ntuc-member-pwa.gen-e2.brief",
+              "range": { "start": { "line": 161, "character": 0 }, "end": { "line": 161, "character": 0 } },
+              "note": "Feature f11 promises the member enrolment, tier-upgrade, birthday and lapsed-visit notifications as MVP. Two of the four have no engine event behind them.",
+              "excerpt": "\"Member notification ahead of points expiry, plus enrolment, tier-upgrade, birthday and lapsed-visit triggers…\""
+            }
+          ]
+        },
+        {
+          "id": "escalate-expiry-derivation",
+          "title": "E3 — If the deprecated status endpoint is withdrawn or its breakdown proves unusable, PALO IT must derive expiry cohorts itself — and cannot, without knowing the engine's consumption order",
+          "summary": "CONDITIONAL ESCALATION — resolve at T1/T2 before designing f4. [confidence: assumption] Two outcomes, very different costs. If `GET /api/{storeCode}/member/{member}/status` still returns a usable `pointsExpiringBreakdown` on the live tenant, f4's expiry horizon is a read and the cost is a deprecation risk to carry in RAID. If it does not — withdrawn, empty, or keyed in a format that cannot be rendered to a member — the integration layer must compute cohorts from `/member/points` by pairing spend transfers against earning transfers, which requires knowing whether the engine consumes FIFO or nearest-expiry. Neither the OpenAPI nor the vendor's wallet documentation states it, and getting it wrong means showing members a lapse warning for points they have already spent, or hiding one for points they still hold. That is a trust failure at exactly the moment guiding principle 2 says trust is won or lost. Shape of the work in the bad case: a shadow ledger in the integration layer, reconciled against `UnitsTransferWasAdded` and `WalletBalanceUpdated` webhooks — both of which carry enough to maintain it (`expiresAt`, `type`, `relatedTransferId` for expired transfers, and a `reason` enum of `added|spent|expired|activated|cancelled|blocked|unblocked`) — plus a reconciliation job and a discrepancy alarm. A shadow ledger of the loyalty balance is a serious piece of engineering to discover at week 1 and a severe one to discover at week 12.",
+          "references": [
+            {
+              "id": "esc-expiry-ref-1",
+              "sourceId": "SPEC",
+              "filePath": "spec/openloyalty-openapi.json",
+              "range": { "start": { "line": 0, "character": 0 }, "end": { "line": 0, "character": 0 } },
+              "note": "Spec block x-webhooks.WalletBalanceUpdated and x-webhooks.UnitsTransferWasAdded — these are what a shadow ledger would be built on, and they are rich enough to make it feasible. Feasible is not the same as budgeted.",
+              "excerpt": "\"reason\": {\"enum\": [\"added\", \"spent\", \"expired\", \"activated\", \"cancelled\", \"blocked\", \"unblocked\"]} … \"relatedTransferId\": {\"description\": \"Only for transfers with type 'expired'\"}"
+            },
+            {
+              "id": "esc-expiry-ref-2",
+              "sourceId": "BRIEF",
+              "filePath": "gen-e2/discover/customer-app/ntuc-member-pwa.gen-e2.brief",
+              "range": { "start": { "line": 154, "character": 0 }, "end": { "line": 154, "character": 0 } },
+              "note": "Feature f4 promises the member 'which points lapse when'. Whether that promise is a read or a shadow ledger is decided by one call against a live instance.",
+              "excerpt": "\"shows which points lapse when against the 12-month horizon\""
+            }
+          ]
+        },
+        {
+          "id": "escalate-refund-exception-and-ledger",
+          "title": "E4 — The refund exception queue, the tier-stays-put explanation and the per-row ledger join are three separate pieces of member-surface work sitting behind one BRD line",
+          "summary": "THIRD PRIORITY ESCALATION. [confidence: strong-signal for the ledger join; assumption for the exception behaviour until T4 runs] Shape of the work, in three parts. (a) BR-P1-012's 'flag for manual adjustment' has no engine equivalent: PALO IT must detect the already-spent case (either by pre-checking the balance before posting the return, or by catching a negative balance after), raise a case, route it to CX, and decide what the member sees in the meantime — a negative balance shown to a member with no explanation is the worst possible outcome and is the default if nothing is built. (b) The tier does not revert on a refund, by design and by the engine's own documentation, so both the member surface and the CX script need a defensible account of why status survived a reversed purchase. (c) Every explained ledger row costs two extra calls, because `PointsWereCanceled` and its siblings carry no `actionCause` — so f4's 'states plainly when a refund has reversed an earning' is an N+1 join per row, needing caching or a denormalised local history to stay inside the response-time target of success metric m5. None of the three is large alone. Together they are the difference between f4 as a list and f4 as the trust instrument guiding principle 2 requires.",
+          "references": [
+            {
+              "id": "esc-refund-ref-1",
+              "sourceId": "BRIEF",
+              "filePath": "gen-e2/discover/customer-app/ntuc-member-pwa.gen-e2.brief",
+              "range": { "start": { "line": 93, "character": 0 }, "end": { "line": 99, "character": 0 } },
+              "note": "Problem signal s4 framed expiry and reversal as trust events handled as ledger rows. The desk pass confirms the engine hands us ledger rows and nothing else — the trust layer is entirely ours.",
+              "excerpt": "\"These are the two moments where a member's balance goes down through no action of their own.\""
+            },
+            {
+              "id": "esc-refund-ref-2",
+              "sourceId": "BRIEF",
+              "filePath": "gen-e2/discover/customer-app/ntuc-member-pwa.gen-e2.brief",
+              "range": { "start": { "line": 215, "character": 0 }, "end": { "line": 215, "character": 0 } },
+              "note": "Guiding principle 2 is the standard this work is measured against, and it is the principle the engine's flat history rows cannot meet unaided.",
+              "excerpt": "\"Never show a member a number they cannot explain\""
+            }
+          ]
+        },
+        {
+          "id": "escalate-brokering-and-qr",
+          "title": "E5 — Every member-initiated action must be brokered by the integration layer with an admin credential, because the engine labels buying and redeeming as Management operations",
+          "summary": "LOWER PRIORITY BUT ARCHITECTURALLY LOAD-BEARING. [confidence: assumption — the spec's scope labels are documentation, not enforcement, and T7 must confirm them] `POST /api/{storeCode}/reward/{reward}/buy` is labelled Management and its request bodies (`StaticCoupon`, `DynamicCoupon`, `ConversionCoupon`) all require `customerId` in the body rather than deriving it from the caller — the shape of an administrator acting on a member's behalf, not a member acting for themselves. The same pattern holds for `POST /points/spend`. Combined with the deprecation of `GET /member/reward/bought`, this means the member-driven rewards flow the current PWA implements has no supported member-token path in the engine: catalogue browse, buy, and voucher wallet must all be brokered server-side with an admin credential, with PALO IT enforcing that member A cannot act on member B. That is standard for a headless deployment and consistent with the brief's 'the engine is headless and stays that way', but it should be a stated architectural position rather than an accident, and it has a security consequence — a long-lived admin credential in the integration layer, which the BRD's ISO 27001 / SOC 2 obligations will be read against. Add to this the small but real item that the engine issues `issuedCoupon.code` as a bare string: QR symbology, rendering, and offline presentation of both the membership card and the voucher (features f1, f6, f12, guiding principle 1) are entirely member-surface work with no engine support.",
+          "references": [
+            {
+              "id": "esc-broker-ref-1",
+              "sourceId": "SPEC",
+              "filePath": "spec/openloyalty-openapi.json",
+              "range": { "start": { "line": 0, "character": 0 }, "end": { "line": 0, "character": 0 } },
+              "note": "Spec paths ./api/{storeCode}/reward/{reward}/buy.post (Management label) and components.schemas.ConversionCoupon — customerId is required in the body, which is the signature of an admin-scoped operation.",
+              "excerpt": "\"Management\" … ConversionCoupon: {\"required\": [\"customerId\"], \"properties\": {\"customerId\": {…}, \"dateValid\": {…}, \"units\": {…}}}"
+            },
+            {
+              "id": "esc-broker-ref-2",
+              "sourceId": "BRIEF",
+              "filePath": "gen-e2/discover/customer-app/ntuc-member-pwa.gen-e2.brief",
+              "range": { "start": { "line": 226, "character": 0 }, "end": { "line": 226, "character": 0 } },
+              "note": "The brief already flags the repository's localStorage token pattern as not production-acceptable. A brokered architecture with a server-held admin credential is the answer, but it needs stating and securing deliberately.",
+              "excerpt": "\"the repository's current pattern of holding the OpenLoyalty token in localStorage is explicitly flagged as dev-grade and is not production-acceptable\""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "test-first",
+      "title": "Test This First — Ordered Calls for the Live Instance",
+      "description": "The specific calls to make the moment a real Open Loyalty tenant is available (RAID D005), ordered by how much unbudgeted work hangs on the answer rather than by how easy they are to run. Each states what would confirm the desk verdict and what would break it. Running T1–T5 is the minimum that turns this desk pass into the spike RA-05 actually asks for.",
+      "insights": [
+        {
+          "id": "test-t1-expiry-breakdown",
+          "title": "T1 — Call the deprecated status endpoint and find out whether pointsExpiringBreakdown still works and what its keys look like",
+          "summary": "STAKES: the entire cost of feature f4's expiry horizon — a read, or a shadow ledger (E3). CALL: `GET /api/{storeCode}/member/{member}/status`, with an admin token and again with a member JWT. LOOK FOR: does it 200 at all; is `pointsExpiringBreakdown` populated for a member holding points with several different `expiresAt` values; what is the key format (ISO date? `YYYY-MM`? day count?); does the member's own JWT get through, or only an admin's. CONFIRMS THE VERDICT IF: it returns a dated map that can be rendered to a member. BREAKS IT IF: the field is absent, empty, or keyed in something unrenderable — at which point E3's shadow ledger becomes live scope and must be escalated the same day. ALSO ASK OPEN LOYALTY DIRECTLY, in the expert-interview half of RA-05: what replaces this endpoint, and on what timeline is the deprecated route removed? [confidence: this is the highest-value single call in the list]",
+          "references": [
+            {
+              "id": "t1-ref-1",
+              "sourceId": "RAID",
+              "filePath": "gen-e2/discover/customer-app/raid.gen-e2.raid",
+              "range": { "start": { "line": 459, "character": 0 }, "end": { "line": 459, "character": 0 } },
+              "note": "D005 is the dependency that gates every test in this group. Nothing here can run until it clears.",
+              "excerpt": "\"Open Loyalty engine capability confirmation against the real instance — expiry cohorts, voucher wallet semantics, multi-redemption, webhook contract (see R008).\""
+            }
+          ]
+        },
+        {
+          "id": "test-t2-consumption-order",
+          "title": "T2 — Establish empirically whether spending consumes points FIFO or nearest-expiry, because no document states it",
+          "summary": "STAKES: correctness of every expiry warning the member is ever shown (E3). CALL: add three transfers via `POST /api/{storeCode}/points/add` with deliberately different `expiresAt` values and distinguishable amounts; spend an amount that must cross a cohort boundary via `POST /api/{storeCode}/points/spend`; then `GET /api/{storeCode}/member/points?_orderBy[expiresAt]=asc` and read which cohort shrank. Repeat with a spend that exactly exhausts one cohort. LOOK FOR: which earning transfer was drawn down; whether the engine mutates the original transfer's `value` or writes a separate spending row (the schema says the latter, which is why this matters); whether any remaining-amount field appears at runtime that the spec does not document. CONFIRMS: a stable, documentable consumption order. BREAKS: an order that varies, or one that cannot be observed from the member-facing endpoint — either forces E3.",
+          "references": [
+            {
+              "id": "t2-ref-1",
+              "sourceId": "SPEC",
+              "filePath": "spec/openloyalty-openapi.json",
+              "range": { "start": { "line": 0, "character": 0 }, "end": { "line": 0, "character": 0 } },
+              "note": "Spec path paths./api/{storeCode}/member/points.get — the endpoint under test, and the one the member surface would actually use. Its expiresAt filter and _orderBy support are what make the experiment readable.",
+              "excerpt": "\"name\": \"expiresAt\", \"in\": \"query\", \"schema\": {\"type\": \"string\", \"format\": \"date-time\"}"
+            }
+          ]
+        },
+        {
+          "id": "test-t3-multi-redeem",
+          "title": "T3 — Burn two coupons in quick succession and characterise the failure path, because BR-P1-017 has to be built on top of whatever it does",
+          "summary": "STAKES: the design of E1, the largest escalation in this pass. CALL: issue two coupons to one member, then `POST /api/{storeCode}/member/{member}/reward/redeem` twice in rapid succession; then attempt to redeem an already-used code; then an expired one; then attempt `.../reward/reissue` on a used code and re-redeem it. LOOK FOR: the exact status and body on each failure — the spec advertises 400, 404 and 409 but describes none of them; whether the second call while the first is in flight 409s (the spec's Conflict response is described as 'the resource is already being processed by another concurrent request', which suggests per-resource locking, not per-member); whether `reissue` fully restores a coupon or leaves a trace; whether anything anywhere in the engine now links the two redemptions. CONFIRMS: reissue is a usable compensating action, which makes the orchestrator tractable. BREAKS: reissue is lossy or refused after use — in which case a partial multi-voucher failure is unrecoverable in the engine and the member is owed a manual remedy, which changes both the CX model and the sizing of E1.",
+          "references": [
+            {
+              "id": "t3-ref-1",
+              "sourceId": "SPEC",
+              "filePath": "spec/openloyalty-openapi.json",
+              "range": { "start": { "line": 0, "character": 0 }, "end": { "line": 0, "character": 0 } },
+              "note": "Spec path paths./api/{storeCode}/member/{member}/reward/redeem.post.responses — a 409 is advertised but never explained. The semantics of that conflict decide whether sequential redemption is safe under a queue at peak.",
+              "excerpt": "\"400\": BadRequest, \"404\": NotFound, \"409\": Conflict — no description of which condition produces which"
+            }
+          ]
+        },
+        {
+          "id": "test-t4-refund-paths",
+          "title": "T4 — Post a partial return against a spent balance and find out what the engine actually does, because BR-P1-012's hardest clause depends on it",
+          "summary": "STAKES: whether E4's exception queue is a small guard or a full CX workflow. CALL: configure a campaign with `trigger: return_transaction` and the `cancel_transaction_effects` effect. Post a `sell` transaction, let points land, then post a `return` with `linkedDocumentNumber` set and only SOME of the original items. Then repeat the whole sequence but spend the points first, with `allowNegativeBalance: false`, and again with it `true`. LOOK FOR: on a partial return, are points reversed proportionally to the returned items or in full; with a spent balance and negative balance disallowed, does the reversal fail loudly, fail silently, or partially apply; what appears in `GET /member/{member}/history` in each case; does the tier really stay put as the spec claims; is anything at all raised that CX could see. CONFIRMS: proportional reversal plus a clean, detectable failure on the spent case. BREAKS: a silent partial application — the worst outcome, because the member's balance would then be wrong with no signal to anyone.",
+          "references": [
+            {
+              "id": "t4-ref-1",
+              "sourceId": "BRD",
+              "filePath": "gen-e2/discover/general-references/extracted/tender-BRD-requirements.txt",
+              "range": { "start": { "line": 409, "character": 0 }, "end": { "line": 413, "character": 0 } },
+              "note": "BR-P1-012 again — the clause 'or flag for manual adjustment where the points have already been redeemed' is the specific thing this test exists to price.",
+              "excerpt": "\"(or flag for manual adjustment where the points have already been redeemed), maintaining an auditable ledger\""
+            }
+          ]
+        },
+        {
+          "id": "test-t5-webhook-reality",
+          "title": "T5 — Ask the instance for its own webhook event list and subscribe to everything, because the spec's list may not be the tenant's list",
+          "summary": "STAKES: whether E2 is two triggers or more. CALL: `GET /api/{storeCode}/webhook/event` — which in the spec returns nothing more than `items: [string]`, so the real list is only knowable from a live tenant. Diff it against the 31 in `x-webhooks`. Then `POST /api/{storeCode}/webhook/subscription` against a capture endpoint, configure a birthday-trigger campaign and a lapsed segment, and watch what actually arrives. LOOK FOR: any event the spec does not document, particularly anything birthday- or inactivity-shaped; what a birthday campaign firing actually emits and whether the payload carries enough to identify it without a campaign-id lookup table; whether `SegmentMembershipDropped` really is count-only; whether any per-member segment event exists that the spec omits. CONFIRMS: 31 events, two triggers missing, E2 as scoped. BREAKS FAVOURABLY IF: the tenant exposes events the vendored spec does not — in which case the vendored spec is stale and every verdict in this document needs re-reading against the live list, which is itself a finding worth having early.",
+          "references": [
+            {
+              "id": "t5-ref-1",
+              "sourceId": "SPEC",
+              "filePath": "spec/openloyalty-openapi.json",
+              "range": { "start": { "line": 0, "character": 0 }, "end": { "line": 0, "character": 0 } },
+              "note": "Spec path paths./api/{storeCode}/webhook/event.get — the response is an untyped array of strings, so the authoritative event list is only obtainable from a running tenant. The spec cannot close this question.",
+              "excerpt": "\"items\": {\"type\": \"array\", \"items\": {\"type\": \"string\"}}"
+            }
+          ]
+        },
+        {
+          "id": "test-t6-settings-map",
+          "title": "T6 — Dump the settings map, because the expiry-notification lead time BR-P1-011 depends on is invisible to the specification",
+          "summary": "STAKES: whether 'automated member notification ahead of expiry' is a configuration or a build. CALL: `GET /api/{storeCode}/settings` and `GET /api/{storeCode}/settings/choices/{type}` for each available type. LOOK FOR: the expiring-notifications lead time the vendor documentation refers to as 'X days before'; whether it is a single global value or configurable per wallet type; whether it permits more than one reminder, since BR-P1-011 says 'notification ahead of expiry' without specifying a cadence and members will likely need more than one; and what else is hiding in an untyped string map that the member surface depends on. CONFIRMS: a configurable lead time, making the expiry notification native-with-configuration as scored. BREAKS: a fixed or single-shot reminder, which pushes reminder cadence into the Notification Service and enlarges E2.",
+          "references": [
+            {
+              "id": "t6-ref-1",
+              "sourceId": "SPEC",
+              "filePath": "spec/openloyalty-openapi.json",
+              "range": { "start": { "line": 0, "character": 0 }, "end": { "line": 0, "character": 0 } },
+              "note": "Spec path paths./api/{storeCode}/settings.get — the response schema is a bare map of strings. Every configuration decision the member surface depends on is invisible here, which is why this call has to be made rather than reasoned about.",
+              "excerpt": "\"settings\": {\"type\": \"array\", \"items\": {\"type\": \"object\", \"additionalProperties\": {\"type\": \"string\"}}}"
+            }
+          ]
+        },
+        {
+          "id": "test-t7-member-token-scope",
+          "title": "T7 — Probe what a member JWT is actually allowed to do, because the Integration and Management labels are prose, not enforcement",
+          "summary": "STAKES: whether the brokered architecture in E5 is mandatory or a choice. CALL: obtain a member token via `POST /api/{storeCode}/member/login_check`, then attempt `GET /member/points`, `GET /member/reward`, `GET /member/reward/bought`, `GET /member/{self}/status`, `GET /redemption?customerId={self}`, `GET /redemption?customerId={other}`, `POST /reward/{reward}/buy`, and `POST /member/{self}/reward/redeem`. LOOK FOR: which return 403; critically, whether `/redemption` with another member's `customerId` leaks — the spec's single Bearer scheme does not distinguish admin from member, so this is a real question, not a formality. CONFIRMS: Management-labelled routes reject member tokens, making brokering mandatory and E5 a stated architectural position. BREAKS: member tokens reach admin surfaces, which is a security finding for the ISO 27001 / SOC 2 evidence pack and must go to RAID immediately rather than into a design decision.",
+          "references": [
+            {
+              "id": "t7-ref-1",
+              "sourceId": "SPEC",
+              "filePath": "spec/openloyalty-openapi.json",
+              "range": { "start": { "line": 0, "character": 0 }, "end": { "line": 0, "character": 0 } },
+              "note": "Spec block security and components.securitySchemes — a single Bearer scheme covers both admin and member JWTs, with no scopes and no per-operation security overrides except on the five unauthenticated login routes. Scope is therefore untestable from the document.",
+              "excerpt": "\"security\": [{\"Bearer\": []}, {\"token\": []}] — applied globally, with no scopes declared"
+            }
+          ]
+        },
+        {
+          "id": "test-t8-history-actioncause",
+          "title": "T8 — Read a real member history containing a reversal and an expiry, and confirm actionCause really is absent",
+          "summary": "STAKES: the N+1 join in E4(c), and therefore the response-time budget for feature f4 against success metric m5. CALL: after T4, `GET /api/{storeCode}/member/{member}/history` for the affected member. LOOK FOR: whether `PointsWereCanceled` and `PointsWereExpired` appear as the spec's discriminator mapping promises; whether `flatVariables.comment` carries anything useful enough to explain the row without a join (a campaign name, a document number); whether any undocumented field appears at runtime. CONFIRMS: the join is required, and f4 needs caching or a denormalised local history. BREAKS FAVOURABLY: `comment` turns out to carry the originating document number, in which case a large part of E4(c) disappears — worth knowing, because it is the cheapest possible win in this list.",
+          "references": [
+            {
+              "id": "t8-ref-1",
+              "sourceId": "SPEC",
+              "filePath": "spec/openloyalty-openapi.json",
+              "range": { "start": { "line": 0, "character": 0 }, "end": { "line": 0, "character": 0 } },
+              "note": "Spec path paths./api/{storeCode}/member/{member}/history.get — a well-typed discriminated event stream, which is genuinely good news for f4. The gap is causation, not structure.",
+              "excerpt": "discriminator mapping includes PointsWereAdded, PointsWereSpent, PointsWereExpired, PointsWereCanceled, PointsWereBlocked, PointsWereUnlocked, RewardWasBought, CustomerWasMovedToLevel"
+            }
+          ]
+        },
+        {
+          "id": "test-t9-voucher-lifecycle",
+          "title": "T9 — Run one voucher through its whole life and confirm expiry and invalidation behave as the schema advertises",
+          "summary": "STAKES: feature f6 as promised in the brief. CALL: buy a conversion coupon with an explicit `dateValid`; read it back from `GET /api/{storeCode}/redemption/{issuedReward}`; redeem it; read it back again; attempt to redeem it a second time; then repeat with a coupon whose `activeTo` has passed. LOOK FOR: is `activeTo` set from `dateValid` as expected; does `usedAt` populate on redemption; is a second redemption refused and with what code; is an expired coupon refused at redemption or merely marked; does `CouponWillExpire` fire, and how far ahead. CONFIRMS: auto-invalidation and per-voucher expiry are native as scored, leaving only the QR as member-surface work. BREAKS: expiry is advisory rather than enforced, in which case enforcement moves to the merchant scanner and becomes tenant-facing scope.",
+          "references": [
+            {
+              "id": "t9-ref-1",
+              "sourceId": "SPEC",
+              "filePath": "spec/openloyalty-openapi.json",
+              "range": { "start": { "line": 0, "character": 0 }, "end": { "line": 0, "character": 0 } },
+              "note": "Spec path components.schemas.ConversionCoupon — dateValid is the per-issuance expiry lever BR-P1-016 needs. Whether it is enforced or merely recorded is exactly the kind of semantics the spec cannot answer.",
+              "excerpt": "\"dateValid\": {\"type\": \"string\", \"format\": \"date-time\"}"
+            }
+          ]
+        },
+        {
+          "id": "test-t10-parking-cap",
+          "title": "T10 — Test whether a wallet-type per-member monthly limit can carry the parking entitlement cap, which nobody has yet asked the engine to do",
+          "summary": "OPPORTUNISTIC — outside RA-05's five behaviours, but cheap once the tenant is up and it closes an open design question. [confidence: hypothesis] `WalletTypeLimit.pointsPerMember` accepts a `value` plus an `interval` of `calendarMonths`, which is structurally exactly the parking entitlement's 'capped monthly by tier' (BR-P1-025, feature f8, problem signal s6). CALL: create a second wallet type with `pointsPerMember: { value: 2, interval: { type: calendarMonths, value: 1 } }`, grant against it repeatedly, and observe what happens at and past the cap. LOOK FOR: whether the limit is enforced or advisory; whether the remaining allowance is readable — `components.schemas.Wallet` exposes `unitsLimitUsed` and `unitsLimitRemaining`, which is precisely the number f8 needs to show a member; whether the limit can differ by tier, which BR-P1-025 requires (Tier 1: 1 hour, Tier 2: 2 hours) and a wallet-type-level limit may not support. IF IT WORKS: the parking entitlement gets a real engine-backed counter instead of a bespoke one, and s6's 'how the monthly cap is tracked and shown' is largely answered. Note this does not touch the physical coupon problem, which remains an operations question for RA-04.",
+          "references": [
+            {
+              "id": "t10-ref-1",
+              "sourceId": "SPEC",
+              "filePath": "spec/openloyalty-openapi.json",
+              "range": { "start": { "line": 0, "character": 0 }, "end": { "line": 0, "character": 0 } },
+              "note": "Spec paths components.schemas.WalletTypeLimit.pointsPerMember and components.schemas.Wallet — a per-member calendar-month allowance with a readable remaining balance. Nothing in the BRD or solutioning deck connects this to parking; the shape fit is the finding.",
+              "excerpt": "\"pointsPerMember\": {\"interval\": {\"type\": {\"enum\": [\"calendarHours\", \"calendarDays\", \"calendarWeeks\", \"calendarMonths\", \"calendarYears\"]}}, \"value\": {…}} … Wallet: \"unitsLimitUsed\", \"unitsLimitRemaining\""
+            },
+            {
+              "id": "t10-ref-2",
+              "sourceId": "BRIEF",
+              "filePath": "gen-e2/discover/customer-app/ntuc-member-pwa.gen-e2.brief",
+              "range": { "start": { "line": 111, "character": 0 }, "end": { "line": 115, "character": 0 } },
+              "note": "Problem signal s6 names cap tracking as entirely undefined. This is a candidate answer for half of it, at the cost of one experiment.",
+              "excerpt": "\"how the monthly cap is tracked and shown, is entirely undefined\""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mock-divergences",
+      "title": "Mock-vs-Spec Divergences",
+      "description": "The in-repo mock at apps/mock-openloyalty is a signal of what the team already assumed, not evidence of engine behaviour. Every divergence below is a place where the team's working model and the vendored specification disagree, and where code written against the mock would be written against a contract the engine does not offer. Flagged as findings in their own right, per the brief for this activity.",
+      "insights": [
+        {
+          "id": "mock-hides-expiry-cohorts",
+          "title": "The mock hardcodes pointsExpiringNextMonth to zero and omits pointsExpiringBreakdown entirely, so nothing built against it can ever see the field feature f4 depends on",
+          "summary": "⚠️ DIVERGENCE. [confidence: strong-signal — direct code inspection against direct spec inspection] `serializeCustomerStatus` in the mock returns a status object ending `pointsExpiringNextMonth: 0` with no `pointsExpiringBreakdown` key at all. The spec's `CustomerStatus` carries both. A developer building f4's expiry horizon against the mock would see a permanent zero, conclude the engine cannot express expiry cohorts, and build the shadow ledger of E3 unnecessarily — or, worse, ship a member surface that silently never warns anyone. The mock's `Transfer` interface also narrows `type` to `'adding' | 'spending'` where the engine's `UnitsTransferWasAdded` webhook enumerates `adding | spending | p2p_adding | p2p_spending | blocked | expired`, so expiry as a ledger event does not exist in the mock at all. IMPLICATION: the mock is not a safe substrate for any f4 work, and should carry a comment saying so.",
+          "references": [
+            {
+              "id": "mockdiv-ref-1",
+              "sourceId": "MOCK",
+              "filePath": "apps/mock-openloyalty/src/data.ts",
+              "range": { "start": { "line": 752, "character": 0 }, "end": { "line": 780, "character": 0 } },
+              "note": "serializeCustomerStatus — the whole function. The zero is a placeholder that reads as a fact to anyone consuming the mock.",
+              "excerpt": "pointsExpiringNextMonth: 0,"
+            },
+            {
+              "id": "mockdiv-ref-2",
+              "sourceId": "MOCK",
+              "filePath": "apps/mock-openloyalty/src/data.ts",
+              "range": { "start": { "line": 66, "character": 0 }, "end": { "line": 82, "character": 0 } },
+              "note": "The mock's Transfer interface. expiresAt is present but optional and no expiry process ever sets or acts on it; the type union has no 'expired' member.",
+              "excerpt": "type: 'adding' | 'spending';"
+            }
+          ]
+        },
+        {
+          "id": "mock-voucher-model-thinner",
+          "title": "The mock's issued voucher has no expiry and no used-at, so BR-P1-016 and the auto-invalidation in feature f6 are invisible to anything built against it",
+          "summary": "⚠️ DIVERGENCE, in the team's favour for once. [confidence: strong-signal] The mock's `IssuedReward` is `{ issuedRewardId, rewardId, customerId, couponCode, status, createdAt, statusHistory }` — no `activeFrom`, no `activeTo`, no `usedAt`, and no redeem or reissue route. The real engine's `issuedCoupon` carries all three, plus `POST .../reward/redeem` and `.../reward/reissue`, plus a `CouponWillExpire` webhook. So the engine is RICHER than the team assumed here: voucher expiry and auto-invalidation are available and do not need building. This is the one place in the desk pass where the finding reduces scope rather than adding it, and it should be told to the team as loudly as the escalations.",
+          "references": [
+            {
+              "id": "mockdiv-ref-3",
+              "sourceId": "MOCK",
+              "filePath": "apps/mock-openloyalty/src/data.ts",
+              "range": { "start": { "line": 114, "character": 0 }, "end": { "line": 122, "character": 0 } },
+              "note": "The complete IssuedReward interface. Compare against components.schemas.issuedReward.issuedCoupon in the spec, which has three date fields this does not.",
+              "excerpt": "export interface IssuedReward { issuedRewardId; rewardId; customerId; couponCode; status; createdAt; statusHistory }"
+            }
+          ]
+        },
+        {
+          "id": "mock-assumes-member-driven-redemption",
+          "title": "The mock lets a member's own token buy a reward and read its own voucher wallet — two things the vendored spec marks Management-scoped and deprecated respectively",
+          "summary": "⚠️ DIVERGENCE, and the one most likely to surprise the team late. [confidence: strong-signal for the spec labels; assumption for whether the live engine enforces them, which T7 settles] The mock mounts `POST /api/:storeCode/reward/:reward/buy` behind `requireAuth` (any authenticated caller, member included), derives the customer from the token, and serves `GET /api/:storeCode/member/reward/bought` as a live member route. In the vendored spec, `/reward/{reward}/buy` is labelled Management and its request bodies require `customerId` supplied by the caller, and `/member/reward/bought` is `deprecated: true`. The mock therefore encodes a member-driven redemption architecture that the engine's documented contract does not support — precisely the tension problem signal s5 already identified between the PWA's member-driven catalogue and the solutioning deck's staff-driven redemption journey. This divergence is not just a shape mismatch; it is the mock quietly taking a side in an unresolved design question.",
+          "references": [
+            {
+              "id": "mockdiv-ref-4",
+              "sourceId": "MOCK",
+              "filePath": "apps/mock-openloyalty/src/routes/member.ts",
+              "range": { "start": { "line": 165, "character": 0 }, "end": { "line": 219, "character": 0 } },
+              "note": "The mock's buy handler resolves the customer from req.auth.id — a member acting for themselves. The spec's buy bodies require customerId in the payload, which is an administrator acting on a member's behalf.",
+              "excerpt": "const customer = store.customers.get(req.auth!.id);"
+            },
+            {
+              "id": "mockdiv-ref-5",
+              "sourceId": "MOCK",
+              "filePath": "apps/mock-openloyalty/src/routes/member.ts",
+              "range": { "start": { "line": 134, "character": 0 }, "end": { "line": 144, "character": 0 } },
+              "note": "The mock serves the deprecated bought-rewards route as the member's voucher wallet, which is the route the PWA would naturally build against.",
+              "excerpt": "'/api/:storeCode/member/reward/bought',"
+            }
+          ]
+        },
+        {
+          "id": "mock-no-webhooks-no-returns",
+          "title": "The mock has no webhook subscription surface and no return-transaction handling, so neither the notification contract nor the refund path can be exercised locally at all",
+          "summary": "⚠️ DIVERGENCE — an absence rather than a conflict, but the most consequential one for planning. [confidence: strong-signal] Across the mock's ~40 routes there is no `/webhook/subscription`, no `/webhook/event`, no outbound delivery, and no HMAC signing; and while `POST /api/:storeCode/transaction` accepts `documentType: 'return'` and stores it, nothing acts on it — there is no campaign engine, no `cancel_transaction_effects`, and no points reversal. The two Phase 1 mechanics most likely to damage member trust (BR-P1-011 expiry notification and BR-P1-012 refund reversal) are therefore untestable in the local environment. Every claim this desk pass makes about them rests on the specification and the vendor's public documentation alone, and T4 and T5 are the only way to close them.",
+          "references": [
+            {
+              "id": "mockdiv-ref-6",
+              "sourceId": "MOCK",
+              "filePath": "apps/mock-openloyalty/src/routes/transaction.ts",
+              "range": { "start": { "line": 120, "character": 0 }, "end": { "line": 124, "character": 0 } },
+              "note": "The mock records documentType but takes no action on a return. It is a passthrough, not a behaviour.",
+              "excerpt": "documentType: header.documentType === 'return' ? 'return' : 'sell',"
+            },
+            {
+              "id": "mockdiv-ref-7",
+              "sourceId": "RAID",
+              "filePath": "gen-e2/discover/customer-app/raid.gen-e2.raid",
+              "range": { "start": { "line": 110, "character": 0 }, "end": { "line": 122, "character": 0 } },
+              "note": "R008 already recorded that wallets, segments, challenges, custom fields, webhooks and referrals are not modelled in the mock. This desk pass confirms that half of R008 and partially refutes the other half — see the contradictions group.",
+              "excerpt": "\"the mock covers only a slice of the 195-path surface, and that wallets, segments, challenges, achievements, custom fields, webhooks and referrals are not modelled\""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "contradictions",
+      "title": "Contradictions with Existing Knowledge Base Content",
+      "description": "Findings that conflict with, or materially change, entries already in the knowledge base. Logged here for the human to action; per the task brief this agent has not edited 02-research-plan.md or raid.gen-e2.raid.",
+      "insights": [
+        {
+          "id": "contradiction-r008-partially-refuted",
+          "title": "RAID R008 is half confirmed and half refuted — the engine models wallets and webhooks richly, but the two behaviours R008 singled out are the two that genuinely have no mechanism",
+          "summary": "⚠️ CONTRADICTION with RAID R008. [confidence: strong-signal] R008 states that 'wallets, segments, challenges, achievements, custom fields, webhooks and referrals are not modelled' and infers from that that member-facing needs 'may not be expressible in the engine as configured'. The first clause is true of the MOCK and R008 says so; but the inference to the ENGINE does not hold. The vendored spec shows wallets as a first-class configurable type with expiry strategies and per-member limits, 31 HMAC-signed webhook events, a full segment engine with recency conditions, and custom fields throughout. The engine is substantially richer than R008's framing implies, and several member-facing needs are cheaper than feared — voucher expiry and auto-invalidation above all. BUT R008's two named examples land: expiry-cohort visibility is real only through a deprecated route, and multi-redemption (BR-P1-017) has no mechanism at all. RECOMMENDED ACTION FOR THE HUMAN: do not close R008. Narrow it. Its likelihood on the general claim should fall; its impact on the two specific behaviours should hold or rise, and BR-P1-017 deserves its own entry rather than sharing one.",
+          "references": [
+            {
+              "id": "contra-ref-1",
+              "sourceId": "RAID",
+              "filePath": "gen-e2/discover/customer-app/raid.gen-e2.raid",
+              "range": { "start": { "line": 110, "character": 0 }, "end": { "line": 122, "character": 0 } },
+              "note": "R008 as written. The mitigation it proposes is exactly RA-05, and this desk pass is the part of that mitigation that could be done without instance access.",
+              "excerpt": "\"Member-facing needs such as expiry-cohort visibility (which points lapse when) and stacking multiple vouchers in one transaction (BR-P1-017) may not be expressible in the engine as configured.\""
+            }
+          ]
+        },
+        {
+          "id": "contradiction-notification-service",
+          "title": "The solutioning deck's webhook-driven Notification Service cannot originate two of the five notification triggers the BRD names as Must Have",
+          "summary": "⚠️ CONTRADICTION with solutioning.txt. [confidence: strong-signal] Detailed under escalation E2. Recording it here as a knowledge-base contradiction because it is an architecture-level conflict between a committed solution direction and a Must Have requirement, not merely an implementation detail — and because it is the kind of thing that is cheap to fix in an architecture diagram at week 1 and expensive to fix in a service at week 12. The correction is small in principle (the Notification Service needs a scheduler and local state) but it changes the component from stateless to stateful, which has consequences for deployment, monitoring and the NFR-005 availability commitment.",
+          "references": [
+            {
+              "id": "contra-ref-2",
+              "sourceId": "SOLUTIONING",
+              "filePath": "gen-e2/discover/general-references/extracted/solutioning.txt",
+              "range": { "start": { "line": 252, "character": 0 }, "end": { "line": 255, "character": 0 } },
+              "note": "The definition that conflicts. Every one of the deck's member journeys ends with 'Notification service dispatches message to marketing automation', triggered by an event from the loyalty platform.",
+              "excerpt": "\"An API service that accepts webhook requests from OpenLoyalty and creates notifications that are sent to the marketing platform.\""
+            }
+          ]
+        },
+        {
+          "id": "contradiction-brief-f6-cheaper",
+          "title": "Feature f6's voucher expiry and auto-invalidation are cheaper than the brief assumes, which is the one finding in this pass that reduces scope",
+          "summary": "⚠️ CONTRADICTION with the product brief, in a favourable direction. [confidence: strong-signal] The brief's problem signal s5 sits at confidence 'hypothesis' and treats the whole voucher lifecycle as open, and RAID R008 lists the voucher wallet among the things that may not be expressible. The spec shows `activeFrom`, `activeTo` and `usedAt` on every issued coupon, a per-issuance `dateValid` on the buy call, redeem and reissue operations, and a `CouponWillExpire` webhook. BR-P1-016 is therefore native with configuration, and f6's auto-invalidation is an engine call rather than a build. RECOMMENDED ACTION: the human may wish to update f6's evidence note in the brief and lower the engine-risk portion of s5, while leaving the who-initiates-redemption question open — that half is a behavioural question for RA-03, not a technical one, and this desk pass does not touch it.",
+          "references": [
+            {
+              "id": "contra-ref-3",
+              "sourceId": "BRIEF",
+              "filePath": "gen-e2/discover/customer-app/ntuc-member-pwa.gen-e2.brief",
+              "range": { "start": { "line": 102, "character": 0 }, "end": { "line": 108, "character": 0 } },
+              "note": "Problem signal s5 at confidence 'hypothesis'. The engine half of it is now answerable; the human half is not.",
+              "excerpt": "\"a voucher be issued and auto-invalidated on use — a staff-driven flow\""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "method-caveats",
+      "title": "Method Caveats — What This Pass Cannot Tell You",
+      "description": "Explicit limits on the authority of everything above. Read this group before treating any verdict as settled.",
+      "insights": [
+        {
+          "id": "caveat-not-a-spike",
+          "title": "No Open Loyalty instance was called; this is a document reading and the RA-05 spike remains open",
+          "summary": "[confidence: this statement is fact, not a finding] RA-05's trigger — 'access to a real Open Loyalty instance, not the in-repo mock (RAID D005)' — has not been met, and D005 remains pending. Nothing in this document was executed against an engine. An OpenAPI specification describes the shape of requests and responses; it does not describe what the system does with them. Every verdict above is therefore a prediction, and the six that carry the most weight — consumption order for expiry cohorts, partial-return proportionality, the already-spent refund case, member-token scope, whether the deprecated status endpoint still works, and the tenant's real webhook event list — are precisely the ones the specification is silent on. RA-05's status should read 'desk pass complete, spike outstanding', never 'complete'.",
+          "references": [
+            {
+              "id": "caveat-ref-1",
+              "sourceId": "PLAN",
+              "filePath": "gen-e2/discover/customer-app/01-research/02-research-plan.md",
+              "range": { "start": { "line": 140, "character": 0 }, "end": { "line": 141, "character": 0 } },
+              "note": "The trigger condition, unmet. Recorded so that no later reader mistakes this artefact for the activity the plan describes.",
+              "excerpt": "\"Trigger: access to a real Open Loyalty instance, not the in-repo mock (RAID D005)\""
+            }
+          ]
+        },
+        {
+          "id": "caveat-spec-provenance",
+          "title": "The vendored specification's version field is empty and its provenance is unverified, so it may not match the tenant NTUC Club is given",
+          "summary": "[confidence: strong-signal for the observation; hypothesis for the risk] `info.version` in spec/openloyalty-openapi.json is an empty string, and the file's only server entry is `http://openloyalty.localhost`. There is no way to tell from the document which Open Loyalty release it describes, and the repository committed it once with no update history. If the tenant provisioned for NTUC Club runs a different release, endpoints could be present, absent, differently deprecated, or differently scoped. T5's diff of `GET /webhook/event` against the spec's 31 events is the cheapest available check on this, which is another reason to run it early. The expert-interview half of RA-05 should also ask Open Loyalty directly which release the tenant will run and where the versioned specification for it lives.",
+          "references": [
+            {
+              "id": "caveat-ref-2",
+              "sourceId": "SPEC",
+              "filePath": "spec/openloyalty-openapi.json",
+              "range": { "start": { "line": 0, "character": 0 }, "end": { "line": 0, "character": 0 } },
+              "note": "Spec blocks info and servers. An empty version on a 1.4MB vendored contract is a provenance gap worth logging in RAID.",
+              "excerpt": "\"version\": \"\" … \"servers\": [{\"url\": \"http://openloyalty.localhost\"}]"
+            }
+          ]
+        },
+        {
+          "id": "caveat-expert-interview-half",
+          "title": "RA-05's expert-interview half has not been run either, and four questions in this pass are better answered by a person than by a test",
+          "summary": "[confidence: assumption] RA-05 is specified as 'expert interview + technical spike'. This desk pass substitutes for neither. Four questions would be answered faster and more reliably by Open Loyalty than by experiment: (1) what replaces `GET /member/{member}/status`, and when is the deprecated route removed; (2) what is the documented consumption order when units expire, since it governs correctness rather than convenience; (3) is there any supported pattern for grouping multiple coupon redemptions against one sale, or any roadmap item for one; (4) which release will the NTUC Club tenant run and where is its versioned specification. Questions 1 and 3 in particular decide whether E1 and E3 are real scope or avoidable, so the interview should be booked in parallel with instance access rather than after it.",
+          "references": [
+            {
+              "id": "caveat-ref-3",
+              "sourceId": "PLAN",
+              "filePath": "gen-e2/discover/customer-app/01-research/02-research-plan.md",
+              "range": { "start": { "line": 137, "character": 0 }, "end": { "line": 138, "character": 0 } },
+              "note": "RA-05's stated method is two activities, not one. Only the desk portion of one of them has been attempted.",
+              "excerpt": "\"RA-05 — Open Loyalty capability spike — Expert interview + technical spike | Priority: High\""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

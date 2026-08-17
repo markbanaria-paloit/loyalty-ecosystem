@@ -1,0 +1,100 @@
+{
+  "meta": {
+    "title": "{{JOURNEY_TITLE}}",
+    "persona": "{{PERSONA_TYPE}}",
+    "owner": "{{OWNER}}",
+    "date": "{{YYYY-MM-DD}}",
+    "version": "v1.0"
+  },
+  "stages": [
+    {
+      "id": "{{STAGE_ID_1}}",
+      "name": "{{STAGE_NAME_1}}",
+      "description": "{{STAGE_DESCRIPTION_1}}"
+    },
+    {
+      "id": "{{STAGE_ID_2}}",
+      "name": "{{STAGE_NAME_2}}",
+      "description": "{{STAGE_DESCRIPTION_2}}"
+    },
+    {
+      "id": "{{STAGE_ID_3}}",
+      "name": "{{STAGE_NAME_3}}",
+      "description": "{{STAGE_DESCRIPTION_3}}"
+    }
+  ],
+  "rows": [
+    {
+      "id": "actions",
+      "label": "Actions",
+      "description": "What does the user do? What information do they look for?",
+      "items": {
+        "{{STAGE_ID_1}}": [
+          { "id": "action-1", "text": "{{ACTION_STAGE1_ITEM1}}" }
+        ],
+        "{{STAGE_ID_2}}": [
+          { "id": "action-2", "text": "{{ACTION_STAGE2_ITEM1}}" }
+        ],
+        "{{STAGE_ID_3}}": [
+          { "id": "action-3", "text": "{{ACTION_STAGE3_ITEM1}}" }
+        ]
+      }
+    },
+    {
+      "id": "needs",
+      "label": "Needs & Pains",
+      "description": "What does the user want to achieve or avoid?",
+      "items": {
+        "{{STAGE_ID_1}}": [
+          { "id": "need-1", "text": "{{NEED_STAGE1_ITEM1}}" }
+        ],
+        "{{STAGE_ID_2}}": [
+          { "id": "need-2", "text": "{{NEED_STAGE2_ITEM1}}" }
+        ],
+        "{{STAGE_ID_3}}": [
+          { "id": "need-3", "text": "{{NEED_STAGE3_ITEM1}}" }
+        ]
+      }
+    },
+    {
+      "id": "opportunities",
+      "label": "Opportunities",
+      "description": "What could we improve or introduce?",
+      "items": {
+        "{{STAGE_ID_1}}": [
+          { "id": "opp-1", "text": "{{OPPORTUNITY_STAGE1_ITEM1}}" }
+        ],
+        "{{STAGE_ID_2}}": [
+          { "id": "opp-2", "text": "{{OPPORTUNITY_STAGE2_ITEM1}}" }
+        ],
+        "{{STAGE_ID_3}}": [
+          { "id": "opp-3", "text": "{{OPPORTUNITY_STAGE3_ITEM1}}" }
+        ]
+      }
+    }
+  ],
+  "emotions": {
+    "{{STAGE_ID_1}}": {
+      "id": "emotion-1",
+      "text": "{{EMOTION_DESCRIPTION_STAGE1}}",
+      "emotionScore": {{EMOTION_SCORE_STAGE1_1_TO_10}}
+    },
+    "{{STAGE_ID_2}}": {
+      "id": "emotion-2",
+      "text": "{{EMOTION_DESCRIPTION_STAGE2}}",
+      "emotionScore": {{EMOTION_SCORE_STAGE2_1_TO_10}}
+    },
+    "{{STAGE_ID_3}}": {
+      "id": "emotion-3",
+      "text": "{{EMOTION_DESCRIPTION_STAGE3}}",
+      "emotionScore": {{EMOTION_SCORE_STAGE3_1_TO_10}}
+    }
+  },
+  "persona": {
+    "name": "{{PERSONA_NAME}}",
+    "type": "{{PERSONA_TYPE}}",
+    "description": "{{PERSONA_DESCRIPTION}}",
+    "context": "{{PERSONA_CONTEXT}}",
+    "experienceLevel": "{{Beginner|Intermediate|Expert}}"
+  }
+}

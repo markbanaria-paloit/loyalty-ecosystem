@@ -1,0 +1,511 @@
+{
+  "meta": {
+    "evaluator": "Gen-e2 Research Agent (expert review, single evaluator)",
+    "date": "2026-08-17",
+    "websiteApp": "NTUC Club Loyalty — Member PWA (apps/pwa)",
+    "device": "Not executed on device. Static source review; layout and target metrics computed against a 390×844 CSS-pixel mobile viewport, the app's own --maxw being 480px.",
+    "browserOS": "Not executed in a browser. Static review of React 18 / react-router-dom 6.28 / plain CSS source. Contrast ratios and control heights are computed from the stylesheet, not measured from a render.",
+    "taskFeature": "Full existing product surface — all four routes: /login, / (dashboard), /rewards, /history — plus the shared app shell and tab bar.",
+
+    "activity": "RA-10 — Heuristic evaluation and accessibility audit of the current PWA",
+    "targetingGap": "G10",
+    "priorityInPlan": "Low",
+    "researchPlan": "gen-e2/discover/customer-app/01-research/02-research-plan.md",
+
+    "framing": "This evaluates a prototype, not a product. apps/pwa/src is 993 lines across 10 files (607 of them the four page and shell components the research plan counts), and nine of the twelve Phase 1 member features in the product brief are absent — including the digital membership card, which is the instrument all three Phase 1 member journeys pivot on. The value of this evaluation is (a) a dated baseline to measure the real build against and (b) a read on the accessibility habits currently in the codebase before those habits are copied into 12 features. It is NOT a source of product direction. Where a finding is a consequence of an absent feature rather than a design decision, the issue text says so explicitly, and the reader must not treat the severity as a critique of the skeleton's design.",
+
+    "whatWasEvaluated": [
+      "apps/pwa/src/App.tsx — routing and the Protected shell",
+      "apps/pwa/src/main.tsx — provider tree",
+      "apps/pwa/src/context/AuthContext.tsx — session lifecycle",
+      "apps/pwa/src/components/TabBar.tsx — persistent navigation",
+      "apps/pwa/src/pages/LoginPage.tsx — sign-in and registration",
+      "apps/pwa/src/pages/DashboardPage.tsx — balance, tier, recent activity",
+      "apps/pwa/src/pages/RewardsPage.tsx — catalogue and redemption",
+      "apps/pwa/src/pages/HistoryPage.tsx — points ledger",
+      "apps/pwa/src/api/client.ts — error surfaces and data contract",
+      "apps/pwa/src/styles.css — the whole visual layer (370 lines)",
+      "apps/pwa/index.html and vite.config.ts — document head, manifest, service worker"
+    ],
+
+    "whatCouldNotBeEvaluated": [
+      "The digital membership card (brief f1). It does not exist. It is the highest-stakes accessibility component in the product and the audit has no baseline for it. Forward-looking requirements are recorded in accessibility.absentComponentRequirements — they are requirements, not findings.",
+      "Voucher wallet (f6), profile and consent (f9), parking entitlement (f8), promotions (f10), notifications (f11), multi-path enrolment (f2), expiry and reversal transparency (f4). Absent.",
+      "Anything requiring execution: real screen-reader output (VoiceOver/TalkBack), real focus-ring rendering per browser, real reflow at 200% zoom, real service-worker offline behaviour, real safe-area insets on a notched device. Every claim below that would need a device is marked as a risk requiring verification, not as a confirmed failure.",
+      "Localisation. NFR-010 (multi-language, Nice to Have) has no implementation and every string is hard-coded English."
+    ],
+
+    "formatNote": "gen-e2-output-format names .gen-e2.acc as the artefact for an accessibility review, but no .gen-e2.acc schema or gen-e2-accessibility skill exists in this workspace. RA-10 is a single activity producing both halves, so the WCAG 2.2 AA review is carried here as an `accessibility` extension block on the .gen-e2.he schema. The heuristics array and severityScale conform to the gen-e2-heuristic template exactly. Flagged for session review."
+  },
+
+  "severityScale": [
+    {
+      "value": 0,
+      "label": "Not a usability problem",
+      "description": "I don't agree that this is a usability problem at all"
+    },
+    {
+      "value": 1,
+      "label": "Cosmetic",
+      "description": "Cosmetic problem only; fix if time allows"
+    },
+    {
+      "value": 2,
+      "label": "Minor",
+      "description": "Minor usability problem; low priority"
+    },
+    {
+      "value": 3,
+      "label": "Major",
+      "description": "Major usability problem; high priority"
+    },
+    {
+      "value": 4,
+      "label": "Catastrophic",
+      "description": "Usability catastrophe; must fix before release"
+    }
+  ],
+
+  "heuristics": [
+    {
+      "id": 1,
+      "title": "Visibility of system status",
+      "description": "The system should always keep users informed about what is going on, through appropriate feedback within reasonable time.",
+      "severity": 3,
+      "issues": [
+        "Redemption gives almost no feedback. RewardsPage.tsx:57–61 swaps the button label to a bare ellipsis '…' while the request is in flight; the outcome then arrives as a plain <div className=\"toast\"> (line 41) with no aria-live region, so a screen-reader user receives no announcement that points were spent at all.",
+        "The Rewards screen never shows the member's points balance. api.redeem returns pointsRemaining (client.ts:104) and RewardsPage.tsx:23–25 discards it. The member spends points and is shown no before or after figure on the screen where the spending happens.",
+        "Loading is a full-screen text swap. DashboardPage.tsx:22 and App.tsx:12 replace the entire page with <div className=\"center muted\">Loading…</div> — no skeleton, no indication of what is loading, and no aria-busy or live region, so assistive technology sees content vanish and reappear silently.",
+        "The tier progress bar can lie. DashboardPage.tsx:24–34 computes progress = 100 whenever nextLevelConditionValue is null, and lines 60–64 render the bar whenever nextLevelName is truthy. A member with a named next tier but no threshold value returned by the engine is shown a completely full progress bar.",
+        "There is no connectivity or staleness signal anywhere, despite vite.config.ts:33–42 caching /api NetworkFirst with a 5-second network timeout and a 5-minute cache. At a till on a weak indoor connection the app will confidently display a balance up to five minutes old, with nothing distinguishing it from a live one. Directly relevant to brief signal s10 and RAID R010."
+      ],
+      "recommendations": [
+        "Render the outcome of a redemption into a live region (role=\"status\" for success, role=\"alert\" for failure) and keep the member's balance permanently visible on the Rewards screen, updated from the pointsRemaining the API already returns.",
+        "Replace full-screen text swaps with in-place skeletons that preserve the page structure, and mark the loading container aria-busy=\"true\" so the state is programmatically determinable.",
+        "Render the progress bar only when both nextLevelName and nextLevelConditionValue are present; when the threshold is unknown, show the tier badge alone rather than an invented 100%.",
+        "Timestamp member-facing figures ('as at 14:32') and show an explicit offline/stale state. This is a design requirement for the card and balance specifically, and should be specified before RA-06 blueprints the till moment."
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Match between system and the real world",
+      "description": "The system should speak the users' language, with words, phrases, and concepts familiar to the user, rather than system-oriented terms.",
+      "severity": 3,
+      "issues": [
+        "Raw engine vocabulary leaks straight to the member. HistoryPage.tsx:27 and DashboardPage.tsx:92 render {t.comment ?? t.type}, so any transaction Open Loyalty returns without a comment shows the literal API enum 'adding' or 'spending' as its title (client.ts:61). Those are database words, not member words.",
+        "A redemption produces a naked code: 'Redeemed! Coupon 7FJ2K9' (RewardsPage.tsx:24). No reward name, no value, no expiry date, no statement of where or how to use it, and no indication whether staff scan it or the member reads it out.",
+        "'Not enough' (RewardsPage.tsx:61) tells the member the system's verdict rather than their position. It does not say how many more points are needed.",
+        "Every member-facing string is generic placeholder vocabulary — 'Loyalty Rewards' (index.html:9, LoginPage.tsx:35, manifest name), 'Earn points. Unlock rewards.' — with no NTUC Club, tier, property or tenant language anywhere. This is scaffolding, not a content decision, but it is worth recording that no programme vocabulary exists to inherit."
+      ],
+      "recommendations": [
+        "Never render an API enum. Map every transaction type to a member-facing sentence at the integration boundary, and treat an unmapped type as an error to fix rather than a string to display.",
+        "Replace the coupon toast with a persistent voucher object carrying reward name, value, expiry and redemption instructions (brief f6). See heuristic 3.",
+        "Change disabled reward buttons to state the shortfall: 'Need 240 more points'.",
+        "Hold all member-facing copy in one place from the start of the real build, so the content-design and translation pass required by NFR-010 has a single surface to work on."
+      ]
+    },
+    {
+      "id": 3,
+      "title": "User control and freedom",
+      "description": "Users often choose system functions by mistake and will need a clearly marked emergency exit to leave the unwanted state without having to go through an extended dialogue.",
+      "severity": 4,
+      "issues": [
+        "CATASTROPHIC — the coupon a member has just paid points for is destroyed by navigation. The code exists only in the React state variable `toast` (RewardsPage.tsx:8). It is cleared by the next redemption (setToast(null), line 21) and lost entirely on route change, refresh, app backgrounding or service-worker update. There is no route to recover it and no record of it anywhere in the member surface. This is a consequence of the voucher wallet (brief f6) being absent, not of a design decision about the toast — but the severity is rated on member impact if shipped, and irreversibly spending points for a value that then evaporates is the definition of a usability catastrophe.",
+        "Redemption is a single tap with no confirmation and no undo (RewardsPage.tsx:52–56). Points are spent immediately. See also WCAG 3.3.4 in the accessibility block — this is simultaneously a heuristic failure and a conformance failure.",
+        "Sign out is a single tap with no confirmation (DashboardPage.tsx:43–45), immediately clearing the token and dropping the member to /login with no way back in short of re-authenticating.",
+        "Unknown routes are silently rewritten: <Route path=\"*\" element={<Navigate to=\"/\" replace />} /> (App.tsx:54). A mistyped or stale deep link teleports the member to the dashboard with no explanation of what happened."
+      ],
+      "recommendations": [
+        "Persist every issued voucher server-side and render it from a wallet route, not from transient client state. This is already scoped as brief f6 — the finding here is that nothing in the current surface should be carried forward as a pattern.",
+        "Put a confirmation step in front of any irreversible points spend, stating the cost, the resulting balance and what the member receives.",
+        "Confirm sign-out, and preserve the intended destination so a member who signs back in returns where they were.",
+        "Replace the catch-all redirect with a real not-found state that explains and offers a route onward."
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Consistency and standards",
+      "description": "Users should not have to wonder whether different words, situations, or actions mean the same thing. Follow platform conventions.",
+      "severity": 2,
+      "issues": [
+        "'Sign in' is used twice on the login screen for two different things: the segmented mode selector (LoginPage.tsx:46) and the form's submit button (line 100). Tapping the first does nothing visible except swap fields; tapping the second submits.",
+        "The four surfaces of the same programme share no design language. apps/pwa (dark, indigo, --text/--primary), apps/admin (light, sky blue, --ink/--accent), apps/merchant (light, emerald, --ink/--brand), apps/studio (light, violet, --ink/--brand) each declare an unrelated palette under a different token-naming convention, with no shared package. Members and tenant staff will stand at the same counter holding two apps from the same programme that look unrelated. Recorded in full in the RA-09 inventory.",
+        "Button sizing is ad hoc rather than scaled: .btn 12/16px, .btn.sm 8/12px, .btn.ghost 6/10px (styles.css:204–236), with no spacing scale behind them.",
+        "The same data is formatted two ways: DashboardPage.tsx:94 uses toLocaleDateString() and HistoryPage.tsx:29 uses toLocaleString() for the identical transaction timestamp."
+      ],
+      "recommendations": [
+        "Label the mode selector 'New here? Create account' or use a distinct control type, so the submit action owns the verb.",
+        "Resolve the cross-surface question deliberately in RA-09 once brand guidelines arrive. A shared token package is the mechanism; the decision it depends on is a client one.",
+        "Define one spacing and one control-size scale before component work begins, and size to the 44pt/48dp platform minima (see accessibility block).",
+        "Standardise date and number formatting in one utility, with Singapore locale conventions confirmed."
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Error prevention",
+      "description": "Even better than good error messages is a careful design which prevents a problem from occurring in the first place.",
+      "severity": 3,
+      "issues": [
+        "The highest-value irreversible action in the app — spending points — has no guard of any kind (RewardsPage.tsx:52–56).",
+        "The login form ships with hard-coded demo credentials as initial state: useState('demo@example.com') and useState('password') (LoginPage.tsx:7–8), reinforced by a visible hint block at lines 103–107. This is unambiguously development scaffolding and is recorded here only because it sits on the enrolment screen — the highest-intent surface in the product — and pre-fills a stranger's identity into fields a real member must clear before typing.",
+        "There is no client-side validation beyond the browser's `required` and `type=\"email\"`. Password rules are never stated; on registration a member discovers them only from a server rejection.",
+        "No input carries an autocomplete attribute, so browser and OS autofill cannot reliably populate email, password or name. This is an error-prevention failure and a WCAG 1.3.5 / 3.3.8 failure at once, and it lands hardest on the 60+ cohort the plan deliberately recruits in RA-08."
+      ],
+      "recommendations": [
+        "Add a confirmation step to redemption (see heuristic 3).",
+        "Remove demo credentials from initial state before any user-facing build; keep them, if needed, behind an explicit dev-only flag.",
+        "State field rules before submission, validate inline on blur, and never let a member discover a format rule from a server error.",
+        "Add autocomplete=\"email\", \"current-password\", \"new-password\", \"given-name\", \"family-name\" and inputmode where relevant."
+      ]
+    },
+    {
+      "id": 6,
+      "title": "Recognition rather than recall",
+      "description": "Minimise the user's memory load by making objects, actions, and options visible. The user should not have to remember information from one part of the dialogue to another.",
+      "severity": 3,
+      "issues": [
+        "The Rewards screen shows each reward's cost ({r.costInPoints} pts, RewardsPage.tsx:51) but never the member's balance. To judge whether anything is affordable, the member must remember the number from the Home tab. The app already knows both figures and shows them on different screens.",
+        "The dashboard shows current, earned and redeemed totals (DashboardPage.tsx:48–78) but no expiry horizon. Points expire 12 months from the date earned (BR-P1-011) and the member has no way to recognise which of their points are about to lapse — the balance is a single undifferentiated number. Absent-feature consequence; brief f4.",
+        "A coupon code must be memorised or screenshotted from a transient toast before it disappears (see heuristic 3).",
+        "'Not enough' requires the member to hold two numbers in their head and subtract, rather than being told the shortfall."
+      ],
+      "recommendations": [
+        "Make the points balance persistent across every screen where points are spent or earned — it is the single most-recalled figure in the product.",
+        "Show the expiry horizon alongside the balance, not buried in history: which points lapse, how many, and when.",
+        "Compute and display shortfalls rather than asking the member to."
+      ]
+    },
+    {
+      "id": 7,
+      "title": "Flexibility and efficiency of use",
+      "description": "Accelerators — unseen by the novice user — may often speed up the interaction for the expert user such that the system can cater to both inexperienced and experienced users.",
+      "severity": 2,
+      "issues": [
+        "There is no accelerator to the membership card, because there is no card. Brief guiding principle 1 requires it to be reachable in one action from a cold start and to render without a network round-trip; the current shell offers three tabs (Home, Rewards, History) and none of them is it. This is the single biggest gap between the skeleton and the intended product, and it is an absent-feature observation rather than a criticism of the shell.",
+        "History has no filter, date range, grouping or pagination (HistoryPage.tsx:23–38) — it renders every transaction the API returns as one flat list. Fine at demo volume, unusable after a year of a member's transactions.",
+        "Rewards has no search, category or sort (RewardsPage.tsx:43–67), which will not hold once the catalogue is real.",
+        "Every session begins with typing an email and a password: no autofill support (no autocomplete attributes), no biometric or passkey option, no persistent session beyond a localStorage token. Phase 1 mandates five sign-in paths (BR-P1-020); one exists."
+      ],
+      "recommendations": [
+        "Treat 'card reachable in one action from cold start' as a measurable, testable requirement of the real build, and measure it in RA-08.",
+        "Design history for a year of data — grouping, date navigation, and lazy loading — rather than for a demo dataset.",
+        "Add autofill support and specify the biometric/passkey position alongside the CIAM decision (RAID D009)."
+      ]
+    },
+    {
+      "id": 8,
+      "title": "Aesthetic and minimalist design",
+      "description": "Dialogues should not contain irrelevant or rarely needed information. Every extra unit of information in a dialogue competes with the relevant units of information and diminishes their relative visibility.",
+      "severity": 1,
+      "issues": [
+        "No real violation. The four screens are sparse, single-column, mobile-shaped (--maxw: 480px) and free of clutter. Signal-to-noise is good, and the balance is unambiguously the primary element on the dashboard. This is a genuine strength of the skeleton and should survive brand application.",
+        "Cosmetic only: emoji are used as product iconography — 🎁 as the brand mark (LoginPage.tsx:34) and 🏠 🎁 📜 as tab icons (TabBar.tsx:4–6). Emoji render differently on every OS, cannot be weight- or colour-controlled, and change appearance across OS updates. They will not survive brand application. Note also that 🎁 appears both as the brand mark and as the Rewards tab icon.",
+        "Cosmetic only: the visible demo-credentials hint (LoginPage.tsx:103–107) is scaffolding that adds noise to the enrolment screen."
+      ],
+      "recommendations": [
+        "Keep the density and the single-column mobile shape; they are appropriate for the till moment.",
+        "Replace all emoji with a real icon set as part of RA-09, sized and coloured from tokens."
+      ]
+    },
+    {
+      "id": 9,
+      "title": "Help users recognise, diagnose, and recover from errors",
+      "description": "Error messages should be expressed in plain language (no codes), precisely indicate the problem, and constructively suggest a solution.",
+      "severity": 3,
+      "issues": [
+        "Every data-fetch failure replaces the whole page body with a bare unstyled string and no recovery path: `if (error) return <div className=\"center error\">{error}</div>` at DashboardPage.tsx:21, RewardsPage.tsx:33 and HistoryPage.tsx:15. There is no retry control, no explanation and no support route. (The tab bar does survive, since the error returns from inside the Protected shell, so the member is not fully stranded — they can switch tabs and hope.)",
+        "The string shown is whatever the server or the network produced: client.ts:35 throws `body?.message ?? res.statusText`, so the member reads 'Internal Server Error', or on a dropped connection the browser's raw unhandled `TypeError: Failed to fetch`. Neither names a cause or a next action, and 'Failed to fetch' is not English a member can act on.",
+        "Login errors render as an unassociated <div className=\"error\"> (LoginPage.tsx:97) with no role=\"alert\", no aria-describedby link to the field, and no aria-invalid. A screen-reader user submits the form and is told nothing at all. See WCAG 3.3.1 / 4.1.3 in the accessibility block.",
+        "A 401 silently discards the session — client.ts:34 calls setToken(null) — but nothing tells the member they were signed out. They are simply bounced to /login on the next render, with no explanation and no preserved destination.",
+        "Success and failure share one visual container. RewardsPage.tsx:27 puts an error message into the same `toast` state as the success message at line 24, and styles.css:363–370 gives .toast a single neutral appearance. 'Redeemed! Coupon 7FJ2K9' and 'Not enough points' are rendered identically."
+      ],
+      "recommendations": [
+        "Never surface a raw server or network message. Map failures to member-facing text that names what happened and what to do, and always render a retry control alongside.",
+        "Distinguish offline from server error from validation error — three different messages and three different recoveries, especially at a till.",
+        "Bind form errors to their fields (aria-describedby + aria-invalid) and announce them (role=\"alert\").",
+        "Explain expired sessions rather than silently redirecting, and return the member to where they were.",
+        "Give success and failure distinct roles, colours and icons — and pair colour with an icon and text, never colour alone."
+      ]
+    },
+    {
+      "id": 10,
+      "title": "Help and documentation",
+      "description": "Even though it is better if the system can be used without documentation, it may be necessary to provide help and documentation. Any such information should be easy to search, focused on the user's task, and not be too large.",
+      "severity": 2,
+      "issues": [
+        "There is no help, FAQ, contact, terms or programme-rules surface anywhere in the four routes (App.tsx:25–55). A member who disputes a balance has no in-app route to Customer Experience — and the product brief names CX as the recovery path for every failure mode it identifies.",
+        "There is no onboarding and no first-run explanation of how the programme works. 'Earn points. Unlock rewards.' (LoginPage.tsx:36) is the entire statement of the proposition, and it disappears the moment the member signs in.",
+        "None of the Phase 1 mechanics a member needs to understand are disclosed anywhere: the earn rate, the conversion table, 12-month points expiry (BR-P1-011), automatic refund reversal (BR-P1-012), what Tier 2 is or how it is retained. Each is a Must Have mechanic that changes a member's balance or standing.",
+        "No privacy notice or consent surface exists — a PDPA obligation with no home (brief s9, f9). Absent-feature consequence."
+      ],
+      "recommendations": [
+        "Give the programme rules a permanent home in the member surface and link to it from every screen where a number the member cannot explain appears (brief guiding principle 2).",
+        "Provide a visible, consistently placed route to CX support — WCAG 2.2 3.2.6 Consistent Help applies the moment a help mechanism exists, so place it once and place it the same way everywhere.",
+        "Confirm in RA-04 who owns member-facing programme copy and the disclosure wording for expiry and reversal; it is currently unowned."
+      ]
+    }
+  ],
+
+  "accessibility": {
+    "standard": "WCAG 2.2 Level AA (web). Platform touch-target minima (Apple HIG 44×44pt, Material 48×48dp) are reported alongside WCAG 2.5.8 because the product is an installable PWA used on phones at a point of sale.",
+    "method": "Static source review of apps/pwa/src against the four WCAG principles, following the accessibility skill's Phase 1 audit sequence. Contrast ratios computed from the stylesheet's declared hex values and alpha compositing using the WCAG relative-luminance formula; control heights computed from declared padding and font-size at default line-height. No rendering, no device, no assistive technology was used — findings requiring execution are marked `needs-verification` rather than asserted.",
+
+    "contractualPosition": {
+      "finding": "There is no accessibility requirement in the tender pack. BRD §12.3 is titled 'Usability & Accessibility' and contains exactly three NFRs — NFR-008 low-friction enrolment, NFR-009 mobile-first design, NFR-010 multi-language support (Nice to Have) — all of which are usability requirements. A search across all four extracted documents (tender-BRD-requirements.txt, tender-NC-CT00008.txt, tender-statement-of-compliance.txt, solutioning.txt) returns zero occurrences of 'WCAG', 'screen reader', 'assistive', 'disability', 'a11y', 'Section 508' or 'EN 301 549'.",
+      "consequence": "No conformance target has been agreed with the client, so 'AA' is this evaluation's chosen benchmark, not a contracted one. Given a public-facing programme run by a union-affiliated organisation with a deliberately targeted senior cohort, the absence is itself the finding. Setting the target is a client decision and belongs in RA-04, and it must be settled before RA-09 fixes a palette — a contrast standard applied after a brand is chosen is a retrofit.",
+      "source": "gen-e2/discover/general-references/extracted/, verified 2026-08-17"
+    },
+
+    "whatIsWorking": [
+      { "criterion": "3.1.1 Language of Page (A)", "observation": "index.html:2 declares <html lang=\"en\">." },
+      { "criterion": "1.4.4 Resize Text (AA)", "observation": "index.html:7 sets initial-scale=1.0 with no maximum-scale and no user-scalable=no — pinch zoom is not suppressed. All font sizes are declared in rem, so they respond to the browser's base font setting." },
+      { "criterion": "1.3.1 Info and Relationships (A)", "observation": "All six form inputs use implicit label association by wrapping the input inside its <label> (LoginPage.tsx:59–95, styles.css:172). Labels are always visible; no placeholder is used as a label anywhere. This is correct and should be kept as the pattern." },
+      { "criterion": "1.1.1 Non-text Content (A)", "observation": "TabBar.tsx:19–21 marks the decorative emoji aria-hidden and pairs it with a real text label in a sibling span. The correct pattern, applied correctly." },
+      { "criterion": "1.4.1 Use of Color (A)", "observation": "Transaction deltas pair the red/green colour with an explicit '+' or '−' character (DashboardPage.tsx:100, HistoryPage.tsx:34), so the direction is not colour-only." },
+      { "criterion": "4.1.2 Name, Role, Value (A)", "observation": "Tab navigation uses react-router-dom v6 NavLink, which emits aria-current=\"page\" on the active tab by default — so the current location is programmatically determinable despite .tab.active being a colour-only visual treatment. This passes by library default rather than by intent; it will not survive a hand-rolled replacement." },
+      { "criterion": "2.4.1 Bypass Blocks (A)", "observation": "No skip link is needed: App.tsx:15–18 puts <main> before <TabBar>, so there is no repeated navigation block preceding the main content. Also an accidental pass — moving the nav above main would create a Level A failure." },
+      { "criterion": "1.3.1 / 2.4.1 Landmarks", "observation": "The shell uses <main>, the tab bar uses <nav>, and pages use <header>/<section>. Semantic HTML is used throughout in preference to divs with roles." },
+      { "criterion": "2.3.1 / 2.2.2 Motion and timing", "observation": "styles.css declares no animation, transition or auto-updating content, so there is nothing to flash, distract, or need a prefers-reduced-motion guard. This is an absence rather than a decision — the guard must be added when motion is." },
+      { "criterion": "2.5.8 Target Size (Minimum, AA)", "observation": "Six of seven interactive control types clear the 24×24px minimum on computed height: tab ~51px, input ~45px, .btn.primary ~43px, .segmented button ~32px, .btn.sm ~32px, .btn.ghost ~28px. See the touch-target block for the platform-minima caveat." },
+      { "criterion": "2.4.11 Focus Not Obscured (Minimum, AA)", "observation": "styles.css:65 reserves 96px of bottom padding on .content for the fixed tab bar, so scrolled content is not hidden behind it under normal conditions. See needs-verification for the notched-device edge case." }
+    ],
+
+    "issues": [
+      {
+        "id": "A11Y-01",
+        "priority": "critical",
+        "criterion": "WCAG 4.1.2 Name, Role, Value (Level A); secondarily 1.4.1 Use of Color (Level A)",
+        "screen": "/login — LoginPage.tsx:40–55, styles.css:141–161",
+        "observation": "The Sign in / Create account mode selector is two plain <button type=\"button\"> elements whose selected state is expressed only by a CSS class that changes background and text colour (.segmented button.active). There is no aria-pressed, no role=\"tab\" + aria-selected, and no radio grouping. A screen-reader user hears 'Sign in, button' and 'Create account, button' with no indication which mode the form is currently in — and tapping one silently adds or removes the first-name/last-name row (line 57) with no announcement. This is the enrolment screen, the highest-consequence surface in the product.",
+        "fix": "Model the control as a radiogroup (two <input type=\"radio\"> in a <fieldset> with a <legend>) or as a tablist with role=\"tab\"/aria-selected and aria-controls pointing at the form panel. Announce the field-set change in a live region. Do not rely on a class name to carry state.",
+        "confidence": "validated"
+      },
+      {
+        "id": "A11Y-02",
+        "priority": "high",
+        "criterion": "WCAG 4.1.3 Status Messages (Level AA); 3.3.1 Error Identification (Level A)",
+        "screen": "/rewards — RewardsPage.tsx:41; /login — LoginPage.tsx:97; all pages — loading and error returns",
+        "observation": "Every dynamic status message in the app is an ordinary <div> inserted into the DOM. The redemption toast (success and failure both), the login error, the 'Loading…' state and the full-page error state all appear with no role=\"status\", role=\"alert\" or aria-live. Nothing the app tells the member in response to an action is announced. The login error additionally is not linked to any field (no aria-describedby) and no field is marked aria-invalid, so a screen-reader user who submits a bad password receives no feedback of any kind.",
+        "fix": "role=\"status\" (aria-live=\"polite\") for success and loading; role=\"alert\" (aria-live=\"assertive\") for errors. Bind field errors with aria-describedby and set aria-invalid=\"true\" on the offending input. Give the container an id that is stable across renders so the live region is not destroyed and recreated.",
+        "confidence": "validated"
+      },
+      {
+        "id": "A11Y-03",
+        "priority": "high",
+        "criterion": "WCAG 3.3.4 Error Prevention (Legal, Financial, Data) (Level AA)",
+        "screen": "/rewards — RewardsPage.tsx:52–56",
+        "observation": "Redeeming spends the member's points irreversibly on a single tap, with no confirmation, no review step and no reversal mechanism. 3.3.4 requires that submissions causing financial transactions be reversible, checked, or confirmed. A points balance is a financial liability on NTUC Club's own books (the product brief records Finance as the owner of points-liability accounting), so this criterion applies.",
+        "fix": "Add a confirmation step stating reward, cost, and resulting balance, requiring an explicit second action. This also closes heuristic 3 and heuristic 5.",
+        "confidence": "validated"
+      },
+      {
+        "id": "A11Y-04",
+        "priority": "high",
+        "criterion": "WCAG 1.3.5 Identify Input Purpose (Level AA); WCAG 3.3.8 Accessible Authentication (Minimum) (Level AA)",
+        "screen": "/login — LoginPage.tsx:59–95",
+        "observation": "No input in the app declares an autocomplete attribute. 1.3.5 requires the purpose of inputs collecting information about the user to be programmatically identifiable, which the autocomplete token is the specified mechanism for. 3.3.8 requires that authentication not depend on recalling a password unless a mechanism to assist entry is available; browser and password-manager autofill is that mechanism, and omitting autocomplete=\"current-password\" makes it unreliable. Both fail. This is the single accessibility defect most likely to block the 60+ cohort recruited for RA-08.",
+        "fix": "autocomplete=\"email\" on email, \"current-password\" on sign-in password, \"new-password\" on registration password, \"given-name\" and \"family-name\" on the name fields. Retain this through the CIAM/SSO build (RAID D009) — federated sign-in does not remove the requirement from any password path that remains.",
+        "confidence": "validated"
+      },
+      {
+        "id": "A11Y-05",
+        "priority": "high",
+        "criterion": "WCAG 2.4.2 Page Titled (Level A)",
+        "screen": "All routes — index.html:9, App.tsx:25–55",
+        "observation": "index.html declares a single static <title>Loyalty Rewards</title> and nothing in the SPA updates document.title on route change. All four routes report the same title. Screen-reader users rely on the title announcement to know where they are after navigation, and it is the label in browser tabs, history and the installed-PWA task switcher.",
+        "fix": "Set a descriptive, route-specific document.title on every navigation, most-specific-first (e.g. 'Rewards — NTUC Club').",
+        "confidence": "validated"
+      },
+      {
+        "id": "A11Y-06",
+        "priority": "high",
+        "criterion": "WCAG 2.4.3 Focus Order (Level A) — SPA route change; supports 4.1.3",
+        "screen": "All routes — App.tsx, TabBar.tsx",
+        "observation": "Nothing manages focus on route change. After tapping a tab, focus remains on the tab link while the entire page content is replaced. A screen-reader user is given no announcement that the view changed and must navigate manually to discover it; a keyboard user's next Tab press continues from the tab bar rather than entering the new content.",
+        "fix": "On route change, move focus to the new page's heading container (tabIndex={-1} + .focus()) or announce the new page name in a live region. Do not do both — it double-announces.",
+        "confidence": "validated"
+      },
+      {
+        "id": "A11Y-07",
+        "priority": "medium",
+        "criterion": "WCAG 1.4.3 Contrast (Minimum) (Level AA)",
+        "screen": "Dashboard 'See all' link; Rewards points cost; Dashboard tier badge",
+        "observation": "Three text/background pairs in the palette fail 4.5:1. --primary #6366f1 on --bg #0b1020 measures 4.24:1 (the '.link' 'See all' control, 13.6px); --primary on --surface #151b30 measures 3.82:1 (the '.cost' '850 pts' figure on every reward card, 16px bold); and #fff on the .tier-badge fill — rgba(255,255,255,0.2) composited over the points-card gradient, effectively #8566ed — measures 4.10:1. All three are below 18pt/14pt-bold so the 3:1 large-text allowance does not apply. Full computed table in contrastResults.",
+        "fix": "Do not patch these individually. The whole palette is placeholder scaffolding and is being replaced under RA-09 — carry the failures forward as a constraint on the incoming NTUC Club palette instead. If any of these screens is used for stakeholder demos before then, lighten --primary to roughly #8b8cf7 (≈5.9:1 on --surface) as an interim.",
+        "confidence": "validated"
+      },
+      {
+        "id": "A11Y-08",
+        "priority": "medium",
+        "criterion": "WCAG 1.4.11 Non-text Contrast (Level AA)",
+        "screen": "/login form inputs — styles.css:179–186; Dashboard progress bar — styles.css:272–283",
+        "observation": "Text inputs have `border: 1px solid transparent` and are distinguished from the card they sit on only by fill: --surface-2 #1d2540 against --surface #151b30, a ratio of 1.13:1. 1.4.11 requires 3:1 for the visual information needed to identify a user-interface component and its boundary — the boundary of every input in the app is effectively invisible until focused. Separately, the progress bar's track — rgba(255,255,255,0.25) over the gradient, effectively #8c70ee — sits at 1.63:1 against the card behind it, so the extent of the bar (and therefore the meaning of the fill) is not perceivable.",
+        "fix": "Give inputs a visible 3:1 border in their resting state, not only on focus. Give the progress track a 3:1 boundary against its container. Note that on the points card these are white-on-purple compositing decisions that RA-09 will revisit — the requirement, not the value, is what carries forward.",
+        "confidence": "validated"
+      },
+      {
+        "id": "A11Y-09",
+        "priority": "medium",
+        "criterion": "WCAG 1.1.1 Non-text Content (Level A); 4.1.2 Name, Role, Value (Level A)",
+        "screen": "Dashboard tier progress bar — DashboardPage.tsx:60–64",
+        "observation": "The progress bar is two nested divs with a computed inline width and no role=\"progressbar\", no aria-valuenow/valuemin/valuemax, and no text alternative. Its meaning — how far through the tier the member is — is available to sighted users only. (The adjacent 'N pts to Tier X' text at lines 53–58 does carry the same information in text, which limits the impact, but the two can disagree because the bar falls back to 100% when the threshold is unknown — see heuristic 1.)",
+        "fix": "role=\"progressbar\" with aria-valuenow / aria-valuemin / aria-valuemax and an aria-label naming the tier being progressed toward, or aria-hidden=\"true\" on the bar if the adjacent text is guaranteed to be present and correct."
+        ,"confidence": "validated"
+      },
+      {
+        "id": "A11Y-10",
+        "priority": "medium",
+        "criterion": "WCAG 1.3.1 Info and Relationships (Level A); 2.4.6 Headings and Labels (Level AA)",
+        "screen": "/ , /rewards, /history",
+        "observation": "None of the three authenticated screens has an <h1>. Each starts its heading hierarchy at <h2> (DashboardPage.tsx:41, RewardsPage.tsx:38, HistoryPage.tsx:20) with <h3> beneath. Only /login has an <h1> (LoginPage.tsx:35). Screen-reader users navigating by heading have no top-level landmark for the page. On the dashboard the <h2> is additionally the member's first name — a heading that names the person, not the page, so heading navigation produces 'Aisha' rather than anything about where the member is.",
+        "fix": "One <h1> per route naming the page. If the personalised greeting is the desired visual treatment, make the <h1> the page name and render the greeting as text, or use a visually-hidden <h1>."
+        ,"confidence": "validated"
+      },
+      {
+        "id": "A11Y-11",
+        "priority": "medium",
+        "criterion": "WCAG 2.4.7 Focus Visible (Level AA) — passes; flagged as a design-system gap",
+        "screen": "styles.css:187–190 and the absence of any other :focus rule",
+        "observation": "`input:focus { outline: none; border-color: var(--primary); }` is the only focus style in the entire stylesheet. It does replace the removed outline, and the replacement clears the 3:1 threshold (--primary against --surface-2 = 3.38:1), so 2.4.7 passes — but it is a 1px border, which fails 2.4.13 Focus Appearance (AAA, not the target here) and is genuinely hard to see on a phone in daylight. Every other interactive element — buttons, links, tabs — has no focus style at all and relies entirely on the user agent's default ring. No focus token exists in the de-facto token set, so nothing in the codebase tells the next developer what a focus state should look like.",
+        "fix": "Define a focus-visible treatment as a first-class token in RA-09: minimum 2px, minimum 3:1 against both the component and its background, applied via :focus-visible so pointer users are unaffected. Never ship `outline: none` without it."
+        ,"confidence": "validated"
+      },
+      {
+        "id": "A11Y-12",
+        "priority": "medium",
+        "criterion": "Platform touch-target minima (Apple HIG 44×44pt; Material 48×48dp) — above WCAG 2.5.8 AA",
+        "screen": "Dashboard 'Sign out' and 'See all'; Rewards 'Redeem'; Login mode selector",
+        "observation": "Four of seven control types clear WCAG's 24×24px AA floor but sit well below the platform minima that matter on a phone: .btn.ghost 'Sign out' ≈28px tall, .btn.sm 'Redeem' ≈32px, .segmented button ≈32px, and the '.link' 'See all' has no padding at all — a bare ~16px line box. 'See all' most likely still passes 2.5.8 through the Spacing exception (no other target within a 24px circle), but at 16px it is a Fitts's-law problem for the 60+ cohort the plan deliberately recruits, and 'Redeem' is the control that spends money.",
+        "fix": "Set 44×44pt / 48×48dp as the design-system minimum for every control, achieved with padding or a transparent hit area rather than by enlarging the visual. Specify this as a token in RA-09 so it is not decided per component.",
+        "confidence": "validated"
+      },
+      {
+        "id": "A11Y-13",
+        "priority": "low",
+        "criterion": "WCAG 1.1.1 Non-text Content (Level A)",
+        "screen": "/login — LoginPage.tsx:34",
+        "observation": "`<div className=\"brand-logo\">🎁</div>` is a decorative 3rem emoji with no aria-hidden. Screen readers announce 'wrapped gift' as the first thing on the enrolment screen. (The tab-bar emoji are handled correctly — this one was missed.)",
+        "fix": "aria-hidden=\"true\" while it remains, and replace with a real brand mark under RA-09.",
+        "confidence": "validated"
+      },
+      {
+        "id": "A11Y-14",
+        "priority": "low",
+        "criterion": "WCAG 1.4.10 Reflow (AA); 1.4.4 Resize Text (AA)",
+        "screen": "Dashboard — styles.css:286–302, 250–255",
+        "observation": "`.stat-grid` is a hard two-column `grid-template-columns: 1fr 1fr` with no breakpoint, and `.points-value` is 2.6rem with `letter-spacing: -1px`. At a 320px viewport with text scaled to 200%, each stat column is ~142px wide holding a 44.8px-tall numeral, and a seven-digit balance in the points card would exceed the container. Both are overflow candidates. Marked low because the layout is fluid overall and this is a computed risk, not an observed break.",
+        "fix": "Let .stat-grid collapse to one column below a threshold, and verify both at 320px / 200% during the real build.",
+        "confidence": "hypothesis"
+      },
+      {
+        "id": "A11Y-15",
+        "priority": "low",
+        "criterion": "Best practice — no WCAG criterion",
+        "screen": "TabBar.tsx:11 — <nav> with no accessible name",
+        "observation": "The <nav> landmark is unnamed. With only one nav in the document this is not a failure, but it becomes one the moment a second navigation region is added (which f1's card route and f9's profile route will do).",
+        "fix": "aria-label=\"Main\" on the tab bar nav, and name every landmark from the outset.",
+        "confidence": "validated"
+      },
+      {
+        "id": "A11Y-16",
+        "priority": "low",
+        "criterion": "WCAG 1.4.3 — exempt, recorded as advisory",
+        "screen": "styles.css:218–221 — .btn.primary:disabled",
+        "observation": "Disabled buttons are rendered at `opacity: 0.5`, giving the 'Not enough' state a computed 3.96:1 text contrast. WCAG explicitly exempts inactive user-interface components from 1.4.3, so this is not a failure. It is recorded because 'Not enough' is a disabled control that carries information the member needs, and at 3.96:1 on a phone in a bright clubhouse it is information the 60+ cohort may not be able to read.",
+        "fix": "Do not use opacity to express disabled state on controls that carry meaning. Use a distinct, readable disabled token, and move the information out of the button label (see heuristic 2).",
+        "confidence": "validated"
+      }
+    ],
+
+    "needsVerification": [
+      {
+        "id": "A11Y-V1",
+        "criterion": "WCAG 2.4.11 Focus Not Obscured (Minimum) (Level AA) — new in WCAG 2.2",
+        "observation": "The tab bar is `position: fixed; bottom: 0` with `padding: 8px 8px calc(8px + env(safe-area-inset-bottom))` (styles.css:92–104), and .content reserves 96px (styles.css:65). Computed bar height is roughly 67px before the safe-area inset; on a notched iOS device the inset is ~34px, giving ~101px — more than the 96px reserved. The last focusable element on a fully scrolled page could therefore be partially obscured on those devices.",
+        "howToVerify": "Tab to the last control on a long History list on a notched device and confirm the focus ring is fully visible.",
+        "fix": "Compute the reservation from the same expression: `padding-bottom: calc(96px + env(safe-area-inset-bottom))`."
+      },
+      {
+        "id": "A11Y-V2",
+        "criterion": "WCAG 2.4.7 Focus Visible (Level AA) — user-agent default rings",
+        "observation": "Buttons, links and tabs have no authored focus style and depend on the browser's default ring rendering over a very dark background (--bg #0b1020). Chrome's default ring is two-tone and generally survives dark backgrounds; older WebKit and some Android WebViews do not render as reliably.",
+        "howToVerify": "Keyboard-traverse each route in Safari/iOS, Chrome/Android and desktop Chrome and Firefox.",
+        "fix": "Author the focus style explicitly rather than relying on the default (see A11Y-11)."
+      },
+      {
+        "id": "A11Y-V3",
+        "criterion": "WCAG 1.4.10 Reflow (AA) / 1.4.4 Resize Text (AA)",
+        "observation": "See A11Y-14. Overflow at 320px / 200% is computed, not observed.",
+        "howToVerify": "320px viewport at 200% text zoom, and iOS Dynamic Type at the largest accessibility size on the installed PWA.",
+        "fix": "As A11Y-14."
+      },
+      {
+        "id": "A11Y-V4",
+        "criterion": "Offline behaviour — supports NFR-007 / NFR-009 and RAID R010",
+        "observation": "vite.config.ts:33–42 caches /api NetworkFirst with a 5s timeout and a 5-minute expiry. What a member sees at a till with no connectivity — a stale balance, a spinner, or a raw 'Failed to fetch' — has not been observed. This is a member-safety question, not only an accessibility one.",
+        "howToVerify": "Throttle to offline and to 2G on each route, cold and warm start.",
+        "fix": "Specify the offline contract for the card and balance explicitly before RA-06."
+      }
+    ],
+
+    "contrastResults": {
+      "note": "Computed 2026-08-17 from styles.css declared values using the WCAG relative-luminance formula. Alpha layers composited against their actual backdrop; the points-card gradient (linear-gradient 135deg, #4f46e5 → #7c3aed) is evaluated at its midpoint #6640e9 and at both endpoints. Requirement column: 4.5 = 1.4.3 normal text; 3.0 = 1.4.11 non-text.",
+      "textPairs": [
+        { "pair": "--text #eef1f8 on --bg #0b1020 (body)", "ratio": "16.74:1", "required": "4.5:1", "result": "PASS" },
+        { "pair": "--text on --surface #151b30 (.card, .list-item, .stat)", "ratio": "15.08:1", "required": "4.5:1", "result": "PASS" },
+        { "pair": "--text on --surface-2 #1d2540 (input value, .btn, .toast)", "ratio": "13.35:1", "required": "4.5:1", "result": "PASS" },
+        { "pair": "--muted #94a0be on --bg (.muted, .small 13.1px)", "ratio": "7.24:1", "required": "4.5:1", "result": "PASS" },
+        { "pair": "--muted on --surface (list date, stat label, form label)", "ratio": "6.52:1", "required": "4.5:1", "result": "PASS" },
+        { "pair": "--muted on --surface-2 (inactive segmented button)", "ratio": "5.77:1", "required": "4.5:1", "result": "PASS" },
+        { "pair": "--muted on tab bar (inactive tab, 11.5px)", "ratio": "6.59:1", "required": "4.5:1", "result": "PASS" },
+        { "pair": "--text on tab bar (active tab, 11.5px)", "ratio": "15.24:1", "required": "4.5:1", "result": "PASS" },
+        { "pair": "--primary #6366f1 on --bg (.link 'See all', 13.6px)", "ratio": "4.24:1", "required": "4.5:1", "result": "FAIL — A11Y-07" },
+        { "pair": "--primary on --surface (.cost 'N pts', 16px bold)", "ratio": "3.82:1", "required": "4.5:1", "result": "FAIL — A11Y-07" },
+        { "pair": "--neg #f87171 on --bg (.error 14.4px)", "ratio": "6.84:1", "required": "4.5:1", "result": "PASS" },
+        { "pair": "--neg on --surface (.delta.neg)", "ratio": "6.17:1", "required": "4.5:1", "result": "PASS" },
+        { "pair": "--pos #34d399 on --surface (.delta.pos)", "ratio": "8.87:1", "required": "4.5:1", "result": "PASS" },
+        { "pair": "#fff on --primary-strong #4f46e5 (.btn.primary, active segment)", "ratio": "6.29:1", "required": "4.5:1", "result": "PASS" },
+        { "pair": "#fff on points-card gradient midpoint #6640e9", "ratio": "6.04:1", "required": "4.5:1", "result": "PASS" },
+        { "pair": "#fff on gradient end #7c3aed (worst point)", "ratio": "5.70:1", "required": "4.5:1", "result": "PASS" },
+        { "pair": "rgba(255,255,255,0.85) on gradient mid (.points-label, .tier-row .muted, 13.6px)", "ratio": "4.81:1", "required": "4.5:1", "result": "PASS — narrow margin" },
+        { "pair": "#fff on .tier-badge fill (rgba(255,255,255,0.2) over gradient = #8566ed)", "ratio": "4.10:1", "required": "4.5:1", "result": "FAIL — A11Y-07" },
+        { "pair": "Disabled .btn.primary at opacity 0.5 ('Not enough')", "ratio": "3.96:1", "required": "exempt", "result": "EXEMPT — advisory, A11Y-16" }
+      ],
+      "nonTextPairs": [
+        { "pair": "input:focus border --primary vs --surface-2 (focus indicator)", "ratio": "3.38:1", "required": "3:1", "result": "PASS" },
+        { "pair": "input:focus border --primary vs --bg", "ratio": "4.24:1", "required": "3:1", "result": "PASS" },
+        { "pair": ".toast border --primary vs --surface-2", "ratio": "3.38:1", "required": "3:1", "result": "PASS" },
+        { "pair": "progress fill #fff vs track #8c70ee", "ratio": "3.71:1", "required": "3:1", "result": "PASS" },
+        { "pair": "input fill --surface-2 vs card --surface (component boundary)", "ratio": "1.13:1", "required": "3:1", "result": "FAIL — A11Y-08" },
+        { "pair": "progress track #8c70ee vs points-card gradient mid", "ratio": "1.63:1", "required": "3:1", "result": "FAIL — A11Y-08" },
+        { "pair": "--surface card vs --bg page", "ratio": "1.11:1", "required": "n/a", "result": "INFORMATIONAL — cards are not user-interface components, so 1.4.11 does not apply; recorded because the surface hierarchy is near-invisible and rests entirely on radius and shadowless separation" },
+        { "pair": "tab-bar top border rgba(255,255,255,0.06)", "ratio": "1.18:1", "required": "n/a", "result": "INFORMATIONAL — decorative separator, not a boundary needed to identify a control" }
+      ]
+    },
+
+    "seniorCohortNotes": {
+      "context": "RA-08 recruits at least four participants aged 60+ and the brief names the Silvers sub-segment as the group most exposed by a SingPass-first, installable-PWA model. These are the current codebase's specific liabilities for that cohort, in priority order. None of them is exotic — they are all cheap to fix now and expensive to retrofit across twelve features.",
+      "items": [
+        "No autofill (A11Y-04). Typing an email and a password on a phone is the single highest-abandonment step, and the app has disabled the one mechanism that removes it.",
+        "Small touch targets on the money controls (A11Y-12). 'Redeem' at ~32px and 'See all' at ~16px, against a 44pt/48dp platform expectation.",
+        "Small type at the bottom of the size scale. The tab labels are 0.72rem (~11.5px) and .small is 0.82rem (~13.1px), used for transaction dates and stat labels. Contrast passes; legibility at 11.5px does not follow from that.",
+        "A dark-only interface with no light mode and no prefers-color-scheme handling. Ageing eyes generally read dark-on-light more comfortably, and — decisively — the membership QR will need a light field to scan (see absentComponentRequirements).",
+        "No help route and no support contact (heuristic 10). The cohort most likely to need CX has no way to reach it.",
+        "Errors written in machine English ('Failed to fetch') with no recovery action (heuristic 9)."
+      ]
+    },
+
+    "absentComponentRequirements": {
+      "note": "The digital membership card (brief f1) does not exist and therefore cannot be audited. These are forward-looking requirements for the component when it is built, not findings against the current code. They are recorded here because the card is the single most accessibility-critical element in the product and because one of them — the light-field requirement — directly constrains the palette decision RA-09 has to make.",
+      "requirements": [
+        "The QR/barcode is non-text content encoding the member's identity: role=\"img\" with an accessible name, and the membership number rendered as real, selectable text beneath it. A member with a cracked screen, a screen-reader user, or anyone facing a scanner that will not read can then read the number aloud. Never make the visual code the only representation. (1.1.1)",
+        "SCANNER CONSTRAINT — the code needs dark modules on a light field with a quiet zone of at least four modules. The app's only defined visual identity is dark-first (--bg #0b1020). A dark-mode QR is not reliably decodable by many POS scanners or by camera apps without inversion support. Either the card view breaks the theme with a light panel, or the programme is not dark-first. This is a design-system decision, not an implementation detail, and it belongs in RA-09.",
+        "The card view should raise screen brightness (or explicitly prompt the member to), because auto-brightness in a dim F&B interior produces an unscannable screen. Restore the previous brightness on exit.",
+        "Reachable in one action from a cold start and renderable with no network round-trip (brief guiding principle 1, NFR-009). Make this a measured acceptance criterion in RA-08, not an aspiration.",
+        "If the card is presented in an overlay: trap focus within it, provide a visible and keyboard-reachable dismiss, and never dismiss it on a timer — a member at a counter may need longer than expected (2.2.1).",
+        "State the card's freshness. If it renders from cache while offline, say so on the card rather than presenting stale data as live.",
+        "Do not require a gesture (pinch, swipe, long-press) to reveal or enlarge the code without a single-pointer alternative (2.5.1)."
+      ]
+    }
+  }
+}

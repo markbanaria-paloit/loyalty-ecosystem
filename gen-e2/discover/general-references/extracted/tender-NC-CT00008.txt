@@ -1,0 +1,3568 @@
+          Invitation to Tender
+
+
+      PROVISION OF SERVICES FOR THE
+     CONFIGURATION, INTEGRATION, AND
+IMPLEMENTATION FOR NTUC CLUB’S CUSTOMER
+          LOYALTY PROGRAMME
+
+
+
+      Tender Reference: NC-CT00008
+                TENDER DOCUMENT CONTENTS
+
+
+ITEM                            DESCRIPTION                    No of
+                                                               Pages
+
+ 1     Cover Page                                               1
+ 2     Contents                                                 1
+ 3     Letter of Invitation                                     2
+ 4     Conditions of Tender – Instructions to Tenderer          5
+ 5     Supplementary Instructions to Tenderer                   3
+ 6     Form of Tender                                           4
+ 7     Condition of Agreement (Service & Works)                 14
+ 8     Form of Bank Guarantee (Security Deposit)                2
+ 9     Requirements & Specifications                            22
+ 10    Statement of Compliance                                  10
+ 11    Price Schedule                                           5
+ 12    NTUC Club IT Outsource Security Requirement Checklist    1
+ 13    Tenderers Queries Format                                 1
+ 14    Tenderers Proposal Guidelines                            1
+03. Letter of Invitation
+Date: 27 July 2026
+
+Name & Address of Tenderer:
+
+
+Tender No.: NC-CT00008
+
+PROVISION OF SERVICES FOR THE CONFIGURATION, INTEGRATION, AND
+IMPLEMENTATION FOR NTUC CLUB’S CUSTOMER LOYALTY PROGRAMME
+
+Dear Tenderer,
+
+1       NTUC Club (Club) is pleased to invite you to participate in the above-mentioned closed tender.
+
+2       You are advised to read all pages in this Invitation to Tender carefully before responding to
+        this tender.
+
+3       Tenderers are to attend a mandatory online Tender Briefing as stated in the TENDER
+        NOTICE.
+
+4       If the Tenderer is in doubt to the true meaning and intent of any part of this tender document,
+        he shall request for clarification in writing well in advance (at least 3 working days) before the
+        date of submission of the Tender Offers, failing which Club may disregard such request. The
+        request of clarification shall be made in writing to the email address specified in the TENDER
+        NOTICE.
+
+5       This Invitation to Tender is for the above-mentioned works.
+
+6       Tenderers are to submit their Tender Offers in accordance to CONDITIONS OF TENDER –
+        INSTRUCTIONS TO TENDERER. All Tender Offers that are required to be submitted
+        through the e-tender email stated in the TENDER NOTICE.
+
+7       All prices should be quoted in Singapore dollars, excluding of prevailing Goods and Services
+        Tax (GST).
+
+8       Tenderers are to submit together, with their Tender Offers, a declaration on its GST and
+        Ownership status.
+
+
+
+Yours Faithfully,
+
+
+Linda Teo
+Director
+Group Marketing, Communications & Brand
+
+
+
+
+                                                                                             Page 1 of 2
+Information on Contract Owner/Superintending Officer/Consultants
+
+ Contract Owner                  NTUC Club
+
+                                 Downtown East
+                                 1 Pasir Ris Close,
+                                 Singapore 519599
+
+ Superintending Officer          Director, Group Marketing, Communications &
+                                 Brand
+
+                                 NTUC Club
+                                 Downtown East
+                                 1 Pasir Ris Close,
+                                 Singapore 519599
+
+
+
+
+                                                                               Page 2 of 2
+04. Conditions of Tender – Instructions to
+                Tenderer
+TENDER NO: NC-CT00008
+
+
+
+CONDITIONS OF TENDER – INSTRUCTIONS TO TENDERER
+(PLEASE DO NOT DETACH FROM FORM OF TENDER)
+
+         The NTUC Club invites tender for PROVISION OF SERVICES FOR THE
+         CONFIGURATION, INTEGRATION, AND IMPLEMENTATION SERVICES FOR NTUC
+         CLUB'S CUSTOMER LOYALTY PROGRAMME
+
+
+subject to the following Conditions of Tender:
+
+1.       The Tenderer if an individual must not be less than 21 years of age.
+
+2.       Each set of tender documents will be supplied to the Tenderer on receipt of a non-
+         refundable fee of S$N.A.                  .
+
+3.       (1)       The tendered price shall be clearly filled up for each individual item and shall
+                   exclude the Goods and Services Tax (“G.S.T.”). Incomplete, illegible or altered
+                   tendered price shall render the tender liable to be rejected.
+
+         (2)       The tendered price shall be valid for a period of 03 month(s) from the closing
+                   date of the tender. The Tenderer unconditionally agrees to extend the validity
+                   period for such further periods not exceeding 03 month(s) as and when so
+                   requested by the NTUC Club.
+
+ 4.        The Tenderer is to submit together with the Form of Tender a certified true copy of its
+           current business profile from the Accounting & Corporate Regulatory Authority
+           (“ACRA”) or any relevant competent authority. The registered G.S.T. Tenderer shall
+           submit a certified copy of the G.S.T. registration certificate to the NTUC Club.
+
+5.       The Tenderer is to submit together with the Form of Tender
+         a)    a proposed delivery plan for the supply of goods;
+         b)    the detail of services to be provided, included or excluded;
+         c)    such other information that may affect the decision to be made by NTUC Club.
+
+6.       (1)       The successful Tenderer will have to enter into a formal agreement and, if the
+                   Tenderer collects, use, and/or disclose personal data to/from NTUC Club, a
+                   personal data protection undertaking with NTUC Club within the time
+                   stipulated by NTUC Club. A specimen of the draft formal agreement is attached
+                   herewith.
+
+         (2)       The term of the agreement shall be 36 *month(s) commencing from the date
+                   of execution of the formal agreement or commencing from a date as ordered by
+                   the NTUC Club *with an option to renew for a further period of 12 *
+                   month(s). The successful Tenderer shall pay a security deposit, if required,
+                   upon signing the formal agreement.
+
+
+NTUC Club - Instructions to Tenderer – Confidential                                              1
+7.       The NTUC Club may terminate the formal agreement forthwith if, in the opinion of
+         NTUC Club, the Tenderer’s performance is not satisfactory. If the Tenderer has offered
+         or given to any person any gift or consideration of any kind as an inducement, NTUC
+         Club is entitled to terminate the Contract immediately without notice and to recover
+         from the Tenderer the amount of any loss resulting from such termination.
+
+8.       The Tenderer shall be deemed to have full notice and knowledge of the specifications
+         and or requirements of the NTUC Club. No error, omission or mis-statement in the
+         specifications or in the description of the requirements provided by the NTUC Club
+         shall invalidate the tender submitted by any successful Tenderer nor shall the same
+         entitle any successful Tenderer to any compensation whatsoever or to any adjustment
+         in the tendered price.
+
+9.       The successful Tenderer shall be notified of the acceptance of his tender by letter sent
+         to him to the address stated in the Form of Tender. The Letter of Acceptance is deemed
+         to have been communicated to the Tenderer the moment it is posted by Registered Post
+         whether or not it is actually received by the Tenderer.
+
+10.      Where a successful Tenderer does not enter into the formal agreement or fail to furnish
+         the security deposit within the period stipulated in the Letter of Acceptance, the
+         successful Tenderer shall be deemed to have repudiated the contract and in this event,
+         the NTUC Club shall be at liberty to award the tender to another tenderer and claim
+         against such successful Tenderer for any loss or damage suffered by his repudiation.
+
+11.      At the time of signing the formal agreement, the successful Tenderer is required to
+         produce *Identity Card/Passport and make the following payments: -
+
+         a)        A security deposit equivalent to 5% of the tendered price or the sum of
+                   S$5,000.00, whichever is the higher.
+
+         b)        Stamp fee for the formal agreement, if applicable;
+
+         c)        The G.S.T., if any.
+
+12.      a)      In case the Tenderer is an incorporated company, the formal agreement shall be
+                 executed by the director(s) who shall be required to stand as guarantor(s) for its
+                 observance and performance of the formal agreement. A certified true copy of
+                 the company’s resolution authorising the execution of the formal agreement by
+                 the director(s) for and on behalf of the company shall be produced at the time of
+                 the execution of the formal agreement.
+
+         b)      The company shall as and when required by the NTUC Club supply a certified
+                 copy of the Annual Return submitted to ACRA.
+
+         c)     The company shall notify the NTUC Club immediately of any change of directors’
+                 shareholders or the value of the shares held by the shareholders or of any form of
+                 reconstruction of the company.
+
+
+
+
+NTUC Club - Instructions to Tenderer – Confidential                                              2
+13.      a)        In case the Tenderer is a partnership firm, the formal agreement shall be
+                   executed by two (s) of the partners.
+
+         b)        The partnership firm shall not admit new partners or dismiss the existing
+                   partners without the NTUC Club’s prior written consent, and if such consent is
+                   granted shall be subject to such terms and conditions as the NTUC Club may
+                   deem fit to impose at its absolute and unfettered discretion.
+
+         c)        The partnership firm shall as and when required by the NTUC Club produce an
+                   up-to-date certified true copy of the business profile showing particulars of all
+                   partners from ACRA or the relevant competent authority and the firm’s Annual
+                   Income Tax Return.
+
+14.      a)        In case where the Tenderer is a sole proprietor, he shall conduct the business as
+                   a sole proprietorship only and shall not convert it to a partnership or an
+                   incorporated company without first obtaining the written consent of the NTUC
+                   Club and if such consent is granted it shall be given on such terms and
+                   conditions as the NTUC Club may in its entire and unfettered discretion deem
+                   fit to impose.
+
+         b)        He shall as and when required by the NTUC Club supply an up-to-date certified
+                   true copy of the business profile showing particulars of the sole proprietor from
+                   ACRA or the relevant competent authority.
+
+15.      The successful Tenderer who is required by law to obtain any licence permission or
+         approval prior to commencement of business and/or carry out any business must make
+         the necessary applications and obtain all the necessary approvals from the relevant
+         authorities at his own cost and expenses. In this connection the NTUC Club shall not
+         entertain any request for extension of time to commence the supply pending approval.
+
+16.      (1)       In the case of supply of goods, the successful Tenderer must obtain prior written
+                   consent from the NTUC Club with clear reason to substitute any supply of goods
+                   with any kind of similar quality. Should any substitution of any kind be made
+                   without first obtaining the prior consent and approval from the NTUC Club in
+                   writing, the successful Tenderer must make good at his own costs the
+                   unauthorised supply immediately without prejudice to the NTUC Club’s right
+                   to claim for loss or damage suffered arising therefrom.
+
+         (2)       The successful Tenderer is responsible for safe and efficient delivery of goods
+                   from his premises at his own cost.
+
+17.      Where site show round is necessary, it may be conducted once at the request of the
+         Tenderer on a date and time suitable and convenient to NTUC Club. The Tenderer is
+         deemed to have visited the site and have ascertained for and satisfied himself the nature
+         and full extent of the requirements of this tender whether the site show round is
+         conducted or not. The NTUC Club reserves its absolute right to reject any request for
+         site show round as it deems fit and such rejection shall not be a ground for the Tenderer
+         to withdraw his tender and or make any claim for refund of deposit or money paid.
+
+
+
+
+NTUC Club - Instructions to Tenderer – Confidential                                               3
+18.      Where drawings or artworks or samples are to be submitted with the Form of Tender,
+         the NTUC Club reserves its absolute discretion not to return these drawings, artworks
+         or samples to the unsuccessful Tenderer. The unsuccessful Tenderer shall not be
+         entitled to claim any price or compensation from the NTUC Club.
+
+19.      (1)       No Tenderer or any person on his behalf shall make any attempt to canvass for,
+                   solicit or approach any officers, employees and or agents of the NTUC Club in
+                   any matter relating to or arising out of this tender.
+
+         (2)       All Tenderers shall refrain from conspiring to submit the Form of Tender.
+
+         (3)       In the event any tender is, in the opinion of the NTUC Club, likely to be tainted
+                   with any irregularity, the tender shall be liable to be rejected.
+
+20.      (1)       The NTUC Club does not bind itself to accept the lowest tender or any offer it
+                   may receive nor to provide any reason whatsoever for such rejection of any
+                   tender.
+
+         (2)       The NTUC Club may at its absolute discretion consider accepting any tender
+                   with similar specifications without assigning any reason whatsoever.
+
+         (3)       The NTUC Club reserves the right to award part of the tender to more than one
+                   Tenderer.
+
+21.      This Conditions of Tender shall form part of the formal agreement.
+
+22.      The tenderers will need to submit their tender documents with completed Form of
+         Tender in PDF encrypted file via a dedicated tender box email at
+         tender.box@ntucclub.com.sg on or before 14 August 2026 (“the closing date”) by
+         6.00 p.m.
+
+23.      (1)       All documents submitted for the tender shall be in English.
+
+         (2)       Incomplete, illegible, defaced or unsigned Form of Tender or any document
+                   submitted for tender in any other language is liable to be rejected.
+
+ 24.     The successful Tenderer is required to commence operation within one ( 1 ) month(s)
+         from the date of execution of the formal agreement or on the date specified in the Letter
+         of Acceptance and if there is no such date then as soon as the successful Tenderer
+         receives an order to that effect from the NTUC Club.
+
+25.      The NTUC Club reserves the right to amend these Conditions of Tender at any time it
+         deems fit or as required by any of the relevant authorities in the interest of the public
+         without notice to any Tenderer and such amendments, if any, shall bind all Tenderers.
+
+26.      The Tenderer is to bear all costs and expenses, if any, incurred in the preparation and
+         submission of this tender.
+
+27.      The NTUC Club will not entertain any enquiry or query, verbal or in writing, from any
+         Tenderer once this tender is closed.
+
+
+NTUC Club - Instructions to Tenderer – Confidential                                               4
+28.      Words importing the singular number include the plural number and vice versa and
+         words importing the masculine gender include the feminine gender and words
+         importing persons import also corporations.
+
+29.      This document and all information and data disclosed herein or herewith are the
+         confidential secret and proprietary property of NTUC Club and are not to be used or
+         disclosed in whole or in part to anyone without the prior written permission of NTUC
+         Club. The inclusion of this clause does not oblige NTUC Club to disclose any
+         information and NTUC Club retains discretion as to the information which it may
+         disclose to the Tenderer or whether to enter into any agreement with the Tenderer. The
+         Tenderer’s obligation herein continues to apply in the event the Tenderer’s tender is
+         successful, unsuccessful, or rejected. The undertaking contained herein does not apply
+         to any disclosure of information required by law, governmental or regulatory body. The
+         Tenderer acknowledges that the remedies available to NTUC Club for breach of this
+         undertaking include injunctive relief and damages.
+
+30.      In respect of any Personal Data (as hereinafter defined) that the Tenderer may provide
+         or that NTUC Club may collect in connection with this tender exercise and to the extent
+         that the Tenderer’s consent is required under Personal Data Protection Act (“PDPA”),
+         the Tenderer agrees that NTUC Club (together with NTUC Club’s employees, agents
+         or independent contractors appointed by NTUC Club) may collect, use, disclose and
+         process such Personal Data for the following purposes:
+
+         (i)      to conduct appropriate due diligence checks.
+
+         (ii)     to perform administration of the tender exercise including the verification of the
+                  Tenderer’s representative’s identity; or
+
+         (iii) any other purpose relating to this tender exercise (collectively referred to as
+               “Purposes”).
+
+         If the Tenderer provides NTUC Club or NTUC Club’s agents, employees, servants,
+         NTUC Club’s consultants or independent contractors appointed by NTUC Club with
+         Personal Data of any individual (including, where applicable, the Tenderer’s partners,
+         contractors, employees or agents), the Tenderer represents and warrants to NTUC Club
+         that the Tenderer has obtained such individual’s consent for, and hereby consents on
+         behalf of such individual to the collection, use, disclosure and processing of his/her
+         Personal Data by NTUC Club or NTUC Club’s agents, employees, servants, NTUC
+         Club’s consultants or independent contractors appointed by NTUC Club in accordance
+         with the Purposes and in compliance with PDPA.
+
+         Any consent given pursuant to this tender exercise in relation to Personal Data shall
+         survive death, incapacity, bankruptcy or insolvency of any such individual and the
+         termination or expiration of this tender.
+
+         “Personal Data” means data, whether true or not, about an individual who can be
+         identified.
+
+         (i) from that data; or
+         (ii) from that data and other information to which NTUC Club has or is likely to have
+              access.
+
+NTUC Club - Instructions to Tenderer – Confidential                                               5
+05. Supplementary Instructions to Tenderer
+                      SUPPLEMENTARY INSTRUCTIONS TO TENDERERS
+
+1.    Tender Briefing
+
+1.1   Tenderers are required to attend a compulsory online tender briefing. Only Tenderers who have
+      attended the tender briefing will have their Tender Offers evaluated for awarding of Tender.
+
+1.2   The details of the Tender Briefing are stated in the TENDER NOTICE.
+
+2.    Tender Offer
+
+2.1   Tenderers are to include the following as part of their Tender Offer:
+
+            ▪   Items listed in the NTUC Club Conditions of Tender
+            ▪   Form of Tender
+            ▪   Price schedule including Schedule of Rates
+            ▪   Company Info (ACRA Profile/ Project team and relevant track records)
+            ▪   Proposals (Ideation of the overarching concept, integrated creative and media plan with
+                artificial intelligence capability to craft effective campaign, project timeline,
+                implementation plan etc.)
+            ▪   Any other necessary documents Tenderer may deem fit
+
+3.    Tender Submission
+
+3.1   Tenderers shall submit their Tender Offers in accordance with the following:
+
+            •   One (1) set of all documents in PDF encrypted files to be submitted
+
+      The above shall be submitted to the Employer in PDF encrypted file via a dedicated tender
+      box email at tender.box@ntucclub.com.sg as specified in the TENDER NOTICE – Tender
+      Closing Date / Time.
+
+3.2   NTUC Club reserves the rights to reject Tender Offers not submitted in accordance with the
+      mode of submission as specified in 3.1.
+
+3.3   Shortlisted Tenderers shall be required to present their Tender within 1 week of the Tender
+      closing date.
+
+4.    Evaluation Criteria
+
+4.1   Tenderers must first satisfy the following critical evaluation criteria before their Tender Offers
+      will be considered –
+
+      ▪     Compulsory attendance for Online Tender Briefing;
+
+      ▪     Any other eligibility criteria specified in the TENDER NOTICE.
+
+4.2   Tenderers will be evaluated using the Price-Quality Method with the following weightage:
+
+          Weightage    Description
+          40%          Tender Price
+
+          60%          Quality of Proposal (i.e. To provide end-to-end ideation and development of a
+                       comprehensive campaign concept, supported by an integrated creative
+                       strategy. The scope includes the creation of a detailed proposal outlining the
+                       strategic approach and creative development methodology. etc.)
+
+
+
+
+                                                                                          Page 1 of 3
+5.     Compliance to Instructions
+
+5.1    Tender Offers will only be accepted if submitted accordingly to instructions contained and in
+       the form(s) prescribed in the Invitation to Tender. Any Tender Offer which attempts to vary any
+       of the documents in the Invitation to Tender is liable to be rejected. In consideration of the
+       Tenderer agreeing to abide by these instructions in the Invitation to Tender, NTUC Club shall
+       evaluate all Tender Offers fairly and in accordance with the said instructions.
+
+6.     Withdrawal of Tender
+
+6.1    No Tender Offer may be withdrawn after the Closing Date prescribed in the Invitation to Tender.
+       Any Tenderers who attempt to do so may, in addition to any remedy the Employer may have
+       against him, be liable to be debarred from future NTUC Club and RCPL tenders.
+
+8.     Confidentiality
+
+8.1    Except with written consent from the Employer, the Tenderer shall not disclose this Tender, or
+       any part of its provision, or any specifications, that is issued by the Employer.
+
+9.     Ownership of Tender Documents
+
+9.1    All documents submitted by the Tenderer in response to this Invitation to Tender shall become
+       property of the NTUC Club. However, intellectual property in the information contained in the
+       Tender Offer submitted by the Tenderer shall remain vested in the Tenderer. This Clause is
+       without prejudice to any provisions to the contrary in any subsequent contract between the
+       Tenderer and NTUC Club.
+
+10.    Clarifications of the Tender Offer
+
+10.1   In the event that NTUC Club seek(s) clarification upon any aspect of the Tenderer’s Tender
+       Offer, the Tenderer shall provide full and comprehensive response in writing within three (3)
+       days of notification by NTUC Club.
+
+10.2   NTUC Club may require Tenderers to attend a tender interview to obtain clarification upon any
+       aspect of the Tenderer’s Tender Offer. NTUC Club may also require the Tenderer to provide
+       such full and comprehensive response in writing, within three (3) days of notification by the
+       Employer, after such a tender interview.
+
+11.    Notification
+
+11.1   Notification will not necessarily be sent to unsuccessful Tenderers by the NTUC Club.
+
+
+12.    Disclaimer
+
+12.1   This Invitation to Tender may not contain all the information which Tenderers may require.
+       Tenderers should therefore make their own inquiries and seek such clarifications they think
+       necessary. NTUC Club shall not be liable to any Tenderer for any information in this Invitation
+       to Tender which is incomplete or inaccurate.
+
+13.    Tender documents Issued by the NTUC Club
+
+13.1   The Tenderer shall satisfy himself on the contents of all tender documents (including those
+       incorporated by reference). He shall also check that the tender documents issued to him are
+       complete and that no pages are missing or duplicated. The Tender Prices and the Contract
+       Sum shall include all expenses and no adjustment shall be made to the Tender Prices or the
+       Contract Sum for any error.
+
+
+
+                                                                                         Page 2 of 3
+14.    Amendments to the Tender documents
+
+14.1   At any time prior to the deadline of the submission of the Tender Offers, NTUC Club may, for
+       any reason, whether at its own initiative or in response to a clarification requested by a Tenderer,
+       modify the tender documents by the issuance of a Corrigendum. The Corrigendum will be
+       posted in writing, and emailed, to all Tenderers. Tenderers shall promptly acknowledge receipt
+       of the Corrigendum to the Employer in writing. A Tenderer who does not acknowledge the
+       receipt of any Corrigendum will not be permitted to submit his Tender Offer
+
+15.    Pricing of Tenders
+
+15.1   When submitting his Tender Offer, the Tenderer shall fill in the rates and prices of all items in
+       the Tender Offer legibly, Items against which no rate or price is entered by the Tenderer will
+       not be paid for by the Employer when executed and shall be deemed to be covered by the other
+       rates and prices in the Tender Offer. The Tenderer shall ensure that the rate and price for each
+       item shall truly represent the true value of the item.
+
+16.    Liquidated Damages for Delay
+
+16.1   If the contractor is deemed to be at fault for the delay, NTUC Club may claim liquidated delay
+       damages in the amount of $500 per day for each day of delay until the works set out in in this
+       tender are fully completed.
+
+17.    Expenses
+
+17.1   No expenses incurred by Tenderers in the preparation of Tender Offers shall be borne by NTUC
+       Club.
+
+
+
+
+                                                                                             Page 3 of 3
+06. Form of Tender
+                                          FORM OF TENDER
+
+
+
+To:     NTUC Club
+        Management Office
+        Market Square @ Downtown East
+        E!Avenue, Level 3
+        1 Pasir Ris Close
+        Singapore 519599
+
+
+Dear
+
+TENDER NO:                NC-CT00008
+TENDER FOR:    PROVISION OF SERVICE FOR THE CONFIGURATION,
+INTEGRATION, AND IMPLEMENTATION SERVICES FOR NTUC CLUB'S
+CUSTOMER LOYALTY PROGRAMME
+(hereinafter referred to as “the works” read together with the Specifications)
+
+1.      Having read and examined the tender documents comprising of:-
+
+        (a)      Conditions of Tender - Instructions to Tenderer
+        (b)      The formal agreement
+        (c)      (i) Specifications     (ii) Schedule of Price
+                 ( Delete whichever is not applicable )
+        (d)      all appendices, if any
+
+        for the performance and execution of the works, we, the undersigned, hereby
+        offer and on your acceptance of this Tender undertake to perform, execute and
+        complete the works in conformity with the Specifications, Schedule of Price and
+        the formal agreement as ordered by you or your authorised officer for the total
+        sum of Singapore Dollars __________________________________________
+        _________________________________________________________________
+        (S$              ) referred to in the Schedule of Price excluding Goods and
+        Services Tax.
+
+2.      We confirm and agree that all the tendered price whether referred to in the
+        Schedule of Price or not shall be fixed throughout the duration of the contract and
+        is not subject to any adjustment by reason of any change in materials costs or our
+        operating costs or statutory levies or impositions now in force or subsequently
+        amended.
+
+3.      (a)     Subject to the following sub-clause (b), our offer is irrevocable, valid and
+                remains open for acceptance by you for twelve (12) weeks from the closing
+                date (“the Period”) of the tender.
+
+
+NTUC Club Form of Tender – Confidential                                                   1
+        (b)      We unconditionally agree to any subsequent extension of the Period as
+                 you may request provided that such extension shall not exceed three (3)
+                 months from the expiry of the Period.
+
+        (c)      For the duration of the Period and the extended period, we shall be bound
+                 by the prices tendered as set out or referred to in the Schedule of Price and
+                 or in any relevant tender documents.
+
+4.      At your option, you shall be entitled to accept our Tender in part or as a whole.
+
+5.      Upon acceptance by you
+
+        (a)     the Conditions of Tender – Instructions to Tenderer, Form of Tender,
+                Specifications, Schedule of Price, your Letter of Acceptance, and all other
+                related tender documents (if any) shall constitute a binding contract
+                between us based on the terms and conditions of the formal agreement
+                even though the formal agreement has yet to be executed.
+
+        (b)     We shall sign the formal agreement on a date specified by you and provide
+                the security deposit upon the signing of the formal agreement.
+
+        (c)     We shall commence and complete the works on the dates specified by you
+                and if there is no such date then as soon as we receive an order to that
+                effect from you.
+
+6.      We agree that you may accept or reject any or all tenders at your absolute
+        discretion. You are not bound to accept the lowest of any tender or assign any
+        reason for the acceptance or rejection of any tender.
+
+7.      We agree that the acceptance by you of our offer shall not prohibit you from
+        making arrangement with or engaging other supplier or contractor for the
+        performance and execution of the works as defined in the tender documents.
+
+8.      In the event that the Tender submitted by us shall in any way not be in
+        compliance with your Conditions of Tender – Instructions to Tenderer and the
+        Specifications you shall have the discretion to disregard the changes made in the
+        Tender submitted by us and treat our Tender as if such changes were not made.
+        Accordingly, your acceptance of our Tender shall be construed as disregarding
+        and excluding such changes.
+
+9.      We enclose the following together with our Tender:
+
+        (a)      our latest business profile issued by the ACRA;
+
+        (b)      a full description of our track record;
+
+        (c)      our Goods and Services Tax registration certificate (if any).
+
+10.     We undertake to promptly attend any interview or furnish you any further
+        presentation or information which you may require.
+
+
+
+NTUC Club Form of Tender – Confidential                                                     2
+11.     We agree that you are not obliged to entertain and reply to any enquiry or query
+        from us if our Tender is not successful.
+
+12.     We declare that
+
+        (a)     we are *taxable / non-taxable under the Goods and Services Tax Act.
+
+        (b)     we *are / are not currently providing the works to the following customers:
+
+                Name of Customer                              Expiry date of contract
+
+        1)      ____________________________________________________________
+        2)      ____________________________________________________________
+        3)      ____________________________________________________________
+        4)      ____________________________________________________________
+        5)      ____________________________________________________________
+        6)      ____________________________________________________________
+        7)      ____________________________________________________________
+        8)      ____________________________________________________________
+
+
+
+        (c)     we *have/have not been debarred from participating in any tender of the
+                Government/Statutory Board/Town Council as follows:
+
+                 Name                                 Period of debarment
+
+        1)       ___________________________________________________________
+        2)       ___________________________________________________________
+        3)       ___________________________________________________________
+        4)       ___________________________________________________________
+
+
+Signature:        ___________________________________________
+
+*for on behalf of __________________________________________
+
+Name: _________________________________________________
+
+Designation: ____________________________________________
+
+Tel     : _________________               Fax   : __________________
+
+Person to be contacted:            _______________________________
+NTUC Club Form of Tender – Confidential                                                   3
+(* Delete whichever is not applicable)
+
+
+
+
+NTUC Club Form of Tender – Confidential   4
+07. Condition of Agreement (Service &
+                Works)
+        THIS AGREEMENT is made on the day of ,20 26 with reference to tender number
+        NC-CT00008.
+
+        Between
+
+1.      NTUC Club, a society registered under the laws of Singapore and having its place of
+        business at No. 1, Pasir Ris Close, Singapore 519599 (hereafter called “the Buyer”)
+        of the one part
+
+        And
+
+*(If Seller is an incorporated company)
+
+*2.     ______________________________________________________________,     a
+        company incorporated in Singapore and having its registered office at
+        ____________________________________________________________________
+        ______ (hereinafter called “the Contractor”) of the other part.
+
+*(If Seller is a sole proprietor or partnership firm)
+
+*2.     __________________________ (NRIC No. S                        )  trading as
+        _______________________________________________________________ and
+        having its place of business at ___________________________________
+        _______________________________________________________________
+        (hereinafter called “the Contractor”) of the other part.
+
+(* Delete whichever is not applicable)
+
+        WHEREAS:
+
+        By the Form of Tender dated 2026 and by the Letter of Acceptance dated 2026, the
+        Seller agrees to supply the Goods (hereinafter defined) and the Buyer agrees to buy
+        and accept the Goods from the Seller on terms and conditions hereinafter set out.
+
+        IT IS HEREBY AGREED as follows:
+
+1.      Definitions
+
+        “Goods” means the articles or things or any of them described in the Specifications
+        and or in the Order including the substituted goods approved and accepted by the
+        Buyer.
+
+        “Specifications” means the specifications stipulated in the tender documents.
+
+        “Order” means the order placed by the Buyer for the supply of the Goods.
+
+
+
+
+NTUC Club Agreement (Goods) Confidential                                                 1
+        “Price” means the price of the Goods offered by the Seller as set out in the Form of
+        Tender and the Schedule of Price and accepted by the Buyer in the tender exercise.
+
+        “Supply of Goods” shall where necessary include manufacture, processing or testing
+        of the Goods.
+
+        The description of Goods in the Order shall prevail in the event of any discrepancy or
+        inconsistency between the Order and the Specifications.
+
+        Words importing the singular number shall include the plural and the masculine
+        gender shall include the feminine or neuter and vice versa and words importing
+        persons shall include corporations;
+
+        Where two or more persons are included in the term “the Seller” all terms conditions
+        stipulations obligations and agreements shall be binding on them jointly and each of
+        them severally and shall also be binding on their personal representatives and
+        permitted assigns respectively jointly and severally.
+
+2.      Agreements
+
+(1)     The Seller agrees to make, where applicable, and to supply to the Buyer the Goods at
+        the Price and for the term of thirty six ( 36 ) month(s) commencing from the date
+        stated in the Letter of Acceptance with an option to renew for a further term of
+        twelve ( 12 ) month(s) a price and terms and conditions to be mutually agreed upon
+        by the parties hereto.
+
+(2)     The Buyer shall have the right of refusal to renew this agreement upon its expiration
+        without assigning any reason.
+
+(3)     This agreement confers no exclusive rights to the Seller to supply the Goods to the
+        Buyer and the Buyer shall be at liberty to engage other supplier(s) to supply the Goods
+        or any portion thereof to the Buyer during the term of this agreement.
+
+3.      Acknowledgements
+
+(1)     The Buyer shall be bound by the Order only if it is placed on its official order form.
+
+(2)     The Buyer is at liberty to place the Order to the Seller as and when the Buyer deems
+        it necessary.
+
+4.      Variation of Conditions
+
+        Neither the Buyer nor the Seller shall be bound by any variation, waiver of, or addition
+        to these conditions except as agreed by both parties in writing and signed on their
+        behalf.
+
+5.      Quality & Description
+
+        Subject to clauses 10 and 11 the Goods shall:
+
+
+
+NTUC Club Agreement (Goods) Confidential                                                         2
+(1)     conform as to quantity, quality and description with the Specifications and or the
+        Order;
+
+(2)     be of sound materials and workmanship;
+
+(3)     be equal in all respects to the Specifications or the Order and or the samples or patterns
+        given by either party, if any;
+
+(4)     be capable of any standard of performance indicated in the Specifications or the Order;
+
+(5)     be fit for the purpose indicated in the Specifications or the Order.
+
+6.      Inspection and Testing
+
+(1)     Before despatching the Goods the Seller shall carefully inspect (and test them where
+        applicable) for compliance with the Specifications or the Order. The Seller shall give
+        the Buyer reasonable notice of any necessary test, if applicable, to be conducted and
+        the Buyer shall be entitled to be represented thereat. The Seller shall also at the request
+        of the Buyer supply to the Buyer a certified copy of the Seller’s test sheets without
+        cost to the Buyer.
+
+(2)     The Buyer shall be entitled to inspect the Goods (and or test the Goods during
+        manufacture, processing or storage, where applicable). The Seller shall, at the request
+        of the Buyer, assist and provide all such facilities as may reasonably be required for
+        and during the inspection without cost to the Buyer.
+
+(3)     If as a result of any inspection (or test where applicable) under the preceding sub-
+        clauses the Buyer or its representative is of the reasonable opinion that the Goods do
+        not comply with the Specifications or the Order (or are unlikely on completion of
+        manufacture or processing so to comply), the Buyer shall be entitled to refuse
+        acceptance of delivery of the Goods and require the Seller to take such steps as may
+        be necessary to ensure such compliance without cost to the Buyer.
+
+(4)     The Buyer shall be entitled to refuse acceptance of delivery of the Goods which are
+        in compliance with the Specifications or the Order but are defective or damaged or
+        with incomplete quantity and require the Seller to take such steps with all speed to
+        remedy the situation without cost to the Buyer.
+
+7.      Delivery & Storage
+
+(1)     The Goods shall, at the Seller’s own risk and expense, be properly packed and secured
+        in such manner as to reach their destination in good condition under normal conditions
+        of transport and shall be delivered by the Seller at, or despatched for delivery to, the
+        place or places and in the manner specified by the Buyer.
+
+(2)     The Seller must obtain prior written consent from the Buyer with clear reason to
+        substitute any supply of Goods with any kind of similar quality. Should any
+        substitution of any kind be made without first obtaining the prior consent and approval
+        from the Buyer in writing, the Seller must make good at its own costs the unauthorised
+        supply immediately without prejudice to the Buyer’s right to claim for loss or damage
+        suffered arising therefrom.
+
+
+NTUC Club Agreement (Goods) Confidential                                                         3
+(3)     If the Seller requires any packing cases, drums and or any other re-usable articles used
+        for packing the Goods to be returned to the Seller, the Seller shall inform the Buyer
+        prior to delivery of the Goods otherwise the Buyer is not obliged to return or arrange
+        to return such packing cases, drums and or re-usable articles used for packing the
+        Goods. The Seller shall bear all costs for the return of the packing cases, drums and
+        or re-usable articles used for packing the Goods.
+
+(4)     If for any reason the Buyer is unable to accept delivery of the Goods at the time when
+        the Goods are due and ready for delivery the Seller shall store the Goods, safeguard
+        them and take all reasonable steps to prevent their deterioration until their actual
+        delivery, and the Buyer shall pay a reasonable storage cost (including insurance where
+        necessary) to the Seller for it doing so.
+
+(5)     The Seller shall at its own risk and expense provide the manpower, transport,
+        equipment or any other facility or thing necessary for the safe, efficient and proper
+        delivery, or storage where necessary, of the Goods.
+
+8.      Passing of Property
+
+(1)     Subject to the provision of sub-clause (2) of this clause the property in the Goods shall
+        pass to the Buyer upon acceptance of delivery by the Buyer without prejudice to any
+        right of rejection which may accrue to the Buyer under these conditions.
+
+(2)     In the event the Seller postpones delivery at the request of the Buyer pursuant to clause
+        7(4) the property in the Goods shall pass to the Buyer seven (7) days after the date of
+        receipt of notification from the Seller that the Goods are due and ready for delivery or
+        on such other date as may be agreed but the Goods shall nevertheless remain at the
+        Seller’s risk until actual delivery has been completed.
+
+9.      Time
+
+(1)     The Seller shall deliver the Goods at the time specified by the Buyer in its Order or at
+        such other time as the parties may subsequently agree. Time shall be of the essence
+        and shall begin to run from the date of receipt by the Seller of the Order (or the date
+        on which the Seller is placed in possession of such information as may be necessary
+        to enable the Seller to start work on the Goods, where applicable). If the Seller is
+        unable to deliver the Goods within the specified time, the Seller shall give the Buyer
+        notice in writing without delay of its intention to claim an extension of time and the
+        Buyer may (but shall not be obliged to) grant the Seller such extension of time as may
+        be reasonable.
+
+(2)     If the Goods or any portion of thereof are not delivered within the specified time or
+        any extension of such time or times, the Buyer shall be entitled to determine the Order
+        in respect of the Goods undelivered as aforesaid and of any other Goods already
+        delivered under the Order which cannot be effectively and commercially used by
+        reason of the non-delivery of the Goods undelivered as aforesaid. On such
+        determination, the Buyer shall be entitled:
+
+        (a)      to return to the Seller at the Seller’s risk and expense any of the Goods already
+                 delivered but which cannot be effectively and commercially used as aforesaid
+
+
+
+NTUC Club Agreement (Goods) Confidential                                                        4
+                 and to recover from the Seller any monies paid by the Buyer in respect of such
+                 Goods;
+
+        (b)      to recover from the Seller any additional expenditure reasonably incurred by
+                 the Buyer in obtaining other goods in replacement of those in respect of which
+                 the Order has been determined;
+
+        (c)      to claim against the Seller for any loss or damage (including legal cost on an
+                 indemnity basis) suffered by the Buyer as a result of the non-delivery of the
+                 Goods or any portion thereof.
+
+10.     Rejection
+
+(1)    The Buyer may reject any Goods if the Seller fails to comply with its obligations under
+        clause 6 hereof and may also after acceptance of delivery reject any Goods which are
+        found not to be in accordance with the Specifications or the Order.
+
+(2)    The Seller shall arrange to take back any Goods so rejected by the Buyer as aforesaid
+        at the Seller’s risk and expense and shall within a reasonable time replace such
+        rejected Goods with Goods which are in all respects in accordance with the
+        Specifications or the Order. The Buyer shall not be liable to the Seller for any loss or
+        damage howsoever caused to any rejected Goods while such rejected Goods are still
+        in the custody of the Buyer before their return and the Buyer shall be entitled to claim
+        a reasonable storage fee from the Seller until such rejected Goods are taken back by
+        the Seller.
+
+(3)     Any monies paid by the Buyer to the Seller in respect of any rejected Goods not
+        replaced by the Seller together with any additional expenditure over and above the
+        Price reasonably incurred by the Buyer in obtaining other goods in replacement shall
+        be paid by the Seller to the Buyer. The Buyer may (but shall not be obliged to) deduct
+        such monies or additional expenditure as aforesaid from the security deposit, if any.
+
+11.    Guarantee
+
+(1)    The Goods delivered shall be under guarantee by the Seller for a period of
+        ___________ month(s) / year(s) (hereinafter called “the guaranteed period”).
+
+
+(2)     (a)      If within the guaranteed period the Buyer notifies the Seller of any defect in
+                 the Goods which shall arise under proper use from faulty
+
+                 design, materials or workmanship, or from any cause howsoever arises under
+                 proper use, then the Seller shall with all possible speed replace the Goods so
+                 as to remedy the defect without cost to the Buyer.
+
+        (b)      Subject to the Buyer’s agreement, the Seller may repair the defective Goods
+                 either at the Buyer’s premises or at the Seller’s premises at the Seller’s risk
+                 and expense if the defect is in the reasonable opinion of the Buyer of such a
+                 nature that such repair would remedy the defect and would not in any way
+                 affect the quality of the Goods.
+
+
+
+NTUC Club Agreement (Goods) Confidential                                                      5
+(3)     Upon notification by the Buyer as aforesaid, the Seller shall arrange to take back such
+        defective Goods at the Seller’s risk and expense. The Buyer shall not be liable to the
+        Seller for any loss or damage howsoever caused to any such defective Goods which
+        are still in the custody of the Buyer before their return and the Buyer shall be entitled
+        to claim a reasonable storage fee from the Seller until such defective Goods are taken
+        back by the Seller.
+
+12.     Damage or Loss in Transit
+
+        The Seller shall replace or with the Buyer’s agreement repair, free of charge, Goods
+        damaged or lost in transit where delivery by transport is arranged by the Seller, within
+        a reasonable time.
+
+13.     Price and Payment
+
+(1)     The Price of the Goods shall remain firm for the duration of this agreement and shall
+        not subject to any adjustment for any reason whatsoever.
+
+(2)     Subject to sub-clause (3) of this clause, payment of the Price shall be made within the
+        period after delivery specified in the Order, or if delivery is postponed at the request
+        of the Buyer as provided in clause 7(4) within the same period after the date when the
+        property in the Goods passed to the Buyer under that clause.
+
+(3)     The Buyer is justified in withholding any payment within the aforesaid period if the
+        Seller’s relevant tax invoice(s) or any other relevant document(s) are not in order and
+        or if the Goods delivered are rejected. Payment without any interest accrued will then
+        be made within the same period after the date the Seller’s relevant tax invoice(s) or
+        any other relevant document(s) are put in order and or after the date the rejected Goods
+        are replaced or repaired.
+
+14.     Care and Return of Samples
+
+(1)     Any sample, item or material provided by the Buyer to the Seller in connection with
+        the supply of Goods shall remain the property of the Buyer.
+
+(2)     The Seller shall maintain and take care of all such sample, item or material in good
+        order and condition while they are in the Seller’s custody and on
+
+        completion of the Order or as otherwise directed by the Buyer shall return them to the
+        Buyer at the Seller’s risk and expense in good order and condition. Should the Seller
+        fail so to return them the Buyer may either withhold
+
+        payment until they are so returned or withhold such part of the payment due as may
+        be required to replace them or to restore them to good order and condition, whichever
+        may be the less expensive.
+
+(3)     The Seller shall not use such sample, item or material, nor shall the Seller authorize
+        or knowingly permit them to be used by anyone else for, or in connection with, any
+        purpose other than the supply of Goods to the Buyer unless such use is expressly
+        authorized by the Buyer, previously and in writing.
+
+
+
+NTUC Club Agreement (Goods) Confidential                                                       6
+15.     Statutory Requirements
+
+        The Seller warrants that the design, construction and quality of Goods to be supplied
+        to the Buyer comply in all respect with all relevant requirements of any statute,
+        statutory rule or order, or other instrument having the force of law which may be in
+        force at the time when the same are supplied.
+
+16.     Infringement of Intellectual Property Right
+
+(1)     The Seller shall fully indemnify the Buyer against any action, claim, demand, costs,
+        charges, and expenses arising from or incurred by reason of any infringement or
+        alleged infringement of any intellectual property right by the use or sale of the Goods
+        and against all costs and damages which the Buyer may incur in any action for such
+        infringement or for which the Buyer may become liable in any such action.
+        PROVIDED ALWAYS that this indemnity shall not apply to any infringement which
+        is due to the Seller having followed a design or instruction furnished by the Buyer or
+        to the use of the Goods in a manner or for a purpose not reasonably to be inferred by
+        the Seller or disclosed to the Seller prior to the making of this agreement.
+
+(2)     In the event of any claim being made or action brought against the Buyer arising out
+        of the matters referred to in this clause, the Seller may at its own expense conduct all
+        negotiations for the settlement of the same, and any litigation that may arise therefrom.
+        The conduct by the Seller of such negotiations or litigation shall be conditional upon
+        the Seller having first given to the Buyer such reasonable security as shall from time
+        to time be required by the Buyer to cover the amount ascertained or agreed or
+        estimated, as the case may be, of any compensation, damages, expenses, and costs for
+        which the Buyer may become liable. The Buyer will, at the request of the Seller, afford
+        all available assistance for any such purpose, and shall be repaid any expenses
+        incurred in so doing. The inclusion of this sub-clause shall not be construed to have
+        given any prior right to the Contractor to conduct the negotiation for settlement as
+        aforesaid.
+
+17.     Assignment or Sub-Contract
+
+(1)     The Seller shall not without the consent in writing of the Buyer assign or transfer this
+        agreement or any part of it to any other person except as part of a company
+        amalgamation or reconstruction.
+
+(2)      The Seller shall not without the consent in writing of the Buyer sub-contract this
+        agreement or any part thereof other than for materials, minor details or for
+
+        any part of the Goods of which the makers, if any, are named in the Order or the
+        Specifications, but this shall not prevent the Seller sub-contracting part of this
+        agreement to any company which is a member of the group to which the Seller belongs
+        or a company with whom the Seller is associated. Any such consent shall not relieve
+        the Seller of any of its obligations under this agreement.
+
+(3)     The Seller hereby expressly acknowledges and undertakes to the Buyer that where the
+        Buyer assigns its rights and interest in under or arising out of this agreement (including
+        the transfer of the security deposit, if any), the Seller shall be deemed to have
+        consented to such assignment. Provided that the Buyer shall procure that the assignee
+
+
+NTUC Club Agreement (Goods) Confidential                                                        7
+       assumes all the Buyer’s obligations contained in this agreement including but not
+       limited to the obligation to refund the security deposit in the manner provided therein
+       and shall accept any assignee of the Buyer as its new Buyer and shall upon the request
+       of the Buyer forthwith release the Buyer from all its obligations under the provisions
+       of this agreement and in particular the obligation of the Buyer to refund the security
+       deposit. Where required by the Buyer, the Seller shall execute any agreement or
+       assignment made or to be made by the Buyer and its assignee, such agreement or
+       assignment to be prepared by and at the expense of the Buyer.
+
+18.    Termination
+
+(1)    If the Seller shall at any time fail or neglect to perform or observe any terms and
+       conditions herein contained and on its part to be observed and performed, or if, in the
+       opinion of the Buyer, the Seller’s performance is not satisfactory, or if the Seller
+       being an individual (or, when the seller is a firm, any partner in that firm) shall at any
+       time become bankrupt, or shall having a receiving order made against him or shall
+       make any composition or arrangement with, or for the benefit of his creditors or shall
+       purport to do so, or if the Seller, being a company, shall pass a resolution, or the court
+       shall make an order that the company shall be wound up (not being a members’
+       winding up for the purpose of reconstruction or amalgamation) or if a receiver, or
+       manager on behalf of a creditor, shall be appointed, or if circumstances shall arise
+       which entitle the court or a creditor to appoint a receiver or manager, or which entitle
+       the court to make a winding-up order, then the Buyer shall be at liberty and at its
+       option:
+
+       (a)     to cancel the Order summarily by notice in writing without compensation to
+               the Seller or to require the Seller to fulfill the Order as the Buyer deems fit and
+               necessary;
+
+       (b)     to terminate this agreement by notice in writing without compensation to the
+               Seller; or
+
+       (c)     to give any such receiver or liquidator or other person the option of carrying
+               out the Order and or this agreement.
+
+(2)    In the event there is cancellation or termination as aforesaid
+
+       (a)     the Buyer shall be entitled to forfeit the security deposit, if any;
+
+       (b)     the Seller shall at the Seller’s risk and expense immediately return all the
+               Buyer’s sample, item or material, if any, in good order and condition.
+
+(3)    The exercise of any of the rights reserved to the Buyer under the preceding sub-clauses
+       (1) and (2) shall not prejudice or affect any right of action or remedy which shall have
+       accrued or shall accrue thereafter to the Buyer.
+
+19.    Indemnity
+
+(1)   The Seller shall subject to sub-clauses (2) and (3) of this clause indemnify the Buyer in
+       respect of all damage or injury occurring to any person or to any property and against
+       all actions, suits, claims, demands, costs, charges or expenses arising in connection
+       therewith to the extent that the same shall have been occasioned by the negligence of
+       the Seller, its servants or agents during such time as anyone of them was on, entering
+NTUC Club Agreement (Goods) Confidential                                                      8
+        onto or departing from the Buyer’s premises for any purpose connected with this
+        agreement;
+
+(2)    The Seller shall not be liable to the Buyer for:
+
+        (a)      any loss of profit or of contracts except when such loss is occasioned or caused
+                 by or arises out of the acts or omissions of the Seller;
+
+        (b)      any damage or injury to the extent that the same is occasioned or caused by or
+                 arises out of the acts or omissions of the Buyer or of others (not being the
+                 Seller’s servants or agents).
+
+(3)     In the event of any claim being made or action brought against the Buyer by reason
+        of the matters referred to and in respect of which the Seller is liable under this clause,
+        the Seller may at its own expense conduct all negotiations for the settlement of the
+        same, and any litigation that may arise therefrom. The conduct by the Seller of such
+        negotiations or litigation shall be conditional upon the Seller having first given to the
+        Buyer such reasonable security as shall from time to time be required by the Buyer to
+        cover the amount ascertained or agreed or estimated, as the case may be, of any
+        compensation, damages, expenses, and costs for which the Buyer may become liable.
+
+        The Buyer will, at the request of the Seller, afford all available assistance for any such
+        purpose, and shall be repaid any expenses incurred in so doing. The inclusion of this
+        sub-clause shall not be construed to have given any prior right to the Contractor to
+        conduct the negotiation for settlement as aforesaid.
+
+20.     Arbitration and Mediation
+
+(1)     Any dispute or difference between the parties hereto on any matter arising out of the
+        construction or interpretation of this agreement or as to the rights, duties or obligations
+        of either party hereto shall be referred to arbitration in accordance with the Singapore
+        Arbitration Act (Cap. 16) and any statutory modification or re-enactment thereof for
+        the time being in force.
+
+(2)     Notwithstanding the preceding sub-clause (1) all dispute or difference arising out of
+        or in connection with this agreement shall first be submitted to the Singapore
+        Mediation Centre for resolution. The parties hereto agree and undertake to participate
+        in the mediation in good faith and to abide by the terms of any settlement reached.
+        The right to have the dispute or difference arbitrated or litigated shall not arise until
+        or unless one or more parties serve a notice in writing on all the other parties and the
+        Singapore Mediation Centre withdrawing the matter from mediation.
+
+21.     Confidentiality
+
+(1)     The parties hereto agree and undertake that
+
+        (a).     they shall hold and keep all Confidential Information (hereinafter defined) in
+                 strict confidence and shall not disclose it to any third party save as hereinafter
+                 specifically provided for;
+
+
+
+
+NTUC Club Agreement (Goods) Confidential                                                         9
+        (b)      they shall use the Confidential Information solely for the purpose of this
+                 agreement and shall not use or permit to be used the Confidential Information
+                 for any other purpose not authorized by the other party;
+
+        (c)      neither party shall distribute, copy or reproduce any Confidential Information
+                 to any third party save for the purpose of this agreement and with the prior
+                 consent in writing of the other party.
+
+(2)     Confidential Information means all information and data relating to either party’s
+        business, activities, affairs, operations, financial position, technical capability,
+        resources, costing and pricing, strategies, plans, designs, profiles of suppliers or
+        customers including but not limited to oral, written, graphic, printed, machine-
+        readable or electronic form .
+
+(3)     Any information which is generally available to the public is not Confidential
+        Information unless otherwise so classified by the parties.
+
+(4)     Either party shall be under no obligation of non-disclosure in respect of any part of
+        the Confidential Information if:
+
+        a.       the other party gives its consent to such disclosure or distribution;
+
+        b.       such information is required by any laws or regulations or order of court or
+                 statutory direction to be disclosed by either party.
+
+(5)     In the event any disclosure has to be made as aforesaid, the parties undertake to
+        a.      disclose only such Confidential Information to the extent required to be
+                disclosed; and
+
+        b.       immediately notify the other party and shall render such assistance and provide
+                 the other party the opportunity to oppose or seek a protective order or other
+                 remedy.
+
+(6)     Subject to the terms of this agreement, the parties’ undertaking herein continues to
+        apply in the event of the purpose of this agreement being completed, abandoned or
+        any agreement in relation to the purpose of this agreement being terminated or
+        rescinded by either party or otherwise comes to an end.
+
+(7)     The Seller undertakes that it shall promptly, on request by the Buyer following the
+        termination or suspension of the purpose of this agreement, return the Confidential
+        Information to the Buyer so requests and / or destroy it.
+
+(8)     Nothing herein obliges the Buyer to disclose any information and the Buyer retains
+        discretion as to the information which it may disclose to the Seller or whether to enter
+        into any other agreement with the Seller.
+
+(9)     The Seller agrees that any Confidential Information, directly or indirectly, acquired
+        by the Seller from the Buyer for the purpose of this agreement, is and remains the sole
+        and complete property of the Buyer, and the Seller acknowledges that the remedies
+        available to the Buyer for breach of this undertaking include injunctive relief and
+        damages.
+
+NTUC Club Agreement (Goods) Confidential                                                     10
+22.     Security Deposit
+
+(1)     The Seller shall furnish the Buyer with the Security Deposit as security for due
+        performance and observance by the Seller of this agreement on or before the execution
+        of this agreement.
+
+(2)     The Buyer may at any time increase the Security Deposit.
+
+(3)     The Seller shall provide the Buyer with the increased amount of Security Deposit
+        notified by Buyer within seven (7) days of the Buyer’s notification, and references to
+        “security deposit” shall be construed as to the amount as increased by Buyer from time
+        to time.
+
+(4)     The Buyer may at any time utilise any security deposit in payment of any sum due to
+        the Buyer from the Seller howsoever arise. The Seller must, if so required by the Buyer,
+        immediately reinstate the Security Deposit after any part of the Security Deposit is
+        utilized by the Buyer.
+
+(5)     Unless otherwise agreed, the Buyer shall be entitled to retain all security deposit
+        provided by or on behalf of the Seller free of interest until fourteen ( 14 ) calendar
+        days after the expiry of this agreement.
+
+23.     Force Majeure
+
+        This agreement shall be suspended for any period during which either party
+        reasonably believes the parties are prevented or hindered from complying with their
+        obligations under any part of this agreement, by any cause beyond their reasonable
+        control including but not restricted to strikes, war, civil disorder, and natural disasters.
+
+24.     License and Permit
+
+        If the Seller is required by law to obtain any license permit or approval prior to operate
+        its business and or to supply the Goods, the Seller must make the necessary
+        applications and obtain all the necessary approvals from the relevant authorities at its
+        own costs and expenses and shall produce same promptly for inspection or verification
+        by the Buyer on demand.
+
+25.     Stamp Duty, Legal Fees and Expenses etc
+
+        The Seller shall pay
+
+        (1)      the stamp duty and the Buyer’s legal costs and expenses incurred in the
+                 preparation, negotiation and execution of this agreement (in duplicate), if any;
+
+        (2)      all costs and expenses including reasonable and customary solicitors’ costs
+                 incurred by the Buyer of and incidental to the service of all notices whether
+                 served during or after the termination of this agreement (but relating in all
+                 cases to matters arising out of this agreement);
+
+        (3)      all costs and expenses (including reasonable and customary solicitors’ costs
+                 on a full indemnity basis) in connection with any claim or legal proceedings
+
+NTUC Club Agreement (Goods) Confidential                                                         11
+                 which may be brought by the Buyer against the Seller in connection with or
+                 arising out of any breach by the Seller of the terms, conditions, stipulations,
+                 obligations and agreements of this agreement.
+
+26.     Foreign Employees
+
+(1)     The Seller undertakes that only foreigners with valid permits to stay and work in
+        Singapore will be allowed to perform or carry out any work for the supply of the
+        Goods under this agreement.
+
+(2)     Non-compliance with the preceding sub-clause (1) is construed as a fundamental
+        breach of this agreement which will entitle the Buyer to terminate this agreement
+        without any compensation and the relevant provisions in clause 18 of this agreement
+        shall apply.
+
+27.     Inducement and Rewards
+
+        The Buyer shall be entitled to terminate this agreement without notice and without
+        compensation if the Seller or its servants or agents shall have, in the reasonable belief
+        or opinion of the Buyer, offered or given or agreed to offer or give to the employees
+        of the Buyer or any person any gift or consideration of any kind as an inducement or
+        reward for doing or forbearing to do or for having done or forborne to do any action
+        in relation to the performance and or fulfillment of this agreement and the relevant
+        provisions of clause 18 of this agreement shall apply.
+
+28.     Notice
+
+(1)     Any notice required to be served hereunder shall if to be served on the Seller be
+        sufficiently served if addressed to the Seller and sent by prepaid post to or delivered
+        at the Seller’s address in Singapore, and shall if to be served on the Buyer be
+        sufficiently served if addressed to the Buyer and sent by prepaid post to or delivered
+        at the Buyer’s address in Singapore.
+
+(2)     A notice sent by registered post shall be deemed to be given at the time when in due
+        course of post, it would be delivered at the address to which it is sent.
+
+29.     Severability
+
+        If at any time any one or more of the provisions hereof is determined to be or becomes
+        illegal, invalid or unenforceable in any respect under the applicable laws of any
+        jurisdiction to which this agreement is subject, neither the legality, validity or
+        enforceability of the remaining provisions hereof, nor the legality, validity or
+        enforceability of such provision under the applicable laws of any other jurisdiction,
+        shall in any way be affected or impaired thereby.
+
+30.     No Waiver
+
+        No consent or waiver expressed or implied by the Buyer to or of one breach of any
+        terms, conditions, stipulations, obligations and agreements of the Seller shall be
+        construed as a consent or waiver to or of another breach of the same or any other term,
+        condition, stipulation, obligation and agreement and shall not prejudice in any way
+        the rights, powers and remedies of the Buyer herein contained.
+
+NTUC Club Agreement (Goods) Confidential                                                      12
+31.     Clause Headings
+
+        The clause headings appearing in this agreement are inserted only as a matter of
+        convenience and in no way define, limit, construe or describe the scope or intent of
+        the sections or clauses of this agreement nor in any way affect this agreement.
+
+32.     Governing Law
+
+(1)     This agreement shall be governed by and construed in accordance with the laws of the
+        Republic of Singapore.
+
+(2)     A person who is not a party to this agreement has no right under the Contracts (Rights
+        of Third Parties) Act 2001 to enforce the benefit of any term of this agreement.
+
+33.     Personal Data
+
+        In respect of any Personal Data (as hereinafter defined) that the Seller may provide or
+        that the Buyer may collect in connection with this agreement and to the extent that the
+        Seller’s consent is required under Personal Data Protection Act (“PDPA”), the Seller
+        agrees that the Buyer (together with the Buyer’s agents, employees or servants) may
+        collect, use, disclose and process such Personal Data for the following purposes:
+
+        (i)      to conduct appropriate due diligence checks;
+        (ii)     to perform administration of this agreement including the verification of the
+                 Seller’s representative’s identity, preparation of the agreement or
+                 documentations; or
+        (iii)    any other purpose relating to this agreement (collectively referred to as
+                 “Purposes”).
+
+        If the Seller provides the Buyer or the Buyer’s agents, employees or servants, with
+        Personal Data of any individual (including, where applicable, the Seller’s partners,
+        employees or agents), the Seller represents and warrants to the Buyer that the Seller
+        has obtained such individual’s consent for, and hereby consents on behalf of such
+        individual to the collection, use, disclosure and processing of his/her Personal Data by
+        the Buyer or the Buyer’s agents, employees or servants in accordance with the
+        Purposes and in compliance with PDPA.
+
+        Any consent given pursuant to this agreement in relation to Personal Data shall survive
+        death, incapacity, bankruptcy or insolvency of any such individual and the termination
+        or expiration of this agreement.
+
+        “Personal Data” means data, whether true or not, about an individual who can be
+        identified
+
+        (i)      from that data; or
+        (ii)     from that data and other information to which the Buyer has or is likely to have
+                 access.
+
+
+
+
+NTUC Club Agreement (Goods) Confidential                                                      13
+IN WITNESS, WHEREOF the parties hereto have hereunder set their hands the day and
+year first above written.
+
+SIGNED by                                   )
+for and on behalf of                        )
+NTUC CLUB, the Buyer                        )
+in the presence of:-                        )
+
+
+____________________________________
+Witness’s name:
+
+
+
+
+*(If Seller is an incorporated company)
+
+
+*SIGNED by                                  )
+for and on behalf of                        )
+the Seller in the presence of: -            )
+
+
+___________________________________
+Witness’s name:
+
+
+
+
+*(If Seller is a sole proprietor or partnership firm)
+
+
+SIGNED by                                   )
+trading as                                  )
+the Seller in the presence of:-             )
+
+
+_______________________
+Witness’s name:
+
+
+
+
+(* Delete whichever is not applicable)
+
+NTUC Club Agreement (Goods) Confidential                                      14
+08. Form of Bank Guarantee (Security
+              Deposit)
+               BANKER'S GUARANTEE FOR GOODS AND SERVICES AND
+             CONSTRUCTION SERVICES (FOR FIXED PERIOD CONTRACTS)
+
+
+                             Form of Bank Guarantee
+                       (referred to in Clause ______ of this Agreement)
+Date:
+
+To       :      NTUC CLUB
+                NTUC Club Management Office
+                Market Square @ Downtown East
+                E!Avenue,Level 3
+                1 Pasir Ris Close
+                Singapore 519599
+
+Dear Sirs
+
+BANK GUARANTEE NO.             _____________ FOR S$___________________
+
+
+        Whereas on the _____________ day of _________________ an Agreement (hereinafter
+called "the Contract") was made between _________________________________________
+(name of Contractor) of __________________________________________________ (address)
+(hereinafter called "the Contractor") of the one part and NTUC Club of the other part whereby
+NTUC Club agreed to _____________________________________________________________
+_______________________________________________________________________________
+(state nature of contract) For the sum of Singapore Dollars (S$ __________________________ ).
+
+      And Whereas the Contractor is required under the Contract to pay _5__ per cent of the total
+value of the Contract as a Security Deposit for the performance of his obligations under the
+Contract.
+
+       Now in consideration of NTUC Club not insisting on the Contractor paying _5 per cent of the
+total value of the Contract as a security deposit for the said Contract, we (at the request of the
+Contractor) hereby agree as follows:
+
+
+1       In the event of the Contractor failing to fulfil any of the terms and conditions of the said
+contract, we shall indemnify NTUC Club against all losses, damages, costs, expenses or otherwise
+sustained    by    NTUC     Club     thereby    up     to    the   sum    of   Singapore     Dollars
+___________________________________________________________________________________
+(S$ ____________________________ ) ("the Guaranteed Sum") upon receiving your written notice of
+claim for payment made pursuant to Clause 4 hereof.
+
+2       We shall not be discharged or released from this guarantee by any arrangement between
+yourself and the Contractor with or without our consent or by any alteration in the obligations
+undertaken by the Contractor or by any forbearance whether as to payment, time, performance or
+otherwise.
+
+
+
+
+January 2009                                                                                         1
+3       Our liability under this guarantee shall continue and this guarantee shall remain in full
+force and effect from [insert effective date: _____________________________________ ]
+until [insert expiry date:______________________________ ].
+4        This guarantee is conditional upon a claim as specified herein being made by you by way of
+a notice in writing addressed to us and the same being received by us at [insert address of Bank’s
+notification office: ________________________________________________________________ ]
+within 90 days from the expiry of this guarantee. Thereafter this guarantee shall become null and
+void notwithstanding that this guarantee is not returned to us for cancellation except for any claim(s)
+submitted to us in writing not later than 90 days from the expiry of this guarantee.
+
+5        We shall be obliged to effect the payment required under such a claim within 30 business
+days of our receipt thereof. We shall be under no duty to inquire into the reasons, circumstances or
+authenticity of the grounds for such claim and shall be entitled to rely upon any written notice
+thereof received by us (within the period specified in Clause 4 hereof) as final and conclusive.
+
+6       NTUC Club may make more than one claim on this guarantee so long as the claims are made
+pursuant to Clause 4 hereof and within the period specified therein and the aggregate amount
+specified in all such claims does not exceed the Guaranteed Sum.
+
+7        This guarantee is issued subject to the laws of the Republic of Singapore and the jurisdiction
+of the Singapore courts.
+
+
+
+Dated this _______ day of ______________
+
+
+
+AS WITNESS our hand
+
+
+Signed by: _______________________________
+             (Name and designation of officer)
+
+
+
+for and on behalf of the
+
+
+
+_______________________________                                   _____________________
+(Name of Bank)                                                    (Signature)
+
+
+in the presence of:
+
+
+Name ___________________
+
+
+Designation ______________                                        _____________________
+                                                                   (Signature of Witness)
+
+
+
+
+January 2009                                                                                              2
+09. Employers Requirements &
+        Specifications
+NTUC Club — Loyalty Programme BRD                                Confidential — Tender Use Only
+
+
+
+
+NTUC CLUB
+
+BUSINESS REQUIREMENTS DOCUMENT
+Provision of Services for the Configuration, Integration, and Implementation of NTUC
+Club's Customer Loyalty Programme — Request for Vendor Proposal
+
+
+
+
+                                        Page 1 of 22
+NTUC Club — Loyalty Programme BRD                                                Confidential — Tender Use Only
+
+
+
+1. Document Guidelines
+
+1.1 Purpose of the Document
+This document is issued to prospective vendors to support preparation of a proposal / quotation. It defines
+the business background, phased requirements, non-functional expectations, compliance obligations and
+security standards for the NTUC Club loyalty programme platform. NTUC Club has not pre-selected a
+platform, architecture or vendor; vendors are invited to propose the solution design and technical approach
+that best meets these requirements, and to highlight where alternative approaches may better serve the
+stated objectives.
+Vendors should read this BRD together with the Tender documents and any commercial terms issued
+separately. Where this BRD and the CT conflict on commercial or procurement process matters, the CT shall
+prevail; where they conflict on functional/technical scope, vendors should flag the discrepancy for
+clarification.
+
+1.2 Distribution
+This document is issued to shortlisted vendors invited to respond to the Closed Tender CT00008 (CT) for the
+NTUC Club loyalty programme platform, and to internal stakeholders listed.
+
+1.3 How to Use This Document
+  • Requirements are numbered (e.g. BR-P1-001) for traceability between this BRD, vendor proposals, and
+    the eventual solution design / test plan.
+  • Requirements are tagged by priority: Must Have (mandatory for the relevant phase), Should Have, Could
+    Have, or flagged for a later phase (Phase 2 / Phase 3).
+  • Sections marked "Vendor to Propose" indicate NTUC Club is deliberately not prescribing a solution and
+    wants to see the vendor's recommended approach, with trade-offs, in the proposal.
+  • Compliance requirements applicable to this engagement are set out separately from this document, in
+    the accompanying 10. Statement of Compliance v1.0.docx.
+      Vendors are required to review and respond to this document in full as part of their proposal
+      submission, indicating their compliance status against each requirement, with remarks where relevant.
+      Any deviation, qualification or exclusion should be substantiated and will be reviewed by NTUC Club as
+      part of proposal evaluation.
+
+
+
+
+                                                  Page 2 of 22
+NTUC Club — Loyalty Programme BRD                                                    Confidential — Tender Use Only
+
+
+
+2. Introduction
+
+NTUC Club is seeking a vendor to configure, integrate and implement a loyalty programme technology
+platform for its portfolio of leisure, recreation and lifestyle destinations ("the Club's touchpoint"), with all
+business units (including Downtown East (DE), D’Resort, MICE, NTUC Club Clubhouses, Orchid Country Club
+(OCC), Aranda Country Club (ACC), Wild Wild Wet (WWW), My Golf Kaki (MGK), D’Resort), and its
+participating tenants. The programme is intended to capture first-party member data, change customer
+behaviour in ways that grow revenue and margin, and channel value to participating tenants.
+
+The programme will be delivered in three phases:
+
+  • Phase 1 — MVP: a simple, free-to-join, two-tier points programme rolled out to participating tenants at
+    the 4 NTUC Club Clubhouses, Orchid Country Club, Aranda Country Club and Downtown East (DE). Scope
+    covers participating tenants at these locations only and excludes business units. Targeted Go-Live: 1
+    December 2026.
+  • Phase 2 — Growth & Engagement: deeper systems integration (parking, POS, other facilities),
+    missions/challenges, and expansion of tiering and partner offers, covering all business units (including
+    Downtown East (DE), D’Resort, MICE, NTUC Club Clubhouses, Orchid Country Club (OCC), Aranda
+    Country Club (ACC), Wild Wild Wet (WWW), My Golf Kaki (MGK), D’Resort), and its participating tenants.
+  • Phase 3 — Mature Ecosystem: advanced personalisation, gamification, an experience marketplace,
+    member community features and referral mechanics.
+NTUC Club is not prescribing the underlying platform or architecture. Vendors are asked to propose a solution
+— white-label or otherwise — that provides a stable foundation of core member benefits at launch while
+remaining highly configurable for evolving marketing benefits, without requiring major platform
+redevelopment as the programme matures.
+
+Proposals should include a 3-year roadmap, timeline and cost breakdown covering the Phase 1, together with
+ongoing support and enhancement costs. For Phase 2 and 3, a budgetary estimate is required based on 3
+years of operation.
+
+
+
+3. Business Background
+
+3.1 Why This Programme Is Needed
+  • Capture first-party member data to better serve NTUC members.
+  • Change customer behaviour in ways that drive revenue and margin.
+  • Give greater value back to participating tenants.
+
+3.2 Key Customer Segments
+Families, PMEs (Professionals, Managers and Executives), and DINKs/Silvers (dual-income-no-kids and
+senior/retiree households).
+
+3.3 Customer Proposition
+Brand promise: “Your Third Place Rewards You More”
+
+Your favourite place to eat, play and connect — the more you visit, the more rewarding every visit becomes.
+Members earn points, enjoy member-exclusive perks, and unlock greater benefits over time. Tagline direction
+
+
+                                                    Page 3 of 22
+NTUC Club — Loyalty Programme BRD                                               Confidential — Tender Use Only
+
+
+
+under consideration: “Your next visit will always be more rewarding,” potentially reinforced by visit-based
+accelerators (e.g. bonus value for multiple same-day receipts across different tenants) and campaign-driven
+stamp-card mechanics.
+
+3.4 Expected Programme Outcomes
+  • Allow NTUC Club to track every visitor across every touchpoint.
+  • Enable NTUC Club to channel customers to tenants, including its own businesses.
+  • Reward the Club's most loyal customers.
+  • Increase visit frequency and repeat purchase.
+  • Grow member penetration and engagement.
+
+
+4. Project Objectives
+
+  • Deliver a branded loyalty platform under the NTUC Club identity, whether through a white-label or
+    equivalent configurable solution that is easy to use for members and administrators, and that can scale
+    and grow with the programme as it develops.
+  • Deliver a stable foundation of core member benefits at launch, while enabling highly configurable,
+    evolving marketing benefits that adapt to changing customer needs, business priorities and market
+    conditions — without requiring major platform redevelopment.
+  • Deliver the approved Minimum Viable Product (MVP) to Go-Live by 1 December 2026, covering its
+    participating tenants in the 4 NTUC Club Clubhouses, OCC, ACC and Downtown East (DE) – Phase 1.
+  • This programme should eventually cover all business units (including Downtown East (DE), D’Resort,
+    MICE, NTUC Club Clubhouses, Orchid Country Club (OCC), Aranda Country Club (ACC), Wild Wild Wet
+    (WWW), My Golf Kaki (MGK), D’Resort), and its participating tenants – Phase 2 and Phase 3.
+  • Establish a single loyalty programme framework that can be adopted across all NTUC Club business units
+    and its participating tenants.
+  • Vendors should recommend their preferred approach for delivering the solution as a mobile application,
+    noting any implications for integration. The MVP scope has been properly defined in this document and
+    is expected to be delivered in full, ideally benchmarked against comparable programmes (e.g. Changi
+    Rewards App) in terms of usability and feature maturity. Where Vendors see value in additional
+    capabilities beyond this scope, these may be proposed separately for discussion.
+
+
+5. Scope of Engagement
+
+5.1 In Scope
+  • Loyalty programme solution design covering membership, tiering, points accrual and redemption,
+    rewards, promotions and customer journeys.
+  • Platform configuration and setup: programme rules, earn/burn mechanics, member tiers, rewards
+    catalogue, and administration and reporting tools.
+  • Integration to our CRM based on Salesforce.
+  • Integration to NTUC Club’s marketing automation platform(s) for automated, triggered and personalised
+    member communications, segmentation and campaign performance reporting.
+
+
+
+
+                                                  Page 4 of 22
+NTUC Club — Loyalty Programme BRD                                                            Confidential — Tender Use Only
+
+
+
+  • The scope of this tender includes delivering an integrated Customer Identity and Access Management
+    platform (encompassing SSO) to support mandatory SingPass/MyInfo authentication. The platform will
+    also accommodate standard login methods, including Google, Apple ID, email address, and mobile
+    phone number verification.
+  • Data extraction capability enabling member, transaction, points, tier, campaign and consent data to be
+    exported and imported into NTUC Club’s central data warehouse for enterprise analytics and reporting.
+  • Data integration with the NTUC HQ system on membership verification of union members for all Union
+    members, including migration and reconciliation of existing member and transaction data where
+    applicable.
+  • Consolidate customer data across loyalty transactions, bookings, events, facility visits, and member
+    activities to provide a unified customer view.
+  • Support real-time synchronisation of NTUC membership status to automatically update loyalty eligibility
+    and member benefits.
+  • Provide API integrations, scheduled data feeds, and data export capabilities for seamless integration
+    with applicable systems integrated.
+  • End-to-end testing, User Acceptance Testing (UAT), defect resolution and production readiness
+    validation.
+  • Deployment, launch support and stabilisation-period issue resolution.
+  • Administrator and user training, and delivery of system documentation, operating procedures and
+    support guides.
+  • Post-implementation warranty, maintenance and technical support for an agreed period after go-live.
+  • Systems integration (from Phase 2 onward): POS, payment gateway, corporate website, parking,
+    ticketing and other relevant platforms.
+
+5.2 Out of Scope (for this tender)
+  • Physical parking hardware/system replacement — Phase 1 uses physical coupons; system integration
+    with the existing parking vendor (Wei Long) is a Phase 2 item.
+  • Redemption via the Links catalogue / points-to-purchase conversion — targeted for Phase 3.
+  • Integration with the existing NTUC Club corporate website — is a Phase 2 item.
+  • Tenant-facing self-service reporting portals — not required at launch; tenants will not have direct access
+    to their own reports.
+
+5.3 Phasing Overview
+ Phase                Objective                                       Focus
+
+                      Acquire members; drive fast, simple sign-       Build membership base and transaction capture.
+ Phase 1 MVP
+                      ups; establish visit and spend habits.          Launch fast and simple.
+
+                                                                      Drive behavioural change through frequency, cross-
+ Phase 2 Growth       Increase visit frequency and customer
+                                                                      spend and tier recognition; deeper systems
+ & Engagement         lifetime value.
+                                                                      integration.
+
+                                                                      Build a lifestyle ecosystem that increases customer
+ Phase 3 Mature       Maximise revenue, profitability and
+                                                                      lifetime value and creates emotional loyalty beyond
+ Ecosystem            emotional loyalty.
+                                                                      points and discounts.
+
+
+
+
+                                                       Page 5 of 22
+NTUC Club — Loyalty Programme BRD                                                          Confidential — Tender Use Only
+
+
+
+6. Stakeholders & Governance
+
+ Stakeholder / Team                 Role in Programme                              Notes
+
+                                    Programme owner; defines MVP success           To confirm mandatory report set and
+ Marketing
+                                    criteria, customer proposition, campaigns.     MVP benchmark.
+
+                                    Monitors the loyalty programme post go-
+ Future Loyalty Team                                                               Team formation in progress.
+                                    live.
+
+                                                                                   Vendor to support with case tools /
+ Customer Experience (CX)           Handles member enquiries and disputes.
+                                                                                   admin console.
+
+                                    Reward funding, points liability accounting,   Points liability accounting treatment
+ Finance
+                                    reconciliation, reporting.                     to be confirmed.
+
+ Tenants / Participating            Fund and/or fulfil selected rewards;           Participation basis (opt-in vs
+ Merchants                          participate in earn/burn at point of sale.     mandated) to be confirmed.
+
+                                    Data integration, SingPass/MyInfo baseline     Group cybersecurity and data policies
+ NTUC HQ / Group IT
+                                    identity, group cybersecurity standards.       apply.
+
+                                    Platform development and configuration,
+                                                                                   Refer to Vendor Deliverables in the
+ Vendor (this tender)               integration, testing, deployment, training,
+                                                                                   document.
+                                    support, maintenance.
+
+
+
+7. Member Benefits Framework
+
+The loyalty programme must provide members with a mix of two categories of benefit:
+
+7.1 Core Benefits (Mandatory at Launch)
+  • Points earning and redemption
+  • Welcome rewards
+  • Birthday rewards
+  • Parking privileges integration
+  • Member-only promotions
+  • Tier-based recognition and benefits
+  • Digital membership card
+
+7.2 Flexible Marketing Benefits (Vendor to offer Recommendation)
+The platform must support highly configurable, campaign-based benefits that can evolve over time without
+significant development effort. Indicative examples — vendors are encouraged to propose innovative
+engagement and reward mechanisms beyond this list:
+
+  • Bonus point campaigns
+  • Visit frequency rewards
+  • Cross-property incentives
+  • Event access and invitations
+  • Partner and tenant funded promotions
+
+
+                                                         Page 6 of 22
+NTUC Club — Loyalty Programme BRD                                                     Confidential — Tender Use Only
+
+
+
+  • Surprise-and-delight rewards
+  • Seasonal campaigns
+  • Gamification mechanics
+  • Challenges and missions
+
+
+8. Business Requirements — Phase 1 (MVP)
+
+Objective: acquire members and drive fast, simple sign-ups; establish visit and spend habits across
+participating tenants at multiple locations, outside of Downtown East (DE). Target: Go-Live by 1 December
+2026. The first year is deliberately about building membership scale, not introducing complex mechanics.
+
+8.1 Systems Integration
+Req ID        Requirement                  Description / Acceptance Criteria                                      Priority
+
+                                           Platform supports transaction capture at participating tenants via
+                                           a dedicated QR scanner/device provided to each participating
+                                           tenant, similar to the Changi Rewards App model: the member
+                                           presents their digital membership QR code at checkout, the
+                                           tenant scans it using the provided scanner (or scanner app), and
+              POS integration (tenant QR
+BR-P1-001                                  the qualifying transaction amount is captured and credited as          Must Have
+              scanner model)
+                                           points. Vendor to propose the scanner/device form factor (e.g.
+                                           handheld scanner, tablet-based app, or POS-integrated scanning)
+                                           and the process for issuing, onboarding and supporting scanners
+                                           across participating tenants at scale, including fallback
+                                           procedures if a tenant's scanner is offline.
+
+                                           Provide bi-directional integration with Salesforce CRM to ensure
+BR-P1-002a    CRM integration              synchronized member profiles, consent records, and campaign            Must Have
+                                           orchestration between the solution and CRM platform.
+
+                                           Bi-directional integration with NTUC's CRM system(s) for unified
+                                           member profile, consent and campaign orchestration. Integration
+                                           with NTUC Club’s marketing automation platform(s) to enable
+                                           automated, triggered and personalised member communications
+                                           across email, SMS and push. Must synchronise member profile,
+              Marketing automation
+BR-P1-002b                                 tier status, points balance, transaction events and channel-level      Must Have
+              integration
+                                           marketing consent, and support audience segmentation,
+                                           campaign triggers (e.g. enrolment, tier upgrade, points expiry,
+                                           birthday, lapsed visit) and closed-loop campaign performance
+                                           reporting. Vendor to state supported platforms and integration
+                                           method.
+
+                                           Member, transaction, points, tier, campaign and consent data
+                                           must be extractable for import into NTUC Club’s central data
+                                           warehouse. Vendor to provide automated, scheduled bulk export
+              Data extraction to central
+BR-P1-002c                                 and/or API-based extracts (full and incremental/delta) in standard     Must Have
+              data warehouse
+                                           machine-readable formats (e.g. CSV, JSON, Parquet), with a
+                                           published data dictionary and schema, in line with PDPA and
+                                           NTUC Group data governance and security requirements.
+
+
+8.2 Membership & Tiering
+
+
+
+
+                                                    Page 7 of 22
+NTUC Club — Loyalty Programme BRD                                                       Confidential — Tender Use Only
+
+
+
+Req ID        Requirement                  Description / Acceptance Criteria                                        Priority
+
+                                           Membership is free to join at launch. Vendor to support a future
+BR-P1-003     Free membership              rule change (Year 2+) where Tier 2 retention requires a points           Must Have
+                                           deduction / renewal spend, without re-platforming.
+
+                                           Programme supports two tiers at launch: Tier 1 – Member
+                                           (default) and Tier 2 – Premium (spend-based / NTUC member
+BR-P1-004     Two-tier structure           auto-placement). Eligibility criteria (spend thresholds, qualifying      Must Have
+                                           period) must be configurable by an administrator, not hard-
+                                           coded.
+
+                                           NTUC members can be automatically placed into Tier 2 on
+                                           enrolment, subject to eligibility rules to be finalised. Platform
+              Automatic NTUC member
+BR-P1-005                                  must support alternative rule sets (e.g. spend-based qualification       Must Have
+              tier placement
+                                           for non-NTUC members) so the final policy can be configured
+                                           without redevelopment.
+
+                                           Administrators can configure qualifying spend thresholds (e.g.
+              Configurable tier            minimum consecutive-month spend, rolling annual average
+BR-P1-006     qualification & retention    spend), qualification windows, and downgrade/retention rules             Must Have
+              rules                        (e.g. annual spend renewal) via an admin console, without vendor
+                                           development effort.
+
+                                           Both tiers earn at the same underlying rebate yield (i.e. earn
+                                           value per dollar spent is consistent across members); tier
+              Consistent rebate yield
+BR-P1-007                                  differentiation is delivered through redemption value and                Must Have
+              across tiers
+                                           ancillary benefits, not differential earn rates, unless configured
+                                           otherwise by NTUC Club.
+
+
+8.3 Points Earning
+Req ID        Requirement                  Description / Acceptance Criteria                                        Priority
+
+                                           Base earn rate of $1 qualifying spend = 1 point, configurable by
+BR-P1-008     Simple earn rate                                                                                      Must Have
+                                           an administrator (rate, rounding rules) without code changes.
+
+                                           Platform must allow NTUC Club flexible configuration rule
+                                           settings; to configure whether points are calculated before or
+BR-P1-009     Configurable earn basis      after discounts, and whether GST and service charges are                 Must Have
+                                           included in the points calculation, as an admin-configurable rule
+                                           per merchant/category.
+
+                                           Administrators can flag specific product/category codes or
+BR-P1-010     Exclusion rules              transaction types (e.g. gift cards, vouchers) as excluded from           Must Have
+                                           points earning.
+
+                                           Points expire 12 months from the date earned, with automated
+BR-P1-011     Points expiry                member notification ahead of expiry. Expiry period must be               Must Have
+                                           configurable.
+
+                                           When a qualifying transaction is refunded or reversed, the
+                                           platform must automatically reverse the associated points (or flag
+BR-P1-012     Refund / reversal handling                                                                            Must Have
+                                           for manual adjustment where the points have already been
+                                           redeemed), maintaining an auditable ledger.
+
+                                           Platform supports configurable point multipliers (e.g. 2x, 3x)
+BR-P1-013     Points multipliers           applicable to specific transactions, campaigns, tiers or time            Must Have
+                                           windows (used for birthday and welcome mechanics below).
+
+
+
+
+                                                    Page 8 of 22
+NTUC Club — Loyalty Programme BRD                                                       Confidential — Tender Use Only
+
+
+
+8.4 Redemption
+Req ID        Requirement                   Description / Acceptance Criteria                                       Priority
+
+                                            Members can convert accumulated points into
+              Points-to-voucher             vouchers/discounts per a configurable conversion table (e.g.
+BR-P1-014                                                                                                           Must Have
+              conversion                    1,000 points = $5 or $10 voucher, per the rebate-yield scenario
+                                            adopted).
+
+                                            Platform must record and report which party funds each reward
+BR-P1-015     Reward funding attribution    (NTUC Club, tenant, or co-funded) to support reconciliation and         Must Have
+                                            settlement; final funding policy to be confirmed.
+
+                                            Issued vouchers/rewards expire 12 months from issuance by
+BR-P1-016     Reward/voucher expiry                                                                                 Must Have
+                                            default; expiry period configurable per reward type.
+
+              Multiple redemptions per      Members can redeem more than one reward/voucher within a
+BR-P1-017                                                                                                           Must Have
+              transaction                   single transaction.
+
+                                            Redemption is available via the digital membership channel
+BR-P1-018     Redemption channel            (app/web) and, where applicable, at participating tenant point-of-      Must Have
+                                            sale.
+
+
+8.5 Digital Membership & Member Profile
+Req ID        Requirement                   Description / Acceptance Criteria                                       Priority
+
+                                            A digital membership card (QR/barcode or equivalent) is available
+BR-P1-019     Digital membership card                                                                               Must Have
+                                            to every member, viewable in-app and/or via a mobile web view.
+
+                                            Member enrolment should support SingPass / MyInfo as the
+                                            baseline identity and data-capture method, consistent with
+                                            NTUC's current standard, retrieving only the MyInfo data fields
+                                            necessary for enrolment and programme administration.
+              SingPass / MyInfo enrolment
+BR-P1-020                                                                                                           Must Have
+              baseline                      In addition to SingPass / MyInfo, the platform must support
+                                            alternative enrolment and login methods, including Google email
+                                            account, Apple ID, email address and mobile phone number (OTP-
+                                            based), so that non-SingPass users can join and access the
+                                            programme.
+
+                                            Platform captures and maintains a basic member profile (identity,
+                                            contact, consent preferences, tier status, points balance,
+BR-P1-021     Basic member profile                                                                                  Must Have
+                                            transaction history) with self-service update of contact and
+                                            marketing-consent preferences.
+
+                                            Members can view and manage marketing consent (channel-
+              Consent & preference
+BR-P1-022                                   level: email, SMS, push, etc.) in line with PDPA and Do Not Call        Must Have
+              management
+                                            Registry requirements.
+
+
+8.6 Welcome & Birthday Rewards
+Req ID        Requirement                   Description / Acceptance Criteria                                       Priority
+
+                                            New members automatically receive a configurable welcome
+                                            bonus (points and/or a digital bundle of deals) funded from NTUC
+BR-P1-023     Welcome bonus                                                                                         Must Have
+                                            Club-owned assets, valid for a configurable period (e.g. 30 days)
+                                            at participating tenants.
+
+
+
+
+                                                     Page 9 of 22
+NTUC Club — Loyalty Programme BRD                                                     Confidential — Tender Use Only
+
+
+
+Req ID        Requirement                Description / Acceptance Criteria                                        Priority
+
+                                         Birthday rewards are triggered on the member's first qualifying
+                                         transaction during their birthday month, applying a configurable
+BR-P1-024     Birthday rewards           points multiplier (e.g. 2x for Tier 1, 3x for Tier 2). Platform must     Must Have
+                                         support future change to a fixed birthday-date trigger without
+                                         redevelopment.
+
+
+8.7 Parking Privileges
+Req ID        Requirement                Description / Acceptance Criteria                                        Priority
+
+                                         Members receive a free parking entitlement, capped monthly by
+              Free parking entitlement   tier (Tier 1: 1 hour/month; Tier 2: 2 hours/month). Phase 1 is
+BR-P1-025                                                                                                         Must Have
+              (Phase 1: manual)          fulfilled via a physical/printed coupon issued through the loyalty
+                                         channel; no live parking-system integration is required in Phase 1.
+
+
+8.8 Promotions & Reporting
+Req ID        Requirement                Description / Acceptance Criteria                                        Priority
+
+                                         Administrators can create and target promotions restricted to
+BR-P1-026     Member-only promotions     loyalty members (all members or by tier/segment), independent            Must Have
+                                         of the core points engine.
+
+                                         Self-service reporting dashboard for internal stakeholders
+                                         (Marketing, Finance) covering membership, transactions, points
+                                         issued/redeemed/expired, campaign performance, and reward
+                                         funding/liability. Approximately 20 report types are anticipated at
+                                         launch, including Finance reports; the exact report catalogue will
+BR-P1-027     Reporting dashboard                                                                                 Must Have
+                                         be finalised with vendor input. In addition to the mandatory
+                                         reporting dashboards, the reporting platform shall either
+                                         integrate with, or support the import/upload of external data
+                                         from, NTUC HQ's Analytics Platform (Insights) to enable
+                                         consolidated reporting, analytics, and cross-platform insights.
+
+                                         Role-based access to reports; tenants do not have direct self-
+BR-P1-028     Report access control                                                                               Must Have
+                                         service access to their own reports in Phase 1.
+
+                                         Reports are generated on a self-service, on-demand basis rather
+              Self-service, on-demand                                                                             Should
+BR-P1-029                                than a fixed push schedule, with export to common formats
+              reporting                                                                                           Have
+                                         (CSV/Excel/PDF).
+
+
+8.9 Phase 1 Focus KPIs
+  • Member acquisition
+  • Activation rate
+  • First redemption rate
+  • Database growth
+
+
+9. Business Requirements — Phase 2 (Growth & Engagement)
+
+
+
+
+                                                  Page 10 of 22
+NTUC Club — Loyalty Programme BRD                                                         Confidential — Tender Use Only
+
+
+
+Objective: increase visit frequency and customer lifetime value, extending the programme to other NTUC Club
+facilities beyond Downtown East (DE). Tier benefits in this phase should reward loyalty through increasing
+levels of Convenience, Recognition, Access, Value and Exclusivity.
+
+9.1 Systems Integration
+Note: tenant POS/QR-scanner transaction capture (BR-P1-001) and CRM integration (BR-P1-002) are delivered
+at Phase 1 launch. Phase 2 extends the integration landscape as follows.
+
+Req ID        Requirement                    Description / Acceptance Criteria                                        Priority
+
+                                             Live integration with the carpark system (with existing parking
+BR-P2-001     Parking system integration     integration vendor) to apply member parking entitlements                 Must Have
+                                             automatically, replacing the Phase 1 physical coupon process.
+
+              Payment gateway                Integration with relevant payment gateway(s) where required to           Should
+BR-P2-002
+              integration                    support earn/burn at checkout or in-app redemption purchases.            Have
+
+              Corporate website              Integration of loyalty enrolment, profile and redemption                 Should
+BR-P2-003
+              integration                    touchpoints with the NTUC Club corporate website.                        Have
+
+              Ticketing / facility booking   Integration with ticketing and facility booking systems to support
+BR-P2-004                                                                                                             Must Have
+              integration                    priority bookings, early access and tier-based booking privileges.
+
+                                             All Phase 2 integrations delivered via documented, versioned
+BR-P2-005     API-based extensibility        APIs, enabling future business units to onboard without custom           Must Have
+                                             point-to-point integration.
+
+
+9.2 Tiering, Benefits & Partner Offers
+Req ID        Requirement                    Description / Acceptance Criteria                                        Priority
+
+                                             Parking privileges integrated to the carpark system; priority
+              Expanded tier benefits (Tier
+BR-P2-006                                    bookings and early access to other facilities; exclusive events at       Must Have
+              1/2)
+                                             different venues; partner offers.
+
+                                             Platform supports configuration of a higher qualifying-spend tier
+              Higher-value Tier 3            (e.g. $5,000 - $8,000 qualifying spend per the tiered framework          Should
+BR-P2-007
+              groundwork                     with distinct earn/redemption values, ready for launch. Full Tier 3      Have
+                                             member experience (VIP perks) is delivered in Phase 3.
+
+                                             Configurable rules to reward spend or visits across multiple NTUC
+BR-P2-008     Cross-property incentives                                                                               Must Have
+                                             Club properties/business units, not only Downtown East (DE).
+
+
+9.3 Missions, Challenges & Bonus Points Engine
+Req ID        Requirement                    Description / Acceptance Criteria                                        Priority
+
+                                             Configurable mission/challenge mechanics (e.g. “Dine + Play”,
+              Missions & challenges          “Visit 3 times this month”, “Spend $200 in a month”) with
+BR-P2-009                                                                                                             Must Have
+              engine                         progress tracking visible to members and configurable rewards on
+                                             completion.
+
+                                             Configurable bonus-point campaigns (e.g. double-points
+BR-P2-010     Bonus points engine            weekends, off-peak incentives, partner promotions) schedulable           Must Have
+                                             by admin without vendor development.
+
+
+
+
+                                                     Page 11 of 22
+NTUC Club — Loyalty Programme BRD                                                     Confidential — Tender Use Only
+
+
+
+Req ID        Requirement                 Description / Acceptance Criteria                                       Priority
+
+                                          Support for exclusive previews, family days and a Member
+                                                                                                                  Should
+BR-P2-011     Member events               Appreciation Month, including event access management tied to
+                                                                                                                  Have
+                                          membership/tier status.
+
+
+9.4 Phase 2 Focus KPIs
+  • Frequency uplift
+  • Repeat visits
+  • Tier migration
+  • Incremental spending
+
+
+10. Business Requirements — Phase 3 (Mature Ecosystem)
+
+Objective: maximise revenue, profitability and emotional loyalty by building a lifestyle ecosystem around the
+programme, beyond points and discounts.
+
+10.1 Advanced Features
+Req ID        Requirement                 Description / Acceptance Criteria                                       Priority
+
+                                          Full launch of Tier 3 (High-Value Customer), including higher-
+BR-P3-001     VIP Tier 3 launch                                                                                   Must Have
+                                          value perks and VIP experiences, per the tiered framework.
+
+                                          Behaviour-based, personalised offers and communications driven          Should
+BR-P3-002     Personalisation engine
+                                          by member transaction and engagement history.                           Have
+
+                                          Badges, achievement levels, challenges and leaderboards to              Should
+BR-P3-003     Gamification
+                                          sustain engagement.                                                     Have
+
+                                          Members can redeem points for experiences, workshops, events            Should
+BR-P3-004     Experience marketplace
+                                          and partner products, extending beyond simple vouchers.                 Have
+
+                                          Ability to use points to directly purchase vouchers via the Links
+              Links catalogue purchase
+BR-P3-005                                 catalogue is a Phase 3 requirement; Phase 1 solution design             Must Have
+              (deferred)
+                                          should not preclude this integration later.
+
+                                          Configurable categorisation features to organise programme
+BR-P3-006     Categorisation features     entities (e.g. rewards, vouchers, campaigns, merchants, events,         Must Have
+                                          and content) for easier management and administration.
+
+                                          Member-refers-friend mechanic where both referrer and referee           Should
+BR-P3-007     Referral programme
+                                          earn rewards on qualifying referral completion.                         Have
+
+
+10.2 Phase 3 Focus KPIs
+  • Customer Lifetime Value (CLV)
+  • Revenue uplift
+  • Retention
+  • Member profitability
+
+10.3 Roadmap Summary
+
+                                                  Page 12 of 22
+NTUC Club — Loyalty Programme BRD                                                        Confidential — Tender Use Only
+
+
+
+ Phase                Roadmap Statement
+
+ Phase 1              Build membership and transaction capture.
+
+ Phase 2              Drive behavioural change through frequency, cross-spend and tier recognition.
+
+                      Build a lifestyle ecosystem that increases customer lifetime value and creates emotional loyalty beyond
+ Phase 3
+                      points and discounts.
+
+
+
+11. Tier Structure & Rebate Yield Scenarios
+
+The tier structure below reflects the current three-tier design (One / Two – NTUC Member / Three – High-
+Value Customer), all earning at $1 spend = 1 point. Tier 3 is scoped to launch in Phase 2. NTUC Club is
+evaluating two rebate-yield scenarios; the redemption value per 1,000 points differs between them, but earn
+mechanics and tier structure are otherwise identical. The final scenario adopted will directly drive the
+platform's redemption conversion table and cost/liability model, so it is provided here for vendor cost-
+modelling purposes.
+
+Reward points are valid for 1 year from the date earned and expire automatically thereafter. To maintain Tier
+2 membership into the following membership year, members must redeem 1,000 points before the expiry
+date (subject to confirmation).
+
+11.1 Scenario 1 — 0.5% Rebate Yield
+
+
+
+
+11.2 Scenario 2 — 1% Rebate Yield
+
+
+
+
+                                                       Page 13 of 22
+NTUC Club — Loyalty Programme BRD                                                         Confidential — Tender Use Only
+
+
+
+
+11.3 Scenario Comparison — Conclusion
+The table below summarises how the two scenarios compare at a glance, to support NTUC Club's final
+decision on which rebate yield to adopt.
+
+ Dimension                          Scenario 1 — 0.5% Rebate Yield            Scenario 2 — 1% Rebate Yield
+
+                                    0.5% of qualifying spend returned as      1% of qualifying spend returned as
+ Redemption rebate yield
+                                    voucher value                             voucher value
+
+ Tier One / Two voucher value
+                                    $5 voucher                                $10 voucher
+ per 1,000 points
+
+ Tier Three voucher value per       $10 voucher (1% yield at Tier 3) —        $15 voucher (1.5% yield at Tier 3) —
+ 1,000 points                       Phase 2                                   Phase 2
+
+ Relative cost to NTUC Club /       Lower reward funding and points-          Approximately double the redemption
+ tenants                            liability exposure                        cost and points liability of Scenario 1
+
+                                    More conservative; may feel less          More competitive and easier to market;
+ Perceived member value             compelling against comparable             stronger pull for member acquisition
+                                    mall/attraction loyalty programmes        and activation
+
+                                                                              Better supports Phase 1 focus KPIs of
+                                    Supports steady, lower-risk
+ Alignment with Phase 1 KPIs                                                  acquisition, activation and first
+                                    membership growth
+                                                                              redemption, at higher cost
+
+                                                                              Higher deferred-revenue / points-
+ Finance / liability                Lower deferred-revenue / points-
+                                                                              liability balance; Finance to confirm
+ consideration                      liability balance to manage.
+                                                                              funding and reserve approach
+
+                                                                              Preferred if NTUC Club prioritises faster
+                                    Preferred if NTUC Club prioritises cost
+ Recommendation                                                               member acquisition and a more
+                                    control in Phase 1
+                                                                              compelling launch proposition
+
+
+Final scenario selection is an open item for NTUC Club to confirm; the platform's redemption conversion table
+must remain admin-configurable so either scenario, or a revised variant, can be applied without vendor
+rework.
+
+
+                                                        Page 14 of 22
+NTUC Club — Loyalty Programme BRD                                                             Confidential — Tender Use Only
+
+
+
+11.4 Comparative Summary by Tier
+                                                                               Voucher per 1,000 pts          Voucher per 1,000
+ Tier                    Qualifying Spend           Points per $1
+                                                                               (Scenario 1)                   pts (Scenario 2)
+
+ One — Occasional
+                         None (default)             1 point                    $5 (0.5% yield)                $10 (1% yield)
+ Shopper
+
+ Two — NTUC
+                         $1,500 min annual
+ Member / Frequent                                  1 point                    $5 (0.5% yield)                $10 (1% yield)
+                         spend
+ Spender
+
+ Three — High-Value      $5,000–$8,000                                         $10 (1% yield) — to            $15 (1.5% yield) —
+                                                    1 point
+ Customer                qualifying spend                                      launch Phase 2                 to launch Phase 2
+
+
+Implication for vendors: the redemption conversion table settings must be a fully admin-configurable
+parameter, not hard-coded, since NTUC Club has not finalised which rebate-yield scenario (or a variant) will be
+adopted, and this may be revisited between phases.
+
+11.5 Tier Benefit Comparison (Phase 1 Launch Benefits)
+ Benefit                      Tier One                            Tier Two (NTUC Member)              Tier Three
+
+                              Digital bundle of deals, valid
+                                                                  Digital insider pack with
+ Welcome package              30 days at participating                                                To launch in Phase 2
+                                                                  curated voucher booklet
+                              tenants
+
+                              2x points multiplier on first       3x points multiplier on first
+ Birthday perks                                                                                       To launch in Phase 2
+                              transaction in birthday month       transaction in birthday month
+
+                              1-hour comp parking, capped         2-hour comp parking, capped
+ Parking benefits                                                                                     To launch in Phase 2
+                              at 2/month                          at 2/month
+
+ Facility booking             —                                   Early-bird booking privileges       To launch in Phase 2
+
+                              2x Day Passes to WWW per            4x Day Passes to WWW per
+ Day passes                                                                                           To launch in Phase 2
+                              year                                year
+
+ Resort discount              —                                   Up to 35% off D'Resort room         To launch in Phase 2
+
+
+
+12. Non-Functional Requirements
+
+12.1 Performance & Scalability
+Req ID        Requirement                      Description / Acceptance Criteria                                          Priority
+
+                                               Platform must support growth from an initial NTUC member base
+NFR-001       Member base scalability          to a group-wide member base across all NTUC Club business units            Must Have
+                                               within the 3-year roadmap, without re-platforming.
+
+                                               Platform must handle peak transaction volumes (e.g. public
+                                               holiday / school holiday footfall and water park/resort facilities)
+NFR-002       Transaction throughput                                                                                      Must Have
+                                               without degradation to enrolment, earn or redemption response
+                                               times.
+
+
+
+
+                                                         Page 15 of 22
+NTUC Club — Loyalty Programme BRD                                                      Confidential — Tender Use Only
+
+
+
+Req ID        Requirement                  Description / Acceptance Criteria                                       Priority
+
+                                           Member-facing actions (balance check, redemption, digital card
+NFR-003       Response time                display) should complete within an acceptable response time             Must Have
+                                           under normal and peak load; vendor to propose target SLA.
+
+                                           Vendor to propose an architecture (cloud-hosted preferred) that
+              Elastic / cloud-based                                                                                Vendor to
+NFR-004                                    scales elastically with demand and supports future business-unit
+              architecture                                                                                         Propose
+                                           onboarding via configuration rather than custom builds.
+
+
+12.2 Availability & Resilience
+Req ID        Requirement                  Description / Acceptance Criteria                                       Priority
+
+                                           Production system availability target of 99.5% or better for
+NFR-005       Service availability         member-facing services, excluding scheduled maintenance                 Must Have
+                                           windows; vendor to propose and commit to an SLA.
+
+                                           Documented backup schedule and disaster recovery plan with
+                                           defined Recovery Time Objective (RTO) and Recovery Point
+NFR-006       Backup & disaster recovery                                                                           Must Have
+                                           Objective (RPO); vendor to propose target figures appropriate to
+                                           a member/loyalty ledger system.
+
+                                           Where a dependent system (e.g. POS, parking gantry) is
+                                                                                                                   Should
+NFR-007       Graceful degradation         unavailable, the platform should queue/reconcile transactions
+                                                                                                                   Have
+                                           rather than lose points-earning events.
+
+
+12.3 Usability & Accessibility
+Req ID        Requirement                  Description / Acceptance Criteria                                       Priority
+
+                                           Sign-up and login flow should be completable in a small number
+              Simple, low-friction         of steps, leveraging SingPass/MyInfo to minimise manual data
+NFR-008                                                                                                            Must Have
+              enrolment                    entry, with Google email account, Apple ID, email address and
+                                           mobile phone number as supported alternatives.
+
+                                           Digital membership card, enrolment and redemption flows must
+NFR-009       Mobile-first design          be optimised for mobile devices, reflecting expected usage at           Must Have
+                                           physical points of presence.
+
+                                           Vendor to advise on support for English and other locally relevant
+                                                                                                                   Nice to
+NFR-010       Multi-language support       languages, given the family/multi-generational customer
+                                                                                                                   Have
+                                           segments targeted.
+
+
+12.4 Configurability & Extensibility
+Req ID        Requirement                  Description / Acceptance Criteria                                       Priority
+
+                                           Marketing administrators must be able to configure earn rules,
+              No-code / low-code           tier criteria, promotions, missions and reward catalogues without
+NFR-011                                                                                                            Must Have
+              campaign configuration       vendor development effort or code deployment, within guardrails
+                                           set by NTUC Club.
+
+                                           Architecture must support incremental enablement of Phase 2
+NFR-012       Modular, phased rollout      and Phase 3 features (integrations, gamification, marketplace)          Must Have
+                                           without disruptive migration of Phase 1 member data or history.
+
+
+
+
+                                                   Page 16 of 22
+NTUC Club — Loyalty Programme BRD                                                     Confidential — Tender Use Only
+
+
+
+Req ID        Requirement                  Description / Acceptance Criteria                                      Priority
+
+                                           All integration points must be exposed via documented,
+NFR-013       Open, documented APIs        versioned APIs to support future business units and third-party        Must Have
+                                           partner integrations.
+
+
+12.5 Security & Compliance
+The proposed solution shall comply with applicable data protection legislation.
+
+The Tenderer shall possess at least one of the following certifications:
+       • ISO/IEC 27001 Information Security Management System certification; or
+       • SOC 2 Type II certification.
+
+Supporting documents shall be submitted together with the proposal -
+        • User Identity and access management
+        • Audit logging capabilities
+        • Cybersecurity controls implemented
+        • Encryption for data in transit and at rest
+        • Vulnerability management process
+        • Incident response process
+        • Backup and disaster recovery procedures
+
+Detailed security and compliance requirements are addressed separately from this document, via the
+accompanying NTUC Club IT Outsource Security Requirement Checklist v3.xlsx spreadsheet.
+
+Vendors are required to complete this checklist in full as part of their proposal submission, indicating their
+compliance status (Compliant / Partially Compliant / Not Compliant / Not Applicable) against each
+requirement, with remarks where relevant.
+
+Any Non-Compliance, Partial Compliance or Not-Applicable response should be substantiated and will be
+reviewed by NTUC Club as part of proposal evaluation.
+
+
+
+13. Reporting, Data & Systems Integration Requirements
+
+13.1 Reporting Requirements
+Approximately 20 report types are anticipated at launch, spanning Marketing and Finance needs. Indicative
+report categories (final catalogue to be confirmed with Marketing and Finance during solution design —
+vendors to propose what reports/dashboards needed for this). Example as per below:
+
+  • Membership: new sign-ups, active/inactive members, tier distribution, tier migration.
+  • Transactions: points earned, points redeemed, points expired, transaction volume and value by
+    tenant/location.
+  • Campaigns: promotion performance, welcome/birthday redemption rates, mission/challenge
+    completion (Phase 2+).
+  • Finance: points liability outstanding, reward funding/settlement by tenant, redemption cost by channel.
+  • Operations/CX: member enquiry and dispute volumes and resolution status (if surfaced from the loyalty
+    platform).
+
+
+
+
+                                                   Page 17 of 22
+NTUC Club — Loyalty Programme BRD                                                     Confidential — Tender Use Only
+
+
+
+  • The reporting platform shall either integrate directly with or provide the capability to import/upload
+    external data from, NTUC HQ's Analytics Platform (Insights), enabling consolidated reporting, analytics,
+    and cross-platform insights.
+Reports are to be accessed via a self-service dashboard rather than a fixed distribution schedule. Tenants do
+not require direct access to their own reports.
+
+13.2 Data Integration with NTUC HQ Systems
+Req ID        Requirement                  Description / Acceptance Criteria                                      Priority
+
+                                           Migration of existing member and transaction data from current
+              Member/transaction data
+BR-DI-001                                  systems, where applicable, with defined data mapping, cleansing        Must Have
+              migration
+                                           and validation rules.
+
+              Data validation &            Post-migration validation and reconciliation process with sign-off
+BR-DI-002                                                                                                         Must Have
+              reconciliation               criteria before cutover.
+
+                                           Definition of system of record for member identity and consent,
+                                           with a documented, scheduled or event-driven synchronisation
+                                           mechanism between the loyalty platform and NTUC HQ systems.
+
+                                           All data fields migrated and synchronised with NTUC HQ systems
+                                           must be accurately mapped to the corresponding fields in the
+                                           loyalty platform and integrated systems to ensure data
+              Ongoing sync with NTUC HQ
+BR-DI-003                                  consistency, integrity, and to prevent discrepancies in the            Must Have
+              system
+                                           retrieval and reporting of member data.
+
+                                           The solution shall also define the data elements to be shared,
+                                           including but not limited to benefit redemption, voucher
+                                           utilisation, loyalty programme participation, and member
+                                           engagement metrics, to support member value tracking,
+                                           reporting, and analytics.
+
+                                           Integration with SingPass / MyInfo for identity verification and
+                                           data pre-fill at enrolment, retrieving only the minimum necessary
+                                           data fields, in line with SNDGO/GovTech National Digital Identity
+                                           (NDI) technical and API usage requirements.
+              SingPass / MyInfo
+BR-DI-004                                                                                                         Must Have
+              integration
+                                           SingPass / MyInfo is the baseline method; the platform must also
+                                           support alternative enrolment and login via Google email
+                                           account, Apple ID, email address and mobile phone number (OTP-
+                                           based).
+
+                                           Platform must support extraction of member, transaction, points,
+                                           tier, campaign and consent data for import into NTUC Club’s
+                                           central data warehouse. Vendor to provide documented,
+              Data extraction to central   automated and scheduled bulk export / API-based extract
+BR-DI-005                                                                                                         Must Have
+              data warehouse               capability (including full and incremental / delta extracts) in
+                                           standard machine-readable formats, supporting downstream
+                                           analytics and reporting. Data extraction must comply with PDPA
+                                           and NTUC Group data governance and security requirements.
+
+                                           Integration with NTUC Club’s marketing automation platform(s)
+              Marketing automation
+BR-DI-006                                  to enable automated, triggered and personalised member                 Must Have
+              integration
+                                           communications across email, SMS and push channels.
+
+              Customer Identity and        The scope of this tender includes delivering an integrated
+BR-DI-007                                                                                                         Must Have
+              Access Management            Customer Identity and Access Management platform
+
+
+
+
+                                                   Page 18 of 22
+NTUC Club — Loyalty Programme BRD                                                           Confidential — Tender Use Only
+
+
+
+Req ID        Requirement                     Description / Acceptance Criteria                                         Priority
+
+              platform (encompassing          (encompassing SSO) solution to support mandatory SingPass /
+              SSO) integration                MyInfo authentication, accommodating standard login methods
+                                              including Google, Apple ID, email and mobile verification.
+
+
+13.3 Systems Integration Landscape (Phase 2+)
+ System                             Integration Purpose                                                      Phase
+
+                                    Transaction capture for points earning — via a QR scanner/device
+ POS (tenant point-of-sale)         issued to each participating tenant, member presents digital QR          Phase 1
+                                    at checkout (Changi Rewards-style model)
+
+ Parking system (Wei Long)          Automated application of parking entitlements at gantry                  Phase 2
+
+ CRM                                Unified member profile, consent, campaign orchestration                  Phase 1
+
+                                    Automated, triggered and personalised member communications
+ Marketing automation platform      (email, SMS, push); segmentation, campaign triggers and closed-          Phase 1
+                                    loop campaign reporting
+
+                                    Scheduled bulk / API-based extraction of member, transaction,
+ Central data warehouse             points, tier, campaign and consent data for enterprise analytics         Phase 1
+                                    and reporting
+
+                                    Integrated Customer Identity and Access Management platform
+                                    (encompassing SSO) n providing SingPass / MyInfo authentication
+ Customer Identity and Access
+                                    and standard login methods; single sign-on and identity
+ Management platform                                                                                         Phase 1
+                                    management across NTUC Club digital touchpoints, credential
+ (encompassing SSO) integration
+                                    and session management, identity linking and consent attribute
+                                    propagation
+
+ Payment gateway                    Earn/burn at checkout, in-app purchase of redemption items               Phase 2
+
+ Corporate website                  Enrolment, profile and redemption touchpoints                            Phase 2
+
+ Ticketing / facility booking       Priority booking, early access, tier-based privileges                    Phase 2
+
+ Links catalogue                    Points-to-voucher direct purchase                                        Phase 3
+
+ Mobile App (Vendor to              Potential shared identity / unified access layer — architectural
+                                                                                                             Phase 1
+ propose)                           decision pending
+
+
+13.4 Financial & Accounting Considerations
+  • Points liability: the platform must support accounting for deferred revenue / points liability of customer
+    loyalty programmes, including outstanding liability reporting by tier and expiry cohort.
+  • Reward funding and settlement: where tenants co-fund rewards, the platform must support
+    settlement/reconciliation reporting between NTUC Club and participating tenants.
+  • GST treatment of points issuance and redemption should be confirmed with NTUC Club Finance and
+    reflected in report design.
+
+
+14. Vendor Deliverables
+
+
+
+                                                       Page 19 of 22
+NTUC Club — Loyalty Programme BRD                                                      Confidential — Tender Use Only
+
+
+
+Vendors are asked to submit a proposal to deliver a simple, configured, tested and operational loyalty
+platform, inclusive of Phase 2 and Phase 3 enhancements, launch support and ongoing enhancements as set
+out in this BRD. Proposals must include a timeline and cost breakdown for a 3-year plan, covering:
+
+ #        Deliverable                           Description
+
+                                                Detailed solution design covering membership, tiering, points
+                                                accrual and redemption, rewards, promotions and customer
+ 1        Loyalty Programme Solution Design
+                                                journeys; functional and technical specifications aligned to this
+                                                BRD.
+
+                                                Configuration of the loyalty platform including programme rules,
+ 2        Platform Configuration & Setup        earning and redemption mechanics, member tiers, rewards
+                                                catalogue, and administration/reporting tools.
+
+                                                Integration with identified systems (CRM, POS, payment gateway,
+ 3        Systems Integration (Phase 2)         website, mobile app, parking, ticketing and other relevant
+                                                platforms); development and testing of APIs and data interfaces.
+
+          Data Integration with NTUC HQ         Migration of existing member and transaction data where
+ 4
+          System                                applicable; data validation and reconciliation.
+
+                                                End-to-end system testing, User Acceptance Testing (UAT), defect
+ 5        Testing & Quality Assurance
+                                                resolution, and production readiness validation.
+
+                                                Deployment of the solution into the production environment;
+ 6        Launch & Deployment                   launch support and issue resolution during the stabilisation
+                                                period.
+
+                                                Administrator and user training; delivery of system
+ 7        Training & Documentation
+                                                documentation, operating procedures and support guides.
+
+                                                Warranty, maintenance and technical support for an agreed
+ 8        Post-Implementation Support
+                                                period after go-live.
+
+
+
+
+15. Implementation Roadmap & Indicative Timeline
+
+Vendors should propose a detailed project plan; the indicative milestones below reflect NTUC Club's target
+dates and are provided as a planning baseline.
+
+ Milestone                    Target Timing              Notes
+
+ Vendor selection &                                      Following evaluation of vendor proposals against
+                              Q3 2026
+ contract award                                          “Success Metrics / KPIs Summary” criteria.
+
+ Solution design sign-off     Q3 2026                    Includes resolution of open items that affect design.
+
+ Phase 1 configuration &                                 Core benefits, 2-tier structure, digital card, reporting
+                              Q3–Q4 2026
+ build                                                   dashboard.
+
+ UAT & production
+                              Q4 2026                    End-to-end testing and defect resolution.
+ readiness
+
+                                                         4 NTUC Club Clubhouses, Downtown East (DE) and its
+ Phase 1 go-live (MVP)        1 December 2026
+                                                         participating tenants.
+
+
+
+
+                                                   Page 20 of 22
+NTUC Club — Loyalty Programme BRD                                                          Confidential — Tender Use Only
+
+
+
+ Milestone                    Target Timing                   Notes
+
+ Phase 2 planning &                                           POS/receipt capture, parking, CRM, ticketing
+                              2027
+ integration build                                            integrations; Tier 3 groundwork.
+
+                                                              Other facilities onboarded; missions/challenges;
+ Phase 2 go-live              2027
+                                                              bonus points engine.
+
+                                                              Personalisation, gamification, experience
+ Phase 3 planning & build     2028
+                                                              marketplace, referral programme.
+
+ Phase 3 go-live              2028                            Full VIP Tier 3 and mature ecosystem features.
+
+
+Vendors should present cost estimates broken down by phase (one-off configuration/integration cost vs.
+recurring licensing/support cost) across this 3-year plan.
+
+
+
+16. Success Metrics / KPIs Summary
+
+ Phase                        Key KPIs
+
+ Phase 1                      Member acquisition; activation rate; first redemption rate; database growth.
+
+ Phase 2                      Frequency uplift; repeat visits; tier migration; incremental spending.
+
+ Phase 3                      Customer Lifetime Value (CLV); revenue uplift; retention; member profitability.
+
+
+
+17. Assumptions, Dependencies & Constraints
+
+17.1 Assumptions
+  • The programme is organisation-wide in intent (not limited to Downtown East (DE)), with Phase 1
+    onboarding DE tenants first.
+  • SingPass/MyInfo will be the baseline identity and data-capture mechanism for member enrolment,
+    consistent with current NTUC standards.
+  • NTUC Club will provide the funding policy, final tier qualification criteria and rebate-yield scenario
+    decision in time to inform solution design sign-off.
+  • Existing member/transaction data (where it exists) will be made available by NTUC HQ systems for
+    migration in a reasonable format.
+
+17.2 Dependencies
+  • Existing Parking Integration vendor (Wei Long) cooperation for Phase 2 carpark system integration.
+  • Tenant participation agreements (opt-in basis, POS/receipt-capture cooperation) being in place ahead of
+    each phase.
+  • SNDGO/GovTech approval and API access for SingPass/MyInfo integration.
+
+17.3 Constraints
+  • Phase 1 MVP must go live by 1 December 2026.
+
+
+
+                                                        Page 21 of 22
+NTUC Club — Loyalty Programme BRD                                                   Confidential — Tender Use Only
+
+
+
+  • Managing bespoke POS integration at every individual tenant is not operationally viable; Phase 2 capture
+    approach must be scalable across many tenants.
+  • Budget and resourcing for a 3-year phased roadmap, to be confirmed through the vendor cost proposal
+    and internal budget approval.
+  • Member, transaction and behavioural data shall remain the property of NTUC Club and must be
+    accessible through standard integration and export mechanisms.
+  • The solution shall support bi-directional integration with NTUC's CRM systems for unified member
+    profiles, consent management, campaign orchestration and member behaviour insights.
+  • The solution must comply with applicable PDPA and NTUC Club information security requirements.
+
+
+18. Vendor Proposal & Evaluation Requirements
+
+Vendors should structure their proposal to address each of the following. NTUC Club will evaluate proposals
+on a combination of functional fit, technical approach, commercial cost and vendor track record; weighting to
+be confirmed in the CT covering letter. Security and compliance posture will be evaluated separately via the
+completed IT Outsource Security Requirement Checklist (see Section 12.5).
+
+ Area              Weight (indicative)         What Vendors Should Demonstrate
+
+                                               Coverage of Phase 1 Must Have requirements at launch;
+ Functional fit    To be confirmed in CT       credible roadmap for Phase 2/3; configurability without
+                                               redevelopment.
+
+ Technical                                     Scalability, integration approach (especially POS/receipt
+                   To be confirmed in CT
+ architecture                                  capture at scale), API strategy, hosting model.
+
+ Delivery track                                Relevant reference implementations, especially loyalty/CRM
+                   To be confirmed in CT
+ record                                        platforms integrated with SingPass/MyInfo in Singapore.
+
+                                               3-year cost breakdown (one-off vs. recurring), transparency
+ Commercial        To be confirmed in CT       of pricing model (e.g. per-member, per-transaction, flat
+                                               licence).
+
+ Support &                                     Post-launch support model, SLAs, escalation path, and
+                   To be confirmed in CT
+ governance                                    proposed roles/responsibilities split with NTUC Club.
+
+
+
+
+                                                 Page 22 of 22
+10. Statement of Compliance
+                               Statement of Compliance
+Notes:
+The Tenderer shall fill in the Statement of Compliance Table with one of the following
+responses for all clauses in Part 2 – Requirement Specification:
+
+         “Compliance”                                   or                              “C”
+          : Able to comply fully with the requirements. The Tenderer shall not add comments
+         against the clause that vary the meaning of full compliance. However, comments
+         indicating references to supporting documentation or literature to substantiate the
+         response are permissible. Any other comments which vary the meaning of full
+         compliance will be ignored.
+
+                For statements that do not require the Tenderer to meet a specific requirement
+                but merely provide information, the Tenderer's response shall state “C”.
+
+         “Partially                    Compliant”                    or                     “PC”
+          : Able to comply with the requirements only in part. The Tenderer shall clearly identify
+         the aspects of the requirement that can be met and those that cannot, together with any
+         proposed alternatives, workarounds, or future enhancements.
+
+                An explanatory note must be provided under the "Remarks" column for all
+                responses marked "PC".
+
+         “Non-Compliant”                                     or                              “NC”
+          : Unable to comply with the requirements.
+
+                An explanatory note must be provided under the "Remarks" column for all
+                responses marked "NC", stating the reason for non-compliance and, where
+                applicable, any alternative solution that may be offered.
+
+         “Not                     Applicable”                     or                     “NA”
+          : The requirement is not applicable to the Tenderer's proposed solution, services, or
+         scope of supply.
+
+                An explanatory note must be provided under the "Remarks" column to justify
+                why the requirement is considered not applicable.
+
+Remarks
+
+   •     Explanatory notes are mandatory for responses marked "PC", "NC", or "NA".
+   •     If the response is "C", there shall not be any explanatory notes.
+   •     Vague responses such as "Refer to brochure attached" are not acceptable. The Tenderer
+         shall provide clear, specific, and sufficiently detailed explanations to support the stated
+         compliance status.
+
+
+Legend
+
+                                              Confidential                                        1
+  •       C = Fully compliant (no remarks allowed)
+  •       PC = Meets only part of the requirement (remarks required)
+  •       NC = Does not meet the requirement (remarks required)
+  •       NA = Requirement genuinely does not apply (justification required)
+
+
+
+
+                        Please fill in “C” for
+                        Fully Compliant, “PC”
+Paragraph               for Partially Compliant,
+                                                   Explanatory Notes
+Reference               “NC” for Non-
+                        Compliant, and “NA”
+                        for Not Applicable.
+Part 1A – CONDITIONS OF TENDER – INSTRUCTIONS TO TENDERER
+1.
+2.
+3. (1)
+3. (2)
+4.
+5. (a)
+5. (b)
+5. (c)
+6. (1)
+6. (2)
+7.
+8.
+9.
+10.
+11. (a)
+11. (b)
+11. (c)
+12. (a)
+12. (b)
+12. (c)
+13. (a)
+13. (b)
+13. (c)
+14. (a)
+14. (b)
+15.
+16. (1)
+16. (2)
+17.
+18.
+19. (1)
+19. (2)
+
+
+                                               Confidential                    2
+19. (3)
+20. (1)
+20. (2)
+20. (3)
+21.
+22.
+23. (1)
+23. (2)
+24.
+25.
+26.
+27.
+28.
+29.
+30. (i)
+30. (ii)
+30. (iii)
+
+
+
+
+                      Please fill in “C” for
+                      Fully Compliant,
+                      “PC” for Partially
+Paragraph Reference   Compliant, “NC” for         Explanatory Notes
+                      Non-Compliant, and
+                      “NA” for Not
+                      Applicable.
+Part 1B – Conditions of Agreement
+1. Definitions
+2. Agreements
+2. (1)
+2. (2)
+2. (3)
+3. Acknowledgements
+3. (1)
+
+
+                                               Confidential           3
+3. (2)
+4. Variation of
+Conditions
+5. Quality &
+Description
+5. (1)
+5. (2)
+5. (3)
+5. (4)
+5. (5)
+6. Inspection and
+Testing
+6. (1)
+6. (2)
+6. (3)
+6. (4)
+7. Delivery & Storage
+7. (1)
+7. (2)
+7. (3)
+7. (4)
+7. (5)
+8. Passing of Property
+8. (1)
+8. (2)
+9. Time
+9. (1)
+9. (2)
+9. (2a)
+9. (2b)
+9. (2c)
+9.3
+10. Rejection
+10. (1)
+10. (2)
+10. (3)
+11. Guarantee
+11. (1)
+11. (2)
+11. (2a)
+11. (2b)
+11. (3)
+12. Damage or Loss in
+Transit
+13. Price and Payment
+13. (1)
+13. (2)
+
+
+                         Confidential   4
+13. (3)
+14. Care and Return of
+Samples
+14. (1)
+14. (2)
+14. (3)
+15. Statutory
+Requirements
+16. Infringement of
+Intellectual Property
+Right
+16. (1)
+16. (2)
+17. Assignment or
+Sub-Contract
+17. (1)
+17. (2)
+17. (3)
+18. Termination
+18. (1)
+18. (1a)
+18. (1b)
+18. (1c)
+18. (2)
+18. (2a)
+18. (2b)
+18. (3)
+19. Indemnity
+19. (1)
+19. (2)
+19. (2a)
+19. (2b)
+19. (3)
+20. Arbitration and
+Mediation
+20. (1)
+20. (2)
+21. Confidentiality
+21. (1)
+21. (2)
+21. (3)
+21. (4)
+21. (4a)
+21. (4b)
+21. (5)
+21. (5a)
+21. (5b)
+21. (6)
+
+                         Confidential   5
+21. (7)
+21. (8)
+21. (9)
+22. Security Deposit
+22. (1)
+22. (2)
+22. (3)
+22. (4)
+22. (5)
+23. Force Majeure
+24. License and Permit
+25. Severability
+25. (1)
+25. (2)
+25. (3)
+26. Foreign
+Employees
+26. (1)
+26. (2)
+27. Inducement and
+Rewards
+28. Notice
+28. (1)
+28. (2)
+29. Severability
+30. No Waiver
+31. Clause Headings
+32. Governing Law
+32. (1)
+32. (2)
+33. Personal Data
+33. (i)
+33. (ii)
+33. (iii)
+
+
+
+
+                         Confidential   6
+                                     Please fill in “C” for
+                                     Fully Compliant, “PC”
+                                     for Partially
+Paragraph Reference                  Compliant, “NC” for      Explanatory Notes
+                                     Non-Compliant, and
+                                     “NA” for Not
+                                     Applicable.
+Part 2 - Requirement Specification Document
+1. Document Control
+1.1
+1.2
+1.3
+2. Introduction
+3. Business Background
+3.1
+3.2
+3.3
+3.4
+4. Project Objectives
+5. Scope of Engagement
+5.1
+5.2
+5.3
+6. Stakeholders & Governance
+7. Member Benefits Framework
+7.1
+7.2
+8. Business Requirements — Phase 1
+(MVP)
+8.1 (BR-P1-001)
+8.1 (BR-P1-002)
+8.1 (BR-P1-002a)
+8.1 (BR-P1-002b)
+8.1 (BR-P1-002c)
+8.2 (BR-P1-003)
+8.2 (BR-P1-004)
+8.2 (BR-P1-005)
+8.2 (BR-P1-006)
+8.2 (BR-P1-007)
+8.3 (BR-P1-008)
+8.3 (BR-P1-009)
+8.3 (BR-P1-010)
+8.3 (BR-P1-011)
+8.3 (BR-P1-012)
+8.3 (BR-P1-013)
+8.4 (BR-P1-014)
+8.4 (BR-P1-015)
+8.4 (BR-P1-016)
+8.4 (BR-P1-017)
+8.4 (BR-P1-018)
+8.5 (BR-P1-019)
+8.5 (BR-P1-020)
+8.5 (BR-P1-020a)
+8.5 (BR-P1-021)
+8.5 (BR-P1-022)
+8.6 (BR-P1-023)
+8.6 (BR-P1-024)
+8.7 (BR-P1-025)
+8.8 (BR-P1-026)
+8.8 (BR-P1-027)
+8.8 (BR-P1-028)
+8.8 (BR-P1-029)
+8.1 (BR-P1-001)
+9. Business Requirements — Phase 2
+(Growth & Engagement)
+9.1 (BR-P2-001)
+9.1 (BR-P2-002)
+9.1 (BR-P2-003)
+9.1 (BR-P2-004)
+9.1 (BR-P2-005)
+9.2 (BR-P2-006)
+9.2 (BR-P2-007)
+9.2 (BR-P2-008)
+9.3 (BR-P2-009)
+9.3 (BR-P2-010)
+9.3 (BR-P2-011)
+10. Business Requirements — Phase
+3 (Mature Ecosystem)
+10.1 (BR-P3-001)
+10.1 (BR-P3-002)
+10.1 (BR-P3-003)
+10.1 (BR-P3-004)
+10.1 (BR-P3-005)
+10.1 (BR-P3-006)
+10.1 (BR-P3-007)
+10.2
+10.3
+
+
+                                     Confidential   8
+11. Tier Structure & Rebate Yield
+Scenarios
+11.1
+11.2
+11.3
+11.4
+11.5
+
+12. Non-Functional Requirements
+
+12.1 (NFR-001)
+12.1 (NFR-002)
+12.1 (NFR-003)
+12.1 (NFR-004)
+12.2 (NFR-005)
+12.2 (NFR-006)
+12.2 (NFR-007)
+12.3 (NFR-008)
+12.3 (NFR-009)
+12.3 (NFR-010)
+12.4 (NFR-011)
+12.4 (NFR-012)
+12.4 (NFR-013)
+12.5
+13. Reporting, Data & Systems
+Integration Requirements
+13.1
+13.2 (BR-DI-001)
+13.2 (BR-DI-002)
+13.2 (BR-DI-003)
+13.2 (BR-DI-004)
+13.3
+13.4
+14. Vendor Deliverables
+14 (1)
+14 (2)
+14 (3)
+14 (4)
+14 (5)
+14 (6)
+14 (7)
+14 (8)
+15. Implementation Roadmap &
+Indicative Timeline
+
+                                    Confidential   9
+16. Success Metrics / KPIs Summary
+17. Assumptions, Dependencies &
+Constraints
+17.1
+17.2
+17.3
+18. Vendor Proposal & Evaluation
+Requirements
+
+
+
+
+                                     Confidential   10
+11. Price Schedule
+        The prices inserted by the Tenderers shall include end-to-end ideation and development of a
+        comprehensive campaign concept, supported by an integrated creative strategy. The scope
+        includes the creation of a detailed proposal outlining the strategic approach and creative
+        development methodology. The Company shall focus on enhancing engagement to boost
+        brand awareness and increase bookings.
+
+        The items and descriptions are not meant to be exhaustive, and the Tenderer may propose to
+        replace or add other items as he deems fit and necessary. The pricing of the Price Schedules
+        shall be only used as guidance for the purpose of evaluation or interim payment.
+
+        The Tenderer is requested to provide breakdown of items cost below and to indicate any items
+        not listed but necessary for the completion of the project. The items and dimensions given are
+        to be served as guide for the tenderer to indicate prices. If any of these items are not priced,
+        it shall be deemed that the cost for such item/items has been allowed for elsewhere within this
+        Tender and no claim against them will be considered.
+
+
+
+                                          PRICE SCHEDULE
+
+ TABLE 1 : TOTAL COST OF OWNERSHIP FOR THE SYSTEM
+                                   ONE-TIME
+S/N             ITEMS                           ANNUAL OPERATING COST (S$)          Remarks / Assumptions
+                                   COST (S$)
+                                                 YEAR 1
+                                                (from go-    YEAR 2      YEAR 3
+                                                   live)
+SECTION A — PHASE 1 (MVP) IMPLEMENTATION (Go-Live 1 December 2026)
+      Loyalty programme solution
+      design and platform
+                                                                                    Scope covers participating
+      configuration
+                                                                                    tenants at these locations
+      (programme rules,
+                                                                                    only: 4 NTUC Club
+A1    earn/burn mechanics, two-
+                                                                                    Clubhouses and
+      tier structure, rewards
+                                                                                    Downtown East (DE) and
+      catalogue, digital
+                                                                                    excludes business units.
+      membership card, admin
+      and reporting tools)
+A2    Tenant transaction capture
+      CRM integration
+      (Salesforce)
+A3    (bi-directional member
+      profile, consent and
+      campaign orchestration)
+      Data integration with NTUC
+      HQ system
+A4    (union member reference
+      and validation, ongoing
+      synchronisation)
+      SingPass Login and MyInfo                                                     One-time cost only.
+A5
+      integration                                                                   Recurring charges at B3.
+
+
+                                                                                             Page 1 of 5
+                                     ONE-TIME
+S/N              ITEMS                            ANNUAL OPERATING COST (S$)           Remarks / Assumptions
+                                     COST (S$)
+                                                   YEAR 1
+                                                  (from go-    YEAR 2       YEAR 3
+                                                     live)
+      Testing, UAT and
+      production readiness
+A6
+      (end-to-end testing, defect
+      resolution, cutover)
+      Training and documentation
+      (administrator and user
+A7    training, system
+      documentation, operating
+      procedures, support guides)
+      Launch support and
+A8
+      stabilisation
+      SUB-TOTAL — SECTION A
+SECTION B — RECURRING SUBSCRIPTION & SUPPORT (Phase 1 scope, 3 years from go-live)
+      Annual subscription cost —
+                                                                                       State the member volume
+      platform licensing, hosting,
+                                                                                       band this price assumes,
+B1    production support and
+                                                                                       and the price basis (per
+      application management
+                                                                                       member / tiered / flat).
+      (AMS)
+                                                                                       Provide a rate card
+      Incremental subscription
+                                                                                       showing how cost scales
+B2    cost per additional member
+                                                                                       beyond the assumed band
+      volume band (If applicable)
+                                                                                       at B1.
+      SingPass / MyInfo per-
+                                                                                       State assumed annual
+      transaction (any additional
+B3                                                                                     retrieval volume and unit
+      charges on top of what
+                                                                                       rate.
+      SingPass is charging)
+      Post-implementation                                                              State warranty period
+B4    warranty, maintenance and                                                        included at no charge, if
+      technical support                                                                any.
+      SUB-TOTAL — SECTION B
+
+               Notes:
+            1. It is mandatory for Tenderer to submit all cost items according to its tender proposal.
+            2. All costs to be quoted in Singapore Dollars and shall exclude GST.
+            3. Please include any overheads, including administrative overheads.
+            4. The scope priced at Phase 1 covers participating tenants at these locations only: 4 NTUC Club
+               Clubhouses and Downtown East (DE) and excludes business units.
+            5. The scope priced at Phase 2 and 3 is organisation-wide, covering all NTUC Club business units
+               (including Downtown East, D’Resort, MICE, UPlay, NTUC Club Clubhouses, Orchid Bowl,
+               Quebec, Orchid Country Club, Aranda Country Club, nEbO, ULive, My Golf Kaki, My Family
+               Kaki) and participating tenants.
+            6. Year 1 means the first twelve (12) months from Phase 1 go-live (target 1 December 2026).
+               Years 2 and 3 are the subsequent twelve-month periods and are required, not optional.
+
+
+
+                                                                                                 Page 2 of 5
+             7. Tenderers must complete every line. Where an item is included at no additional charge, enter
+                “Nil” and state what it is bundled with. Blank cells may be treated as non-compliant.
+             8. All recurring prices must state the member volume band and transaction volume assumed.
+                Where actual volumes exceed the stated band, the rate card at B2 shall apply.
+             9. The Total Tender Price for evaluation is the total of Sections A, B and C. Table 1A (Phase 2 /
+                Phase 3 budgetary estimates) is excluded from evaluation of price.
+
+ TABLE 1A : BUDGETARY ESTIMATE — PHASE 2 AND PHASE 3
+         Phase 2 and Phase 3 are not contracted under this tender. Tenderers are required to provide a non-binding
+         budgetary estimate based on three (3) years of operation, to inform NTUC Club’s roadmap planning and internal
+         budget approval. Estimates in this table are excluded from the Total Tender Price for evaluation purposes.
+                                                                     ESTIMATED
+                                                 ESTIMATED
+                                                                       ANNUAL
+   S/N                    ITEMS                   ONE-TIME                                   Remarks / Assumptions
+                                                                     OPERATING
+                                                  COST (S$)
+                                                                      COST (S$)
+PHASE 2 — GROWTH & ENGAGEMENT (indicative 2027)
+                Parking system
+    D1          integration (existing
+                vendor — Wei Long)
+                POS / receipt-capture
+                integration (beyond
+    D2
+                Phase 1 QR scanner
+                model)
+                Corporate website
+    D3
+                integration
+                e-Voucher Management
+    D4          Integration including
+                Giftcards
+                Ticketing / facility booking
+    D5
+                integration
+                Missions, challenges and
+    D6
+                bonus points engine
+                Tier expansion and
+    D7          partner / tenant-funded
+                offers
+                SUB-TOTAL — PHASE 2
+PHASE 3 — MATURE ECOSYSTEM (indicative 2028)
+                Advanced personalisation
+    E1
+                and segmentation
+    E2          Gamification mechanics
+    E3          Experience marketplace
+                Member community and
+    E4
+                referral mechanics
+                Links catalogue
+    E5          redemption / points-to-
+                purchase conversion
+    E6          Full VIP Tier 3 capability
+
+
+                                                                                                           Page 3 of 5
+              SUB-TOTAL — PHASE 3
+     TOTAL — PHASE 2 + PHASE 3
+                 (BUDGETARY)
+
+
+               Notes:
+     1. All costs to be quoted in Singapore Dollars and shall exclude GST.
+     2. Estimates are indicative and non-binding but should reflect the Tenderer’s good-faith view of likely
+        cost at the stated scope.
+     3. Tenderers must state all assumptions relied on, including member volumes, transaction volumes,
+        number of participating tenants and any third-party licence or hardware costs.
+     4. Where an item cannot be estimated without further scoping, state this and set out the information
+        required, rather than omitting the line.
+
+
+     TABLE 2: CHANGE REQUEST (CR) MAN-DAYS
+                                           MAN-DAY
+                                                         MAN-MONTH RATE
+S/N                     ITEMS               RATE                                    Remarks / Assumptions
+                                                              (S$)
+                                             (S$)
+              Man-day rate for Change
+A1
+              Requests
+
+
+              Notes:
+
+         1.    It is mandatory for the Tenderer to submit all costs listed above.
+         2.    Volume discounts (if any) must be clearly stated.
+         3.    All costs to be quoted in Singapore Dollars and shall exclude GST.
+         4.    The number of man-days per month shall be twenty (20) and the number of man-hours per
+               day shall be eight point five (8.5).
+                        NTUC Club has the option to contract either by man-day or man-month depending on
+                        the length of the service.
+
+
+     TABLE 3 – MANPOWER RATES FOR ADDITIONAL SERVICES
+                                                               Unit Cost      Unit Cost
+                                Unit Cost       Unit Cost
+                                                              Per 6-Hour        Per
+                                Per 2-Hour     Per 4-Hour
+                                                              Block (S$)      Man-Day            Remarks /
+S/N                ITEMS        Block (S$)     Block (S$)
+                                                                                (S$)            Assumptions
+                                On-     Off-   On-    Off-   On-     Off-   On-     Off-
+                                Site    Site   Site   Site   Site    Site   Site    Site
+              After Support
+ 1
+              Hours
+              Others (please
+ 2
+              specify)
+
+            Notes:
+         1. All costs to be quoted in Singapore Dollars and shall exclude GST.
+         2. The Tenderer shall provide manpower rates for additional services. These rates shall apply
+            during system enhancements or maintenance.
+         3. The number of man-hours per day shall be eight point five (8.5). NTUC Club has the option to
+            contract either by man-hour block or man-day depending on the length of the service.
+
+                                                                                                 Page 4 of 5
+4. Please indicate clearly if staff is working on-site (on Customer’s site) or off-site (not on
+   Customer’s site). Both on-site and off-site refers to a place in Singapore.
+
+
+
+
+                                                ___________________________________
+                                               Authorised Signature and Company’s Stamp
+
+
+                                               Name           : _______________________
+                                               Designation    : _______________________
+                                               Date           : _______________________
+
+
+
+
+                                                                                    Page 5 of 5
+

@@ -1,0 +1,168 @@
+{
+  "meta": {
+    "title": "{{study_title}}",
+    "studyType": "{{study_type}}",
+    "cycle": "{{cycle}}",
+    "researcher": "{{researcher_name}}",
+    "lastUpdated": "{{YYYY-MM-DD}}",
+    "summary": "{{one_sentence_summary_of_key_themes}}"
+  },
+  "groups": [
+    {
+      "id": "pain-points",
+      "title": "Pain Points",
+      "description": "Specific frustrations and blockers preventing participants from completing their goals.",
+      "insights": [
+        {
+          "id": "{{insight-id-kebab}}",
+          "title": "{{Complete sentence stating the finding — e.g. Participants rely on X when Y}}",
+          "summary": "{{1–2 sentence summary of the pattern observed}}",
+          "references": [
+            {
+              "id": "{{ref-id}}",
+              "sourceId": "{{session_or_source_id}}",
+              "participantId": "{{participant_id_or_omit}}",
+              "filePath": "{{relative/path/to/transcript.md}}",
+              "range": {
+                "start": { "line": 0, "character": 0 },
+                "end": { "line": 0, "character": 0 }
+              },
+              "note": "{{Why this passage supports the insight}}",
+              "excerpt": "{{Direct quote from transcript — optional}}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "unmet-needs",
+      "title": "Unmet Needs",
+      "description": "What participants require that the current solution does not provide.",
+      "insights": [
+        {
+          "id": "{{insight-id-kebab}}",
+          "title": "{{Complete sentence stating the finding}}",
+          "summary": "{{1–2 sentence summary of the pattern observed}}",
+          "references": [
+            {
+              "id": "{{ref-id}}",
+              "sourceId": "{{session_or_source_id}}",
+              "participantId": "{{participant_id_or_omit}}",
+              "filePath": "{{relative/path/to/transcript.md}}",
+              "range": {
+                "start": { "line": 0, "character": 0 },
+                "end": { "line": 0, "character": 0 }
+              },
+              "note": "{{Why this passage supports the insight}}",
+              "excerpt": "{{Direct quote from transcript — optional}}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "engagement-drivers",
+      "title": "Engagement Drivers",
+      "description": "What motivates continued use and positive experience.",
+      "insights": [
+        {
+          "id": "{{insight-id-kebab}}",
+          "title": "{{Complete sentence stating the finding}}",
+          "summary": "{{1–2 sentence summary of the pattern observed}}",
+          "references": [
+            {
+              "id": "{{ref-id}}",
+              "sourceId": "{{session_or_source_id}}",
+              "participantId": "{{participant_id_or_omit}}",
+              "filePath": "{{relative/path/to/transcript.md}}",
+              "range": {
+                "start": { "line": 0, "character": 0 },
+                "end": { "line": 0, "character": 0 }
+              },
+              "note": "{{Why this passage supports the insight}}",
+              "excerpt": "{{Direct quote from transcript — optional}}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "behaviours",
+      "title": "Behaviours",
+      "description": "What participants actually do today.",
+      "insights": [
+        {
+          "id": "{{insight-id-kebab}}",
+          "title": "{{Complete sentence stating the finding}}",
+          "summary": "{{1–2 sentence summary of the pattern observed}}",
+          "references": [
+            {
+              "id": "{{ref-id}}",
+              "sourceId": "{{session_or_source_id}}",
+              "participantId": "{{participant_id_or_omit}}",
+              "filePath": "{{relative/path/to/transcript.md}}",
+              "range": {
+                "start": { "line": 0, "character": 0 },
+                "end": { "line": 0, "character": 0 }
+              },
+              "note": "{{Why this passage supports the insight}}",
+              "excerpt": "{{Direct quote from transcript — optional}}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "desired-features",
+      "title": "Desired Features",
+      "description": "Functionality or improvements participants explicitly requested.",
+      "insights": [
+        {
+          "id": "{{insight-id-kebab}}",
+          "title": "{{Complete sentence stating the finding}}",
+          "summary": "{{1–2 sentence summary of the pattern observed}}",
+          "references": [
+            {
+              "id": "{{ref-id}}",
+              "sourceId": "{{session_or_source_id}}",
+              "participantId": "{{participant_id_or_omit}}",
+              "filePath": "{{relative/path/to/transcript.md}}",
+              "range": {
+                "start": { "line": 0, "character": 0 },
+                "end": { "line": 0, "character": 0 }
+              },
+              "note": "{{Why this passage supports the insight}}",
+              "excerpt": "{{Direct quote from transcript — optional}}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "context",
+      "title": "Context",
+      "description": "Environmental, situational, or workflow factors shaping how participants engage.",
+      "insights": [
+        {
+          "id": "{{insight-id-kebab}}",
+          "title": "{{Complete sentence stating the finding}}",
+          "summary": "{{1–2 sentence summary of the pattern observed}}",
+          "references": [
+            {
+              "id": "{{ref-id}}",
+              "sourceId": "{{session_or_source_id}}",
+              "participantId": "{{participant_id_or_omit}}",
+              "filePath": "{{relative/path/to/transcript.md}}",
+              "range": {
+                "start": { "line": 0, "character": 0 },
+                "end": { "line": 0, "character": 0 }
+              },
+              "note": "{{Why this passage supports the insight}}",
+              "excerpt": "{{Direct quote from transcript — optional}}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

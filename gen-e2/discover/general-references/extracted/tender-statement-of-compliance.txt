@@ -1,0 +1,446 @@
+                               Statement of Compliance
+Notes:
+The Tenderer shall fill in the Statement of Compliance Table with one of the following
+responses for all clauses in Part 2 – Requirement Specification:
+
+         “Compliance”                                   or                              “C”
+          : Able to comply fully with the requirements. The Tenderer shall not add comments
+         against the clause that vary the meaning of full compliance. However, comments
+         indicating references to supporting documentation or literature to substantiate the
+         response are permissible. Any other comments which vary the meaning of full
+         compliance will be ignored.
+
+                For statements that do not require the Tenderer to meet a specific requirement
+                but merely provide information, the Tenderer's response shall state “C”.
+
+         “Partially                    Compliant”                    or                     “PC”
+          : Able to comply with the requirements only in part. The Tenderer shall clearly identify
+         the aspects of the requirement that can be met and those that cannot, together with any
+         proposed alternatives, workarounds, or future enhancements.
+
+                An explanatory note must be provided under the "Remarks" column for all
+                responses marked "PC".
+
+         “Non-Compliant”                                     or                              “NC”
+          : Unable to comply with the requirements.
+
+                An explanatory note must be provided under the "Remarks" column for all
+                responses marked "NC", stating the reason for non-compliance and, where
+                applicable, any alternative solution that may be offered.
+
+         “Not                     Applicable”                     or                     “NA”
+          : The requirement is not applicable to the Tenderer's proposed solution, services, or
+         scope of supply.
+
+                An explanatory note must be provided under the "Remarks" column to justify
+                why the requirement is considered not applicable.
+
+Remarks
+
+   •     Explanatory notes are mandatory for responses marked "PC", "NC", or "NA".
+   •     If the response is "C", there shall not be any explanatory notes.
+   •     Vague responses such as "Refer to brochure attached" are not acceptable. The Tenderer
+         shall provide clear, specific, and sufficiently detailed explanations to support the stated
+         compliance status.
+
+
+Legend
+
+                                              Confidential                                        1
+  •       C = Fully compliant (no remarks allowed)
+  •       PC = Meets only part of the requirement (remarks required)
+  •       NC = Does not meet the requirement (remarks required)
+  •       NA = Requirement genuinely does not apply (justification required)
+
+
+
+
+                        Please fill in “C” for
+                        Fully Compliant, “PC”
+Paragraph               for Partially Compliant,
+                                                   Explanatory Notes
+Reference               “NC” for Non-
+                        Compliant, and “NA”
+                        for Not Applicable.
+Part 1A – CONDITIONS OF TENDER – INSTRUCTIONS TO TENDERER
+1.
+2.
+3. (1)
+3. (2)
+4.
+5. (a)
+5. (b)
+5. (c)
+6. (1)
+6. (2)
+7.
+8.
+9.
+10.
+11. (a)
+11. (b)
+11. (c)
+12. (a)
+12. (b)
+12. (c)
+13. (a)
+13. (b)
+13. (c)
+14. (a)
+14. (b)
+15.
+16. (1)
+16. (2)
+17.
+18.
+19. (1)
+19. (2)
+
+
+                                               Confidential                    2
+19. (3)
+20. (1)
+20. (2)
+20. (3)
+21.
+22.
+23. (1)
+23. (2)
+24.
+25.
+26.
+27.
+28.
+29.
+30. (i)
+30. (ii)
+30. (iii)
+
+
+
+
+                      Please fill in “C” for
+                      Fully Compliant,
+                      “PC” for Partially
+Paragraph Reference   Compliant, “NC” for         Explanatory Notes
+                      Non-Compliant, and
+                      “NA” for Not
+                      Applicable.
+Part 1B – Conditions of Agreement
+1. Definitions
+2. Agreements
+2. (1)
+2. (2)
+2. (3)
+3. Acknowledgements
+3. (1)
+
+
+                                               Confidential           3
+3. (2)
+4. Variation of
+Conditions
+5. Quality &
+Description
+5. (1)
+5. (2)
+5. (3)
+5. (4)
+5. (5)
+6. Inspection and
+Testing
+6. (1)
+6. (2)
+6. (3)
+6. (4)
+7. Delivery & Storage
+7. (1)
+7. (2)
+7. (3)
+7. (4)
+7. (5)
+8. Passing of Property
+8. (1)
+8. (2)
+9. Time
+9. (1)
+9. (2)
+9. (2a)
+9. (2b)
+9. (2c)
+9.3
+10. Rejection
+10. (1)
+10. (2)
+10. (3)
+11. Guarantee
+11. (1)
+11. (2)
+11. (2a)
+11. (2b)
+11. (3)
+12. Damage or Loss in
+Transit
+13. Price and Payment
+13. (1)
+13. (2)
+
+
+                         Confidential   4
+13. (3)
+14. Care and Return of
+Samples
+14. (1)
+14. (2)
+14. (3)
+15. Statutory
+Requirements
+16. Infringement of
+Intellectual Property
+Right
+16. (1)
+16. (2)
+17. Assignment or
+Sub-Contract
+17. (1)
+17. (2)
+17. (3)
+18. Termination
+18. (1)
+18. (1a)
+18. (1b)
+18. (1c)
+18. (2)
+18. (2a)
+18. (2b)
+18. (3)
+19. Indemnity
+19. (1)
+19. (2)
+19. (2a)
+19. (2b)
+19. (3)
+20. Arbitration and
+Mediation
+20. (1)
+20. (2)
+21. Confidentiality
+21. (1)
+21. (2)
+21. (3)
+21. (4)
+21. (4a)
+21. (4b)
+21. (5)
+21. (5a)
+21. (5b)
+21. (6)
+
+                         Confidential   5
+21. (7)
+21. (8)
+21. (9)
+22. Security Deposit
+22. (1)
+22. (2)
+22. (3)
+22. (4)
+22. (5)
+23. Force Majeure
+24. License and Permit
+25. Severability
+25. (1)
+25. (2)
+25. (3)
+26. Foreign
+Employees
+26. (1)
+26. (2)
+27. Inducement and
+Rewards
+28. Notice
+28. (1)
+28. (2)
+29. Severability
+30. No Waiver
+31. Clause Headings
+32. Governing Law
+32. (1)
+32. (2)
+33. Personal Data
+33. (i)
+33. (ii)
+33. (iii)
+
+
+
+
+                         Confidential   6
+                                     Please fill in “C” for
+                                     Fully Compliant, “PC”
+                                     for Partially
+Paragraph Reference                  Compliant, “NC” for      Explanatory Notes
+                                     Non-Compliant, and
+                                     “NA” for Not
+                                     Applicable.
+Part 2 - Requirement Specification Document
+1. Document Control
+1.1
+1.2
+1.3
+2. Introduction
+3. Business Background
+3.1
+3.2
+3.3
+3.4
+4. Project Objectives
+5. Scope of Engagement
+5.1
+5.2
+5.3
+6. Stakeholders & Governance
+7. Member Benefits Framework
+7.1
+7.2
+8. Business Requirements — Phase 1
+(MVP)
+8.1 (BR-P1-001)
+8.1 (BR-P1-002)
+8.1 (BR-P1-002a)
+8.1 (BR-P1-002b)
+8.1 (BR-P1-002c)
+8.2 (BR-P1-003)
+8.2 (BR-P1-004)
+8.2 (BR-P1-005)
+8.2 (BR-P1-006)
+8.2 (BR-P1-007)
+8.3 (BR-P1-008)
+8.3 (BR-P1-009)
+8.3 (BR-P1-010)
+8.3 (BR-P1-011)
+8.3 (BR-P1-012)
+8.3 (BR-P1-013)
+8.4 (BR-P1-014)
+8.4 (BR-P1-015)
+8.4 (BR-P1-016)
+8.4 (BR-P1-017)
+8.4 (BR-P1-018)
+8.5 (BR-P1-019)
+8.5 (BR-P1-020)
+8.5 (BR-P1-020a)
+8.5 (BR-P1-021)
+8.5 (BR-P1-022)
+8.6 (BR-P1-023)
+8.6 (BR-P1-024)
+8.7 (BR-P1-025)
+8.8 (BR-P1-026)
+8.8 (BR-P1-027)
+8.8 (BR-P1-028)
+8.8 (BR-P1-029)
+8.1 (BR-P1-001)
+9. Business Requirements — Phase 2
+(Growth & Engagement)
+9.1 (BR-P2-001)
+9.1 (BR-P2-002)
+9.1 (BR-P2-003)
+9.1 (BR-P2-004)
+9.1 (BR-P2-005)
+9.2 (BR-P2-006)
+9.2 (BR-P2-007)
+9.2 (BR-P2-008)
+9.3 (BR-P2-009)
+9.3 (BR-P2-010)
+9.3 (BR-P2-011)
+10. Business Requirements — Phase
+3 (Mature Ecosystem)
+10.1 (BR-P3-001)
+10.1 (BR-P3-002)
+10.1 (BR-P3-003)
+10.1 (BR-P3-004)
+10.1 (BR-P3-005)
+10.1 (BR-P3-006)
+10.1 (BR-P3-007)
+10.2
+10.3
+
+
+                                     Confidential   8
+11. Tier Structure & Rebate Yield
+Scenarios
+11.1
+11.2
+11.3
+11.4
+11.5
+
+12. Non-Functional Requirements
+
+12.1 (NFR-001)
+12.1 (NFR-002)
+12.1 (NFR-003)
+12.1 (NFR-004)
+12.2 (NFR-005)
+12.2 (NFR-006)
+12.2 (NFR-007)
+12.3 (NFR-008)
+12.3 (NFR-009)
+12.3 (NFR-010)
+12.4 (NFR-011)
+12.4 (NFR-012)
+12.4 (NFR-013)
+12.5
+13. Reporting, Data & Systems
+Integration Requirements
+13.1
+13.2 (BR-DI-001)
+13.2 (BR-DI-002)
+13.2 (BR-DI-003)
+13.2 (BR-DI-004)
+13.3
+13.4
+14. Vendor Deliverables
+14 (1)
+14 (2)
+14 (3)
+14 (4)
+14 (5)
+14 (6)
+14 (7)
+14 (8)
+15. Implementation Roadmap &
+Indicative Timeline
+
+                                    Confidential   9
+16. Success Metrics / KPIs Summary
+17. Assumptions, Dependencies &
+Constraints
+17.1
+17.2
+17.3
+18. Vendor Proposal & Evaluation
+Requirements
+
+
+
+
+                                     Confidential   10
+11. Price Schedule
+        The prices inserted by the Tenderers shall include end-to-end ideation and development of a
+        comprehensive campaign concept, supported by an integrated creative strategy. The scope
+        includes the creation of a detailed proposal outlining the strategic approach and creative
+        development methodology. The Company shall focus on enhancing engagement to boost
+        brand awareness and increase bookings.
+
+        The items and descriptions are not meant to be exhaustive, and the Tenderer may propose to
+        replace or add other items as he deems fit and necessary. The pricing of the Price Schedules
+        shall be only used as guidance for the purpose of evaluation or interim payment.
+
+        The Tenderer is requested to provide breakdown of items cost below and to indicate any items
+        not listed but necessary for the completion of the project. The items and dimensions given are
+        to be served as guide for the tenderer to indicate prices. If any of these items are not priced,
+        it shall be deemed that the cost for such item/items has been allowed for elsewhere within this
+        Tender and no claim against them will be considered.
+
+
+

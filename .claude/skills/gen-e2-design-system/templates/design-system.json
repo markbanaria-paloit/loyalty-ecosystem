@@ -1,0 +1,178 @@
+{
+  "name": "{{DESIGN_SYSTEM_NAME}}",
+  "version": "1.0.0",
+  "lastUpdated": "{{YYYY-MM-DD}}",
+  "description": "{{DESCRIPTION}}",
+
+  "core": {
+    "color": {
+      "primitive": {
+        "brand": {
+          "500": { "$type": "color", "$value": "{{PRIMARY_BRAND_HEX}}", "$description": "Primary brand colour" },
+          "600": { "$type": "color", "$value": "{{PRIMARY_BRAND_DARK_HEX}}" }
+        },
+        "neutral": {
+          "50":  { "$type": "color", "$value": "#f8fafc" },
+          "100": { "$type": "color", "$value": "#f1f5f9" },
+          "200": { "$type": "color", "$value": "#e2e8f0" },
+          "400": { "$type": "color", "$value": "#94a3b8" },
+          "700": { "$type": "color", "$value": "#334155" },
+          "900": { "$type": "color", "$value": "#0f172a" },
+          "950": { "$type": "color", "$value": "#020617" }
+        },
+        "success": { "500": { "$type": "color", "$value": "#22c55e" } },
+        "warning": { "500": { "$type": "color", "$value": "#eab308" } },
+        "danger":  { "500": { "$type": "color", "$value": "#ef4444" } }
+      }
+    },
+    "dimension": {
+      "scale": {
+        "4":  { "$type": "dimension", "$value": { "value": 4,  "unit": "px" } },
+        "8":  { "$type": "dimension", "$value": { "value": 8,  "unit": "px" } },
+        "12": { "$type": "dimension", "$value": { "value": 12, "unit": "px" } },
+        "16": { "$type": "dimension", "$value": { "value": 16, "unit": "px" } },
+        "24": { "$type": "dimension", "$value": { "value": 24, "unit": "px" } },
+        "32": { "$type": "dimension", "$value": { "value": 32, "unit": "px" } },
+        "48": { "$type": "dimension", "$value": { "value": 48, "unit": "px" } },
+        "64": { "$type": "dimension", "$value": { "value": 64, "unit": "px" } }
+      }
+    },
+    "typography": {
+      "family": {
+        "sans": { "$type": "fontFamily", "$value": "{{BODY_FONT_FAMILY}}", "$description": "Primary body font" },
+        "mono": { "$type": "fontFamily", "$value": "ui-monospace, monospace" }
+      },
+      "scale": {
+        "sm": {
+          "$type": "typography",
+          "$value": {
+            "fontFamily": "{{BODY_FONT_FAMILY}}",
+            "fontSize": { "value": 14, "unit": "px" },
+            "fontWeight": 400,
+            "lineHeight": 1.5
+          }
+        },
+        "base": {
+          "$type": "typography",
+          "$value": {
+            "fontFamily": "{{BODY_FONT_FAMILY}}",
+            "fontSize": { "value": 16, "unit": "px" },
+            "fontWeight": 400,
+            "lineHeight": 1.5
+          }
+        },
+        "lg": {
+          "$type": "typography",
+          "$value": {
+            "fontFamily": "{{BODY_FONT_FAMILY}}",
+            "fontSize": { "value": 18, "unit": "px" },
+            "fontWeight": 600,
+            "lineHeight": 1.4
+          }
+        },
+        "h1": {
+          "$type": "typography",
+          "$value": {
+            "fontFamily": "{{BODY_FONT_FAMILY}}",
+            "fontSize": { "value": 36, "unit": "px" },
+            "fontWeight": 700,
+            "lineHeight": 1.2
+          }
+        }
+      }
+    },
+    "shadow": {
+      "sm": {
+        "$type": "shadow",
+        "$value": [
+          {
+            "offsetX": { "value": 0, "unit": "px" },
+            "offsetY": { "value": 1, "unit": "px" },
+            "blur":    { "value": 3, "unit": "px" },
+            "spread":  { "value": 0, "unit": "px" },
+            "color":   "#00000010"
+          }
+        ]
+      },
+      "md": {
+        "$type": "shadow",
+        "$value": [
+          {
+            "offsetX": { "value": 0, "unit": "px" },
+            "offsetY": { "value": 4, "unit": "px" },
+            "blur":    { "value": 12, "unit": "px" },
+            "spread":  { "value": 0, "unit": "px" },
+            "color":   "#00000015"
+          }
+        ]
+      },
+      "lg": {
+        "$type": "shadow",
+        "$value": [
+          {
+            "offsetX": { "value": 0, "unit": "px" },
+            "offsetY": { "value": 10, "unit": "px" },
+            "blur":    { "value": 30, "unit": "px" },
+            "spread":  { "value": 0, "unit": "px" },
+            "color":   "#0000001a"
+          }
+        ]
+      }
+    },
+    "motion": {
+      "duration": {
+        "fast":   { "$type": "duration", "$value": { "value": 150, "unit": "ms" } },
+        "normal": { "$type": "duration", "$value": { "value": 300, "unit": "ms" } },
+        "slow":   { "$type": "duration", "$value": { "value": 500, "unit": "ms" } }
+      },
+      "easing": {
+        "easeInOut": { "$type": "cubicBezier", "$value": [0.4, 0, 0.2, 1] },
+        "easeOut":   { "$type": "cubicBezier", "$value": [0, 0, 0.2, 1] },
+        "easeIn":    { "$type": "cubicBezier", "$value": [0.4, 0, 1, 1] }
+      }
+    },
+    "opacity": {
+      "disabled": { "$type": "opacity", "$value": 0.4 },
+      "overlay":  { "$type": "opacity", "$value": 0.6 }
+    }
+  },
+
+  "semantic": {
+    "color": {
+      "light": {
+        "background": {
+          "canvas":  { "$type": "color", "$value": "{core.color.primitive.neutral.50}" },
+          "surface": { "$type": "color", "$value": "#ffffff" }
+        },
+        "text": {
+          "primary":   { "$type": "color", "$value": "{core.color.primitive.neutral.900}" },
+          "secondary": { "$type": "color", "$value": "{core.color.primitive.neutral.700}" },
+          "disabled":  { "$type": "color", "$value": "{core.color.primitive.neutral.400}" }
+        },
+        "accent": {
+          "primary": { "$type": "color", "$value": "{core.color.primitive.brand.500}" },
+          "hover":   { "$type": "color", "$value": "{core.color.primitive.brand.600}" }
+        },
+        "status": {
+          "success": { "$type": "color", "$value": "{core.color.primitive.success.500}" },
+          "warning": { "$type": "color", "$value": "{core.color.primitive.warning.500}" },
+          "danger":  { "$type": "color", "$value": "{core.color.primitive.danger.500}" }
+        }
+      },
+      "dark": {
+        "background": {
+          "canvas":  { "$type": "color", "$value": "{core.color.primitive.neutral.950}" },
+          "surface": { "$type": "color", "$value": "{core.color.primitive.neutral.900}" }
+        },
+        "text": {
+          "primary":   { "$type": "color", "$value": "#ffffff" },
+          "secondary": { "$type": "color", "$value": "{core.color.primitive.neutral.400}" },
+          "disabled":  { "$type": "color", "$value": "{core.color.primitive.neutral.700}" }
+        },
+        "accent": {
+          "primary": { "$type": "color", "$value": "{core.color.primitive.brand.500}" }
+        }
+      }
+    }
+  }
+}

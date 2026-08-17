@@ -1,0 +1,94 @@
+{
+  "meta": {
+    "title": "{{PRODUCT_NAME}} — Product Brief",
+    "owner": "{{OWNER_NAME}}",
+    "date": "{{YYYY-MM-DD}}",
+    "version": "v1.0"
+  },
+  "businessContext": "{{BUSINESS_CONTEXT_SUMMARY}}",
+  "vision": {
+    "statement": "{{VISION_STATEMENT}}",
+    "boundaryRule": "{{BOUNDARY_RULE}}",
+    "market": {
+      "addressable": "{{ADDRESSABLE_MARKET}}",
+      "segments": ["{{SEGMENT_1}}", "{{SEGMENT_2}}"]
+    }
+  },
+  "objectives": [
+    "{{OBJECTIVE_1}}",
+    "{{OBJECTIVE_2}}"
+  ],
+  "targetDemographic": [
+    {
+      "segment": "{{SEGMENT_NAME}}",
+      "description": "{{SEGMENT_DESCRIPTION}}"
+    }
+  ],
+  "stakeholders": [
+    {
+      "name": "{{STAKEHOLDER_NAME}}",
+      "role": "{{ROLE}}",
+      "organisation": "{{ORGANISATION}}",
+      "type": "{{TYPE}}",
+      "notes": "{{NOTES}}"
+    }
+  ],
+  "problemSignals": [
+    {
+      "id": "s1",
+      "icon": "🔍",
+      "title": "{{SIGNAL_TITLE}}",
+      "description": "{{SIGNAL_DESCRIPTION}}",
+      "confidence": "assumption",
+      "source": "{{SOURCE}}"
+    }
+  ],
+  "features": [
+    {
+      "id": "f1",
+      "name": "{{FEATURE_NAME}}",
+      "description": "{{FEATURE_DESCRIPTION}}",
+      "phase": "MVP",
+      "evidenceLink": "s1"
+    }
+  ],
+  "roadmap": {
+    "phases": [
+      {
+        "name": "Phase 1 — MVP",
+        "timeline": "{{TIMELINE}}",
+        "goal": "{{PHASE_GOAL}}",
+        "features": ["f1"],
+        "pricing": "{{PRICING_TIER}}"
+      }
+    ]
+  },
+  "isIsNot": {
+    "is": ["{{IS_ITEM_1}}", "{{IS_ITEM_2}}"],
+    "isNot": ["{{IS_NOT_ITEM_1}}", "{{IS_NOT_ITEM_2}}"]
+  },
+  "guidingPrinciples": [
+    {
+      "id": 1,
+      "title": "{{PRINCIPLE_TITLE}}",
+      "description": "{{PRINCIPLE_DESCRIPTION}}"
+    }
+  ],
+  "regulatory": [
+    {
+      "body": "{{REGULATORY_BODY}}",
+      "requirement": "{{REQUIREMENT}}",
+      "status": "tbd",
+      "notes": "{{NOTES}}"
+    }
+  ],
+  "successMetrics": [
+    {
+      "id": "m1",
+      "metric": "{{METRIC_NAME}}",
+      "target": "{{TARGET_VALUE}}",
+      "timeframe": "{{TIMEFRAME}}",
+      "rationale": "{{RATIONALE}}"
+    }
+  ]
+}

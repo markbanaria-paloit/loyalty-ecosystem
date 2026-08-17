@@ -1,0 +1,216 @@
+{
+  "meta": {
+    "title": "{{Screen Name}} — {{Device}}",
+    "owner": "{{Author}}",
+    "date": "{{YYYY-MM-DD}}",
+    "version": "v1.0"
+  },
+  "viewport": {
+    "device": "desktop",
+    "width": 1440,
+    "height": 900
+  },
+  "root": {
+    "id": "root",
+    "type": "page",
+    "children": [
+
+      {
+        "id": "nav",
+        "type": "navbar",
+        "props": { "justify": "space-between" },
+        "children": [
+          { "id": "logo", "type": "text", "props": { "variant": "h2", "content": "{{Brand Name}}" } },
+          {
+            "id": "nav-links",
+            "type": "flex",
+            "props": { "direction": "row", "gap": "{semantic.dimension.spacing.md}" },
+            "children": [
+              { "id": "nav-link-1", "type": "text", "props": { "variant": "body", "content": "{{Nav Link 1}}" } },
+              { "id": "nav-link-2", "type": "text", "props": { "variant": "body", "content": "{{Nav Link 2}}" } },
+              { "id": "nav-link-3", "type": "text", "props": { "variant": "body", "content": "{{Nav Link 3}}" } },
+              { "id": "nav-cta", "type": "button", "props": { "variant": "primary", "label": "{{Primary CTA}}" } }
+            ]
+          }
+        ]
+      },
+
+      {
+        "id": "layout",
+        "type": "flex",
+        "props": { "direction": "row", "gap": "{semantic.dimension.spacing.lg}" },
+        "children": [
+
+          {
+            "id": "sidebar",
+            "type": "sidebar",
+            "props": { "width": 240 },
+            "children": [
+              { "id": "sidebar-title", "type": "text", "props": { "variant": "h4", "content": "{{Sidebar Title}}" } },
+              { "id": "sidebar-divider", "type": "divider" },
+              { "id": "sidebar-item-1", "type": "text", "props": { "variant": "body", "content": "{{Sidebar Item 1}}" } },
+              { "id": "sidebar-item-2", "type": "text", "props": { "variant": "body", "content": "{{Sidebar Item 2}}" } },
+              { "id": "sidebar-item-3", "type": "text", "props": { "variant": "body", "content": "{{Sidebar Item 3}}" } },
+              { "id": "sidebar-item-4", "type": "text", "props": { "variant": "body", "content": "{{Sidebar Item 4}}" } }
+            ]
+          },
+
+          {
+            "id": "main",
+            "type": "frame",
+            "props": { "direction": "column", "gap": "{semantic.dimension.spacing.lg}" },
+            "children": [
+
+              { "id": "page-title", "type": "text", "props": { "variant": "h1", "content": "{{Page Title}}" } },
+              { "id": "page-desc",  "type": "text", "props": { "variant": "body", "content": "{{Page subtitle or description}}" } },
+
+              {
+                "id": "hero-image",
+                "type": "image",
+                "props": { "aspectRatio": "16:9", "label": "{{Hero image or banner}}" }
+              },
+
+              {
+                "id": "stats-row",
+                "type": "grid",
+                "props": { "columns": 4, "gap": "{semantic.dimension.spacing.md}" },
+                "children": [
+                  {
+                    "id": "stat-1",
+                    "type": "card",
+                    "props": { "padding": "{semantic.dimension.spacing.md}" },
+                    "children": [
+                      { "id": "stat-1-icon",  "type": "icon", "props": { "name": "{{stat-icon-1}}" } },
+                      { "id": "stat-1-value", "type": "text", "props": { "variant": "h2", "content": "{{Stat Value 1}}" } },
+                      { "id": "stat-1-label", "type": "text", "props": { "variant": "caption", "content": "{{Stat Label 1}}" } }
+                    ]
+                  },
+                  {
+                    "id": "stat-2",
+                    "type": "card",
+                    "props": { "padding": "{semantic.dimension.spacing.md}" },
+                    "children": [
+                      { "id": "stat-2-icon",  "type": "icon", "props": { "name": "{{stat-icon-2}}" } },
+                      { "id": "stat-2-value", "type": "text", "props": { "variant": "h2", "content": "{{Stat Value 2}}" } },
+                      { "id": "stat-2-label", "type": "text", "props": { "variant": "caption", "content": "{{Stat Label 2}}" } }
+                    ]
+                  },
+                  {
+                    "id": "stat-3",
+                    "type": "card",
+                    "props": { "padding": "{semantic.dimension.spacing.md}" },
+                    "children": [
+                      { "id": "stat-3-icon",  "type": "icon", "props": { "name": "{{stat-icon-3}}" } },
+                      { "id": "stat-3-value", "type": "text", "props": { "variant": "h2", "content": "{{Stat Value 3}}" } },
+                      { "id": "stat-3-label", "type": "text", "props": { "variant": "caption", "content": "{{Stat Label 3}}" } }
+                    ]
+                  },
+                  {
+                    "id": "stat-4",
+                    "type": "card",
+                    "props": { "padding": "{semantic.dimension.spacing.md}" },
+                    "children": [
+                      { "id": "stat-4-icon",  "type": "icon", "props": { "name": "{{stat-icon-4}}" } },
+                      { "id": "stat-4-value", "type": "text", "props": { "variant": "h2", "content": "{{Stat Value 4}}" } },
+                      { "id": "stat-4-label", "type": "text", "props": { "variant": "caption", "content": "{{Stat Label 4}}" } }
+                    ]
+                  }
+                ]
+              },
+
+              {
+                "id": "content-tabs",
+                "type": "tabs",
+                "props": { "count": 3 },
+                "children": [
+                  {
+                    "id": "feature-grid",
+                    "type": "grid",
+                    "props": { "columns": 3, "gap": "{semantic.dimension.spacing.md}" },
+                    "children": [
+                      {
+                        "id": "card-1",
+                        "type": "card",
+                        "props": { "padding": "{semantic.dimension.spacing.md}" },
+                        "children": [
+                          { "id": "card-1-icon",  "type": "icon", "props": { "name": "{{icon-1}}" } },
+                          { "id": "card-1-title", "type": "text", "props": { "variant": "h3", "content": "{{Feature 1 Title}}" } },
+                          { "id": "card-1-body",  "type": "text", "props": { "variant": "body", "content": "{{Feature 1 description}}" } },
+                          { "id": "card-1-cta",   "type": "button", "props": { "variant": "secondary", "label": "{{Learn more}}" } }
+                        ]
+                      },
+                      {
+                        "id": "card-2",
+                        "type": "card",
+                        "props": { "padding": "{semantic.dimension.spacing.md}" },
+                        "children": [
+                          { "id": "card-2-icon",  "type": "icon", "props": { "name": "{{icon-2}}" } },
+                          { "id": "card-2-title", "type": "text", "props": { "variant": "h3", "content": "{{Feature 2 Title}}" } },
+                          { "id": "card-2-body",  "type": "text", "props": { "variant": "body", "content": "{{Feature 2 description}}" } },
+                          { "id": "card-2-cta",   "type": "button", "props": { "variant": "secondary", "label": "{{Learn more}}" } }
+                        ]
+                      },
+                      {
+                        "id": "card-3",
+                        "type": "card",
+                        "props": { "padding": "{semantic.dimension.spacing.md}" },
+                        "children": [
+                          { "id": "card-3-icon",  "type": "icon", "props": { "name": "{{icon-3}}" } },
+                          { "id": "card-3-title", "type": "text", "props": { "variant": "h3", "content": "{{Feature 3 Title}}" } },
+                          { "id": "card-3-body",  "type": "text", "props": { "variant": "body", "content": "{{Feature 3 description}}" } },
+                          { "id": "card-3-cta",   "type": "button", "props": { "variant": "secondary", "label": "{{Learn more}}" } }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+
+              { "id": "section-divider-1", "type": "divider" },
+
+              {
+                "id": "data-table",
+                "type": "table",
+                "props": { "columns": 4, "rows": 5 }
+              },
+
+              { "id": "section-divider-2", "type": "divider" },
+
+              {
+                "id": "form-card",
+                "type": "card",
+                "props": { "padding": "{semantic.dimension.spacing.md}" },
+                "children": [
+                  { "id": "form-title", "type": "text", "props": { "variant": "h2", "content": "{{Form Section Title}}" } },
+                  { "id": "form-desc",  "type": "text", "props": { "variant": "body", "content": "{{Form description or helper text}}" } },
+                  { "id": "input-1",    "type": "input", "props": { "type": "text",  "placeholder": "{{Field 1 placeholder}}" } },
+                  { "id": "input-2",    "type": "input", "props": { "type": "email", "placeholder": "{{Field 2 placeholder}}" } },
+                  { "id": "input-3",    "type": "input", "props": { "type": "text",  "placeholder": "{{Field 3 placeholder}}" } },
+                  { "id": "checkbox-1", "type": "checkbox", "props": { "label": "{{Checkbox option}}" } },
+                  { "id": "radio-grp",  "type": "flex", "props": { "direction": "row", "gap": "{semantic.dimension.spacing.md}" }, "children": [
+                    { "id": "radio-1", "type": "radio", "props": { "label": "{{Option A}}" } },
+                    { "id": "radio-2", "type": "radio", "props": { "label": "{{Option B}}" } },
+                    { "id": "radio-3", "type": "radio", "props": { "label": "{{Option C}}" } }
+                  ]},
+                  {
+                    "id": "form-actions",
+                    "type": "flex",
+                    "props": { "direction": "row", "gap": "{semantic.dimension.spacing.sm}" },
+                    "children": [
+                      { "id": "submit-btn", "type": "button", "props": { "variant": "primary",   "label": "{{Submit}}" } },
+                      { "id": "cancel-btn", "type": "button", "props": { "variant": "secondary",  "label": "{{Cancel}}" } },
+                      { "id": "link-btn",   "type": "button", "props": { "variant": "ghost",      "label": "{{Destructive or tertiary action}}" } }
+                    ]
+                  }
+                ]
+              },
+
+              { "id": "footer-divider", "type": "divider" },
+              { "id": "footer-text", "type": "text", "props": { "variant": "caption", "content": "© {{Year}} {{Brand Name}}. All rights reserved." } }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

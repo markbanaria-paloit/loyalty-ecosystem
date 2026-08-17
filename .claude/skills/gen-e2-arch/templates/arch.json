@@ -1,0 +1,86 @@
+{
+  "meta": {
+    "title": "{{PRODUCT_NAME}} Architecture",
+    "owner": "{{OWNER_NAME}}",
+    "date": "{{YYYY-MM-DD}}",
+    "version": "1.0"
+  },
+  "layers": [
+    {
+      "id": "layer-frontend",
+      "label": "{{Frontend Layer Name, e.g. Frontend}}",
+      "colour": "{{hex colour for this layer, e.g. #4CAF50}}",
+      "services": [
+        {
+          "id": "svc-{{kebab-service-name}}",
+          "name": "{{Service Name}}",
+          "phase": "mvp",
+          "description": "{{One-sentence description of what this service does}}"
+        },
+        {
+          "id": "svc-{{kebab-deferred-service}}",
+          "name": "{{Deferred Service Name}}",
+          "phase": "deferred",
+          "description": "{{One-sentence description of what this deferred service does}}"
+        }
+      ]
+    },
+    {
+      "id": "layer-backend",
+      "label": "{{Backend Layer Name, e.g. Backend}}",
+      "colour": "{{hex colour for this layer, e.g. #2196F3}}",
+      "services": [
+        {
+          "id": "svc-{{kebab-service-name}}",
+          "name": "{{Service Name}}",
+          "phase": "mvp",
+          "description": "{{One-sentence description of what this service does}}"
+        }
+      ]
+    },
+    {
+      "id": "layer-data",
+      "label": "{{Data Layer Name, e.g. Data}}",
+      "colour": "{{hex colour for this layer, e.g. #FF9800}}",
+      "services": [
+        {
+          "id": "svc-{{kebab-service-name}}",
+          "name": "{{Service Name}}",
+          "phase": "mvp",
+          "description": "{{One-sentence description of what this service does}}"
+        }
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "id": "dec-1",
+      "topic": "{{Decision topic, e.g. Frontend Framework}}",
+      "choice": "{{The chosen technology or approach}}",
+      "rationale": "{{Why this choice was made — include team constraints, ecosystem maturity, and trade-offs}}",
+      "alternatives": [
+        "{{Alternative 1}}",
+        "{{Alternative 2}}"
+      ],
+      "confidence": "{{validated|strong-signal|assumption}}"
+    }
+  ],
+  "dataFlows": [
+    {
+      "step": 1,
+      "description": "{{What happens in this step — include any transformation or validation}}",
+      "from": "{{Source service name}}",
+      "to": "{{Destination service name}}"
+    },
+    {
+      "step": 2,
+      "description": "{{What happens in this step}}",
+      "from": "{{Source service name}}",
+      "to": "{{Destination service name}}"
+    }
+  ],
+  "openQuestions": [
+    "{{Unresolved architectural question that needs a decision}}",
+    "{{Another open question}}"
+  ]
+}

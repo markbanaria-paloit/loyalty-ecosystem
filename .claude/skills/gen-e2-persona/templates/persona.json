@@ -1,0 +1,102 @@
+{
+  "meta": {
+    "name": "{{PERSONA_NAME}}",
+    "title": "{{PERSONA_TITLE}}",
+    "summary": "{{One-paragraph summary of who this persona is and their core motivation}}",
+    "owner": "{{OWNER_NAME}}",
+    "date": "{{YYYY-MM-DD}}",
+    "version": "v1.0"
+  },
+  "demographics": {
+    "fields": [
+      { "label": "Age", "value": "{{age}}", "isPrimary": true },
+      { "label": "Location", "value": "{{city, country}}", "isPrimary": true },
+      { "label": "Occupation", "value": "{{job title}}", "isPrimary": true },
+      { "label": "Tech Level", "value": "{{Low|Medium|High}}", "isPrimary": true, "type": "select", "options": ["Low", "Medium", "High"] },
+      { "label": "Income", "value": "{{income range}}", "isPrimary": false },
+      { "label": "Education", "value": "{{highest qualification}}", "isPrimary": false },
+      { "label": "Family", "value": "{{family status}}", "isPrimary": false },
+      { "label": "Gender", "value": "{{gender}}", "isPrimary": false, "type": "select", "options": ["", "Female", "Male", "Non-binary", "Prefer not to say"] }
+    ]
+  },
+  "sections": [
+    {
+      "id": "goals",
+      "label": "Goals",
+      "icon": "🎯",
+      "description": "What this persona wants to achieve",
+      "items": [
+        "{{Goal 1 — include research % if available}}",
+        "{{Goal 2}}"
+      ]
+    },
+    {
+      "id": "pain-points",
+      "label": "Pain Points",
+      "icon": "❌",
+      "description": "Current frustrations and challenges",
+      "items": [
+        "{{Pain point 1 — include research % if available}}",
+        "{{Pain point 2}}"
+      ]
+    },
+    {
+      "id": "current-practices",
+      "label": "Current Practices",
+      "icon": "🔄",
+      "description": "What they currently do to address their needs",
+      "items": [
+        "{{Current practice 1}}",
+        "{{Current practice 2}}"
+      ]
+    },
+    {
+      "id": "behaviours",
+      "label": "Behaviours",
+      "icon": "👤",
+      "description": "Observable patterns and habits",
+      "items": [
+        "{{Behaviour 1}}",
+        "{{Behaviour 2}}"
+      ]
+    },
+    {
+      "id": "touchpoints",
+      "label": "Touchpoints",
+      "icon": "📱",
+      "description": "Apps, devices, and services they use",
+      "items": [
+        "{{Touchpoint category: specific tools}}",
+        "{{Touchpoint category: specific tools}}"
+      ]
+    }
+  ],
+  "quote": "{{Direct quote from research or representative quote capturing persona voice}}",
+  "mindset": {
+    "personality": [
+      "{{Trait 1}}",
+      "{{Trait 2}}",
+      "{{Trait 3}}"
+    ],
+    "values": [
+      "{{Value 1}}",
+      "{{Value 2}}",
+      "{{Value 3}}"
+    ],
+    "motivations": [
+      "{{Motivation 1}}",
+      "{{Motivation 2}}",
+      "{{Motivation 3}}"
+    ],
+    "attitudes": [
+      "{{Attitude 1}}",
+      "{{Attitude 2}}",
+      "{{Attitude 3}}"
+    ]
+  },
+  "notes": [
+    "{{Observation or research note 1}}",
+    "{{Observation or research note 2}}"
+  ],
+  "avatar": "{{optional — relative path to portrait image}}"
+}

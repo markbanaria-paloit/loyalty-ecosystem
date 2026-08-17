@@ -1,0 +1,77 @@
+{
+  "meta": {
+    "title": "{{PRODUCT_NAME}} — Story Map",
+    "owner": "{{OWNER_NAME}}",
+    "date": "{{YYYY-MM-DD}}",
+    "version": "v1.0"
+  },
+  "lanes": [
+    { "id": "mvp",     "label": "MVP (Release 1)",       "colour": "#DBEAFE" },
+    { "id": "v2",      "label": "Fast Follow (Release 2)", "colour": "#FEF9C3" },
+    { "id": "backlog", "label": "Future Backlog" }
+  ],
+  "activities": [
+    {
+      "name": "{{ACTIVITY_1_NAME}}",
+      "colour": "#4F46E5",
+      "epics": [
+        {
+          "name": "{{EPIC_1_NAME}}",
+          "stories": [
+            {
+              "id": 1,
+              "title": "{{STORY_TITLE}}",
+              "priority": "must",
+              "size": "m",
+              "lane": "mvp"
+            },
+            {
+              "id": 2,
+              "title": "{{STORY_TITLE}}",
+              "priority": "should",
+              "size": "l",
+              "lane": "v2"
+            }
+          ]
+        },
+        {
+          "name": "{{EPIC_2_NAME}}",
+          "stories": [
+            {
+              "id": 3,
+              "title": "{{STORY_TITLE}}",
+              "priority": "must",
+              "size": "s",
+              "lane": "mvp"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "{{ACTIVITY_2_NAME}}",
+      "colour": "#10B981",
+      "epics": [
+        {
+          "name": "{{EPIC_3_NAME}}",
+          "stories": [
+            {
+              "id": 4,
+              "title": "{{STORY_TITLE}}",
+              "priority": "must",
+              "size": "xl",
+              "lane": "mvp"
+            },
+            {
+              "id": 5,
+              "title": "{{STORY_TITLE}}",
+              "priority": "could",
+              "size": "m",
+              "lane": "backlog"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

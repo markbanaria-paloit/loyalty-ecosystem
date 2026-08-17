@@ -1,0 +1,89 @@
+{
+  "meta": {
+    "title": "{{SERVICE_NAME}} - Service Blueprint",
+    "owner": "{{OWNER}}",
+    "date": "{{YYYY-MM-DD}}",
+    "version": "v1.0",
+    "schemaVersion": "1.0.0"
+  },
+  "phases": [
+    "{{PHASE_1}}",
+    "{{PHASE_2}}",
+    "{{PHASE_3}}",
+    "{{PHASE_4}}"
+  ],
+  "lanes": [
+    {
+      "id": "customer",
+      "label": "Customer Actions",
+      "cards": [
+        [
+          {"text": "{{CUSTOMER_ACTION_PHASE_1}}", "tag": {"id": "{{TAG_ID}}", "label": "{{TAG_LABEL}}", "colour": "#7C3AED"}}
+        ],
+        [
+          {"text": "{{CUSTOMER_ACTION_PHASE_2}}", "tag": {"id": "{{TAG_ID}}", "label": "{{TAG_LABEL}}", "colour": "#7C3AED"}}
+        ],
+        [
+          {"text": "{{CUSTOMER_ACTION_PHASE_3}}", "tag": {"id": "{{TAG_ID}}", "label": "{{TAG_LABEL}}", "colour": "#EF4444"}}
+        ],
+        [
+          {"text": "{{CUSTOMER_ACTION_PHASE_4}}", "tag": {"id": "{{TAG_ID}}", "label": "{{TAG_LABEL}}", "colour": "#7C3AED"}}
+        ]
+      ]
+    },
+    {
+      "id": "frontstage",
+      "label": "Frontstage (Visible)",
+      "cards": [
+        [
+          {"text": "{{FRONTSTAGE_PHASE_1}}", "tag": {"id": "{{TAG_ID}}", "label": "{{TAG_LABEL}}", "colour": "#7C3AED"}}
+        ],
+        [
+          {"text": "{{FRONTSTAGE_PHASE_2}}", "tag": {"id": "{{TAG_ID}}", "label": "{{TAG_LABEL}}", "colour": "#f4a261"}}
+        ],
+        [
+          {"text": "{{FRONTSTAGE_PHASE_3}}", "tag": {"id": "{{TAG_ID}}", "label": "{{TAG_LABEL}}", "colour": "#f4a261"}}
+        ],
+        [
+          {"text": "{{FRONTSTAGE_PHASE_4}}", "tag": {"id": "{{TAG_ID}}", "label": "{{TAG_LABEL}}", "colour": "#10B981"}}
+        ]
+      ]
+    },
+    {
+      "id": "backstage",
+      "label": "Backstage (Invisible)",
+      "cards": [
+        [
+          {"text": "{{BACKSTAGE_PHASE_1}}", "tag": {"id": "{{TAG_ID}}", "label": "{{TAG_LABEL}}", "colour": "#4F46E5"}}
+        ],
+        [
+          {"text": "{{BACKSTAGE_PHASE_2}}", "tag": {"id": "{{TAG_ID}}", "label": "{{TAG_LABEL}}", "colour": "#4F46E5"}}
+        ],
+        [
+          {"text": "{{BACKSTAGE_PHASE_3}}", "tag": {"id": "{{TAG_ID}}", "label": "{{TAG_LABEL}}", "colour": "#f4a261"}}
+        ],
+        [
+          {"text": "{{BACKSTAGE_PHASE_4}}", "tag": {"id": "{{TAG_ID}}", "label": "{{TAG_LABEL}}", "colour": "#10B981"}}
+        ]
+      ]
+    },
+    {
+      "id": "support",
+      "label": "Support Systems",
+      "cards": [
+        [
+          {"text": "{{SUPPORT_PHASE_1}}", "tag": {"id": "{{TAG_ID}}", "label": "{{TAG_LABEL}}", "colour": "#4F46E5"}}
+        ],
+        [
+          {"text": "{{SUPPORT_PHASE_2}}", "tag": {"id": "{{TAG_ID}}", "label": "{{TAG_LABEL}}", "colour": "#4F46E5"}}
+        ],
+        [
+          {"text": "{{SUPPORT_PHASE_3}}", "tag": {"id": "{{TAG_ID}}", "label": "{{TAG_LABEL}}", "colour": "#f4a261"}}
+        ],
+        [
+          {"text": "{{SUPPORT_PHASE_4}}", "tag": {"id": "{{TAG_ID}}", "label": "{{TAG_LABEL}}", "colour": "#4F46E5"}}
+        ]
+      ]
+    }
+  ]
+}
