@@ -52,4 +52,55 @@ export async function initSchema(): Promise<void> {
       updated_at timestamptz NOT NULL DEFAULT now()
     )
   `);
+
+  /*
+   * The push channel.
+   *
+   * A row says only that something changed for a member — never what, never by
+   * how much. Clients watch for their own id and then re-read their record
+   * through their own token, so no member's data reaches another's browser
+   * even though the table is world-readable.
+   */
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS loyalty_events (
+      id         bigserial PRIMARY KEY,
+      store_code text NOT NULL,
+      member_id  text NOT NULL,
+      kind       text NOT NULL,
+      at         timestamptz NOT NULL DEFAULT now()
+    )
+  `);
+  await pool.query(
+    'CREATE INDEX IF NOT EXISTS loyalty_events_member_idx ON loyalty_events (member_id, id DESC)',
+  );
+
+  // Realtime only publishes tables added to its publication.
+  await pool.query(`
+    DO $$
+    BEGIN
+      IF EXISTS (SELECT 1 FROM pg_publication WHERE pubname = 'supabase_realtime') THEN
+        IF NOT EXISTS (
+          SELECT 1 FROM pg_publication_tables
+          WHERE pubname = 'supabase_realtime' AND tablename = 'loyalty_events'
+        ) THEN
+          ALTER PUBLICATION supabase_realtime ADD TABLE loyalty_events;
+        END IF;
+      END IF;
+    END $$;
+  `);
+
+  // World-readable on purpose: the rows carry no member data, and the browser
+  // subscribes with a publishable key that has no other privilege.
+  await pool.query('ALTER TABLE loyalty_events ENABLE ROW LEVEL SECURITY').catch(() => {});
+  await pool.query(`
+    DO $$
+    BEGIN
+      IF NOT EXISTS (
+        SELECT 1 FROM pg_policies
+        WHERE tablename = 'loyalty_events' AND policyname = 'loyalty_events_readable'
+      ) THEN
+        CREATE POLICY loyalty_events_readable ON loyalty_events FOR SELECT USING (true);
+      END IF;
+    END $$;
+  `).catch(() => {});
 }

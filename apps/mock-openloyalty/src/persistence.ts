@@ -36,6 +36,7 @@ interface StoreSnapshot {
 }
 
 export function serialize(store: Store): StoreSnapshot {
+  // `pendingEvents` is deliberately absent: it is per-request, not state.
   return {
     tierSets: Object.fromEntries(store.tierSets),
     tiers: Object.fromEntries(store.tiers),
@@ -51,6 +52,8 @@ export function serialize(store: Store): StoreSnapshot {
 
 export function hydrate(snapshot: StoreSnapshot): Store {
   return {
+    // Transient: events belong to the request that raised them.
+    pendingEvents: [],
     tierSets: new Map(Object.entries(snapshot.tierSets ?? {})),
     tiers: new Map(Object.entries(snapshot.tiers ?? {})),
     customers: new Map(Object.entries(snapshot.customers ?? {})),
@@ -136,6 +139,14 @@ export async function checkOutStore(code: string): Promise<CheckedOutStore> {
               await client.query(
                 'UPDATE stores SET snapshot = $2, updated_at = now() WHERE code = $1',
                 [code, after],
+              );
+            }
+            // Events commit with the state that caused them. A client cannot be
+            // told to re-read a change that then fails to persist.
+            for (const event of store.pendingEvents) {
+              await client.query(
+                'INSERT INTO loyalty_events (store_code, member_id, kind) VALUES ($1, $2, $3)',
+                [code, event.memberId, event.kind],
               );
             }
             await client.query('COMMIT');

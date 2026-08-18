@@ -18,6 +18,14 @@ function toastContent(toast) {
   switch (toast?.kind) {
     case 'welcome':
       return { icon: PartyPopper, title: 'Welcome to NTUC Club!', body: 'Your welcome bonus has been credited.', confetti: true };
+    case 'tier-up':
+      return {
+        icon: Sparkles,
+        title: `Welcome to ${toast.tierName}!`,
+        body: 'Your membership level just went up',
+        confetti: true,
+      };
+
     case 'earn':
       return {
         icon: Sparkles,

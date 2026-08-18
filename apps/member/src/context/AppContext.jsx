@@ -10,6 +10,7 @@ import {
 } from 'react';
 import { DEFAULT_CONFIG, REWARDS_CATALOG } from '../data/mockData.js';
 import { addMonths, monthKey, roundPoints, uid } from '../lib/helpers.js';
+import { realtimeConfigured, subscribeToMemberEvents } from '../lib/realtime.js';
 import {
   cardNumberFor,
   ensureMember,
@@ -22,6 +23,18 @@ import {
 } from '../lib/loyalty.js';
 
 const STORAGE_KEY = 'ntuc-club-state-v1';
+
+/**
+ * How often to re-read the balance while the app is on screen.
+ *
+ * Short enough that points appear to land while the member is still at the
+ * counter, long enough not to hammer the platform. A push channel would make
+ * this unnecessary — see docs/deployment.md.
+ */
+const LIVE_REFRESH_MS = 4000;
+
+/** Backstop when the push channel is doing the work — a missed event, a dropped socket. */
+const FALLBACK_REFRESH_MS = 30000;
 
 const initialState = {
   user: null,
@@ -171,6 +184,36 @@ function reducer(state, action) {
 
     case 'SET_TIER_PROGRESS':
       return { ...state, tierProgress: action.payload };
+
+    /**
+     * A balance that moved while the member was looking at the app.
+     *
+     * Points are awarded by the loyalty platform when the till publishes a
+     * sale, so the first the member app hears of it is a larger number coming
+     * back from a refresh. Announcing that is the difference between a balance
+     * that quietly changes and one the member sees land.
+     *
+     * Only an increase is celebrated: a redemption already shows its own toast,
+     * and a decrease the member did not cause is not good news.
+     */
+    case 'SYNC_ACCOUNT': {
+      const account = { ...action.payload, loaded: true };
+      const gained = account.points - state.points;
+      const tier = tierSlugForRank(account.levelSortOrder);
+      const promoted = state.user?.tier && tier !== state.user.tier;
+      return {
+        ...state,
+        points: account.points,
+        account,
+        user: state.user ? { ...state.user, tier, tierName: account.levelName } : state.user,
+        toast:
+          promoted && account.levelName
+            ? { kind: 'tier-up', tierName: account.levelName }
+            : gained > 0 && state.account.loaded
+              ? { kind: 'earn', earned: gained, multiplier: 1, reason: null }
+              : state.toast,
+      };
+    }
 
     case 'SET_ENROLMENT':
       return { ...state, enrolment: action.payload };
@@ -364,16 +407,62 @@ export function AppProvider({ children }) {
   const card = state.user?.loyaltyCardNumber;
 
   /** Pull the loyalty record from the BFF; it is the authority on points. */
-  const refreshAccount = useCallback(async () => {
+  const refreshAccount = useCallback(async (announce = false) => {
     if (!card) return;
     const [account, history, progress] = await Promise.all([
       fetchAccount(),
       fetchHistory(),
       fetchTierProgress().catch(() => null),
     ]);
-    dispatch({ type: 'SET_ACCOUNT', payload: { ...account, history } });
+    dispatch({ type: announce ? 'SYNC_ACCOUNT' : 'SET_ACCOUNT', payload: { ...account, history } });
     dispatch({ type: 'SET_TIER_PROGRESS', payload: progress });
   }, [card]);
+
+  /**
+   * Push: the platform tells the app when this member's record changed.
+   *
+   * Preferred over asking, because it lands in about the time it takes the till
+   * to finish the sale rather than on the next tick.
+   */
+  useEffect(() => {
+    const memberId = state.account.customerId;
+    if (!memberId) return undefined;
+    return subscribeToMemberEvents(memberId, () => {
+      refreshAccount(true).catch(() => {});
+    });
+    // Only re-subscribe when the member changes, not on every balance update.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state.account.customerId, refreshAccount]);
+
+  /**
+   * Keep the balance current while the member is actually looking.
+   *
+   * There is no push channel from the loyalty platform, so the app asks. It
+   * asks only while the tab is visible — a backgrounded phone polling all day
+   * is a battery and request cost for nothing — and it asks again the moment
+   * the member comes back, which is when a scan at the till has just happened
+   * and the answer has changed.
+   */
+  useEffect(() => {
+    if (!card) return undefined;
+
+    const tick = () => {
+      if (document.visibilityState === 'visible') {
+        refreshAccount(true).catch(() => {});
+      }
+    };
+
+    // With a push channel this is only a safety net, so it can be lazy. Without
+    // one it is the whole mechanism, so it has to be prompt.
+    const interval = setInterval(tick, realtimeConfigured ? FALLBACK_REFRESH_MS : LIVE_REFRESH_MS);
+    document.addEventListener('visibilitychange', tick);
+    window.addEventListener('focus', tick);
+    return () => {
+      clearInterval(interval);
+      document.removeEventListener('visibilitychange', tick);
+      window.removeEventListener('focus', tick);
+    };
+  }, [card, refreshAccount]);
 
   // Enrol on every load, not just at sign-in: the loyalty platform is in-memory
   // in dev and reseeds on restart while this app's state survives in

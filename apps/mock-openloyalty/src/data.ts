@@ -576,7 +576,24 @@ export function emptyCampaignStats(): CampaignStats {
   return { executions: 0, pointsIssued: 0, executionsByMember: {}, pointsByMember: {} };
 }
 
+/**
+ * Something changed for a member that a client should react to.
+ *
+ * Deliberately carries no figures and no names — only who changed and what
+ * kind of change it was. Clients re-read their own record through their own
+ * token, so nothing about one member ever travels to another.
+ */
+export interface LoyaltyEvent {
+  memberId: string;
+  kind: 'points_changed' | 'tier_changed';
+}
+
 export interface Store {
+  /**
+   * Events raised while handling the current request. Transient: never
+   * serialised into the snapshot, flushed when the request commits.
+   */
+  pendingEvents: LoyaltyEvent[];
   tierSets: Map<string, TierSet>;
   tiers: Map<string, Tier>;
   customers: Map<string, Customer>;
@@ -781,6 +798,7 @@ export function recomputeTier(store: Store, customer: Customer): void {
     if (movedUp) customer.lastPromotionAt = at;
     else customer.lastDowngradeAt = at;
     customer.levelId = current.levelId;
+    store.pendingEvents.push({ memberId: customer.customerId, kind: 'tier_changed' });
   }
 }
 
@@ -971,6 +989,7 @@ function makeTier(
 
 export function seedStore(code: string): Store {
   const store: Store = {
+    pendingEvents: [],
     tierSets: new Map(),
     tiers: new Map(),
     customers: new Map(),
@@ -1372,6 +1391,7 @@ export function addPointsInternal(
   store.transfers.set(transfer.transferId, transfer);
   customer.activePoints += value;
   customer.earnedPoints += value;
+  store.pendingEvents.push({ memberId: customerId, kind: 'points_changed' });
   recomputeTier(store, customer);
   return transfer;
 }
@@ -1401,6 +1421,7 @@ export function spendPointsInternal(
   store.transfers.set(transfer.transferId, transfer);
   customer.activePoints -= value;
   customer.spentPoints += value;
+  store.pendingEvents.push({ memberId: customerId, kind: 'points_changed' });
   return transfer;
 }
 
