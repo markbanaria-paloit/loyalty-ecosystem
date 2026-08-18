@@ -34,6 +34,10 @@ const COPY: Record<string, { title: string; blurb: string }> = {
     title: 'Existing public member',
     blurb: 'Already enrolled on the entry tier, with points and history.',
   },
+  union_in_progress: {
+    title: 'Union member, partway to Tier 2',
+    blurb: 'Enrolled and spending, but not yet past the $1.5K gate. Shows tier progress.',
+  },
 };
 
 function labelValue(

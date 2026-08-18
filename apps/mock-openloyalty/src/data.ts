@@ -1266,6 +1266,51 @@ export function seedStore(code: string): Store {
     });
   }
 
+  // A union member partway to Tier 2. Without this persona the demo has no way
+  // to show tier progress at all: the public member is not eligible for Tier 2,
+  // and Grace already holds it — so neither has a distance to travel.
+  const inProgress: Customer = {
+    ...demo,
+    customerId: randomUUID(),
+    firstName: 'Siti',
+    lastName: 'Rahman',
+    email: 'siti@example.com',
+    phone: '+15550103',
+    loyaltyCardNumber: '1000000003',
+    createdAt: iso(60),
+    labels: [
+      { key: CUSTOMER_TYPE_LABEL, value: UNION_MEMBER },
+      { key: DEMO_PERSONA_LABEL, value: 'union_in_progress' },
+    ],
+    periodStartedAt: iso(60),
+    levelId: tier1.levelId,
+    manualLevelId: null,
+    activePoints: 0,
+    earnedPoints: 0,
+    spentPoints: 0,
+  };
+  store.customers.set(inProgress.customerId, inProgress);
+
+  // Roughly 60% of the way to the $1,500 gate.
+  for (let i = 0; i < 3; i++) {
+    registerTransaction(store, {
+      documentNumber: `SEED-PROGRESS-${i}`,
+      documentType: 'sell',
+      purchasedAt: iso(40 - i * 8),
+      purchasePlace: 'Main Street Store',
+      items: [
+        {
+          sku: 'MD-200',
+          name: 'Homeware bundle',
+          category: 'merch',
+          grossValue: 300,
+          quantity: 1,
+        },
+      ],
+      customerData: { email: inProgress.email },
+    });
+  }
+
   // Grace is the "existing union member" persona, so she has to actually clear
   // the $1,500 spend gate — a persona that fell short would leave the demo with
   // no way to show Tier 2 at all.
