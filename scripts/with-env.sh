@@ -7,4 +7,8 @@
 set -a
 [ -f ./database.env ] && . ./database.env
 set +a
-exec "$@"
+# `env` rather than a bare exec: the scripts this wraps carry inline
+# assignments (`PORT=8181 npm run …`), which a shell only understands as part
+# of a command line it is parsing — exec would look for a program called
+# "PORT=8181".
+exec env "$@"
