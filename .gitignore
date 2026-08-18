@@ -11,3 +11,6 @@ coverage/
 
 # APM dependencies
 apm_modules/
+
+# Vercel project links (per-machine)
+.vercel

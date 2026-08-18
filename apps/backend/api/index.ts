@@ -10,4 +10,8 @@
  * that is rejected. The loyalty platform behind it is a different matter — see
  * docs/deployment.md.
  */
-export { app as default } from '../src/app.js';
+import { finalize } from '../src/app.js';
+
+// No studio router here — it is the only thing that pulls in the Anthropic SDK,
+// and the member app and till do not need it.
+export default finalize();

@@ -13,7 +13,6 @@ import { config } from './config.js';
 import { authRouter } from './routes/auth.js';
 import { loyaltyRouter } from './routes/loyalty.js';
 import { demoRouter } from './routes/demo.js';
-import { studioRouter } from './routes/studio.js';
 
 export const app = express();
 
@@ -35,8 +34,27 @@ app.get('/health', (_req, res) => {
 app.use(authRouter);
 app.use(loyaltyRouter);
 app.use(demoRouter);
-app.use(studioRouter);
 
-app.use((_req, res) => res.status(404).json({ message: 'Not Found' }));
+/**
+ * The campaign studio is mounted by the caller, not here.
+ *
+ * It pulls in the Anthropic SDK, whose package ships both CJS and ESM type
+ * definitions. A serverless build that compiles this entrypoint under CJS
+ * resolution picks the CJS ones, where the default export is not constructable
+ * — so the whole service fails to build over an optional feature. Keeping it
+ * out of the core app means the deployed BFF carries only what the member app
+ * and the till actually need; `index.ts` adds it back for local development.
+ */
+/**
+ * Close the app to further routes.
+ *
+ * Express matches in registration order, so a catch-all 404 has to go on last —
+ * which means it cannot be registered here while an entrypoint may still add
+ * routes of its own. Each entrypoint calls this once it has finished mounting.
+ */
+export function finalize(): typeof app {
+  app.use((_req, res) => res.status(404).json({ message: 'Not Found' }));
+  return app;
+}
 
 export default app;
