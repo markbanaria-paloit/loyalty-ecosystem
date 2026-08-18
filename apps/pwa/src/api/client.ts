@@ -1,4 +1,14 @@
 /** Thin fetch wrapper around the backend BFF. Attaches the stored token. */
+
+/**
+ * Absolute API origin for deployed builds.
+ *
+ * Empty in development, where Vite proxies `/api` to the upstream and the
+ * browser sees a single origin. A static deploy has no proxy, so the origin has
+ * to be baked in at build time — that is what `VITE_API_BASE_URL` is for.
+ * Trailing slashes are trimmed so path concatenation stays predictable.
+ */
+const API_BASE = (import.meta.env.VITE_API_BASE_URL ?? '').replace(/\/$/, '');
 const TOKEN_KEY = 'loyalty.token';
 
 export function getToken(): string | null {
@@ -20,7 +30,7 @@ export class ApiError extends Error {
 
 async function req<T>(path: string, init: RequestInit = {}): Promise<T> {
   const token = getToken();
-  const res = await fetch(path, {
+  const res = await fetch(`${API_BASE}${path}`, {
     ...init,
     headers: {
       'Content-Type': 'application/json',

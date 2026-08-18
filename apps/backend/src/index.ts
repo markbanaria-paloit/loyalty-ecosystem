@@ -11,6 +11,7 @@ import morgan from 'morgan';
 import { config } from './config.js';
 import { authRouter } from './routes/auth.js';
 import { loyaltyRouter } from './routes/loyalty.js';
+import { demoRouter } from './routes/demo.js';
 import { studioRouter } from './routes/studio.js';
 
 const app = express();
@@ -26,6 +27,7 @@ app.get('/health', (_req, res) => {
 
 app.use(authRouter);
 app.use(loyaltyRouter);
+app.use(demoRouter);
 app.use(studioRouter);
 
 app.use((_req, res) => res.status(404).json({ message: 'Not Found' }));

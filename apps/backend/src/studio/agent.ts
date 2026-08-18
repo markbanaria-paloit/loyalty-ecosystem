@@ -150,7 +150,12 @@ export async function runClaudeTurn(history: ChatTurn[]): Promise<StudioReply> {
         tiers.map((t) => ({
           levelId: t.levelId,
           name: t.name,
-          pointsThreshold: t.conditions.find((c) => c.attribute === 'points')?.value ?? 0,
+          // Tier conditions use the spec's attribute vocabulary; the units
+          // ones are what a points threshold means here.
+          pointsThreshold:
+            t.conditions.find((c) =>
+              ['activeUnits', 'totalEarnedUnits', 'cumulatedEarnedUnits'].includes(c.attribute),
+            )?.value ?? 0,
         })),
       );
     },

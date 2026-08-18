@@ -11,6 +11,8 @@ import {
   openLoyalty,
   OpenLoyaltyError,
 } from '../openloyalty/client.js';
+import { olAdmin } from '../studio/olAdmin.js';
+import { ladder, toAccount } from './account.js';
 
 export const loyaltyRouter = Router();
 
@@ -57,18 +59,99 @@ loyaltyRouter.use('/api/rewards', requireToken);
 loyaltyRouter.get('/api/me', async (req: TokenRequest, res) => {
   try {
     const status = await openLoyalty.status(req.memberToken!, req.memberId!);
+    res.json(toAccount(status, await ladder()));
+  } catch (err) {
+    handleError(err, res);
+  }
+});
+
+/**
+ * Where the member stands against the next tier.
+ *
+ * Proxied from the platform rather than computed here: qualification rules live
+ * in the loyalty engine, and a BFF that worked out "how far to the next tier"
+ * itself would be re-deriving rules it does not own — and would drift the
+ * moment a threshold changed in the console.
+ */
+loyaltyRouter.get('/api/me/tier-progress', async (req: TokenRequest, res) => {
+  try {
+    const sets = await openLoyalty.memberTierSets(req.memberToken!, req.memberId!);
+    const tierSetId = sets.items[0]?.tierSetId;
+    if (!tierSetId) {
+      res.json({ progress: null });
+      return;
+    }
+    const progress = await openLoyalty.tierProgress(
+      req.memberToken!,
+      req.memberId!,
+      tierSetId,
+    );
+    res.json({ progress });
+  } catch (err) {
+    handleError(err, res);
+  }
+});
+
+/**
+ * The programme's tier ladder, as the loyalty platform holds it.
+ *
+ * The member app renders tiers from this rather than from a table of its own:
+ * the names, the order and how many there are are all programme configuration,
+ * and an app that hardcoded them would disagree with the console the moment a
+ * tier was added or renamed.
+ *
+ * Unauthenticated on purpose — it is programme configuration, not member data,
+ * and the sign-in screen needs it before a member exists.
+ */
+loyaltyRouter.get('/api/tiers', async (_req, res) => {
+  try {
+    const tiers = await olAdmin.tiers();
     res.json({
-      customerId: status.customerId,
-      firstName: status.firstName,
-      lastName: status.lastName,
-      points: status.activePoints,
-      totalEarnedPoints: status.earnedPoints,
-      usedPoints: status.spentPoints,
-      levelName: status.levelName,
-      nextLevelName: status.nextLevelName,
-      nextLevelConditionValue: status.nextLevelConditionValue,
-      pointsToNextLevel: status.pointsToNextLevel,
+      tiers: tiers.map((t, index) => ({
+        levelId: t.levelId,
+        name: t.name,
+        /** 1-based rank; the app keys its presentation off this, not the name. */
+        rank: index + 1,
+        /** Entered only by assignment (member type), never by spending. */
+        assignmentOnly: t.assignmentOnly ?? false,
+        conditions: t.conditions,
+      })),
     });
+  } catch (err) {
+    handleError(err, res);
+  }
+});
+
+/**
+ * Spend points against the member's own balance.
+ *
+ * The member app issues its own vouchers from a local catalogue, but the points
+ * they cost have to leave the real account — otherwise the balance the BFF
+ * reports drifts from what the member has actually spent. Debiting is an admin
+ * operation upstream, so it is performed here on the authenticated member's
+ * behalf and never trusted from the client beyond the amount.
+ */
+loyaltyRouter.post('/api/me/points/spend', async (req: TokenRequest, res) => {
+  const points = Number(req.body?.points);
+  const comment = typeof req.body?.comment === 'string' ? req.body.comment : 'Reward redemption';
+  if (!Number.isFinite(points) || points <= 0) {
+    res.status(400).json({ message: 'points must be a positive number' });
+    return;
+  }
+  try {
+    // Re-read the balance server-side: the client's view may be stale, and a
+    // redemption must never take the account negative.
+    const status = await openLoyalty.status(req.memberToken!, req.memberId!);
+    if (status.activePoints < points) {
+      res.status(409).json({
+        message: 'Insufficient points',
+        points: status.activePoints,
+      });
+      return;
+    }
+    await olAdmin.spendPoints(req.memberId!, points, comment);
+    const after = await openLoyalty.status(req.memberToken!, req.memberId!);
+    res.json({ points: after.activePoints });
   } catch (err) {
     handleError(err, res);
   }

@@ -7,7 +7,7 @@
  */
 import { config } from '../config.js';
 
-const { baseUrl, storeCode, adminUsername, adminPassword } = config.openLoyalty;
+const { baseUrl, storeCode, adminUsername, adminPassword, apiKey } = config.openLoyalty;
 
 export class OpenLoyaltyAdminError extends Error {
   constructor(
@@ -35,19 +35,31 @@ async function login(): Promise<string> {
   return body.token;
 }
 
-async function request<T>(path: string, init: RequestInit = {}, retry = true): Promise<T> {
+/**
+ * Admin credentials for one request.
+ *
+ * A configured API key wins and needs no login round trip; otherwise we hold a
+ * JWT from `login_check` and re-authenticate when it expires.
+ */
+async function authHeaders(): Promise<Record<string, string>> {
+  if (apiKey) return { 'X-AUTH-TOKEN': apiKey };
   const token = cachedToken ?? (await login());
+  return { Authorization: `Bearer ${token}` };
+}
+
+async function request<T>(path: string, init: RequestInit = {}, retry = true): Promise<T> {
   const res = await fetch(`${baseUrl}${path}`, {
     ...init,
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
+      ...(await authHeaders()),
       ...init.headers,
     },
   });
 
-  if (res.status === 401 && retry) {
+  // A static API key cannot be refreshed, so only the JWT path retries.
+  if (res.status === 401 && retry && !apiKey) {
     cachedToken = null;
     return request<T>(path, init, false);
   }
@@ -62,9 +74,26 @@ async function request<T>(path: string, init: RequestInit = {}, retry = true): P
 
 const s = () => `/api/${storeCode}`;
 
+/** A member as the admin members-list reports them. */
+export interface AdminMember {
+  customerId: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  levelId: string;
+  levelName: string | null;
+  levelManuallyAssigned?: boolean;
+  labels?: Array<{ key: string; value: string }>;
+  activePoints: number;
+  earnedPoints: number;
+  createdAt: string;
+}
+
 export interface Tier {
   levelId: string;
   name: string;
+  /** Tiers ordered by rank; entered only by assignment when true. */
+  assignmentOnly?: boolean;
   conditions: Array<{ attribute: string; value: number }>;
 }
 
@@ -77,9 +106,9 @@ export interface Campaign {
     categories: string[];
     tierIds: string[];
     minTransactionValue: number;
-    startsAt: string | null;
-    endsAt: string | null;
   };
+  /** Campaign window, per the spec's campaign-level `activity` object. */
+  activity: { startsAt: string | null; endsAt: string | null };
   effect: { type: 'multiplier' | 'bonus_points'; value: number };
   createdAt: string;
 }
@@ -122,6 +151,15 @@ interface ListEnvelope<T> {
 
 export const olAdmin = {
   storeCode,
+
+  /**
+   * Members carrying a given label, used to find the platform's seeded demo
+   * personas without this service holding their ids.
+   */
+  async membersWithLabel(key: string): Promise<AdminMember[]> {
+    const { items } = await request<{ items: AdminMember[] }>(`${s()}/member`);
+    return items.filter((m) => (m.labels ?? []).some((l) => l.key === key));
+  },
 
   async tiers(): Promise<Tier[]> {
     const { items } = await request<ListEnvelope<Tier>>(`${s()}/tier`);
@@ -175,9 +213,38 @@ export const olAdmin = {
     });
   },
 
+  /**
+   * Pause or resume a campaign.
+   *
+   * A partial update, which is how the spec models it — the `activate` /
+   * `deactivate` routes some deployments expose are not in the OpenAPI document,
+   * so calling them would work against the mock and 404 against a real
+   * instance.
+   */
   setStatus(campaignId: string, active: boolean): Promise<Campaign> {
-    return request(`${s()}/campaign/${campaignId}/${active ? 'activate' : 'deactivate'}`, {
+    return request(`${s()}/campaign/${campaignId}`, {
+      method: 'PATCH',
+      body: JSON.stringify({ campaign: { active } }),
+    });
+  },
+
+  /**
+   * Credit a member's account. Granting points is an admin operation in
+   * OpenLoyalty — a member cannot award points to themselves — so the enrolment
+   * bonus has to be issued server-side with admin credentials.
+   */
+  addPoints(customerId: string, points: number, comment: string): Promise<unknown> {
+    return request(`${s()}/points/add`, {
       method: 'POST',
+      body: JSON.stringify({ transfer: { customer: customerId, points, comment } }),
+    });
+  },
+
+  /** Debit a member's account. Admin-only for the same reason as addPoints. */
+  spendPoints(customerId: string, points: number, comment: string): Promise<unknown> {
+    return request(`${s()}/points/spend`, {
+      method: 'POST',
+      body: JSON.stringify({ transfer: { customer: customerId, points, comment } }),
     });
   },
 };

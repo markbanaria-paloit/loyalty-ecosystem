@@ -5,6 +5,16 @@
  * the member list — it attaches `customerData` to the sale and OpenLoyalty
  * matches the member server-side, then applies earning rules.
  */
+
+/**
+ * Absolute API origin for deployed builds.
+ *
+ * Empty in development, where Vite proxies `/api` to the upstream and the
+ * browser sees a single origin. A static deploy has no proxy, so the origin has
+ * to be baked in at build time — that is what `VITE_API_BASE_URL` is for.
+ * Trailing slashes are trimmed so path concatenation stays predictable.
+ */
+const API_BASE = (import.meta.env.VITE_API_BASE_URL ?? '').replace(/\/$/, '');
 const TOKEN_KEY = 'pos.token';
 export const STORE_CODE = import.meta.env.VITE_STORE_CODE ?? 'default';
 export const PURCHASE_PLACE = import.meta.env.VITE_PURCHASE_PLACE ?? 'Main Street Store';
@@ -33,7 +43,7 @@ export interface ListResponse<T> {
 
 async function req<T>(path: string, init: RequestInit = {}): Promise<T> {
   const token = getToken();
-  const res = await fetch(path, {
+  const res = await fetch(`${API_BASE}${path}`, {
     ...init,
     headers: {
       'Content-Type': 'application/json',

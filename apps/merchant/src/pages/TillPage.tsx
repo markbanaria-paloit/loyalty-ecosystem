@@ -1,96 +1,105 @@
-import { useMemo, useState, type FormEvent } from 'react';
-import { api, type CartLine } from '../api/client';
+import { useEffect, useRef, useState, type FormEvent } from 'react';
+import QrScanner from 'qr-scanner';
+import { api } from '../api/client';
+import { CameraScanner } from '../components/CameraScanner';
 
-/** A small catalogue so the till is usable without typing SKUs by hand. */
-const CATALOGUE: Array<Omit<CartLine, 'quantity'>> = [
-  { sku: 'CF-001', name: 'Flat White', category: 'coffee', unitPrice: 4.5 },
-  { sku: 'CF-002', name: 'Bag of Beans 250g', category: 'coffee', unitPrice: 14 },
-  { sku: 'FD-010', name: 'Almond Croissant', category: 'food', unitPrice: 5.25 },
-  { sku: 'FD-011', name: 'Chicken Sandwich', category: 'food', unitPrice: 9.8 },
-  { sku: 'EL-100', name: 'Wireless Earbuds', category: 'electronics', unitPrice: 89 },
-  { sku: 'MD-200', name: 'Ceramic Mug', category: 'merch', unitPrice: 12 },
-];
+/**
+ * Member QR payloads are prefixed so a scanner can tell a membership apart from
+ * a coupon code. We accept the bare card number too — a cashier keying the
+ * number off the card face must land on the same identifier.
+ */
+const MEMBER_QR_PREFIX = /^NTUCCLUB:MEMBER:/i;
 
-/** Mirrors the mock's earning rule so the till can preview points. */
-const MULTIPLIERS: Record<string, number> = { electronics: 2, coffee: 3 };
+export function parseMemberQr(raw: string): string {
+  return raw.trim().replace(MEMBER_QR_PREFIX, '').trim();
+}
+
+/**
+ * A tenant rings up a total, not a basket — the till carries no product
+ * catalogue. `general` keeps the sale outside the category campaigns so the
+ * amount earns at the store's base rate.
+ */
+const SALE_CATEGORY = 'general';
 
 interface Receipt {
-  transactionId: string;
   documentNumber: string;
   matched: boolean;
   pointsEarned: number;
   total: number;
+  card: string;
 }
 
 export function TillPage() {
-  const [lines, setLines] = useState<CartLine[]>([]);
-  const [email, setEmail] = useState('');
+  const [amount, setAmount] = useState('');
   const [card, setCard] = useState('');
   const [documentType, setDocumentType] = useState<'sell' | 'return'>('sell');
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [receipt, setReceipt] = useState<Receipt | null>(null);
-  const [check, setCheck] = useState<string | null>(null);
+  const [check, setCheck] = useState<{ ok: boolean; text: string } | null>(null);
+  const [scanning, setScanning] = useState(false);
+  // Undetermined until asked; the scan button stays hidden on a device without
+  // a camera rather than opening an overlay that can only fail.
+  const [hasCamera, setHasCamera] = useState<boolean | null>(null);
+  const scanRef = useRef<HTMLInputElement>(null);
 
-  const total = useMemo(
-    () => lines.reduce((acc, l) => acc + l.unitPrice * l.quantity, 0),
-    [lines],
-  );
+  useEffect(() => {
+    QrScanner.hasCamera().then(setHasCamera).catch(() => setHasCamera(false));
+  }, []);
 
-  /** Client-side preview only — OpenLoyalty is the authority on points. */
-  const previewPoints = useMemo(() => {
-    if (documentType === 'return') return 0;
-    return Math.floor(
-      lines.reduce(
-        (acc, l) =>
-          acc + l.unitPrice * l.quantity * (MULTIPLIERS[l.category] ?? 1),
-        0,
-      ),
-    );
-  }, [lines, documentType]);
+  const parsed = Number.parseFloat(amount);
+  const amountValid = Number.isFinite(parsed) && parsed > 0;
+  const total = amountValid ? parsed : 0;
 
-  function addLine(item: Omit<CartLine, 'quantity'>) {
-    setLines((cur) => {
-      const found = cur.find((l) => l.sku === item.sku);
-      if (found) {
-        return cur.map((l) =>
-          l.sku === item.sku ? { ...l, quantity: l.quantity + 1 } : l,
-        );
-      }
-      return [...cur, { ...item, quantity: 1 }];
-    });
+  /** Preview only — OpenLoyalty is the authority on points. */
+  const previewPoints = documentType === 'return' ? 0 : Math.floor(total);
+
+  /**
+   * Handheld scanners emulate a keyboard and finish with Enter, so the scan
+   * field commits on Enter rather than on every keystroke. Pasting the payload
+   * behaves identically.
+   */
+  function acceptScan(raw: string) {
+    const parsedCard = parseMemberQr(raw);
+    if (!parsedCard) return;
+    setCard(parsedCard);
+    setCheck(null);
+    if (scanRef.current) scanRef.current.value = '';
   }
 
-  function setQuantity(sku: string, quantity: number) {
-    setLines((cur) =>
-      quantity <= 0
-        ? cur.filter((l) => l.sku !== sku)
-        : cur.map((l) => (l.sku === sku ? { ...l, quantity } : l)),
-    );
+  function acceptCameraScan(text: string) {
+    acceptScan(text);
+    setScanning(false);
+  }
+
+  function clearMember() {
+    setCard('');
+    setCheck(null);
+    if (scanRef.current) scanRef.current.value = '';
   }
 
   async function verifyMember() {
     setCheck(null);
-    if (!email && !card) {
-      setCheck('Enter an email or loyalty card first.');
+    if (!card) {
+      setCheck({ ok: false, text: 'Scan a member QR first.' });
       return;
     }
     try {
-      const res = await api.checkMember(email, card);
+      const res = await api.checkMember('', card);
       setCheck(
         res.total > 0
-          ? '✓ Member found — points will be awarded.'
-          : '✗ No member matched. The sale will be recorded unmatched.',
+          ? { ok: true, text: '✓ Member found — points will be awarded.' }
+          : { ok: false, text: '✗ No member matched. The sale will be recorded unmatched.' },
       );
     } catch (e) {
-      setCheck(e instanceof Error ? e.message : 'Lookup failed');
+      setCheck({ ok: false, text: e instanceof Error ? e.message : 'Lookup failed' });
     }
   }
 
   async function submit(e: FormEvent) {
     e.preventDefault();
-    if (lines.length === 0) {
-      setError('Add at least one item.');
+    if (!amountValid) {
+      setError('Enter an amount greater than zero.');
       return;
     }
     setBusy(true);
@@ -102,21 +111,26 @@ export function TillPage() {
       const res = await api.postTransaction({
         documentNumber,
         documentType,
-        lines,
-        email: email || undefined,
+        lines: [
+          {
+            sku: 'SALE',
+            name: 'Qualifying spend',
+            category: SALE_CATEGORY,
+            unitPrice: Number(total.toFixed(2)),
+            quantity: 1,
+          },
+        ],
         loyaltyCardNumber: card || undefined,
       });
       setReceipt({
-        transactionId: res.transactionId,
         documentNumber,
         matched: res.matched,
         pointsEarned: res.pointsEarned,
         total,
+        card,
       });
-      setLines([]);
-      setEmail('');
-      setCard('');
-      setCheck(null);
+      setAmount('');
+      clearMember();
     } catch (e2) {
       setError(e2 instanceof Error ? e2.message : 'Could not publish transaction');
     } finally {
@@ -125,140 +139,145 @@ export function TillPage() {
   }
 
   return (
-    <div className="till">
-      <section className="catalogue">
-        <h2>Catalogue</h2>
-        <div className="product-grid">
-          {CATALOGUE.map((p) => (
-            <button key={p.sku} className="product" onClick={() => addLine(p)}>
-              <strong>{p.name}</strong>
-              <span className="muted xs">
-                {p.sku} · {p.category}
-                {MULTIPLIERS[p.category] ? ` · ${MULTIPLIERS[p.category]}×` : ''}
-              </span>
-              <span className="price">${p.unitPrice.toFixed(2)}</span>
-            </button>
-          ))}
-        </div>
-      </section>
-
-      <form className="cart" onSubmit={submit}>
-        <h2>Sale</h2>
-
-        {lines.length === 0 && <p className="muted sm">Tap a product to start.</p>}
-        <ul className="cart-lines">
-          {lines.map((l) => (
-            <li key={l.sku}>
-              <div className="cart-line-info">
-                <strong>{l.name}</strong>
-                <span className="muted xs">${l.unitPrice.toFixed(2)} each</span>
-              </div>
-              <div className="qty">
-                <button
-                  type="button"
-                  onClick={() => setQuantity(l.sku, l.quantity - 1)}
-                >
-                  −
-                </button>
-                <span>{l.quantity}</span>
-                <button
-                  type="button"
-                  onClick={() => setQuantity(l.sku, l.quantity + 1)}
-                >
-                  +
-                </button>
-              </div>
-              <span className="line-total">
-                ${(l.unitPrice * l.quantity).toFixed(2)}
-              </span>
-            </li>
-          ))}
-        </ul>
-
-        <div className="totals">
-          <div>
-            <span>Total</span>
-            <strong>${total.toFixed(2)}</strong>
-          </div>
-          <div className="muted sm">
-            <span>Points preview</span>
-            <strong>{previewPoints}</strong>
-          </div>
-        </div>
-
-        <fieldset className="member-block">
-          <legend>Member (optional)</legend>
-          <label>
-            Email
-            <input
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="demo@example.com"
-            />
-          </label>
-          <label>
-            Loyalty card
-            <input
-              value={card}
-              onChange={(e) => setCard(e.target.value)}
-              placeholder="1000000001"
-            />
-          </label>
-          <button type="button" className="btn sm" onClick={verifyMember}>
-            Check member
-          </button>
-          {check && <p className="check-result sm">{check}</p>}
-        </fieldset>
-
-        <div className="segmented">
-          <button
-            type="button"
-            className={documentType === 'sell' ? 'active' : ''}
-            onClick={() => setDocumentType('sell')}
-          >
-            Sale
-          </button>
-          <button
-            type="button"
-            className={documentType === 'return' ? 'active' : ''}
-            onClick={() => setDocumentType('return')}
-          >
-            Return
-          </button>
-        </div>
-
-        {error && <div className="error">{error}</div>}
-
-        <button className="btn primary lg" disabled={busy || lines.length === 0}>
-          {busy ? 'Publishing…' : `Publish ${documentType}`}
+    <form className="till-card" onSubmit={submit}>
+      {scanning && (
+        <CameraScanner onScan={acceptCameraScan} onClose={() => setScanning(false)} />
+      )}
+      <div className="segmented">
+        <button
+          type="button"
+          className={documentType === 'sell' ? 'active' : ''}
+          onClick={() => setDocumentType('sell')}
+        >
+          Sale
         </button>
+        <button
+          type="button"
+          className={documentType === 'return' ? 'active' : ''}
+          onClick={() => setDocumentType('return')}
+        >
+          Return
+        </button>
+      </div>
 
-        {receipt && (
-          <div className="receipt">
-            <h3>Published</h3>
-            <p className="mono xs">{receipt.documentNumber}</p>
-            <div className="receipt-row">
-              <span>Total</span>
-              <strong>${receipt.total.toFixed(2)}</strong>
+      <label className="amount-field">
+        <span>Transaction amount</span>
+        <div className="amount-input">
+          <span className="currency">$</span>
+          <input
+            type="number"
+            min="0"
+            step="0.01"
+            inputMode="decimal"
+            autoFocus
+            value={amount}
+            onChange={(e) => setAmount(e.target.value)}
+            placeholder="0.00"
+          />
+        </div>
+      </label>
+
+      <div className="scan-field">
+        <span className="field-label">Member QR</span>
+        {card ? (
+          <div className="scanned">
+            <div>
+              <p className="xs muted">Loyalty ID</p>
+              <p className="mono scanned-id">{card}</p>
             </div>
-            <div className="receipt-row">
-              <span>Member</span>
-              <strong className={receipt.matched ? 'ok' : 'warn'}>
-                {receipt.matched ? 'Matched' : 'Unmatched'}
-              </strong>
-            </div>
-            <div className="receipt-row big">
-              <span>Points earned</span>
-              <strong>{receipt.pointsEarned}</strong>
-            </div>
-            {!receipt.matched && (
-              <p className="muted xs">
-                No member was attached. Assign it later from the Sales tab.
-              </p>
+            <button type="button" className="btn sm ghost" onClick={clearMember}>
+              Clear
+            </button>
+          </div>
+        ) : (
+          <div className="scan-entry">
+            <input
+              ref={scanRef}
+              className="mono scan-input"
+              placeholder="Scan or type loyalty ID…"
+              autoComplete="off"
+              onKeyDown={(e) => {
+                if (e.key !== 'Enter') return;
+                // The scan field lives inside the sale form — don't publish.
+                e.preventDefault();
+                acceptScan(e.currentTarget.value);
+              }}
+              onPaste={(e) => {
+                e.preventDefault();
+                acceptScan(e.clipboardData.getData('text'));
+              }}
+            />
+            {hasCamera && (
+              <button
+                type="button"
+                className="btn scan-camera-btn"
+                onClick={() => setScanning(true)}
+              >
+                Scan
+              </button>
             )}
           </div>
         )}
-      </form>
-    </div>
+        {card && (
+          <button type="button" className="btn sm" onClick={verifyMember}>
+            Check member
+          </button>
+        )}
+        {check && (
+          <p className={`check-result sm ${check.ok ? 'ok' : 'warn'}`}>
+            {check.text}
+          </p>
+        )}
+        {!card && (
+          <p className="muted xs">
+            Scan the member's card, or key the ID and press Enter. Optional — an
+            unscanned sale is recorded unmatched.
+          </p>
+        )}
+      </div>
+
+      <div className="preview">
+        <div>
+          <span>Total</span>
+          <strong>${total.toFixed(2)}</strong>
+        </div>
+        <div className="muted sm">
+          <span>Points preview</span>
+          <strong>{previewPoints}</strong>
+        </div>
+      </div>
+
+      {error && <div className="error">{error}</div>}
+
+      <button className="btn primary lg" disabled={busy || !amountValid}>
+        {busy ? 'Publishing…' : documentType === 'sell' ? 'Publish sale' : 'Publish return'}
+      </button>
+
+      {receipt && (
+        <div className="receipt">
+          <h3>Published</h3>
+          <p className="mono xs">{receipt.documentNumber}</p>
+          <div className="receipt-row">
+            <span>Total</span>
+            <strong>${receipt.total.toFixed(2)}</strong>
+          </div>
+          <div className="receipt-row">
+            <span>Member</span>
+            <strong className={receipt.matched ? 'ok' : 'warn'}>
+              {receipt.matched ? receipt.card : 'Unmatched'}
+            </strong>
+          </div>
+          <div className="receipt-row big">
+            <span>Points earned</span>
+            <strong>{receipt.pointsEarned}</strong>
+          </div>
+          {!receipt.matched && (
+            <p className="muted xs">
+              No member was attached. Assign it later from the Sales tab.
+            </p>
+          )}
+        </div>
+      )}
+    </form>
   );
 }

@@ -56,14 +56,14 @@ export function TransactionsPage() {
           <tbody>
             {rows.map((t) => (
               <tr key={t.transactionId}>
-                <td>
+                <td data-label="Document">
                   <strong className="mono sm">{t.documentNumber}</strong>
                   <p className="muted xs">
                     {t.documentType} · {t.items.length} item
                     {t.items.length === 1 ? '' : 's'}
                   </p>
                 </td>
-                <td>
+                <td data-label="Member">
                   {t.matched ? (
                     t.customerName
                   ) : (
@@ -73,14 +73,16 @@ export function TransactionsPage() {
                     <p className="muted xs">tried {t.customerData.email}</p>
                   )}
                 </td>
-                <td className="muted sm">
+                <td className="muted sm" data-label="When">
                   {new Date(t.purchasedAt).toLocaleString()}
                 </td>
-                <td className="num strong">${t.grossValue.toFixed(2)}</td>
-                <td className="num strong ok">
+                <td className="num strong" data-label="Total">
+                  ${t.grossValue.toFixed(2)}
+                </td>
+                <td className="num strong ok" data-label="Points">
                   {t.pointsEarned > 0 ? `+${t.pointsEarned}` : '—'}
                 </td>
-                <td className="num">
+                <td className="num actions-cell">
                   {!t.matched &&
                     (assigning === t.documentNumber ? (
                       <div className="assign-row">

@@ -21,6 +21,10 @@ import {
   serializeCustomerStatus,
   serializeReward,
   spendPointsInternal,
+  MEMBER_REGISTERED_EVENT,
+  recomputeTier,
+  runInternalEventCampaigns,
+  type MemberLabel,
   tierThreshold,
   type Customer,
 } from '../data.js';
@@ -57,6 +61,20 @@ memberRouter.post('/api/:storeCode/member/register', (req, res) => {
     [...store.tiers.values()].find((t) => t.isDefault) ??
     [...store.tiers.values()].sort((a, b) => tierThreshold(a) - tierThreshold(b))[0];
 
+  // Labels tag the member with who they are (`customerType: union_member`,
+  // say). Campaigns filter on them, which is how a member type that no metric
+  // can express still drives tier and reward.
+  const labels: MemberLabel[] = Array.isArray(body.labels)
+    ? body.labels
+        .filter(
+          (l: unknown): l is MemberLabel =>
+            Boolean(l) &&
+            typeof (l as MemberLabel).key === 'string' &&
+            typeof (l as MemberLabel).value === 'string',
+        )
+        .map((l: MemberLabel) => ({ key: l.key, value: l.value }))
+    : [];
+
   const customer: Customer = {
     customerId: randomUUID(),
     firstName: firstName ?? '',
@@ -72,7 +90,13 @@ memberRouter.post('/api/:storeCode/member/register', (req, res) => {
     agreement3: body.agreement3 === true,
     active: true,
     createdAt: body.registeredAt ?? new Date().toISOString(),
+    labels,
+    // Enrolment opens the member's first qualification period.
+    periodStartedAt: body.registeredAt ?? new Date().toISOString(),
+    lastPromotionAt: null,
+    lastDowngradeAt: null,
     levelId: defaultTier?.levelId ?? '',
+    manualLevelId: null,
     activePoints: 0,
     earnedPoints: 0,
     spentPoints: 0,
@@ -82,8 +106,23 @@ memberRouter.post('/api/:storeCode/member/register', (req, res) => {
   };
   store.customers.set(customer.customerId, customer);
 
-  // Spec returns 200 with customerId + email.
-  res.json({ customerId: customer.customerId, email: customer.email });
+  // Enrolment raises an internal event. Campaigns listening for it run in
+  // display order and settle the member completely: a campaign may put them on
+  // a tier and award points, and a later tier-scoped campaign sees the tier the
+  // earlier one assigned. The member is fully minted and tiered by the time
+  // this handler returns — nothing is left for the client to resolve.
+  const payouts = runInternalEventCampaigns(store, customer, MEMBER_REGISTERED_EVENT);
+  recomputeTier(store, customer);
+
+  // Spec returns 200 with customerId + email; the campaign payouts are an
+  // addition, so the member app can acknowledge the welcome points.
+  res.json({
+    customerId: customer.customerId,
+    email: customer.email,
+    campaignPayouts: payouts,
+    // The settled loyalty record, so a caller never has to poll for it.
+    status: serializeCustomerStatus(store, customer),
+  });
 });
 
 /** Everything below needs a token. */

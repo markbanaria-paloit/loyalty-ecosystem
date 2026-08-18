@@ -41,12 +41,52 @@ export interface CustomerStatus {
   spentPoints: number;
   expiredPoints: number;
   lockedPoints: number;
+  levelId?: string;
   levelName: string | null;
+  /** Rank of the tier within its set; 1 is the entry tier. */
+  levelSortOrder?: number | null;
+  /** True when the tier was assigned rather than earned on conditions. */
+  levelManuallyAssigned?: boolean;
+  labels?: Array<{ key: string; value: string }>;
   levelConditionValue: number;
   nextLevelName: string | null;
   nextLevelConditionValue: number | null;
   pointsToNextLevel: number | null;
   currency: string;
+  /** Points due to expire within the next month; drives the member's warning. */
+  pointsExpiringNextMonth?: number;
+}
+
+/** Matches the spec's `TierSetMemberProgress`. */
+export interface TierProgress {
+  currentTierId: string | null;
+  currentTierName: string | null;
+  nextTierId: string | null;
+  nextTierName: string | null;
+  tierSetId: string;
+  tierSetName: string;
+  currentProgress: number;
+  periodStartedAt?: string;
+  nextRecalculationAt: string | null;
+  manually: boolean;
+  downgrade: string;
+  nextTierCurrentProgress: Array<{
+    conditionId: string;
+    attribute: string;
+    currentValue: number;
+    valueGoal: number;
+  }>;
+  /** Non-spec: why an otherwise-reachable tier is still out of reach. */
+  nextTierEligible?: boolean;
+  nextTierMissingLabels?: Array<{ key: string; value: string }>;
+}
+
+/** What an enrolment campaign did for a member as they joined. */
+export interface CampaignPayout {
+  campaignId: string;
+  name: string;
+  points: number;
+  assignedTier: { levelId: string; name: string } | null;
 }
 
 /** Subset of the spec's Transfer schema. */
@@ -129,7 +169,25 @@ export const openLoyalty = {
     email: string;
     password: string;
     phone?: string;
-  }): Promise<{ customerId: string; email: string }> {
+    /**
+     * The identifier the member's QR encodes. A till scans it and OpenLoyalty
+     * matches the sale on this value, so it has to be set at registration —
+     * a member registered without one can never be matched at the counter.
+     */
+    loyaltyCardNumber?: string;
+    /**
+     * Tags describing who the member is (`customerType: union_member`, say).
+     * Enrolment campaigns filter on these, so they decide both the welcome
+     * award and the tier the member starts on — which is why they must be sent
+     * with the registration itself rather than patched on afterwards.
+     */
+    labels?: Array<{ key: string; value: string }>;
+  }): Promise<{
+    customerId: string;
+    email: string;
+    campaignPayouts?: CampaignPayout[];
+    status?: CustomerStatus;
+  }> {
     return request(`/api/${storeCode}/member/register`, {
       method: 'POST',
       body: JSON.stringify({
@@ -139,6 +197,8 @@ export const openLoyalty = {
           email: input.email,
           phone: input.phone,
           plainPassword: input.password,
+          loyaltyCardNumber: input.loyaltyCardNumber,
+          labels: input.labels ?? [],
           agreement1: true,
         },
       }),
@@ -150,6 +210,16 @@ export const openLoyalty = {
       `/api/${storeCode}/member/${memberId}/status`,
       { token },
     );
+  },
+
+  /** Tier sets this member belongs to. */
+  memberTierSets(token: string, memberId: string): Promise<ListResponse<{ tierSetId: string }>> {
+    return request(`/api/${storeCode}/member/${memberId}/tierSet`, { token });
+  },
+
+  /** Where the member stands against the next tier, condition by condition. */
+  tierProgress(token: string, memberId: string, tierSetId: string): Promise<TierProgress> {
+    return request(`/api/${storeCode}/member/${memberId}/tierSet/${tierSetId}`, { token });
   },
 
   /** Logged member's points transfers. */

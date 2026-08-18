@@ -1,15 +1,22 @@
+/*
+ * Themed to match the NTUC Club member app, so the QR a member presents and the
+ * till that scans it read as one product rather than two demos bolted together.
+ * Palette and type mirror that app's design tokens.
+ */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700&display=swap');
+
 :root {
-  --bg: #f7f9f8;
+  --bg: #f6f5f4;
   --surface: #ffffff;
-  --ink: #0b1f1a;
-  --muted: #6b7f79;
-  --line: #dfe8e5;
-  --brand: #065f46;
-  --brand-soft: #d1fae5;
-  --accent: #059669;
+  --ink: #18181b;
+  --muted: #8a8a8f;
+  --line: #ececee;
+  --brand: #d4231a;
+  --brand-soft: #fde3e0;
+  --accent: #16a34a;
   --warn: #b45309;
   --neg: #dc2626;
-  --radius: 12px;
+  --radius: 20px;
 }
 
 * {
@@ -24,8 +31,7 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--ink);
-  font-family:
-    system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 h2 {
@@ -74,8 +80,8 @@ p {
 }
 .toast {
   background: var(--brand-soft);
-  border: 1px solid #a7f3d0;
-  color: #065f46;
+  border: 1px solid #fbc9c3;
+  color: #8f1712;
   padding: 10px 13px;
   border-radius: var(--radius);
   font-size: 0.88rem;
@@ -91,8 +97,8 @@ p {
   display: flex;
   align-items: center;
   gap: 20px;
-  background: var(--brand);
-  color: #ecfdf5;
+  background: linear-gradient(135deg, #d4231a 0%, #ee3224 55%, #b01a13 100%);
+  color: #fff;
   padding: 12px 20px;
 }
 .brand {
@@ -101,15 +107,18 @@ p {
   gap: 10px;
 }
 .brand-mark {
-  font-size: 1.3rem;
-  color: #6ee7b7;
+  height: 26px;
+  width: auto;
+  background: #fff;
+  border-radius: 7px;
+  padding: 3px 6px;
 }
 .brand strong {
   display: block;
   font-size: 0.95rem;
 }
 .brand .muted {
-  color: #a7f3d0;
+  color: rgba(255, 255, 255, 0.72);
 }
 .tabs {
   display: flex;
@@ -118,8 +127,8 @@ p {
 }
 .tab {
   padding: 8px 16px;
-  border-radius: 8px;
-  color: #a7f3d0;
+  border-radius: 999px;
+  color: rgba(255, 255, 255, 0.8);
   text-decoration: none;
   font-size: 0.9rem;
   font-weight: 600;
@@ -128,7 +137,7 @@ p {
   background: rgba(255, 255, 255, 0.1);
 }
 .tab.active {
-  background: #ecfdf5;
+  background: #fff;
   color: var(--brand);
 }
 .pos-main {
@@ -137,16 +146,112 @@ p {
 }
 
 /* Till layout */
-.till {
-  display: grid;
-  grid-template-columns: 1fr 400px;
-  gap: 20px;
-  align-items: start;
+.till-card {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  width: 100%;
+  max-width: 460px;
+  margin: 8px auto 0;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 26px;
+  padding: 22px;
+  box-shadow: 0 12px 32px rgba(24, 24, 27, 0.06);
 }
-@media (max-width: 940px) {
-  .till {
-    grid-template-columns: 1fr;
-  }
+
+/* The amount is the point of the screen — give it the weight to match. */
+.amount-field > span,
+.field-label {
+  display: block;
+  font-size: 0.76rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+.amount-input {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: #fafafa;
+  padding: 6px 16px;
+}
+.amount-input:focus-within {
+  border-color: var(--brand);
+  background: #fff;
+  box-shadow: 0 0 0 4px var(--brand-soft);
+}
+.amount-input .currency {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--muted);
+}
+.amount-input input {
+  border: none;
+  background: transparent;
+  padding: 8px 0;
+  font-size: 2.4rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+.amount-input input:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.scan-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border: 1px dashed var(--line);
+  border-radius: 18px;
+  padding: 14px 16px;
+}
+.scan-input {
+  border-radius: 12px;
+}
+.scanned {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  background: var(--brand-soft);
+  border-radius: 12px;
+  padding: 10px 14px;
+}
+.scanned .btn.ghost {
+  color: var(--brand);
+  font-weight: 700;
+}
+.scanned .btn.ghost:hover {
+  background: rgba(212, 35, 26, 0.1);
+}
+.scanned-id {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--brand);
+  letter-spacing: 0.02em;
+}
+
+.preview {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  border-top: 2px solid var(--ink);
+  padding-top: 12px;
+}
+.preview > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+.preview > div:first-child strong {
+  font-size: 1.6rem;
+  font-weight: 800;
 }
 .catalogue,
 .cart {
@@ -182,7 +287,7 @@ p {
 }
 .product:hover {
   border-color: var(--accent);
-  background: #f0fdf9;
+  background: #fffaf9;
 }
 .price {
   margin-top: 6px;
@@ -275,6 +380,23 @@ p {
   margin: 0;
   color: var(--brand);
 }
+.check-result.ok {
+  color: var(--accent);
+}
+.check-result.warn {
+  color: var(--warn);
+}
+
+/* Custom-amount entry: the figure is the point of the screen, so size it up. */
+.custom-amount {
+  margin-top: 16px;
+}
+.custom-amount input {
+  font-size: 2rem;
+  font-weight: 700;
+  padding: 14px 16px;
+  letter-spacing: -0.01em;
+}
 
 /* Forms */
 label {
@@ -307,6 +429,7 @@ input:focus {
 
 /* Buttons */
 .btn {
+  white-space: nowrap;
   border: 1px solid var(--line);
   background: #fff;
   color: var(--ink);
@@ -317,19 +440,21 @@ input:focus {
   cursor: pointer;
 }
 .btn:hover {
-  background: #f0fdf9;
+  background: #fffaf9;
 }
 .btn.primary {
-  background: var(--accent);
-  border-color: var(--accent);
+  background: var(--brand);
+  border-color: var(--brand);
   color: #fff;
 }
 .btn.primary:hover {
-  background: #047857;
+  background: #b01a13;
 }
 .btn.lg {
-  padding: 14px;
+  padding: 15px;
   font-size: 1rem;
+  border-radius: 16px;
+  font-weight: 700;
 }
 .btn.sm {
   padding: 7px 11px;
@@ -338,7 +463,7 @@ input:focus {
 .btn.ghost {
   border-color: transparent;
   background: transparent;
-  color: #a7f3d0;
+  color: rgba(255, 255, 255, 0.85);
 }
 .btn.ghost:hover {
   background: rgba(255, 255, 255, 0.1);
@@ -366,16 +491,16 @@ input:focus {
 }
 .segmented button.active {
   background: #fff;
-  color: var(--ink);
+  color: var(--brand);
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
 }
 
 /* Receipt */
 .receipt {
-  border: 2px dashed var(--accent);
+  border: 2px dashed var(--brand);
   border-radius: var(--radius);
   padding: 14px;
-  background: #f0fdf9;
+  background: #fffaf9;
   display: flex;
   flex-direction: column;
   gap: 6px;
@@ -390,7 +515,7 @@ input:focus {
 }
 .receipt-row.big {
   font-size: 1.1rem;
-  border-top: 1px solid #a7f3d0;
+  border-top: 1px solid #fbc9c3;
   padding-top: 8px;
   margin-top: 4px;
 }
@@ -517,12 +642,12 @@ tbody tr:last-child td {
   display: grid;
   place-items: center;
   min-height: 100%;
-  background: var(--brand);
+  background: linear-gradient(160deg, #d4231a 0%, #ee3224 50%, #8f1712 100%);
   padding: 24px;
 }
 .login-card {
   background: var(--surface);
-  border-radius: 16px;
+  border-radius: 24px;
   padding: 28px;
   width: 100%;
   max-width: 340px;
@@ -536,4 +661,208 @@ tbody tr:last-child td {
 }
 .center-brand .brand-mark {
   color: var(--accent);
+}
+
+/* Camera scanner */
+.scan-entry {
+  display: flex;
+  gap: 8px;
+}
+.scan-entry .scan-input {
+  flex: 1;
+  min-width: 0;
+}
+.scan-camera-btn {
+  flex: 0 0 auto;
+  font-weight: 700;
+  color: var(--brand);
+  border-color: var(--brand-soft);
+  background: var(--brand-soft);
+}
+.scan-camera-btn:hover {
+  background: #fbc9c3;
+}
+
+.scanner-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  background: #101013;
+  color: #fff;
+}
+.scanner-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  /* Clears the notch when the till is saved to a phone's home screen. */
+  padding-top: max(14px, env(safe-area-inset-top));
+}
+.scanner-stage {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+.scanner-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.scanner-status {
+  position: absolute;
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 0.95rem;
+}
+.scanner-error {
+  position: absolute;
+  inset: auto 20px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: var(--surface);
+  color: var(--ink);
+  border-radius: 18px;
+  padding: 18px;
+  text-align: center;
+}
+.scanner-hint {
+  padding: 16px;
+  padding-bottom: max(16px, env(safe-area-inset-bottom));
+  text-align: center;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* ---------------------------------------------------------------------------
+ * Mobile till
+ *
+ * A tenant runs this on a phone, not a terminal — the sale card is already
+ * phone-shaped, but the shell and the sales table assume desktop width. Below
+ * 640px the table stops being a table and becomes a list of cards, so no
+ * horizontal scrolling is needed to read a sale.
+ * ------------------------------------------------------------------------ */
+@media (max-width: 640px) {
+  .topbar {
+    flex-wrap: wrap;
+    gap: 10px 14px;
+    padding: 10px 14px;
+  }
+  .brand strong {
+    font-size: 0.9rem;
+  }
+  /* Sign out sits beside the brand; the tabs take the full second row. */
+  .topbar > .btn.ghost {
+    margin-left: auto;
+    padding: 6px 10px;
+  }
+  .tabs {
+    order: 3;
+    width: 100%;
+    margin-left: 0;
+    gap: 6px;
+  }
+  .tab {
+    flex: 1;
+    text-align: center;
+    padding: 8px 10px;
+    font-size: 0.85rem;
+  }
+
+  .pos-main {
+    padding: 14px 12px 28px;
+  }
+  .till-card {
+    padding: 18px 16px;
+    border-radius: 22px;
+    margin-top: 0;
+  }
+  .amount-input input {
+    /* Keep at/above 16px: iOS Safari zooms the page on smaller focused inputs. */
+    font-size: 2rem;
+  }
+
+  .single-col,
+  .single-col.wide {
+    padding: 0;
+  }
+  .lookup-form {
+    flex-wrap: wrap;
+  }
+  .code-input {
+    flex: 1 1 100%;
+  }
+
+  /* Table → cards. The header row is dropped and each cell carries its own
+   * label from `data-label`, so a row reads top-to-bottom on a narrow screen. */
+  .table-wrap {
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    overflow-x: visible;
+  }
+  .table-wrap thead {
+    display: none;
+  }
+  .table-wrap table,
+  .table-wrap tbody,
+  .table-wrap tr,
+  .table-wrap td {
+    display: block;
+    width: 100%;
+  }
+  .table-wrap tr {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 4px 14px;
+    margin-bottom: 10px;
+  }
+  .table-wrap tbody td {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--line);
+    text-align: left;
+  }
+  .table-wrap tbody tr td:last-child,
+  .table-wrap tbody tr td:only-child {
+    border-bottom: 0;
+  }
+  .table-wrap td[data-label]::before {
+    content: attr(data-label);
+    flex: 0 0 auto;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+  }
+  /* The document cell leads the card, so it reads as a heading. */
+  .table-wrap td[data-label='Document'] {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+  }
+  .table-wrap td.num {
+    text-align: right;
+  }
+  /* An empty actions cell would otherwise leave a stray divider. */
+  .table-wrap td.actions-cell:empty {
+    display: none;
+  }
+  .table-wrap td.center-cell {
+    justify-content: center;
+  }
+  .assign-row {
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
 }

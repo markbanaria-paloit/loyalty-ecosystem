@@ -2,6 +2,16 @@
  * Campaign studio client. Talks to the backend, which owns both the Anthropic
  * key and the OpenLoyalty admin session.
  */
+
+/**
+ * Absolute API origin for deployed builds.
+ *
+ * Empty in development, where Vite proxies `/api` to the upstream and the
+ * browser sees a single origin. A static deploy has no proxy, so the origin has
+ * to be baked in at build time — that is what `VITE_API_BASE_URL` is for.
+ * Trailing slashes are trimmed so path concatenation stays predictable.
+ */
+const API_BASE = (import.meta.env.VITE_API_BASE_URL ?? '').replace(/\/$/, '');
 export class ApiError extends Error {
   constructor(
     public status: number,
@@ -12,7 +22,7 @@ export class ApiError extends Error {
 }
 
 async function req<T>(path: string, init: RequestInit = {}): Promise<T> {
-  const res = await fetch(path, {
+  const res = await fetch(`${API_BASE}${path}`, {
     ...init,
     headers: { 'Content-Type': 'application/json', ...init.headers },
   });
@@ -72,9 +82,9 @@ export interface Campaign extends CampaignDraft {
     categories: string[];
     tierIds: string[];
     minTransactionValue: number;
-    startsAt: string | null;
-    endsAt: string | null;
   };
+  /** Campaign window, per the spec's campaign-level `activity` object. */
+  activity: { startsAt: string | null; endsAt: string | null };
 }
 
 export interface StudioReply {

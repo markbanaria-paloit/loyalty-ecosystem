@@ -7,6 +7,10 @@ import { DashboardPage } from './pages/DashboardPage';
 import { MembersPage } from './pages/MembersPage';
 import { RewardsPage } from './pages/RewardsPage';
 import { ActivityPage } from './pages/ActivityPage';
+import { TiersPage } from './pages/TiersPage';
+import { TierSetWizard } from './pages/TierSetWizard';
+import { CampaignsPage } from './pages/CampaignsPage';
+import { CampaignWizard } from './pages/CampaignWizard';
 
 export function App() {
   const [authed, setAuthed] = useState(() => Boolean(getToken()));
@@ -26,6 +30,12 @@ export function App() {
           <Route path="/" element={<DashboardPage />} />
           <Route path="/members" element={<MembersPage />} />
           <Route path="/rewards" element={<RewardsPage />} />
+          <Route path="/tiers" element={<TiersPage />} />
+          <Route path="/tiers/new" element={<TierSetWizard />} />
+          <Route path="/tiers/:tierSetId/edit" element={<TierSetWizard />} />
+          <Route path="/campaigns" element={<CampaignsPage />} />
+          <Route path="/campaigns/new" element={<CampaignWizard />} />
+          <Route path="/campaigns/:campaignId/edit" element={<CampaignWizard />} />
           <Route path="/activity" element={<ActivityPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

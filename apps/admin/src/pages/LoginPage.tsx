@@ -26,7 +26,7 @@ export function LoginPage({ onSuccess }: { onSuccess: () => void }) {
       <form className="login-card" onSubmit={submit}>
         <div className="logo center-logo">
           <span className="logo-mark">◆</span>
-          <strong>Loyalty Cockpit</strong>
+          <strong>Campaign Admin</strong>
         </div>
         <p className="muted sm">Sign in with your OpenLoyalty admin account.</p>
         <label>

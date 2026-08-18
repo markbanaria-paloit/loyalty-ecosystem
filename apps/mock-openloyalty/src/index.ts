@@ -19,6 +19,7 @@ import { memberRouter } from './routes/member.js';
 import { adminRouter } from './routes/admin.js';
 import { transactionRouter } from './routes/transaction.js';
 import { campaignRouter } from './routes/campaign.js';
+import { tierRouter } from './routes/tier.js';
 
 const PORT = Number(process.env.PORT ?? 8181);
 const app = express();
@@ -60,8 +61,10 @@ app.use(authRouter);
 app.use(memberRouter);
 app.use(transactionRouter);
 // campaignRouter before adminRouter: `/campaign/simulate` is a literal path
-// that `/campaign/:campaign` would otherwise swallow.
+// that `/campaign/:campaign` would otherwise swallow. tierRouter likewise owns
+// `/tier/recalculate`.
 app.use(campaignRouter);
+app.use(tierRouter);
 app.use(adminRouter);
 
 app.use((_req, res) => {

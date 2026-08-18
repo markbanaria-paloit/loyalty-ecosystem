@@ -13,6 +13,8 @@ import {
   openLoyalty,
   OpenLoyaltyError,
 } from '../openloyalty/client.js';
+import { ladder, toAccount } from './account.js';
+import { olAdmin } from '../studio/olAdmin.js';
 
 export const authRouter = Router();
 
@@ -47,6 +49,9 @@ authRouter.post('/api/auth/login', async (req, res) => {
         lastName: status.lastName,
         email: parsed.data.email,
       },
+      // Same shape `/api/me` returns, so a client that signs in has the record
+      // in hand without a follow-up call.
+      account: toAccount(status, await ladder()),
     });
   } catch (err) {
     const status = err instanceof OpenLoyaltyError ? err.status : 502;
@@ -62,6 +67,15 @@ const registerSchema = z.object({
   email: z.string().email(),
   password: z.string().min(6),
   phone: z.string().optional(),
+  loyaltyCardNumber: z.string().min(1).optional(),
+  /**
+   * Member type and other tags, passed straight through in the spec's `Labels`
+   * shape. Enrolment campaigns filter on them upstream, which is what decides
+   * the welcome award and the starting tier.
+   */
+  labels: z
+    .array(z.object({ key: z.string().min(1), value: z.string().min(1) }))
+    .optional(),
 });
 
 authRouter.post('/api/auth/register', async (req, res) => {
@@ -73,12 +87,25 @@ authRouter.post('/api/auth/register', async (req, res) => {
     return;
   }
   try {
+    // Enrolment is settled entirely by the loyalty platform: registering raises
+    // its `CustomerRegistered` event, and the campaigns listening for it assign
+    // the tier and mint the welcome points before this call returns. The BFF
+    // grants nothing itself — a welcome award is programme configuration, and
+    // crediting it here would double it and put the amount out of the
+    // programme's reach.
     const created = await openLoyalty.register(parsed.data);
+
     // Immediately log the new member in for a smooth onboarding flow.
     const tokens = await openLoyalty.memberLogin(
       parsed.data.email,
       parsed.data.password,
     );
+
+    // Read the record back through the member's own token rather than trusting
+    // the registration response, so what the client renders is the same view it
+    // will get on every later refresh.
+    const status = await openLoyalty.status(tokens.token, created.customerId);
+
     res.status(201).json({
       token: tokens.token,
       refreshToken: tokens.refresh_token,
@@ -87,6 +114,18 @@ authRouter.post('/api/auth/register', async (req, res) => {
         email: created.email,
         firstName: parsed.data.firstName,
         lastName: parsed.data.lastName,
+      },
+      // The settled loyalty record. The client can render the dashboard
+      // straight from this — no second round trip, no window where the balance
+      // reads zero.
+      account: toAccount(status, await ladder()),
+      /** What enrolment actually did, for the welcome screen to show. */
+      enrolment: {
+        payouts: created.campaignPayouts ?? [],
+        welcomePoints: (created.campaignPayouts ?? []).reduce(
+          (sum, p) => sum + p.points,
+          0,
+        ),
       },
     });
   } catch (err) {

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { NavLink, Navigate, Route, Routes } from 'react-router-dom';
 import { getToken, setToken, PURCHASE_PLACE } from './api/client';
+import ntucLogo from './assets/ntuc-club-logo.png';
 import { LoginPage } from './pages/LoginPage';
 import { TillPage } from './pages/TillPage';
 import { CouponPage } from './pages/CouponPage';
@@ -21,9 +22,9 @@ export function App() {
     <div className="pos">
       <header className="topbar">
         <div className="brand">
-          <span className="brand-mark">▤</span>
+          <img className="brand-mark" src={ntucLogo} alt="NTUC Club" />
           <div>
-            <strong>Loyalty POS</strong>
+            <strong>Merchant Till</strong>
             <p className="muted xs">{PURCHASE_PLACE}</p>
           </div>
         </div>

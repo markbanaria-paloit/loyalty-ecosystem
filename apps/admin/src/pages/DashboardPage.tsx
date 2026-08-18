@@ -1,5 +1,18 @@
 import { useEffect, useState } from 'react';
-import { api, type Redemption, type Stats } from '../api/client';
+import { Link } from 'react-router-dom';
+import {
+  api,
+  CONDITION_LABELS,
+  type CampaignTrigger,
+  type Redemption,
+  type Stats,
+} from '../api/client';
+
+const TRIGGER_LABELS: Record<CampaignTrigger, string> = {
+  transaction: 'Purchase',
+  internal_event: 'Enrolment',
+  time: 'Scheduled',
+};
 
 export function DashboardPage() {
   const [stats, setStats] = useState<Stats | null>(null);
@@ -37,11 +50,27 @@ export function DashboardPage() {
           sub="program liability"
           accent
         />
+        <Kpi
+          label="Live campaigns"
+          value={stats.activeCampaigns}
+          sub={`${stats.campaignPointsIssued.toLocaleString()} pts awarded`}
+        />
       </div>
 
       <div className="two-col">
         <section className="card">
-          <h2>Members by tier</h2>
+          <div className="page-head">
+            <h2>Members by tier</h2>
+            <Link className="btn sm" to="/tiers">
+              Configure
+            </Link>
+          </div>
+          {stats.tierSet && (
+            <p className="muted xs">
+              {stats.tierSet.name} · qualified on{' '}
+              {stats.tierSet.conditions.map((c) => CONDITION_LABELS[c.attribute]).join(', ')}
+            </p>
+          )}
           <div className="bars">
             {stats.membersByTier.map((t) => (
               <div key={t.levelId} className="bar-row">
@@ -59,6 +88,35 @@ export function DashboardPage() {
               </div>
             ))}
           </div>
+        </section>
+
+        <section className="card">
+          <div className="page-head">
+            <h2>Campaign performance</h2>
+            <Link className="btn sm" to="/campaigns">
+              Configure
+            </Link>
+          </div>
+          {stats.campaignPerformance.length === 0 && (
+            <p className="muted sm">No campaigns configured yet.</p>
+          )}
+          <ul className="plain-list">
+            {stats.campaignPerformance.map((c) => (
+              <li key={c.campaignId}>
+                <div>
+                  <strong>{c.name}</strong>
+                  <p className="muted xs">
+                    {TRIGGER_LABELS[c.trigger]} · {c.executions} run
+                    {c.executions === 1 ? '' : 's'}
+                  </p>
+                </div>
+                <div className="num">
+                  <strong>{c.pointsIssued.toLocaleString()}</strong>
+                  <p className="muted xs">{c.active ? 'live' : 'paused'}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
         </section>
 
         <section className="card">

@@ -22,8 +22,10 @@ import {
   addPointsInternal,
   getStore,
   listEnvelope,
+  defaultTierSet,
   serializeCustomer,
   serializeReward,
+  serializeTier,
   sortedTiers,
   spendPointsInternal,
   tierThreshold,
@@ -163,7 +165,7 @@ adminRouter.get('/api/:storeCode/points', requireAdmin, (req: AuthedRequest, res
 
 adminRouter.get('/api/:storeCode/tier', requireAdmin, (req: AuthedRequest, res) => {
   const store = getStore(req.params.storeCode);
-  res.json(listEnvelope(sortedTiers(store)));
+  res.json(listEnvelope(sortedTiers(store).map((t) => serializeTier(store, t))));
 });
 
 /* ------------------------------ Rewards ---------------------------- */
@@ -288,12 +290,17 @@ adminRouter.get(
     const sum = (type: 'adding' | 'spending') =>
       transfers.filter((t) => t.type === type).reduce((acc, t) => acc + t.value, 0);
 
-    const membersByTier = sortedTiers(store).map((tier) => ({
+    const tierSet = defaultTierSet(store);
+    const membersByTier = sortedTiers(store, tierSet?.tierSetId).map((tier) => ({
       levelId: tier.levelId,
       name: tier.name,
       threshold: tierThreshold(tier),
+      active: tier.active,
+      conditions: tier.conditions,
       count: customers.filter((c) => c.levelId === tier.levelId).length,
     }));
+
+    const campaigns = [...store.campaigns.values()];
 
     res.json({
       totalMembers: customers.length,
@@ -304,7 +311,22 @@ adminRouter.get(
       outstandingPoints: customers.reduce((acc, c) => acc + c.activePoints, 0),
       totalRedemptions: store.issuedRewards.size,
       activeRewards: [...store.rewards.values()].filter((r) => r.active).length,
+      activeCampaigns: campaigns.filter((c) => c.active).length,
+      campaignPointsIssued: campaigns.reduce((acc, c) => acc + c.stats.pointsIssued, 0),
+      tierSet: tierSet
+        ? { tierSetId: tierSet.tierSetId, name: tierSet.name, conditions: tierSet.conditions }
+        : null,
       membersByTier,
+      campaignPerformance: campaigns
+        .map((c) => ({
+          campaignId: c.campaignId,
+          name: c.name,
+          trigger: c.trigger,
+          active: c.active,
+          executions: c.stats.executions,
+          pointsIssued: c.stats.pointsIssued,
+        }))
+        .sort((a, b) => b.pointsIssued - a.pointsIssued),
     });
   },
 );
