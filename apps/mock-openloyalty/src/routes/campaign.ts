@@ -18,7 +18,6 @@ import { randomUUID } from 'node:crypto';
 import {
   campaignRules,
   emptyCampaignStats,
-  getStore,
   readCampaignRules,
   listEnvelope,
   simulateCampaign,
@@ -256,7 +255,7 @@ campaignRouter.get(
   '/api/:storeCode/campaign',
   requireAdmin,
   (req: AuthedRequest, res) => {
-    const store = getStore(req.params.storeCode);
+    const store = req.store;
     res.json(listEnvelope([...store.campaigns.values()].map(serialize)));
   },
 );
@@ -266,7 +265,7 @@ campaignRouter.post(
   '/api/:storeCode/campaign/simulate',
   requireAdmin,
   (req: AuthedRequest, res) => {
-    const store = getStore(req.params.storeCode);
+    const store = req.store;
     const built = buildDraft(req.body?.campaign ?? req.body ?? {});
     if ('error' in built) {
       res.status(400).json({ code: 400, message: built.error });
@@ -283,7 +282,7 @@ campaignRouter.post(
   '/api/:storeCode/campaign',
   requireAdmin,
   (req: AuthedRequest, res) => {
-    const store = getStore(req.params.storeCode);
+    const store = req.store;
     const built = buildDraft(req.body?.campaign ?? req.body ?? {});
     if ('error' in built) {
       res.status(400).json({ code: 400, message: built.error });
@@ -298,7 +297,7 @@ campaignRouter.get(
   '/api/:storeCode/campaign/:campaign',
   requireAdmin,
   (req: AuthedRequest, res) => {
-    const store = getStore(req.params.storeCode);
+    const store = req.store;
     const campaign = store.campaigns.get(req.params.campaign);
     if (!campaign) {
       res.status(404).json({ code: 404, message: 'Campaign not found' });
@@ -312,7 +311,7 @@ campaignRouter.put(
   '/api/:storeCode/campaign/:campaign',
   requireAdmin,
   (req: AuthedRequest, res) => {
-    const store = getStore(req.params.storeCode);
+    const store = req.store;
     const campaign = store.campaigns.get(req.params.campaign);
     if (!campaign) {
       res.status(404).json({ code: 404, message: 'Campaign not found' });
@@ -360,7 +359,7 @@ campaignRouter.patch(
   '/api/:storeCode/campaign/:campaign',
   requireAdmin,
   (req: AuthedRequest, res) => {
-    const store = getStore(req.params.storeCode);
+    const store = req.store;
     const campaign = store.campaigns.get(req.params.campaign);
     if (!campaign) {
       res.status(404).json({ code: 404, message: 'Campaign not found' });
@@ -382,7 +381,7 @@ for (const action of ['activate', 'deactivate'] as const) {
     `/api/:storeCode/campaign/:campaign/${action}`,
     requireAdmin,
     (req: AuthedRequest, res) => {
-      const store = getStore(req.params.storeCode);
+      const store = req.store;
       const campaign = store.campaigns.get(req.params.campaign);
       if (!campaign) {
         res.status(404).json({ code: 404, message: 'Campaign not found' });
@@ -398,7 +397,7 @@ campaignRouter.delete(
   '/api/:storeCode/campaign/:campaign',
   requireAdmin,
   (req: AuthedRequest, res) => {
-    const store = getStore(req.params.storeCode);
+    const store = req.store;
     if (!store.campaigns.delete(req.params.campaign)) {
       res.status(404).json({ code: 404, message: 'Campaign not found' });
       return;

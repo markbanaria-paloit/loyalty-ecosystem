@@ -16,7 +16,6 @@ import { Router } from 'express';
 import { randomUUID } from 'node:crypto';
 import {
   findCustomerByEmail,
-  getStore,
   listEnvelope,
   serializeCustomerStatus,
   serializeReward,
@@ -37,7 +36,7 @@ export const memberRouter = Router();
  * `plainPassword` + `agreement1`; we accept a flat body too for convenience.
  */
 memberRouter.post('/api/:storeCode/member/register', (req, res) => {
-  const store = getStore(req.params.storeCode);
+  const store = req.store;
   const body = req.body?.customer ?? req.body ?? {};
   const { firstName, lastName, email } = body;
   const plainPassword = body.plainPassword ?? body.password;
@@ -130,7 +129,7 @@ memberRouter.use('/api/:storeCode/member', requireAuth);
 memberRouter.use('/api/:storeCode/reward/:reward/buy', requireAuth);
 
 function currentCustomer(req: AuthedRequest) {
-  const store = getStore(req.params.storeCode);
+  const store = req.store;
   return { store, customer: store.customers.get(req.auth!.id) };
 }
 
@@ -186,7 +185,7 @@ memberRouter.get(
 memberRouter.get(
   '/api/:storeCode/member/:member/status',
   (req: AuthedRequest, res) => {
-    const store = getStore(req.params.storeCode);
+    const store = req.store;
     const isAdmin = req.auth!.roles.includes('ROLE_ADMIN');
     if (!isAdmin && req.params.member !== req.auth!.id) {
       res.status(403).json({ code: 403, message: 'Access denied' });
@@ -205,7 +204,7 @@ memberRouter.get(
 memberRouter.post(
   '/api/:storeCode/reward/:reward/buy',
   (req: AuthedRequest, res) => {
-    const store = getStore(req.params.storeCode);
+    const store = req.store;
     const customer = store.customers.get(req.auth!.id);
     const reward = store.rewards.get(req.params.reward);
     if (!customer || !reward) {

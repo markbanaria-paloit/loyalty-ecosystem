@@ -18,12 +18,14 @@ import morgan from 'morgan';
 import { fileURLToPath } from 'node:url';
 import { readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
-import { DEFAULT_STORE, getStore } from './data.js';
+
 import { authRouter } from './routes/auth.js';
 import { memberRouter } from './routes/member.js';
 import { adminRouter } from './routes/admin.js';
 import { transactionRouter } from './routes/transaction.js';
 import { campaignRouter } from './routes/campaign.js';
+import { storeContext } from './store-context.js';
+import { isPersistent } from './db.js';
 import { tierRouter } from './routes/tier.js';
 
 export const app = express();
@@ -33,15 +35,24 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan('dev'));
 
-// Seed the default store on boot so the demo member exists immediately.
-getStore(DEFAULT_STORE);
+// No seeding on boot. The store is seeded on first use, inside the same locked
+// transaction that reads it, so two instances starting together cannot both
+// create it.
 
 // System endpoints (mirroring OpenLoyalty).
 app.get('/api/', (_req, res) => {
   res.json({ name: 'mock-openloyalty', version: '0.1.0' });
 });
 app.get('/api/healthcheck', (_req, res) => {
-  res.json({ status: 'ok', services: { database: 'ok', search: 'ok' } });
+  // `storage` is not part of the OpenLoyalty shape — it is here because "which
+  // instance is talking to what" is otherwise invisible, and a service silently
+  // running in memory looks identical to one that is persisting until state
+  // goes missing.
+  res.json({
+    status: 'ok',
+    services: { database: isPersistent ? 'ok' : 'memory', search: 'ok' },
+    storage: isPersistent ? 'postgres' : 'memory',
+  });
 });
 
 // Serve the real OpenLoyalty OpenAPI document this mock is modeled on.
@@ -57,6 +68,11 @@ app.get('/openapi.json', (_req, res) => {
     res.status(404).json({ message: 'spec/openloyalty-openapi.json not found' });
   }
 });
+
+// Check the store out before any store-scoped route runs, and write it back
+// when the response finishes. Mounted on the param so it never fires for
+// `/api/admin/...` or `/api/healthcheck`.
+app.use('/api/:storeCode', storeContext);
 
 // Order matters: `/member/check` and `/transaction/assign` are literal paths
 // that would otherwise be swallowed by the `/member/:member` and

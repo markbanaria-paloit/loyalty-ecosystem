@@ -123,9 +123,9 @@ safe to retry.
 or must we re-read the member to learn what the sale earned? (b) is the point
 award synchronous with this call?
 
-### 2.3 Fetching the customer — the call we care most about
+### 2.3 Fetching the customer
 
-This is the read behind every screen in the member app.
+Responsible for data in the member dashboard
 
 ```
 GET /api/{storeCode}/member/{member}/status
@@ -164,10 +164,6 @@ GET /api/{storeCode}/member/{member}/status
 | `pointsExpiringNextMonth` | Expiry warning | |
 | **`levelId`** | We need the **id**, not just the name, to match against the tier list | ← please confirm |
 | **`labels`** | To know the member's type without a second call | ← please confirm |
-
-Two we would like but can live without, deriving them ourselves from the tier
-list if absent: a **rank/sort order** for the tier, and a flag for whether the
-tier was **manually assigned**.
 
 ### 2.4 Points history
 
@@ -267,10 +263,6 @@ Everything our services call, and nothing else. All are in your OpenAPI document
 
 ---
 
-## 4. Tier configuration we need in the tenant
-
-This is where we most need your guidance, because we believe **one requirement
-cannot be expressed with tier conditions alone.**
 
 ### The programme
 
@@ -367,17 +359,3 @@ which your document describes as "lifetime benefits associated with tier", using
 **Question 5a:** is that the intended use of that field?
 **Question 5b:** does Open Loyalty track *consumption* of such an entitlement —
 "2 per month", "4 per year" — or should we hold that ledger on our side?
-
----
-
-## 6. What we would like back
-
-1. Confirmation of the auth scheme and credentials for our tenant.
-2. Confirmation of the `CustomerStatus` fields in section 2.3 — particularly
-   `levelId` and `labels`.
-3. Whether enrolment campaigns and transaction point awards are synchronous with
-   the calls that trigger them.
-4. **Your recommendation for section 4** — how to admit union members to a tier
-   on member type while keeping progress reporting for the spend route.
-5. Confirmation of, or correction to, the tier set and campaign configuration
-   above, so we can supply it as a configuration request rather than guess.

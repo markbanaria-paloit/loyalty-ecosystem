@@ -20,7 +20,6 @@ import { Router } from 'express';
 import { randomUUID } from 'node:crypto';
 import {
   addPointsInternal,
-  getStore,
   listEnvelope,
   defaultTierSet,
   serializeCustomer,
@@ -32,13 +31,14 @@ import {
   type Reward,
 } from '../data.js';
 import { requireAdmin, type AuthedRequest } from '../auth.js';
+import { resetStore } from '../persistence.js';
 
 export const adminRouter = Router();
 
 /* ----------------------------- Members ----------------------------- */
 
 adminRouter.get('/api/:storeCode/member', requireAdmin, (req: AuthedRequest, res) => {
-  const store = getStore(req.params.storeCode);
+  const store = req.store;
   const items = [...store.customers.values()]
     .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
     .map((c) => serializeCustomer(store, c));
@@ -49,7 +49,7 @@ adminRouter.get(
   '/api/:storeCode/member/:member',
   requireAdmin,
   (req: AuthedRequest, res) => {
-    const store = getStore(req.params.storeCode);
+    const store = req.store;
     const customer = store.customers.get(req.params.member);
     if (!customer) {
       res.status(404).json({ code: 404, message: 'Member not found' });
@@ -64,7 +64,7 @@ for (const action of ['activate', 'deactivate'] as const) {
     `/api/:storeCode/member/:member/${action}`,
     requireAdmin,
     (req: AuthedRequest, res) => {
-      const store = getStore(req.params.storeCode);
+      const store = req.store;
       const customer = store.customers.get(req.params.member);
       if (!customer) {
         res.status(404).json({ code: 404, message: 'Member not found' });
@@ -92,7 +92,7 @@ adminRouter.post(
   '/api/:storeCode/points/add',
   requireAdmin,
   (req: AuthedRequest, res) => {
-    const store = getStore(req.params.storeCode);
+    const store = req.store;
     const { customer, points, comment } = readTransferBody(req.body);
     if (!customer || !store.customers.has(customer)) {
       res.status(404).json({ code: 404, message: 'Member not found' });
@@ -117,7 +117,7 @@ adminRouter.post(
   '/api/:storeCode/points/spend',
   requireAdmin,
   (req: AuthedRequest, res) => {
-    const store = getStore(req.params.storeCode);
+    const store = req.store;
     const { customer, points, comment } = readTransferBody(req.body);
     const member = customer ? store.customers.get(customer) : undefined;
     if (!member) {
@@ -145,7 +145,7 @@ adminRouter.post(
 
 /** All transfers in the store, newest first, enriched with member names. */
 adminRouter.get('/api/:storeCode/points', requireAdmin, (req: AuthedRequest, res) => {
-  const store = getStore(req.params.storeCode);
+  const store = req.store;
   const items = [...store.transfers.values()]
     .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
     .map((t) => {
@@ -164,20 +164,20 @@ adminRouter.get('/api/:storeCode/points', requireAdmin, (req: AuthedRequest, res
 /* ------------------------------- Tiers ----------------------------- */
 
 adminRouter.get('/api/:storeCode/tier', requireAdmin, (req: AuthedRequest, res) => {
-  const store = getStore(req.params.storeCode);
+  const store = req.store;
   res.json(listEnvelope(sortedTiers(store).map((t) => serializeTier(store, t))));
 });
 
 /* ------------------------------ Rewards ---------------------------- */
 
 adminRouter.get('/api/:storeCode/reward', requireAdmin, (req: AuthedRequest, res) => {
-  const store = getStore(req.params.storeCode);
+  const store = req.store;
   const items = [...store.rewards.values()].map((r) => serializeReward(r));
   res.json(listEnvelope(items));
 });
 
 adminRouter.post('/api/:storeCode/reward', requireAdmin, (req: AuthedRequest, res) => {
-  const store = getStore(req.params.storeCode);
+  const store = req.store;
   const { name, shortDescription, costInPoints, levels, usageLimit } =
     req.body ?? {};
   const cost = Number(costInPoints);
@@ -211,7 +211,7 @@ adminRouter.put(
   '/api/:storeCode/reward/:reward',
   requireAdmin,
   (req: AuthedRequest, res) => {
-    const store = getStore(req.params.storeCode);
+    const store = req.store;
     const reward = store.rewards.get(req.params.reward);
     if (!reward) {
       res.status(404).json({ code: 404, message: 'Reward not found' });
@@ -237,7 +237,7 @@ for (const action of ['activate', 'deactivate'] as const) {
     `/api/:storeCode/reward/:reward/${action}`,
     requireAdmin,
     (req: AuthedRequest, res) => {
-      const store = getStore(req.params.storeCode);
+      const store = req.store;
       const reward = store.rewards.get(req.params.reward);
       if (!reward) {
         res.status(404).json({ code: 404, message: 'Reward not found' });
@@ -255,7 +255,7 @@ adminRouter.get(
   '/api/:storeCode/redemption',
   requireAdmin,
   (req: AuthedRequest, res) => {
-    const store = getStore(req.params.storeCode);
+    const store = req.store;
     const items = [...store.issuedRewards.values()]
       .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
       .map((r) => {
@@ -283,7 +283,7 @@ adminRouter.get(
   '/api/:storeCode/admin/stats',
   requireAdmin,
   (req: AuthedRequest, res) => {
-    const store = getStore(req.params.storeCode);
+    const store = req.store;
     const customers = [...store.customers.values()];
     const transfers = [...store.transfers.values()].filter((t) => !t.cancelled);
 
@@ -328,5 +328,26 @@ adminRouter.get(
         }))
         .sort((a, b) => b.pointsIssued - a.pointsIssued),
     });
+  },
+);
+
+/**
+ * Drop the store so the next request reseeds it.
+ *
+ * Restarting the process used to be the reset button. Now that state outlives
+ * the process, a demo needs an explicit way back to a clean programme — and a
+ * run that has accumulated test members needs it before the next one.
+ */
+adminRouter.post(
+  '/api/:storeCode/admin/reset',
+  requireAdmin,
+  (req: AuthedRequest, res) => {
+    const code = req.params.storeCode;
+    resetStore(code)
+      .then(() => res.json({ reset: true, storeCode: code }))
+      .catch((err) => {
+        console.error('Reset failed', err);
+        res.status(500).json({ code: 500, message: 'Reset failed' });
+      });
   },
 );

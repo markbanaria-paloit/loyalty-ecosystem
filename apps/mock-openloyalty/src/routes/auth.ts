@@ -8,7 +8,7 @@
  * All return `{ token, refresh_token }`.
  */
 import { Router } from 'express';
-import { findCustomerByEmail, getStore } from '../data.js';
+import { findCustomerByEmail } from '../data.js';
 import { signToken, verifyToken } from '../auth.js';
 
 export const authRouter = Router();
@@ -34,7 +34,7 @@ authRouter.post('/api/admin/login_check', (req, res) => {
 authRouter.post('/api/:storeCode/member/login_check', (req, res) => {
   const { storeCode } = req.params;
   const { username, password } = req.body ?? {};
-  const store = getStore(storeCode);
+  const store = req.store;
   const customer = username ? findCustomerByEmail(store, username) : undefined;
   if (!customer || !customer.active || customer.password !== password) {
     res.status(401).json({ code: 401, message: 'Bad credentials.' });

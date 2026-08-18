@@ -15,7 +15,6 @@ import { Router } from 'express';
 import {
   assignTransaction,
   findCustomerByEmail,
-  getStore,
   listEnvelope,
   matchCustomer,
   type RedemptionStatus,
@@ -47,7 +46,7 @@ transactionRouter.get(
   '/api/:storeCode/member/check',
   requireAdmin,
   (req: AuthedRequest, res) => {
-    const store = getStore(req.params.storeCode);
+    const store = req.store;
     const emailOrPhone = String(req.query.emailOrPhone ?? '');
     const identifier = String(req.query.identifier ?? '');
 
@@ -71,7 +70,7 @@ transactionRouter.post(
   '/api/:storeCode/transaction',
   requireAdmin,
   (req: AuthedRequest, res) => {
-    const store = getStore(req.params.storeCode);
+    const store = req.store;
     const payload = req.body?.transaction ?? req.body ?? {};
     const { header, items, customerData } = payload;
 
@@ -140,7 +139,7 @@ transactionRouter.get(
   '/api/:storeCode/transaction',
   requireAdmin,
   (req: AuthedRequest, res) => {
-    const store = getStore(req.params.storeCode);
+    const store = req.store;
     const items = [...store.transactions.values()]
       .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
       .map((t) => {
@@ -160,7 +159,7 @@ transactionRouter.get(
   '/api/:storeCode/transaction/:transaction',
   requireAdmin,
   (req: AuthedRequest, res) => {
-    const store = getStore(req.params.storeCode);
+    const store = req.store;
     const transaction = store.transactions.get(req.params.transaction);
     if (!transaction) {
       res.status(404).json({ code: 404, message: 'Transaction not found' });
@@ -175,7 +174,7 @@ transactionRouter.post(
   '/api/:storeCode/transaction/assign',
   requireAdmin,
   (req: AuthedRequest, res) => {
-    const store = getStore(req.params.storeCode);
+    const store = req.store;
     const {
       transactionDocumentNumber,
       customerId,
@@ -227,7 +226,7 @@ transactionRouter.post(
   '/api/:storeCode/redemption/:issuedReward/status',
   requireAdmin,
   (req: AuthedRequest, res) => {
-    const store = getStore(req.params.storeCode);
+    const store = req.store;
     const issued = store.issuedRewards.get(req.params.issuedReward);
     if (!issued) {
       res.status(404).json({ code: 404, message: 'Issued reward not found' });
@@ -256,7 +255,7 @@ transactionRouter.get(
   '/api/:storeCode/redemption/by-code/:couponCode',
   requireAdmin,
   (req: AuthedRequest, res) => {
-    const store = getStore(req.params.storeCode);
+    const store = req.store;
     const code = req.params.couponCode.trim().toUpperCase();
     const issued = [...store.issuedRewards.values()].find(
       (r) => r.couponCode.toUpperCase() === code,

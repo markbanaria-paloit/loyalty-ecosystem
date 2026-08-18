@@ -9,4 +9,11 @@
  * Acceptable for a single-user walkthrough; not for anything else. A long-lived
  * process, or a real OpenLoyalty tenant, is the answer. See docs/deployment.md.
  */
-export { app as default } from '../src/app.js';
+import { app } from '../src/app.js';
+import { initSchema } from '../src/db.js';
+
+// Serverless instances start cold, so the schema check runs once per instance
+// rather than once per deploy. CREATE TABLE IF NOT EXISTS makes that cheap.
+await initSchema();
+
+export default app;

@@ -21,7 +21,6 @@ import { randomUUID } from 'node:crypto';
 import {
   assignTierManually,
   defaultTierSet,
-  getStore,
   listEnvelope,
   pruneRewardLevels,
   recomputeAllTiers,
@@ -143,13 +142,13 @@ function realignTierConditions(store: Store, set: TierSet): void {
 /* ---------------------------- Tier sets ---------------------------- */
 
 tierRouter.get('/api/:storeCode/tierSet', requireAdmin, (req: AuthedRequest, res) => {
-  const store = getStore(req.params.storeCode);
+  const store = req.store;
   const items = [...store.tierSets.values()].map((s) => serializeTierSet(store, s));
   res.json(listEnvelope(items));
 });
 
 tierRouter.post('/api/:storeCode/tierSet', requireAdmin, (req: AuthedRequest, res) => {
-  const store = getStore(req.params.storeCode);
+  const store = req.store;
   const body = req.body?.tierSet ?? req.body ?? {};
   const name = body.translations?.en?.name ?? body.name;
   if (typeof name !== 'string' || !name.trim()) {
@@ -184,7 +183,7 @@ tierRouter.get(
   '/api/:storeCode/tierSet/:tierSet',
   requireAdmin,
   (req: AuthedRequest, res) => {
-    const store = getStore(req.params.storeCode);
+    const store = req.store;
     const set = store.tierSets.get(req.params.tierSet);
     if (!set) {
       res.status(404).json({ code: 404, message: 'Tier set not found' });
@@ -198,7 +197,7 @@ tierRouter.put(
   '/api/:storeCode/tierSet/:tierSet',
   requireAdmin,
   (req: AuthedRequest, res) => {
-    const store = getStore(req.params.storeCode);
+    const store = req.store;
     const set = store.tierSets.get(req.params.tierSet);
     if (!set) {
       res.status(404).json({ code: 404, message: 'Tier set not found' });
@@ -242,7 +241,7 @@ tierRouter.get(
   '/api/:storeCode/tierSet/:tierSet/tiers',
   requireAdmin,
   (req: AuthedRequest, res) => {
-    const store = getStore(req.params.storeCode);
+    const store = req.store;
     if (!store.tierSets.has(req.params.tierSet)) {
       res.status(404).json({ code: 404, message: 'Tier set not found' });
       return;
@@ -275,7 +274,7 @@ tierRouter.put(
   '/api/:storeCode/tierSet/:tierSet/tiers',
   requireAdmin,
   (req: AuthedRequest, res) => {
-    const store = getStore(req.params.storeCode);
+    const store = req.store;
     const set = store.tierSets.get(req.params.tierSet);
     if (!set) {
       res.status(404).json({ code: 404, message: 'Tier set not found' });
@@ -379,7 +378,7 @@ tierRouter.delete(
   '/api/:storeCode/tier/:tier',
   requireAdmin,
   (req: AuthedRequest, res) => {
-    const store = getStore(req.params.storeCode);
+    const store = req.store;
     const tier = store.tiers.get(req.params.tier);
     if (!tier) {
       res.status(404).json({ code: 404, message: 'Tier not found' });
@@ -406,7 +405,7 @@ for (const action of ['activate', 'deactivate'] as const) {
     `/api/:storeCode/tier/:tier/${action}`,
     requireAdmin,
     (req: AuthedRequest, res) => {
-      const store = getStore(req.params.storeCode);
+      const store = req.store;
       const tier = store.tiers.get(req.params.tier);
       if (!tier) {
         res.status(404).json({ code: 404, message: 'Tier not found' });
@@ -425,7 +424,7 @@ tierRouter.post(
   '/api/:storeCode/tier/recalculate',
   requireAdmin,
   (req: AuthedRequest, res) => {
-    const store = getStore(req.params.storeCode);
+    const store = req.store;
     const set = defaultTierSet(store);
     res.json({
       tierSetId: set?.tierSetId ?? null,
@@ -448,7 +447,7 @@ tierRouter.post(
   '/api/:storeCode/member/:member/tier',
   requireAdmin,
   (req: AuthedRequest, res) => {
-    const store = getStore(req.params.storeCode);
+    const store = req.store;
     const customer = store.customers.get(req.params.member);
     if (!customer) {
       res.status(404).json({ code: 404, message: 'Member not found' });
@@ -467,7 +466,7 @@ tierRouter.post(
   '/api/:storeCode/member/:member/remove-manually-level',
   requireAdmin,
   (req: AuthedRequest, res) => {
-    const store = getStore(req.params.storeCode);
+    const store = req.store;
     const customer = store.customers.get(req.params.member);
     if (!customer) {
       res.status(404).json({ code: 404, message: 'Member not found' });
@@ -495,7 +494,7 @@ tierRouter.get(
   '/api/:storeCode/member/:member/tierSet',
   requireAuth,
   (req: AuthedRequest, res) => {
-    const store = getStore(req.params.storeCode);
+    const store = req.store;
     if (!canRead(req)) {
       res.status(403).json({ code: 403, message: 'Access denied' });
       return;
@@ -530,7 +529,7 @@ tierRouter.get(
   '/api/:storeCode/member/:member/tierSet/:tierSet',
   requireAuth,
   (req: AuthedRequest, res) => {
-    const store = getStore(req.params.storeCode);
+    const store = req.store;
     if (!canRead(req)) {
       res.status(403).json({ code: 403, message: 'Access denied' });
       return;
@@ -557,7 +556,7 @@ tierRouter.post(
   '/api/:storeCode/tier/recalculate-periods',
   requireAdmin,
   (req: AuthedRequest, res) => {
-    const store = getStore(req.params.storeCode);
+    const store = req.store;
     const only = typeof req.body?.member === 'string' ? req.body.member : null;
 
     if (only) {

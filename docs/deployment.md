@@ -48,18 +48,53 @@ one host that is not Vercel.
 | `apps/admin` | **Yes** | Vercel | Campaign Admin — tiers and campaigns. |
 | `apps/merchant` | **Yes** | Vercel | The till that publishes transactions. |
 | `apps/backend` | **Yes** | Vercel | The BFF. Stateless, so serverless is fine. |
-| `apps/mock-openloyalty` | **Yes, but not Vercel** | One always-on container | Holds all the state in memory. See below. |
+| `apps/mock-openloyalty` | **Yes** | Vercel | Deployable once `DATABASE_URL` is set. See below. |
 | `apps/studio` | Optional | Vercel | Chat campaign builder. Needs `ANTHROPIC_API_KEY`, and falls back to an offline planner without one. |
 | `apps/pwa` | **No** | — | Superseded by `apps/member`. |
 
-### Why the mock cannot be a Vercel function
+### The mock needs a database to be deployable
 
-Each serverless instance holds its own copy of the store, and a cold start
-reseeds it. The till would publish a sale into one instance while the member app
-read another, and a member enrolled at the start of the demo could be gone by
-the time the till scans them. Run it as a single long-lived process — any
-always-on container host will do — or point the backend at a real OpenLoyalty
-tenant and do not deploy it at all.
+Without `DATABASE_URL` it keeps everything in memory, and on a serverless
+platform that fails in two ways at once: each instance holds its own copy of the
+store, and a cold start reseeds it. The till would publish a sale into one
+instance while the member app read another, and a member enrolled at the start
+of a demo could be gone by the time the till scans them.
+
+Set `DATABASE_URL` and both problems go away — every instance reads and writes
+the same Postgres, and state outlives the process. `GET /api/healthcheck`
+reports which mode it is in:
+
+```json
+{ "status": "ok", "storage": "postgres" }
+```
+
+Check that after deploying. `"storage": "memory"` means the variable did not
+reach the instance, and the deployment will look fine until state goes missing.
+
+Local Postgres:
+
+```
+createdb nclub_loyalty
+DATABASE_URL=postgresql://$USER@localhost:5432/nclub_loyalty npm run dev:demo
+```
+
+Supabase: take the connection string from **Project Settings → Database** and
+set it as `DATABASE_URL`. Nothing else changes — TLS is detected from the host.
+
+The schema is one table, created on boot:
+
+```sql
+CREATE TABLE stores (code text PRIMARY KEY, snapshot jsonb NOT NULL, updated_at timestamptz)
+```
+
+The whole store is one JSONB document, deliberately: this service is scaffolding
+that goes away when a real Open Loyalty tenant exists, and a normalised schema
+for scaffolding is the wrong investment. What it costs is that every write
+rewrites the document and writes to one store are serialised by an advisory
+lock. At demo size that is nothing.
+
+`POST /api/{storeCode}/admin/reset` drops the store and reseeds it — restarting
+the process used to be the reset button and no longer is.
 
 ### Per-project settings
 
