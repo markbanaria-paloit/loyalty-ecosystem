@@ -37,6 +37,41 @@ Two consequences worth knowing:
   frontend origins, comma-separated. A mismatch appears as a browser CORS error,
   not a server-side failure.
 
+## What to deploy
+
+Not everything here needs to go up. The demo storyboard needs four services and
+one host that is not Vercel.
+
+| Workspace | Deploy? | Where | Why |
+|-----------|---------|-------|-----|
+| `apps/member` | **Yes** | Vercel | The member app. |
+| `apps/admin` | **Yes** | Vercel | Campaign Admin — tiers and campaigns. |
+| `apps/merchant` | **Yes** | Vercel | The till that publishes transactions. |
+| `apps/backend` | **Yes** | Vercel | The BFF. Stateless, so serverless is fine. |
+| `apps/mock-openloyalty` | **Yes, but not Vercel** | One always-on container | Holds all the state in memory. See below. |
+| `apps/studio` | Optional | Vercel | Chat campaign builder. Needs `ANTHROPIC_API_KEY`, and falls back to an offline planner without one. |
+| `apps/pwa` | **No** | — | Superseded by `apps/member`. |
+
+### Why the mock cannot be a Vercel function
+
+Each serverless instance holds its own copy of the store, and a cold start
+reseeds it. The till would publish a sale into one instance while the member app
+read another, and a member enrolled at the start of the demo could be gone by
+the time the till scans them. Run it as a single long-lived process — any
+always-on container host will do — or point the backend at a real OpenLoyalty
+tenant and do not deploy it at all.
+
+### Per-project settings
+
+Each workspace carries a `vercel.json`, so the build settings come from the
+repo. Create one Vercel project per app with **Root Directory** set to that
+workspace. The static apps rewrite all non-asset paths to `index.html`, without
+which a direct load of `/personas` or `/campaigns/new` returns a 404 — React
+Router owns those paths, not the CDN.
+
+The backend is served from `api/index.ts`, which exports the Express app rather
+than starting it; `src/index.ts` still starts it for local development.
+
 ## Secrets
 
 Only two workspaces hold anything sensitive, and both are server-side:
