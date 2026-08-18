@@ -1,0 +1,12 @@
+/**
+ * Serverless entrypoint.
+ *
+ * Works, but read this first: the store is an in-memory Map. Every instance a
+ * serverless platform starts holds its own copy, and a cold start reseeds it.
+ * Under any real concurrency the till and the member app can end up talking to
+ * different instances and disagreeing about a member's points.
+ *
+ * Acceptable for a single-user walkthrough; not for anything else. A long-lived
+ * process, or a real OpenLoyalty tenant, is the answer. See docs/deployment.md.
+ */
+export { app as default } from '../src/app.js';
