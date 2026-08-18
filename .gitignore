@@ -14,3 +14,6 @@ apm_modules/
 
 # Vercel project links (per-machine)
 .vercel
+
+# Real database credentials — never committed
+database.env

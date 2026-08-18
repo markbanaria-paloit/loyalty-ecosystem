@@ -14,9 +14,9 @@
     "apps/studio"
   ],
   "scripts": {
-    "dev": "concurrently -n mock,backend,member,pwa,admin,pos,studio -c magenta,cyan,red,green,yellow,blue,white \"npm:dev:mock\" \"npm:dev:backend\" \"npm:dev:member\" \"npm:dev:pwa\" \"npm:dev:admin\" \"npm:dev:merchant\" \"npm:dev:studio\"",
-    "dev:mock": "PORT=8181 npm run dev --workspace apps/mock-openloyalty",
-    "dev:backend": "PORT=4000 npm run dev --workspace apps/backend",
+    "dev": "sh scripts/with-env.sh concurrently -n mock,backend,member,pwa,admin,pos,studio -c magenta,cyan,red,green,yellow,blue,white \"npm:dev:mock\" \"npm:dev:backend\" \"npm:dev:member\" \"npm:dev:pwa\" \"npm:dev:admin\" \"npm:dev:merchant\" \"npm:dev:studio\"",
+    "dev:mock": "sh scripts/with-env.sh PORT=8181 npm run dev --workspace apps/mock-openloyalty",
+    "dev:backend": "sh scripts/with-env.sh PORT=4000 npm run dev --workspace apps/backend",
     "dev:pwa": "npm run dev --workspace apps/pwa",
     "dev:admin": "npm run dev --workspace apps/admin",
     "dev:merchant": "npm run dev --workspace apps/merchant",
@@ -24,8 +24,9 @@
     "build": "npm run build --workspaces --if-present",
     "typecheck": "npm run typecheck --workspaces --if-present",
     "dev:member": "npm run dev --workspace apps/member",
-    "dev:demo": "concurrently -n mock,backend,member,admin,pos,studio -c magenta,cyan,red,yellow,blue,white \"npm:dev:mock\" \"npm:dev:backend\" \"npm:dev:member\" \"npm:dev:admin\" \"npm:dev:merchant\" \"npm:dev:studio\"",
-    "contract": "npm run contract --workspace apps/backend"
+    "dev:demo": "sh scripts/with-env.sh concurrently -n mock,backend,member,admin,pos,studio -c magenta,cyan,red,yellow,blue,white \"npm:dev:mock\" \"npm:dev:backend\" \"npm:dev:member\" \"npm:dev:admin\" \"npm:dev:merchant\" \"npm:dev:studio\"",
+    "contract": "npm run contract --workspace apps/backend",
+    "db:check": "sh scripts/with-env.sh node scripts/db-check.mjs"
   },
   "devDependencies": {
     "concurrently": "^9.1.0"
