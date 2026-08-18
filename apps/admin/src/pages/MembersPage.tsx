@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { api, type Member } from '../api/client';
+import { useRefreshOnFocus } from '../hooks/useLiveData';
 
 export function MembersPage() {
   const [members, setMembers] = useState<Member[]>([]);
@@ -21,6 +22,7 @@ export function MembersPage() {
   }
 
   useEffect(load, []);
+  useRefreshOnFocus(load);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();

@@ -8,6 +8,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { api, type Campaign, type CampaignTrigger, type Tier } from '../api/client';
+import { useRefreshOnFocus } from '../hooks/useLiveData';
 
 const TRIGGER_LABELS: Record<CampaignTrigger, string> = {
   transaction: 'Purchase transaction',
@@ -38,6 +39,7 @@ export function CampaignsPage() {
   }, []);
 
   useEffect(load, [load]);
+  useRefreshOnFocus(load);
 
   async function toggleActive(campaign: Campaign) {
     setError(null);

@@ -82,9 +82,10 @@ returns:
 3. Tier is recomputed against the member's conditions.
 
 The two are mutually exclusive by label, so a union member receives 500, not 750.
-Neither confers a tier: Tier 2 is qualified on **union membership _and_ $1,500 of
-spend in the current period**, so a new union member starts on Tier 1 and is
-promoted once they spend.
+Tier 2 has two ways in, and the welcome campaigns confer neither directly:
+**union membership admits a member outright**, and everyone else reaches it on
+**$1,500 of spend in the current period**. A union member is therefore on Tier 2
+from the moment they enrol; a public member climbs to it.
 
 ---
 
@@ -189,14 +190,15 @@ Nothing breaks without them, but the behaviour degrades:
 |-------|-------|-----------|
 | `campaignPayouts`, `status` | register response | The welcome screen falls back to the account balance. |
 | `levelSortOrder` | `CustomerStatus` | The BFF derives the rank from `GET /tier` instead. |
-| `requiredLabels`, `assignmentOnly` | tier | Tier 2's union gate is not expressible; see below. |
+| `qualifyingLabels`, `assignmentOnly` | tier | Tier 2's union route is not expressible; see below. |
 | `nextTierEligible`, `nextTierMissingLabels` | tier progress | The app cannot say *why* a tier is out of reach. |
 
-The one place the spec has no answer is gating a tier on member type. Its
+The one place the spec has no answer is admitting a member to a tier on member
+type. Its
 condition vocabulary is metric-only (`activeUnits`, `totalEarnedUnits`,
 `totalSpending`, `monthsSinceJoiningProgram`, `cumulatedEarnedUnits`), so
-"union members only" cannot be a tier condition. The alternative the spec does
+"union members qualify" cannot be a tier condition. The alternative the spec does
 offer — assigning the tier from a campaign's `assign_member_to_tier` effect —
 works, but a tier reached only by assignment has no thresholds, and therefore no
-progress for `TierSetMemberProgress` to report. This build keeps the label gate
+progress for `TierSetMemberProgress` to report. This build keeps the label route
 on the tier so progress stays reportable, and flags it as an extension.

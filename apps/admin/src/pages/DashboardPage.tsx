@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useRefreshOnFocus } from '../hooks/useLiveData';
 import {
   api,
   CONDITION_LABELS,
@@ -19,7 +20,7 @@ export function DashboardPage() {
   const [recent, setRecent] = useState<Redemption[]>([]);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
+  const load = useCallback(() => {
     Promise.all([api.stats(), api.redemptions()])
       .then(([s, r]) => {
         setStats(s);
@@ -27,6 +28,9 @@ export function DashboardPage() {
       })
       .catch((e) => setError(e.message));
   }, []);
+
+  useEffect(load, [load]);
+  useRefreshOnFocus(load);
 
   if (error) return <div className="error">{error}</div>;
   if (!stats) return <p className="muted">Loading…</p>;

@@ -103,15 +103,16 @@ export interface Tier {
    */
   assignmentOnly: boolean;
   /**
-   * Labels the member must carry to be eligible for this tier, on top of
-   * meeting its conditions.
+   * Labels that qualify a member for this tier on their own, whatever their
+   * metrics say.
    *
-   * Member type is not a metric, so it cannot be a condition — but it also
-   * should not force the whole tier out of the ladder, because a tier outside
-   * the ladder has no thresholds and therefore no progress to report. A label
-   * gate keeps the tier measurable and still restricts who can reach it.
+   * A tier can be reached two ways: by meeting its conditions, or by being a
+   * kind of member the programme admits directly. Union membership is the
+   * second kind — it is not a metric, so it cannot be a condition, and it does
+   * not have to be earned. Carrying one of these labels is sufficient; the
+   * conditions remain the route for everybody else.
    */
-  requiredLabels: MemberLabel[];
+  qualifyingLabels: MemberLabel[];
   /** One entry per condition on the owning tier set. */
   conditions: TierCondition[];
   createdAt: string;
@@ -734,12 +735,13 @@ export function memberQualifiesForTier(
   customer: Customer,
   tier: Tier,
 ): boolean {
-  // Member type gates eligibility before any metric is looked at: a tier
-  // restricted to union members is not reachable by spending alone.
-  const eligible = tier.requiredLabels.every((l) =>
+  // Either route in is enough. A qualifying label admits a member outright —
+  // union membership is a status, not something spent up to — and everyone else
+  // reaches the tier by meeting its conditions.
+  const byLabel = tier.qualifyingLabels.some((l) =>
     memberHasLabel(customer, l.key, l.value),
   );
-  if (!eligible) return false;
+  if (byLabel) return true;
 
   return tier.conditions.every(
     (c) => memberMetric(store, customer, c.attribute) >= c.value,
@@ -877,11 +879,9 @@ export function serializeTierSetMemberProgress(store: Store, customer: Customer,
   );
   const currentProgress = ratios.length === 0 ? 0 : Math.round(Math.min(...ratios) * 1000) / 10;
 
-  // A tier the member is not eligible for is reported honestly rather than
-  // shown as progress they can complete.
-  const missingLabels = (next?.requiredLabels ?? []).filter(
-    (l) => !memberHasLabel(customer, l.key, l.value),
-  );
+  // A qualifying label is an alternative route in, not a barrier, so no tier is
+  // ever out of reach — the conditions are open to everybody.
+  const missingLabels: MemberLabel[] = [];
 
   return {
     currentTierId: customer.levelId,
@@ -960,7 +960,7 @@ function makeTier(
     sortOrder,
     storeCode,
     assignmentOnly: false,
-    requiredLabels: [],
+    qualifyingLabels: [],
     conditions: [
       { conditionId: condition.id, attribute: condition.attribute, value: threshold },
     ],
@@ -1007,15 +1007,14 @@ export function seedStore(code: string): Store {
   };
   store.tierSets.set(tierSet.tierSetId, tierSet);
 
-  // Tier 2 takes both: union membership (a member type, so a label gate) and
-  // $1,500 of spend in the current period (a metric, so a condition). Either
-  // alone leaves a member on Tier 1.
+  // Tier 2 has two ways in: union membership, which admits a member on
+  // enrolment, or $1,500 of spend in the current period for everyone else.
   const tier1 = makeTier('Tier 1', 0, 1, code, tierSet.tierSetId, annualSpend);
   const tier2 = makeTier('Tier 2', 1500, 2, code, tierSet.tierSetId, annualSpend);
   tier1.description = 'Occasional shopper. All members start here.';
   tier2.isDefault = false;
-  tier2.description = 'NTUC member and frequent spender — $1.5K minimum annual spend.';
-  tier2.requiredLabels = [{ key: CUSTOMER_TYPE_LABEL, value: UNION_MEMBER }];
+  tier2.description = 'NTUC union members, and frequent spenders from $1.5K annual spend.';
+  tier2.qualifyingLabels = [{ key: CUSTOMER_TYPE_LABEL, value: UNION_MEMBER }];
   [tier1, tier2].forEach((t) => store.tiers.set(t.levelId, t));
 
   const rewards: Reward[] = [
@@ -1152,7 +1151,7 @@ export function seedStore(code: string): Store {
   const unionWelcome: Campaign = {
     campaignId: randomUUID(),
     name: 'Union Member Welcome',
-    description: 'Union members receive 500 welcome points on enrolment.',
+    description: 'Union members join at Tier 2 and receive 500 welcome points.',
     active: true,
     trigger: 'internal_event',
     event: MEMBER_REGISTERED_EVENT,
@@ -1166,7 +1165,8 @@ export function seedStore(code: string): Store {
       endsAt: null,
     },
     effect: { type: 'bonus_points', value: 500 },
-    // No tier assignment: Tier 2 is earned by spending, not granted at signup.
+    // No tier assignment needed: the union label qualifies the member for
+    // Tier 2 outright, so recomputation places them there on enrolment.
     assignTierId: null,
     assignTierSetId: null,
     memberFilter: {
@@ -1266,9 +1266,9 @@ export function seedStore(code: string): Store {
     });
   }
 
-  // A union member partway to Tier 2. Without this persona the demo has no way
-  // to show tier progress at all: the public member is not eligible for Tier 2,
-  // and Grace already holds it — so neither has a distance to travel.
+  // A public member climbing to Tier 2 on spend. This is the only persona with
+  // a distance to travel: a union member is admitted on enrolment, and Grace
+  // already holds the tier.
   const inProgress: Customer = {
     ...demo,
     customerId: randomUUID(),
@@ -1278,10 +1278,7 @@ export function seedStore(code: string): Store {
     phone: '+15550103',
     loyaltyCardNumber: '1000000003',
     createdAt: iso(60),
-    labels: [
-      { key: CUSTOMER_TYPE_LABEL, value: UNION_MEMBER },
-      { key: DEMO_PERSONA_LABEL, value: 'union_in_progress' },
-    ],
+    labels: [{ key: DEMO_PERSONA_LABEL, value: 'spender_in_progress' }],
     periodStartedAt: iso(60),
     levelId: tier1.levelId,
     manualLevelId: null,
@@ -1311,9 +1308,8 @@ export function seedStore(code: string): Store {
     });
   }
 
-  // Grace is the "existing union member" persona, so she has to actually clear
-  // the $1,500 spend gate — a persona that fell short would leave the demo with
-  // no way to show Tier 2 at all.
+  // Grace is the "existing union member" persona. Her tier comes from the union
+  // label, not this spend — the purchases just give her a realistic history.
   for (let i = 0; i < 4; i++) {
     registerTransaction(store, {
       documentNumber: `SEED-UNION-${i}`,
@@ -2007,7 +2003,7 @@ export function serializeTier(store: Store, tier: Tier) {
     isDefault: tier.isDefault,
     sortOrder: tier.sortOrder,
     assignmentOnly: tier.assignmentOnly,
-    requiredLabels: tier.requiredLabels,
+    qualifyingLabels: tier.qualifyingLabels,
     hasPhoto: false,
     rewards: [],
     conditions: tier.conditions,

@@ -1,5 +1,6 @@
 import { useEffect, useState, type FormEvent } from 'react';
 import { api, type Reward, type Tier } from '../api/client';
+import { useRefreshOnFocus } from '../hooks/useLiveData';
 
 export function RewardsPage() {
   const [rewards, setRewards] = useState<Reward[]>([]);
@@ -17,6 +18,7 @@ export function RewardsPage() {
   }
 
   useEffect(load, []);
+  useRefreshOnFocus(load);
 
   async function toggle(reward: Reward) {
     try {

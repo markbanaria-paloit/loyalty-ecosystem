@@ -10,6 +10,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { api, CONDITION_LABELS, type TierSet } from '../api/client';
 import { Callout } from '../components/wizard';
+import { useRefreshOnFocus } from '../hooks/useLiveData';
 
 export function TiersPage() {
   const [params, setParams] = useSearchParams();
@@ -41,6 +42,7 @@ export function TiersPage() {
     // Only on mount: `params` is cleared here and must not retrigger the load.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  useRefreshOnFocus(load);
 
   async function recalculate() {
     setNotice(null);

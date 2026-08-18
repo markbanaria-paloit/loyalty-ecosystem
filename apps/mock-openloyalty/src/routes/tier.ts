@@ -258,7 +258,7 @@ interface TierInput {
   description?: unknown;
   active?: unknown;
   assignmentOnly?: unknown;
-  requiredLabels?: unknown;
+  qualifyingLabels?: unknown;
   translations?: { en?: { name?: unknown; description?: unknown } };
   conditions?: Array<{ conditionId?: unknown; value?: unknown }>;
 }
@@ -347,11 +347,11 @@ tierRouter.put(
           raw.assignmentOnly === undefined
             ? existing?.assignmentOnly ?? false
             : Boolean(raw.assignmentOnly),
-        requiredLabels: Array.isArray(raw.requiredLabels)
-          ? (raw.requiredLabels as MemberLabel[])
+        qualifyingLabels: Array.isArray(raw.qualifyingLabels)
+          ? (raw.qualifyingLabels as MemberLabel[])
               .filter((l) => typeof l?.key === 'string' && typeof l?.value === 'string')
               .map((l) => ({ key: l.key, value: l.value }))
-          : existing?.requiredLabels ?? [],
+          : existing?.qualifyingLabels ?? [],
         conditions,
         createdAt: existing?.createdAt ?? now,
         updatedAt: now,

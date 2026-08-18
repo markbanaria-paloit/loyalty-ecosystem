@@ -218,8 +218,8 @@ function TierProgressCard({ progress }) {
           </>
         ) : (
           <p className="mt-1 text-[11px] leading-snug text-gray-500">
-            {progress.nextTierName} is for NTUC union members. Spending alone does not
-            qualify.
+            {progress.nextTierName} is open to NTUC union members automatically, or on
+            reaching the spend threshold.
           </p>
         )}
       </div>
