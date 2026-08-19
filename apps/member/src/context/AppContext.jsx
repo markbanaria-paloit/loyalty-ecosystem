@@ -106,6 +106,21 @@ function loadInitial() {
   return initialState;
 }
 
+/**
+ * A short summary of everything a rating could move.
+ *
+ * Compared before and after so the wait ends on the first sign of the event
+ * having been scored — the milestone advancing, or a coupon the challenge paid
+ * out arriving.
+ */
+function progressSignature(state) {
+  const milestones = (state.challenges ?? [])
+    .flatMap((c) => c.milestones ?? [])
+    .map((m) => `${m.milestoneId}:${m.current}`)
+    .join(',');
+  return `${state.platformVouchers.length}|${milestones}`;
+}
+
 export function isBirthdayMonthNow(user) {
   return user?.birthdayMonth === new Date().getMonth() + 1;
 }
@@ -604,7 +619,27 @@ export function AppProvider({ children }) {
       const memberId = stateRef.current.account.customerId ?? 'anon';
       const day = new Date().toISOString().slice(0, 10);
       await logEvent('onlinereview', `review-${memberId}-${day}`, { score });
-      await refreshAccount().catch(() => {});
+
+      /**
+       * Wait for the platform to score it before showing the result.
+       *
+       * Raising an event is accepted immediately and scored afterwards, so a
+       * refresh taken straight away reads the world as it was a moment ago:
+       * the rating appears not to have counted, and the milestone jumps a beat
+       * later when the poll comes round. Watching for the change is the
+       * difference between a tap that works and one that seems ignored.
+       *
+       * Bounded, and quiet when it expires. Nothing here depends on the wait —
+       * the next poll will bring it — so a slow platform costs a moment of
+       * staleness rather than an error.
+       */
+      const before = progressSignature(stateRef.current);
+      const deadline = Date.now() + 3000;
+      do {
+        await refreshAccount().catch(() => {});
+        if (progressSignature(stateRef.current) !== before) return;
+        await new Promise((resolve) => setTimeout(resolve, 500));
+      } while (Date.now() < deadline);
     },
     [refreshAccount],
   );
