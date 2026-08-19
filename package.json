@@ -24,7 +24,8 @@
     "dev:member": "npm run dev --workspace apps/member",
     "dev:demo": "sh scripts/with-env.sh concurrently -n mock,backend,member,pos,studio -c magenta,cyan,red,yellow,blue,white \"npm:dev:mock\" \"npm:dev:backend\" \"npm:dev:member\" \"npm:dev:merchant\" \"npm:dev:studio\"",
     "contract": "npm run contract --workspace apps/backend",
-    "db:check": "sh scripts/with-env.sh node scripts/db-check.mjs"
+    "db:check": "sh scripts/with-env.sh node scripts/db-check.mjs",
+    "check": "sh scripts/with-env.sh sh -c \"python3 scripts/checks/enrolment-check.py && python3 scripts/checks/tier-qualification-check.py\""
   },
   "devDependencies": {
     "concurrently": "^9.1.0"
