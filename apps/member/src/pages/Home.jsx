@@ -248,8 +248,19 @@ function RatingCard({ challenge }) {
   const [error, setError] = useState(null);
 
   const milestone = challenge.milestones.find((m) => m.trigger === 'custom_event');
-  const alreadyRated = milestone && milestone.goal && milestone.current >= milestone.goal;
-  if (!milestone || alreadyRated) return null;
+  if (!milestone) return null;
+
+  /**
+   * Whether this member has already rated.
+   *
+   * Read from the milestone, not from having tapped: the platform is what knows,
+   * and a member returning to this screen should find the stars as they left
+   * them. `done` covers the seconds between the tap and the platform agreeing.
+   */
+  const rated = done || Boolean(milestone.goal && milestone.current >= milestone.goal);
+  // Filled means rated. Empty means there is something to do. The two are never
+  // crossed: a filled star is never clickable, and an empty one always is.
+  const filled = rated ? 5 : score;
 
   async function send(value) {
     setScore(value);
@@ -272,20 +283,22 @@ function RatingCard({ challenge }) {
     <div className="rounded-2xl border border-gray-100 bg-white p-4 shadow-sm">
       <p className="text-sm font-bold text-gray-900">How are we doing?</p>
       <p className="mt-0.5 text-[11px] text-gray-400">
-        Leave a rating to complete this part of the challenge.
+        {rated
+          ? 'Thanks for rating — that part of the challenge is done.'
+          : 'Leave a rating to complete this part of the challenge.'}
       </p>
       <div className="mt-3 flex items-center gap-1.5">
         {[1, 2, 3, 4, 5].map((n) => (
           <button
             key={n}
-            disabled={busy || done}
+            disabled={busy || rated}
             onClick={() => send(n)}
             aria-label={`${n} star${n > 1 ? 's' : ''}`}
-            className="p-1 disabled:opacity-60"
+            className="p-1 disabled:cursor-default"
           >
             <Star
               size={26}
-              className={n <= score ? 'fill-gold-500 text-gold-500' : 'text-gray-300'}
+              className={n <= filled ? 'fill-gold-500 text-gold-500' : 'text-gray-300'}
             />
           </button>
         ))}
@@ -295,7 +308,7 @@ function RatingCard({ challenge }) {
           * challenge catches up.
           */}
         {busy && <span className="ml-1 text-[11px] text-gray-400">Sending…</span>}
-        {done && !busy && (
+        {rated && !busy && (
           <span className="ml-1 text-[11px] font-semibold text-green-600">Thanks!</span>
         )}
       </div>
