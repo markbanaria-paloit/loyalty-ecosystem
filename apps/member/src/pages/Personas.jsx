@@ -75,7 +75,7 @@ export default function Personas() {
       await signInWithCard(card);
       navigate('/', { replace: true });
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Could not find that loyalty ID');
+      setError(e instanceof Error ? e.message : 'No member found for that loyalty ID');
       setBusy(null);
     }
   }
@@ -181,7 +181,7 @@ export default function Personas() {
           * console — the card number is what identifies them there.
           */}
         <p className="mt-7 flex items-center gap-1.5 px-1 text-[11px] font-bold uppercase tracking-wider text-white/50">
-          <CreditCard size={12} /> Or use a loyalty ID
+          <CreditCard size={12} /> Or find a member
         </p>
         <form
           className="mt-2 flex gap-2"
@@ -193,8 +193,8 @@ export default function Personas() {
           <input
             value={card}
             onChange={(e) => setCard(e.target.value)}
-            placeholder="NCXXXXXXXX"
-            className="min-w-0 flex-1 rounded-2xl bg-white/95 px-4 py-3.5 font-mono text-[13px] uppercase tracking-wide text-gray-900 placeholder:normal-case placeholder:tracking-normal placeholder:text-gray-400"
+            placeholder="Loyalty ID, email or member ID"
+            className="min-w-0 flex-1 rounded-2xl bg-white/95 px-4 py-3.5 font-mono text-[13px] tracking-wide text-gray-900 placeholder:font-sans placeholder:tracking-normal placeholder:text-gray-400"
           />
           <button
             type="submit"

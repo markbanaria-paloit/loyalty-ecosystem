@@ -201,12 +201,25 @@ demoRouter.get('/api/demo/personas', async (_req, res) => {
  */
 demoRouter.post('/api/demo/card/:cardNumber/session', async (req, res) => {
   try {
-    const wanted = req.params.cardNumber.trim().toUpperCase();
-    const member = (await olAdmin.members()).find(
-      (m) => (m.loyaltyCardNumber ?? cardNumberFromEmail(m.email))?.toUpperCase() === wanted,
-    );
+    /**
+     * Whatever identifies the member, not one blessed form of it.
+     *
+     * A card number is what the label asks for, but the thing to hand is
+     * whatever was on the screen you came from — the console shows an address
+     * and an id, and a field that accepts only one of the three is a field that
+     * says "not found" about a member sitting right there.
+     */
+    const wanted = req.params.cardNumber.trim().toLowerCase();
+    const member = (await olAdmin.members()).find((m) => {
+      const card = (m.loyaltyCardNumber ?? cardNumberFromEmail(m.email) ?? '').toLowerCase();
+      return (
+        (card && card === wanted) ||
+        m.email?.toLowerCase() === wanted ||
+        m.customerId?.toLowerCase() === wanted
+      );
+    });
     if (!member) {
-      res.status(404).json({ message: 'No member holds that card number' });
+      res.status(404).json({ message: 'No member found for that loyalty ID' });
       return;
     }
     res.json(await sessionFor(member));

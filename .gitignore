@@ -17,3 +17,4 @@ apm_modules/
 
 # Real database credentials — never committed
 database.env
+.env*.local
