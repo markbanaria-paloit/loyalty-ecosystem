@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   QrCode, ChevronRight, ChevronDown, Bell, Cake, Target, Star, Check, Gift,
-  Coins, Package, Sparkles, MapPin, Compass, Flame, Zap, Users, Flag, Briefcase,
-  Percent,
+  Coins, Package, Sparkles, MapPin, Compass, Flame, Zap, Flag, Briefcase,
+  Percent, Camera, Trophy, Crown,
 } from 'lucide-react';
 import { useApp, isBirthdayMonthNow } from '../context/AppContext.jsx';
 import { TierBadge, TenantAvatar, tenantName } from '../components/Ui.jsx';
@@ -195,8 +195,9 @@ const REWARD_ICON = { voucher: Gift, points: Coins, product: Package, scratch: G
 const CHALLENGE_ICON = {
   'september-lull': Compass,
   'daily-visit-scratch': Flame,
+  'social-share': Camera,
   'app-streak': Zap,
-  'family-weekender': Users,
+  'family-weekender': Trophy,
   'clubhouse-regular': Flag,
   'mice-return': Briefcase,
 };
@@ -261,7 +262,7 @@ function ProposedChallenges() {
             </p>
             {!open && (
               <p className="mt-1.5 text-[11px] font-medium text-white/70">
-                Six challenge concepts — tap to explore
+                Challenge concepts — tap to explore
               </p>
             )}
           </div>
@@ -286,7 +287,7 @@ function ProposedChallenges() {
             className="overflow-hidden"
           >
             <p className="px-1 pt-3 text-[11px] leading-snug text-gray-400">
-              Six concept challenges for September. Not live yet — nothing here
+              Concept challenges for September. Not live yet — nothing here
               awards anything.
             </p>
             <div
@@ -355,31 +356,70 @@ function ProposedChallengeCard({ challenge, index }) {
           <p className="mt-1.5 text-xs leading-snug text-white/80">{challenge.blurb}</p>
         </div>
 
-        <div className="space-y-2">
-          {challenge.milestones.map((m) => {
-            const pct = Math.min(100, Math.round((m.current / m.goal) * 100));
-            const done = m.current >= m.goal;
-            return (
-              <div key={m.label}>
-                <div className="flex items-center justify-between text-[11px]">
-                  <span className="flex items-center gap-1 font-medium text-white/85">
-                    {done && <Check size={11} className="text-gold-400" />}
-                    {m.label}
-                  </span>
-                  <span className="font-bold text-white/70">
-                    {m.current}/{m.goal}
-                  </span>
+        {challenge.milestones.length > 0 && (
+          <div className="space-y-2">
+            {challenge.milestones.map((m) => {
+              const pct = Math.min(100, Math.round((m.current / m.goal) * 100));
+              const done = m.current >= m.goal;
+              return (
+                <div key={m.label}>
+                  <div className="flex items-center justify-between text-[11px]">
+                    <span className="flex items-center gap-1 font-medium text-white/85">
+                      {done && <Check size={11} className="text-gold-400" />}
+                      {m.label}
+                    </span>
+                    <span className="font-bold text-white/70">
+                      {m.current}/{m.goal}
+                    </span>
+                  </div>
+                  <div className="mt-1 h-1.5 w-full overflow-hidden rounded-full bg-white/20">
+                    <div
+                      className="h-full rounded-full bg-gold-400 transition-all duration-500"
+                      style={{ width: `${pct}%` }}
+                    />
+                  </div>
                 </div>
-                <div className="mt-1 h-1.5 w-full overflow-hidden rounded-full bg-white/20">
-                  <div
-                    className="h-full rounded-full bg-gold-400 transition-all duration-500"
-                    style={{ width: `${pct}%` }}
-                  />
+              );
+            })}
+          </div>
+        )}
+
+        {challenge.leaderboard && (
+          <div className="rounded-2xl border border-white/15 bg-white/10 px-3 py-2.5 backdrop-blur-md">
+            <p className="text-[10px] font-bold uppercase tracking-widest text-white/60">
+              Leaderboard · {challenge.leaderboard.metric}
+            </p>
+            <div className="mt-1.5">
+              {challenge.leaderboard.entries.map((e) => (
+                <div key={e.rank} className="flex items-center gap-2 py-1 text-xs">
+                  <span
+                    className={`w-4 shrink-0 text-center font-black ${
+                      e.rank === 1 ? 'text-gold-400' : 'text-white/50'
+                    }`}
+                  >
+                    {e.rank}
+                  </span>
+                  <span className="min-w-0 flex-1 truncate font-semibold text-white/90">
+                    {e.name}
+                  </span>
+                  {e.rank === 1 && <Crown size={12} className="shrink-0 text-gold-400" />}
+                  <span className="font-bold text-white/70">{e.value}</span>
                 </div>
+              ))}
+              <div className="mt-1.5 flex items-center gap-2 rounded-xl bg-white/15 px-2 py-1.5 text-xs">
+                <span className="w-4 shrink-0 text-center font-black text-gold-400">
+                  {challenge.leaderboard.you.rank}
+                </span>
+                <span className="min-w-0 flex-1 truncate font-bold text-white">
+                  {challenge.leaderboard.you.name}
+                </span>
+                <span className="font-bold text-white/85">
+                  {challenge.leaderboard.you.value}
+                </span>
               </div>
-            );
-          })}
-        </div>
+            </div>
+          </div>
+        )}
 
         {scratchReady && (
           <div className="rounded-2xl border border-white/15 bg-white/10 p-2 backdrop-blur-md">

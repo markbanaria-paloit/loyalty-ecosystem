@@ -25,6 +25,7 @@ import confettiNight from '../assets/checkin-confetti.jpg';
 import krakenRacers from '../assets/kraken-racers-2a.jpg';
 import golfClubhouse from '../assets/golf-clubhouse.jpg';
 import sgMiceTwilight from '../assets/sg-mice-twilight.jpg';
+import socialSelfie from '../assets/social-selfie.jpg';
 
 /**
  * The hero image for the section's collapsed banner — the most cinematic shot
@@ -92,6 +93,19 @@ export const PROPOSED_CHALLENGES = [
     ],
   },
   {
+    id: 'social-share',
+    theme: 'Social',
+    name: 'Share Your Third Home',
+    blurb:
+      'Caught a great moment at the Club? Tag #MyThirdHome and watch the points roll in — the best posts get featured.',
+    venues: ['de', 'www', 'dresort'],
+    segment: 'Everyone',
+    milestones: [{ label: 'Posts tagged #MyThirdHome', goal: 3, current: 1 }],
+    reward: { kind: 'points', label: '250 points per featured post' },
+    accent: 'from-fuchsia-500 to-pink-600',
+    image: socialSelfie,
+  },
+  {
     id: 'app-streak',
     theme: 'Streak',
     name: 'Daily Check-in',
@@ -106,17 +120,28 @@ export const PROPOSED_CHALLENGES = [
   },
   {
     id: 'family-weekender',
-    theme: 'Segment · Families',
-    name: 'Family Weekender',
+    theme: 'Leaderboard · Families',
+    name: 'Family Face-Off',
     blurb:
-      "Two big days out at Wild Wild Wet and D'Resort — and the family picnic set comes home with you.",
+      "Bring the whole crew. Every full-family visit to Wild Wild Wet or D'Resort climbs the board — September's top family takes the grand prize.",
     venues: ['www', 'dresort'],
     segment: 'Families with children',
-    milestones: [
-      { label: 'Family visits', goal: 2, current: 0 },
-      { label: 'Spend $80 across the weekend', goal: 80, current: 35 },
-    ],
-    reward: { kind: 'product', label: 'Claim a family picnic set' },
+    milestones: [],
+    /**
+     * Competitive rather than personal: the platform's achievements can rank
+     * members, and this concept rides that. Standings here are illustrative —
+     * a live board would come from the engine, not this file.
+     */
+    leaderboard: {
+      metric: 'Full-family visits',
+      entries: [
+        { rank: 1, name: 'The Tan Family', value: 6 },
+        { rank: 2, name: 'The Rahman Family', value: 5 },
+        { rank: 3, name: 'The Nair Family', value: 4 },
+      ],
+      you: { rank: 7, name: 'Your family', value: 2 },
+    },
+    reward: { kind: 'product', label: "Top family wins a D'Resort staycation" },
     accent: 'from-emerald-500 to-teal-700',
     image: krakenRacers,
   },
