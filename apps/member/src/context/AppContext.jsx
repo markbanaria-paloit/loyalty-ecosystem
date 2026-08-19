@@ -163,7 +163,12 @@ function reducer(state, action) {
         welcomeBonusClaimed = true;
       }
 
-      return { ...state, user, vouchers, welcomeBonusClaimed, toast: { kind: 'welcome' } };
+      // No celebration here. At this point the platform has not been asked what
+      // the member was given, so a toast fired now says "your welcome bonus has
+      // been credited" before anything has been credited — and the confetti is
+      // over by the time the number arrives. It is dispatched once enrolment
+      // has resolved, carrying the real figure.
+      return { ...state, user, vouchers, welcomeBonusClaimed };
     }
 
     // The loyalty record landed from the BFF — it replaces whatever we held,
@@ -184,6 +189,9 @@ function reducer(state, action) {
 
     case 'SET_TIER_PROGRESS':
       return { ...state, tierProgress: action.payload };
+
+    case 'SET_TOAST':
+      return { ...state, toast: action.payload };
 
     /**
      * A balance that moved while the member was looking at the app.
@@ -599,6 +607,16 @@ export function AppProvider({ children }) {
         dispatch({ type: 'SET_TIER_PROGRESS', payload: progress });
       }
       setLoyaltySync({ status: 'linked', error: null });
+
+      // Now that the platform has answered, celebrate what it actually gave.
+      // `welcomePoints` comes from the enrolment result where the platform
+      // reports it; where it does not, the balance of a member who has just
+      // joined is the welcome award and nothing else.
+      const awarded = result.enrolment?.welcomePoints ?? result.account?.points ?? 0;
+      dispatch({
+        type: 'SET_TOAST',
+        payload: { kind: 'welcome', earned: awarded, tierName: result.account?.levelName ?? null },
+      });
     } catch (e) {
       setLoyaltySync({ status: 'error', error: e instanceof Error ? e.message : String(e) });
     }

@@ -17,7 +17,16 @@ function fire() {
 function toastContent(toast) {
   switch (toast?.kind) {
     case 'welcome':
-      return { icon: PartyPopper, title: 'Welcome to NTUC Club!', body: 'Your welcome bonus has been credited.', confetti: true };
+      // The figure comes from the platform, so it is only shown when there is
+      // one — a programme with no enrolment award should not claim a bonus.
+      return {
+        icon: PartyPopper,
+        title: 'Welcome to NTUC Club!',
+        body: toast.earned
+          ? `${toast.earned.toLocaleString()} welcome points credited${toast.tierName ? ` · ${toast.tierName}` : ''}`
+          : 'Your membership is ready.',
+        confetti: true,
+      };
     case 'tier-up':
       return {
         icon: Sparkles,
