@@ -359,31 +359,76 @@ export const openLoyalty = {
    * balance. True is for a reward granted without charging for it, which is an
    * administrator's act, not a member's.
    */
-  buyReward(
+  async buyReward(
     token: string,
     rewardId: string,
     member: string,
     reward?: { type?: string | null; couponValue?: number | null },
   ): Promise<Array<{ issuedRewardId: string }>> {
     const type = reward?.type ?? 'static_coupon';
-    // A conversion coupon is bought by the member alone — it carries no
-    // quantity, and sending one is rejected as a field the form does not have.
-    const body =
+
+    /**
+     * The shapes worth trying, best first.
+     *
+     * The spec describes this body as one of four schemas and the tenant
+     * accepts neither an empty object nor the full schema — it answers "this
+     * form should not contain extra fields", which says a field we send is not
+     * one it wants but not which. Rather than guess once and be wrong again,
+     * the shapes are tried in order of how well the spec supports them, and a
+     * rejection for having extra fields moves to the next narrower one.
+     *
+     * Safe to retry: a rejected buy issues nothing and takes no points, so the
+     * only cost of a wrong guess is the round trip. The shape that works is
+     * logged, because the tenant's real contract is worth knowing once rather
+     * than rediscovering.
+     */
+    const candidates: Array<[string, Record<string, unknown>]> = [
       type === 'conversion_coupon'
-        ? { customerId: member }
-        : {
-            customerId: member,
-            quantity: 1,
-            withoutPoints: false,
-            ...(type === 'dynamic_coupon'
-              ? { couponValue: reward?.couponValue ?? 0 }
-              : {}),
-          };
-    return request(`/api/${storeCode}/reward/${rewardId}/buy`, {
-      method: 'POST',
-      token,
-      body: JSON.stringify(body),
-    });
+        ? ['customerId only (conversion)', { customerId: member }]
+        : [
+            'spec shape',
+            {
+              customerId: member,
+              quantity: 1,
+              withoutPoints: false,
+              ...(type === 'dynamic_coupon'
+                ? { couponValue: reward?.couponValue ?? 0 }
+                : {}),
+            },
+          ],
+      ['customerId only', { customerId: member }],
+      // The member's own token already says who they are, so a store may treat
+      // naming them as the surplus field.
+      ['quantity only', { quantity: 1, withoutPoints: false }],
+      ['empty', {}],
+    ];
+
+    let lastError: unknown = null;
+    for (const [label, body] of candidates) {
+      try {
+        const issued = await request<Array<{ issuedRewardId: string }>>(
+          `/api/${storeCode}/reward/${rewardId}/buy`,
+          { method: 'POST', token, body: JSON.stringify(body) },
+        );
+        if (label !== candidates[0][0]) {
+          console.warn(
+            `Reward purchase accepted the "${label}" body, not the spec's — this store's form differs from the vendored schema.`,
+          );
+        }
+        return issued;
+      } catch (err) {
+        lastError = err;
+        // Only a rejected form is worth reshaping for. Not enough points, an
+        // inactive reward or a tier that may not have it are real answers, and
+        // trying a different shape would only bury them.
+        const rejectedForm =
+          err instanceof OpenLoyaltyError &&
+          err.status === 400 &&
+          /extra fields|should not contain|required|not valid/i.test(err.message);
+        if (!rejectedForm) throw err;
+      }
+    }
+    throw lastError;
   },
 
   /**

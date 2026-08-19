@@ -192,6 +192,13 @@ loyaltyRouter.get('/api/rewards', async (req: TokenRequest, res) => {
         costInPoints: r.costInPoints,
         unitsAvailable: r.usageLimit,
         canRedeem: r.canBeBoughtByCustomer ?? false,
+        /**
+         * What kind of reward this is, as the store reports it. Passed through
+         * rather than kept back: buying one takes a payload shaped to its kind,
+         * so this is the field that says which — and when a store's answer
+         * differs from the vendored schema, this is where it shows.
+         */
+        type: r.reward ?? null,
       })),
     });
   } catch (err) {
