@@ -157,12 +157,17 @@ demoRouter.get('/api/demo/personas', async (_req, res) => {
         personaId: id,
         title: COPY[id]?.title ?? id,
         blurb: COPY[id]?.blurb ?? '',
-        name: `${member.firstName} ${member.lastName}`.trim(),
+        name: `${member.firstName ?? ''} ${member.lastName ?? ''}`.trim() || 'Member',
         email: member.email,
         union: isUnion(member),
-        // Live figures, so the card shows what this member actually holds.
-        levelName: member.levelName,
-        points: member.activePoints,
+        /**
+         * Live figures, so the card shows what this member actually holds —
+         * where the platform reports them. A tenant's member list is not
+         * obliged to carry a balance or a tier on every row, and a missing one
+         * is a figure to omit, not a reason to fail.
+         */
+        levelName: member.levelName ?? null,
+        points: typeof member.activePoints === 'number' ? member.activePoints : null,
       })),
     });
   } catch {

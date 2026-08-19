@@ -147,7 +147,14 @@ export default function Personas() {
               title={p.title}
               blurb={p.blurb}
               badge={p.levelName}
-              meta={`${p.name} · ${p.points.toLocaleString()} pts`}
+              // The balance is shown when the platform reports one. Assuming it
+              // is always there took the whole page down on a tenant whose
+              // member list does not carry it.
+              meta={
+                typeof p.points === 'number'
+                  ? `${p.name} · ${p.points.toLocaleString()} pts`
+                  : p.name
+              }
               busy={busy === p.personaId}
               onClick={() => resume(p.personaId)}
             />
