@@ -1,12 +1,17 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { QrCode, ChevronRight, Bell, Cake, Target, Star, Check, Gift, Coins, Package } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import {
+  QrCode, ChevronRight, ChevronDown, Bell, Cake, Target, Star, Check, Gift,
+  Coins, Package, Sparkles, MapPin, Compass, Flame, Zap, Users, Flag, Briefcase,
+  Percent,
+} from 'lucide-react';
 import { useApp, isBirthdayMonthNow } from '../context/AppContext.jsx';
 import { TierBadge, TenantAvatar, tenantName } from '../components/Ui.jsx';
 import { PROMOTIONS } from '../data/mockData.js';
-import { CLUB_VENUES, PROPOSED_CHALLENGES } from '../data/proposedChallenges.js';
+import { CLUB_VENUES, PROPOSED_CHALLENGES, THIRD_HOME_HERO } from '../data/proposedChallenges.js';
 import ScratchCard from '../components/ScratchCard.jsx';
+import TierProgressCard from '../components/TierProgress.jsx';
 import { fmtDate, formatTierMetric } from '../lib/helpers.js';
 import scanIcon from '../assets/icons/scan.png';
 import rewardsIcon from '../assets/icons/rewards.png';
@@ -186,40 +191,134 @@ function milestoneLabel(m) {
 
 const REWARD_ICON = { voucher: Gift, points: Coins, product: Package, scratch: Gift };
 
+/** The face each concept leads with. Keyed by id — the theme names vary too much. */
+const CHALLENGE_ICON = {
+  'september-lull': Compass,
+  'daily-visit-scratch': Flame,
+  'app-streak': Zap,
+  'family-weekender': Users,
+  'clubhouse-regular': Flag,
+  'mice-return': Briefcase,
+};
+
 /**
  * Challenge concepts, offered for review rather than play.
  *
- * Wide cards on purpose: each one has a name, who it is for, the venue it is
- * meant to fill and what it pays, and that does not fit in the width a promo
- * tile gets. Clearly marked as ideas — the live challenge sits at the top of
- * this screen and comes from the platform, and nothing down here is scored,
- * awarded or configured anywhere.
+ * Folded behind one cinematic banner so the home screen carries a single
+ * headline instead of six cards of homework; tapping it unrolls the carousel.
+ * Clearly marked as ideas — the live challenge sits at the top of this screen
+ * and comes from the platform, and nothing down here is scored, awarded or
+ * configured anywhere.
  */
 function ProposedChallenges() {
+  const [open, setOpen] = useState(false);
+  const [active, setActive] = useState(0);
+  const trackRef = useRef(null);
+
+  /**
+   * A freshly opened track starts at the first card. Without this, mandatory
+   * snapping is free to resolve the initial position to whichever card it
+   * likes, and it has been seen picking the middle of the list. Keyed on
+   * `open` only — anything that runs per render fights the member's swipe.
+   */
+  useEffect(() => {
+    if (open && trackRef.current) {
+      trackRef.current.scrollLeft = 0;
+      setActive(0);
+    }
+  }, [open]);
+
+  /** Which card the snap landed on, read off the scroll position. */
+  function onTrackScroll() {
+    const track = trackRef.current;
+    const card = track?.querySelector('[data-card]');
+    if (!card) return;
+    const step = card.offsetWidth + 12; // card + the gap-3 between cards
+    setActive(Math.max(0, Math.min(PROPOSED_CHALLENGES.length - 1, Math.round(track.scrollLeft / step))));
+  }
+
   return (
-    <div>
-      <div className="mb-3 flex items-baseline justify-between">
-        <h2 className="text-[15px] font-bold text-gray-900">Challenge ideas</h2>
-        <span className="rounded-full bg-gray-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-gray-500">
-          Concepts
-        </span>
-      </div>
-      <p className="mb-3 text-[11px] leading-snug text-gray-400">
-        Shapes the programme could run in the quiet month after the school
-        holidays. Not live — nothing here awards anything yet.
-      </p>
-      <div className="no-scrollbar -mx-4 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-1">
-        {PROPOSED_CHALLENGES.map((c) => (
-          <ProposedChallengeCard key={c.id} challenge={c} />
-        ))}
-      </div>
-    </div>
+    <section>
+      <motion.button
+        type="button"
+        whileTap={{ scale: 0.98 }}
+        onClick={() => setOpen((v) => !v)}
+        aria-expanded={open}
+        className="relative block w-full cursor-pointer overflow-hidden rounded-3xl text-left shadow-lg shadow-gray-300/60"
+      >
+        <img src={THIRD_HOME_HERO} alt="" className="absolute inset-0 h-full w-full object-cover" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/50 to-black/10" />
+        <div className="relative flex items-center justify-between gap-3 px-5 py-5">
+          <div>
+            <p className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.22em] text-gold-400">
+              <Sparkles size={11} /> September at the Club
+            </p>
+            <p className="mt-1 font-poppins text-[23px] font-extrabold leading-[1.04] tracking-tight text-white">
+              Your third home
+              <span className="block font-playfair italic tracking-normal text-gold-400">
+                just got better.
+              </span>
+            </p>
+            {!open && (
+              <p className="mt-1.5 text-[11px] font-medium text-white/70">
+                Six challenge concepts — tap to explore
+              </p>
+            )}
+          </div>
+          <motion.span
+            animate={{ rotate: open ? 180 : 0 }}
+            transition={{ duration: 0.3 }}
+            className="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-white/25 bg-white/15 text-white backdrop-blur-sm"
+          >
+            <ChevronDown size={18} />
+          </motion.span>
+        </div>
+      </motion.button>
+
+      <AnimatePresence initial={false}>
+        {open && (
+          <motion.div
+            key="concepts"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.35, ease: [0.32, 0.72, 0, 1] }}
+            className="overflow-hidden"
+          >
+            <p className="px-1 pt-3 text-[11px] leading-snug text-gray-400">
+              Six concept challenges for September. Not live yet — nothing here
+              awards anything.
+            </p>
+            <div
+              ref={trackRef}
+              onScroll={onTrackScroll}
+              className="no-scrollbar -mx-4 flex gap-3 overflow-x-auto px-4 pb-1 pt-3"
+            >
+              {PROPOSED_CHALLENGES.map((c, i) => (
+                <ProposedChallengeCard key={c.id} challenge={c} index={i} />
+              ))}
+            </div>
+            <div className="mt-3 flex items-center justify-center gap-1.5">
+              {PROPOSED_CHALLENGES.map((c, i) => (
+                <span
+                  key={c.id}
+                  className={`h-1.5 rounded-full transition-all duration-300 ${
+                    i === active ? 'w-5 bg-brand-500' : 'w-1.5 bg-gray-300'
+                  }`}
+                />
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </section>
   );
 }
 
-function ProposedChallengeCard({ challenge }) {
+function ProposedChallengeCard({ challenge, index }) {
   const [scratched, setScratched] = useState(null);
   const RewardIcon = REWARD_ICON[challenge.reward.kind] ?? Gift;
+  const ThemeIcon = CHALLENGE_ICON[challenge.id] ?? Target;
   // A streak card earns its scratch on the last step, so the card only appears
   // once the goal is in reach — otherwise it is a prize before the work.
   const streak = challenge.milestones[0];
@@ -227,65 +326,93 @@ function ProposedChallengeCard({ challenge }) {
     challenge.reward.kind === 'scratch' && streak.current >= streak.goal - 1;
 
   return (
-    <div className="w-[88%] shrink-0 snap-start overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm">
-      <div className={`bg-gradient-to-br ${challenge.accent} px-4 py-3 text-white`}>
-        <p className="text-[10px] font-bold uppercase tracking-widest text-white/75">
-          {challenge.theme}
-        </p>
-        <p className="mt-0.5 text-[15px] font-extrabold leading-tight">{challenge.name}</p>
-        <p className="mt-1 text-[11px] leading-snug text-white/85">{challenge.blurb}</p>
+    <motion.div
+      data-card
+      initial={{ opacity: 0, y: 24 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.1 + index * 0.06, duration: 0.4, ease: 'easeOut' }}
+      className="relative flex min-h-[420px] w-[78%] shrink-0 flex-col justify-between overflow-hidden rounded-[28px] shadow-xl shadow-gray-400/40"
+    >
+      <img src={challenge.image} alt="" className="absolute inset-0 h-full w-full object-cover" />
+      {/* The accent keeps six different photos reading as one set. */}
+      <div className={`absolute inset-0 bg-gradient-to-br ${challenge.accent} opacity-25 mix-blend-multiply`} />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/15" />
+
+      <div className="relative flex items-start justify-between gap-2 p-4">
+        <span className="inline-flex items-center gap-1.5 rounded-full border border-white/25 bg-white/15 px-2.5 py-1 text-[10px] font-bold uppercase tracking-widest text-white backdrop-blur-md">
+          <ThemeIcon size={11} /> {challenge.theme}
+        </span>
+        <span className="rounded-full bg-black/35 px-2 py-1 text-[9px] font-bold uppercase tracking-widest text-white/70 backdrop-blur-md">
+          Concept
+        </span>
       </div>
 
-      <div className="space-y-2.5 px-4 py-3">
-        {challenge.milestones.map((m) => {
-          const pct = Math.min(100, Math.round((m.current / m.goal) * 100));
-          return (
-            <div key={m.label}>
-              <div className="flex items-center justify-between text-[11px]">
-                <span className="text-gray-600">{m.label}</span>
-                <span className="font-semibold text-gray-400">
-                  {m.current}/{m.goal}
-                </span>
+      <div className="relative space-y-3 p-5 pt-10">
+        <div>
+          <p className="font-poppins text-[26px] font-extrabold leading-[1.02] tracking-tight text-white [text-shadow:0_2px_16px_rgba(0,0,0,0.45)]">
+            {challenge.name}
+          </p>
+          <p className="mt-1.5 text-xs leading-snug text-white/80">{challenge.blurb}</p>
+        </div>
+
+        <div className="space-y-2">
+          {challenge.milestones.map((m) => {
+            const pct = Math.min(100, Math.round((m.current / m.goal) * 100));
+            const done = m.current >= m.goal;
+            return (
+              <div key={m.label}>
+                <div className="flex items-center justify-between text-[11px]">
+                  <span className="flex items-center gap-1 font-medium text-white/85">
+                    {done && <Check size={11} className="text-gold-400" />}
+                    {m.label}
+                  </span>
+                  <span className="font-bold text-white/70">
+                    {m.current}/{m.goal}
+                  </span>
+                </div>
+                <div className="mt-1 h-1.5 w-full overflow-hidden rounded-full bg-white/20">
+                  <div
+                    className="h-full rounded-full bg-gold-400 transition-all duration-500"
+                    style={{ width: `${pct}%` }}
+                  />
+                </div>
               </div>
-              <div className="mt-1 h-1.5 w-full overflow-hidden rounded-full bg-gray-100">
-                <div
-                  className="h-full rounded-full bg-brand-500 transition-all duration-500"
-                  style={{ width: `${pct}%` }}
-                />
-              </div>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
 
         {scratchReady && (
-          <div className="pt-1">
+          <div className="rounded-2xl border border-white/15 bg-white/10 p-2 backdrop-blur-md">
             <ScratchCard
               prize={challenge.prizes[0]}
               onRevealed={(p) => setScratched(p)}
             />
             {scratched && (
-              <p className="mt-1.5 text-center text-[10.5px] text-gray-400">
+              <p className="mt-1.5 text-center text-[10.5px] text-white/70">
                 Concept only — nothing has been credited.
               </p>
             )}
           </div>
         )}
 
-        <div className="flex items-center gap-2 border-t border-dashed border-gray-100 pt-2.5">
-          <RewardIcon size={14} className="shrink-0 text-brand-500" />
-          <p className="min-w-0 flex-1 truncate text-[11.5px] font-semibold text-gray-700">
+        <div className="flex items-center gap-2 rounded-2xl border border-white/15 bg-white/10 px-3 py-2.5 backdrop-blur-md">
+          <RewardIcon size={15} className="shrink-0 text-gold-400" />
+          <p className="min-w-0 flex-1 truncate text-xs font-bold text-white">
             {challenge.reward.label}
           </p>
         </div>
 
-        <p className="text-[10.5px] leading-snug text-gray-400">
-          {challenge.segment}
-          {challenge.venues.length > 0 && (
-            <> · {challenge.venues.map((v) => CLUB_VENUES[v]).join(', ')}</>
-          )}
+        <p className="flex items-center gap-1 text-[10px] font-medium leading-snug text-white/60">
+          <MapPin size={10} className="shrink-0" />
+          <span className="min-w-0 truncate">
+            {challenge.segment}
+            {challenge.venues.length > 0 && (
+              <> · {challenge.venues.map((v) => CLUB_VENUES[v]).join(', ')}</>
+            )}
+          </span>
         </p>
       </div>
-    </div>
+    </motion.div>
   );
 }
 
@@ -299,21 +426,54 @@ function ChallengeSkeleton() {
   );
 }
 
+/**
+ * What the live challenge pays, mirrored from the campaign's rules on the
+ * platform: each milestone's progression hands out the shopping discount, and
+ * completing the whole challenge adds the points. The member-progress API
+ * reports progress but not rule effects, so until the BFF maps effects through
+ * these labels are presentation copy kept in step with the campaign by hand.
+ */
+const CHALLENGE_EARNS = [
+  { icon: Percent, headline: '10% off', detail: 'your next shop, for each step done' },
+  { icon: Coins, headline: '+50 pts', detail: 'when the whole challenge is done' },
+];
+
+/**
+ * Display titles for live challenges. The platform names campaigns for the
+ * console ("Purchase & review"); a member should get the sell. Keyed by the
+ * campaign's name so an unmapped challenge still shows what the platform
+ * calls it.
+ */
+const CHALLENGE_TITLES = {
+  'Purchase & review': 'Shop, rate, get rewarded',
+};
+
 function ChallengeBanner({ challenge }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
-      className="overflow-hidden rounded-2xl bg-gradient-to-br from-brand-600 to-brand-800 p-4 text-white shadow-lg"
+      className="rounded-[24px] border border-gray-100 bg-white p-5 shadow-sm"
     >
-      <div className="flex items-center gap-2">
-        <Target size={18} />
-        <p className="text-sm font-bold">{challenge.name}</p>
+      <div className="flex items-center justify-between">
+        <span className="inline-flex items-center gap-1.5 rounded-full bg-brand-50 px-2.5 py-1 text-[10px] font-bold uppercase tracking-widest text-brand-600">
+          <span className="relative flex h-1.5 w-1.5">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-500 opacity-75" />
+            <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-brand-500" />
+          </span>
+          Live challenge
+        </span>
+        <Target size={16} className="text-brand-500" />
       </div>
+
+      <p className="mt-3 font-poppins text-[22px] font-extrabold leading-[1.05] tracking-tight text-gray-900">
+        {CHALLENGE_TITLES[challenge.name] ?? challenge.name}
+      </p>
       {challenge.description && (
-        <p className="mt-0.5 text-xs text-white/80">{challenge.description}</p>
+        <p className="mt-1 text-xs leading-snug text-gray-400">{challenge.description}</p>
       )}
-      <div className="mt-3 space-y-2">
+
+      <div className="mt-3.5 space-y-2">
         {challenge.milestones.map((m) => {
           const goal = m.goal ?? 0;
           const done = goal > 0 && m.current >= goal;
@@ -321,22 +481,39 @@ function ChallengeBanner({ challenge }) {
           return (
             <div key={m.milestoneId}>
               <div className="flex items-center justify-between text-[11px]">
-                <span className="flex items-center gap-1 text-white/85">
-                  {done && <Check size={12} />} {milestoneLabel(m)}
+                <span className="flex items-center gap-1 font-medium text-gray-600">
+                  {done && <Check size={11} className="text-brand-500" />} {milestoneLabel(m)}
                 </span>
-                <span className="font-semibold text-white/85">
+                <span className="font-bold text-gray-400">
                   {Math.min(m.current, goal)}/{goal}
                 </span>
               </div>
-              <div className="mt-1 h-1.5 w-full overflow-hidden rounded-full bg-white/25">
+              <div className="mt-1 h-1.5 w-full overflow-hidden rounded-full bg-gray-100">
                 <div
-                  className="h-full rounded-full bg-white transition-all duration-500"
+                  className="h-full rounded-full bg-brand-500 transition-all duration-500"
                   style={{ width: `${pct}%` }}
                 />
               </div>
             </div>
           );
         })}
+      </div>
+
+      <div className="mt-4 border-t border-gray-100 pt-3">
+        <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-gray-400">
+          What you'll earn
+        </p>
+        <div className="mt-2 grid grid-cols-2 gap-2">
+          {CHALLENGE_EARNS.map(({ icon: Icon, headline, detail }) => (
+            <div key={headline} className="rounded-2xl bg-brand-50 px-3 py-2.5">
+              <div className="flex items-center gap-1.5">
+                <Icon size={14} className="shrink-0 text-brand-500" />
+                <p className="font-poppins text-sm font-extrabold text-gray-900">{headline}</p>
+              </div>
+              <p className="mt-0.5 text-[10.5px] leading-snug text-gray-500">{detail}</p>
+            </div>
+          ))}
+        </div>
       </div>
     </motion.div>
   );
@@ -464,66 +641,6 @@ function ActivityRow({ entry }) {
         {positive ? '+' : ''}
         {entry.amount.toLocaleString()}
       </span>
-    </div>
-  );
-}
-
-/**
- * Progress toward the next tier, exactly as the loyalty platform reports it.
- *
- * Every number here — the goal, the current value, the percentage, the date the
- * qualification period rolls over — comes from the platform. The app formats
- * them and nothing more, so a threshold changed in the console shows up here
- * without a release.
- */
-function TierProgressCard({ progress }) {
-  if (!progress?.nextTierName) return null;
-
-  const condition = progress.nextTierCurrentProgress?.[0];
-  const eligible = progress.nextTierEligible !== false;
-  const pct = Math.max(0, Math.min(100, progress.currentProgress ?? 0));
-
-  return (
-    <div className="rounded-2xl border border-gray-100 bg-white p-3.5 shadow-sm">
-      <div>
-        <div className="flex items-baseline justify-between gap-2">
-          <p className="text-[12px] font-bold text-gray-800">
-            {eligible
-              ? `${formatTierMetric(
-                  condition?.attribute,
-                  Math.max(0, (condition?.valueGoal ?? 0) - (condition?.currentValue ?? 0)),
-                )} to ${progress.nextTierName}`
-              : `${progress.nextTierName} — members only`}
-          </p>
-          {eligible && condition && (
-            <p className="text-[11px] font-semibold text-gray-400">
-              {formatTierMetric(condition.attribute, condition.currentValue)} /{' '}
-              {formatTierMetric(condition.attribute, condition.valueGoal)}
-            </p>
-          )}
-        </div>
-
-        {eligible ? (
-          <>
-            <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-gray-100">
-              <div
-                className="h-full rounded-full bg-brand-500 transition-all duration-500"
-                style={{ width: `${pct}%` }}
-              />
-            </div>
-            {progress.nextRecalculationAt && (
-              <p className="mt-1.5 text-[10.5px] text-gray-400">
-                Qualifying period resets {fmtDate(progress.nextRecalculationAt)}
-              </p>
-            )}
-          </>
-        ) : (
-          <p className="mt-1 text-[11px] leading-snug text-gray-500">
-            {progress.nextTierName} is open to NTUC union members automatically, or on
-            reaching the spend threshold.
-          </p>
-        )}
-      </div>
     </div>
   );
 }

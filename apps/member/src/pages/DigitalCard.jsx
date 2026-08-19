@@ -6,6 +6,7 @@ import { useApp } from '../context/AppContext.jsx';
 import { qrPayloadFor } from '../lib/loyalty.js';
 import PageHeader from '../components/PageHeader.jsx';
 import { TierBadge } from '../components/Ui.jsx';
+import TierProgressCard from '../components/TierProgress.jsx';
 
 export default function DigitalCard() {
   const { state, loyaltySync, syncMember } = useApp();
@@ -46,6 +47,13 @@ export default function DigitalCard() {
           </div>
         </div>
 
+
+        {/* The same platform-reported tier progress the home screen shows —
+          * repeated here because the card is where a member checks their
+          * standing on the way to a till. */}
+        <div className="mt-3">
+          <TierProgressCard progress={state.tierProgress} />
+        </div>
 
         <div className="mt-6 rounded-2xl border border-dashed border-gray-200 bg-white p-4">
           <p className="text-xs font-semibold text-gray-500">How it works at the counter</p>

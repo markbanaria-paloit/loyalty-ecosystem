@@ -13,7 +13,24 @@
  * have room. Each concept names the venue it is meant to fill and the segment
  * it is aimed at, because "who is this for and what is it moving" is the part
  * worth reviewing.
+ *
+ * Blurbs are written as the member would read them — sell the outing, never
+ * the occupancy problem behind it. The ops rationale ("fill September") lives
+ * in `theme`, `venues` and `segment`, which is where reviewers look.
  */
+
+import goldenHourPark from '../assets/1024x682_147e6d56d-aacc-428a-8f7e-9d0a713ea3b2.jpg';
+import kopitiamHall from '../assets/images.jpeg';
+import confettiNight from '../assets/checkin-confetti.jpg';
+import krakenRacers from '../assets/kraken-racers-2a.jpg';
+import golfClubhouse from '../assets/golf-clubhouse.jpg';
+import sgMiceTwilight from '../assets/sg-mice-twilight.jpg';
+
+/**
+ * The hero image for the section's collapsed banner — the most cinematic shot
+ * we have, cropped dark so the headline carries it.
+ */
+export const THIRD_HOME_HERO = goldenHourPark;
 
 /** The venues a challenge can be pointed at. */
 export const CLUB_VENUES = {
@@ -41,7 +58,7 @@ export const PROPOSED_CHALLENGES = [
     theme: 'Seasonal',
     name: 'September Explorer',
     blurb:
-      "Visit three different NTUC Club places in September — the quiet month between school holidays.",
+      'Three adventures, one September. Hit Downtown East, Wild Wild Wet and D\'Resort while the crowds stay home — the voucher\'s yours.',
     venues: ['de', 'www', 'dresort'],
     segment: 'Everyone',
     milestones: [
@@ -51,18 +68,20 @@ export const PROPOSED_CHALLENGES = [
     ],
     reward: { kind: 'voucher', label: '$20 store voucher' },
     accent: 'from-sky-500 to-blue-700',
+    image: goldenHourPark,
   },
   {
     id: 'daily-visit-scratch',
     theme: 'Streak',
     name: 'Five Days at the Club',
     blurb:
-      'Check in five days running at any clubhouse. The fifth day opens a scratch card.',
+      'Make the Club your daily habit — five days straight and day five hands you a scratch card with real prizes.',
     venues: ['clubhouse', 'de'],
     segment: 'Everyone',
     milestones: [{ label: 'Days checked in', goal: 5, current: 4 }],
     reward: { kind: 'scratch', label: 'Scratch card on day five' },
     accent: 'from-amber-500 to-orange-600',
+    image: kopitiamHall,
     /** What the card can turn up. Weightings are a programme decision. */
     prizes: [
       '$5 Kopitiam voucher',
@@ -76,19 +95,21 @@ export const PROPOSED_CHALLENGES = [
     id: 'app-streak',
     theme: 'Streak',
     name: 'Daily Check-in',
-    blurb: 'Open the app five days in a row for 100 points. Repeats every streak.',
+    blurb:
+      'The easiest points in the Club: open the app five days running, pocket 100 points. Then do it again.',
     venues: [],
     segment: 'Everyone',
     milestones: [{ label: 'Days in a row', goal: 5, current: 2 }],
     reward: { kind: 'points', label: '100 points per streak' },
     accent: 'from-violet-500 to-purple-700',
+    image: confettiNight,
   },
   {
     id: 'family-weekender',
     theme: 'Segment · Families',
     name: 'Family Weekender',
     blurb:
-      "Two family visits across Wild Wild Wet and D'Resort, and the picnic set is yours.",
+      "Two big days out at Wild Wild Wet and D'Resort — and the family picnic set comes home with you.",
     venues: ['www', 'dresort'],
     segment: 'Families with children',
     milestones: [
@@ -97,28 +118,32 @@ export const PROPOSED_CHALLENGES = [
     ],
     reward: { kind: 'product', label: 'Claim a family picnic set' },
     accent: 'from-emerald-500 to-teal-700',
+    image: krakenRacers,
   },
   {
     id: 'clubhouse-regular',
     theme: 'Segment · Members near a clubhouse',
     name: 'Your Local Clubhouse',
     blurb:
-      'Three visits to Orchid or Aranda this month — dining counts, not just the course.',
+      'Your clubhouse is closer than you think. Three visits to Orchid or Aranda this month — dinner counts too — and the dining credit is on us.',
     venues: ['occ', 'acc', 'mgk'],
     segment: 'Members within 5km of a clubhouse',
     milestones: [{ label: 'Clubhouse visits', goal: 3, current: 1 }],
     reward: { kind: 'voucher', label: '$30 dining credit' },
     accent: 'from-rose-500 to-red-700',
+    image: golfClubhouse,
   },
   {
     id: 'mice-return',
     theme: 'Segment · Corporate',
     name: 'Bring the Team Back',
-    blurb: 'Book two meetings at an NTUC Club MICE venue before the year turns.',
+    blurb:
+      'Plan the off-site your team will actually talk about. Two bookings before the year ends puts catering on us.',
     venues: ['mice'],
     segment: 'Corporate bookers',
     milestones: [{ label: 'Bookings confirmed', goal: 2, current: 1 }],
     reward: { kind: 'voucher', label: '$100 catering credit' },
     accent: 'from-slate-600 to-gray-800',
+    image: sgMiceTwilight,
   },
 ];
