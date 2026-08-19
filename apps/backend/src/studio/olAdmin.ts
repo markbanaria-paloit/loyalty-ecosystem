@@ -89,6 +89,8 @@ export interface AdminMember {
   firstName: string;
   lastName: string;
   email: string;
+  /** Present on stores that record one; derived from the address otherwise. */
+  loyaltyCardNumber?: string | null;
   levelId: string;
   levelName: string | null;
   levelManuallyAssigned?: boolean;

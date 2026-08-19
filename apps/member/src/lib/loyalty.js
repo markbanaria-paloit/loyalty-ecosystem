@@ -325,6 +325,21 @@ export async function fetchPersonas() {
   return personas ?? [];
 }
 
+/**
+ * Resume whoever holds this card number.
+ *
+ * The card is what a member is known by at the till, so it is the natural thing
+ * to type when you want a particular person rather than a story.
+ */
+export async function startCardSession(cardNumber) {
+  const session = await req(
+    `/api/demo/card/${encodeURIComponent(cardNumber.trim())}/session`,
+    { method: 'POST' },
+  );
+  setToken(session.token);
+  return session;
+}
+
 /** Resume one of them. Returns the same account shape enrolment does. */
 export async function startPersonaSession(personaId) {
   const session = await req(`/api/demo/personas/${personaId}/session`, { method: 'POST' });

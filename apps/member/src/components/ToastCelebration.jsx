@@ -1,7 +1,8 @@
 import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import confetti from 'canvas-confetti';
-import { PartyPopper, Sparkles, RotateCcw, Gift, Bell, ParkingCircle, XCircle } from 'lucide-react';
+import { PartyPopper, Sparkles, RotateCcw, Gift, Bell, ParkingCircle, XCircle, Target, Trophy, ChevronRight } from 'lucide-react';
 import { useApp } from '../context/AppContext.jsx';
 
 function fire() {
@@ -29,6 +30,30 @@ function toastContent(toast) {
             : 'Your membership is ready.',
         confetti: true,
       };
+    /**
+     * A goal met, and a goal finished.
+     *
+     * The member did the thing minutes ago and the platform scored it since, so
+     * without a word the only sign is a bar that has quietly moved. The
+     * completion carries a way to the reward it paid: it is sitting in their
+     * vouchers, and the toast is the only moment they are looking.
+     */
+    case 'milestone':
+      return {
+        icon: Target,
+        title: 'Milestone reached',
+        body: toast.name ? `You're closer to finishing ${toast.name}` : 'Keep going',
+        confetti: false,
+      };
+    case 'challenge-done':
+      return {
+        icon: Trophy,
+        title: `${toast.name ?? 'Challenge'} complete!`,
+        body: 'Your reward is in My Vouchers',
+        confetti: true,
+        to: '/rewards?tab=vouchers',
+      };
+
     case 'tier-up':
       return {
         icon: Sparkles,
@@ -68,6 +93,7 @@ function toastContent(toast) {
 
 export default function ToastCelebration() {
   const { state, dispatch } = useApp();
+  const navigate = useNavigate();
   const content = toastContent(state.toast);
 
   useEffect(() => {
@@ -88,12 +114,19 @@ export default function ToastCelebration() {
           transition={{ type: 'spring', stiffness: 400, damping: 30 }}
           className="safe-top fixed left-0 right-0 top-0 z-[60] flex justify-center px-3 pt-3"
         >
-          <div className="flex max-w-md items-start gap-3 rounded-2xl bg-gray-900 px-4 py-3 text-white shadow-xl">
+          <div
+            role={content.to ? 'button' : undefined}
+            onClick={content.to ? () => navigate(content.to) : undefined}
+            className={`flex max-w-md items-start gap-3 rounded-2xl bg-gray-900 px-4 py-3 text-white shadow-xl ${
+              content.to ? 'cursor-pointer active:scale-[0.99]' : ''
+            }`}
+          >
             <content.icon size={20} className="mt-0.5 shrink-0 text-brand-400" />
-            <div>
+            <div className="min-w-0">
               <p className="text-sm font-bold leading-tight">{content.title}</p>
               <p className="text-xs text-gray-300">{content.body}</p>
             </div>
+            {content.to && <ChevronRight size={16} className="mt-0.5 shrink-0 text-gray-400" />}
           </div>
         </motion.div>
       )}

@@ -21,6 +21,7 @@ import {
   fetchVouchers,
   logEvent,
   redeemReward,
+  startCardSession,
   startPersonaSession,
 } from '../lib/loyalty.js';
 
@@ -308,8 +309,50 @@ function reducer(state, action) {
     case 'SET_PLATFORM_VOUCHERS':
       return { ...state, platformVouchers: action.payload };
 
-    case 'SET_CHALLENGES':
-      return { ...state, challenges: action.payload };
+    /**
+     * Challenges as the platform scores them, and a word when one moves.
+     *
+     * Announcing a milestone is the same courtesy as announcing points landing:
+     * the member did something a while ago, the platform scored it since, and
+     * without this the only sign is a bar that is further along than it was.
+     *
+     * Nothing is announced on the first answer. `challenges` starts unknown, so
+     * the step from "we have not asked" to "here is where you are" would
+     * otherwise celebrate every goal the member had already met.
+     */
+    case 'SET_CHALLENGES': {
+      const next = action.payload;
+      if (state.challenges === null) return { ...state, challenges: next };
+
+      const was = new Map(
+        state.challenges.flatMap((c) => c.milestones.map((m) => [m.milestoneId, m])),
+      );
+      const justDone = next
+        .flatMap((c) => c.milestones.map((m) => ({ c, m })))
+        .filter(({ m }) => {
+          const before = was.get(m.milestoneId);
+          return (
+            before && m.goal && before.current < m.goal && m.current >= m.goal
+          );
+        });
+
+      // A challenge whose completion count went up is the bigger news, and the
+      // reward it paid is waiting in the member's vouchers.
+      const completed = next.find((c) => {
+        const before = state.challenges.find((p) => p.campaignId === c.campaignId);
+        return before && c.completedCount > before.completedCount;
+      });
+
+      return {
+        ...state,
+        challenges: next,
+        toast: completed
+          ? { kind: 'challenge-done', name: completed.name }
+          : justDone.length
+            ? { kind: 'milestone', name: justDone[0].c.name }
+            : state.toast,
+      };
+    }
 
     case 'UPDATE_CONSENT': {
       return { ...state, consent: { ...state.consent, [action.payload.channel]: action.payload.value } };
@@ -504,9 +547,8 @@ export function AppProvider({ children }) {
    * No enrolment runs, so no welcome campaign fires — which is the point: this
    * is what a returning member sees, tier and balance included.
    */
-  const signInAsPersona = useCallback(async (personaId) => {
+  const resumeSession = useCallback(async (session) => {
     setLoyaltySync({ status: 'syncing', error: null });
-    const session = await startPersonaSession(personaId);
     const m = session.member;
     dispatch({
       type: 'SIGN_IN',
@@ -540,6 +582,23 @@ export function AppProvider({ children }) {
     dispatch({ type: 'SET_ENROLMENT', payload: null });
     setLoyaltySync({ status: 'linked', error: null });
   }, []);
+
+  const signInAsPersona = useCallback(
+    async (personaId) => resumeSession(await startPersonaSession(personaId)),
+    [resumeSession],
+  );
+
+  /**
+   * Resume by card number rather than by persona.
+   *
+   * Same session, reached a different way: a card is how a member is known at
+   * the till, so it is what you have to hand when you want one particular
+   * person rather than one of the prepared stories.
+   */
+  const signInWithCard = useCallback(
+    async (cardNumber) => resumeSession(await startCardSession(cardNumber)),
+    [resumeSession],
+  );
 
   /**
    * Sign in and do not resolve until the platform has settled the member.
@@ -697,12 +756,23 @@ export function AppProvider({ children }) {
       loyaltySync,
       signIn,
       signInAsPersona,
+      signInWithCard,
       syncMember,
       refreshAccount,
       redeemCart,
       rate,
     }),
-    [state, loyaltySync, signIn, signInAsPersona, syncMember, refreshAccount, redeemCart, rate],
+    [
+      state,
+      loyaltySync,
+      signIn,
+      signInAsPersona,
+      signInWithCard,
+      syncMember,
+      refreshAccount,
+      redeemCart,
+      rate,
+    ],
   );
   return <AppCtx.Provider value={value}>{children}</AppCtx.Provider>;
 }

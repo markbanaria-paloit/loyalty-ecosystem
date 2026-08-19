@@ -157,7 +157,15 @@ export default function Home() {
  */
 function currentChallenge(challenges) {
   const open = (challenges ?? []).filter(
-    (c) => !c.limitReached && c.milestones.some((m) => m.goal && m.current < m.goal),
+    (c) =>
+      // Not offered again once it has been done. The platform says this one is
+      // repeatable — `limitReached` stays false and the milestones reset — so
+      // this is a choice about what to put in front of a member, not something
+      // the programme decided: a goal you have already met is not news, and
+      // showing it again reads as the app having forgotten.
+      !c.limitReached &&
+      !c.completedCount &&
+      c.milestones.some((m) => m.goal && m.current < m.goal),
   );
   if (!open.length) return null;
   const remaining = (c) =>

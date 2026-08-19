@@ -192,6 +192,72 @@ demoRouter.get('/api/demo/personas', async (_req, res) => {
   }
 });
 
+/**
+ * Start a session as whoever holds this card.
+ *
+ * The demo's way in for a specific member rather than a story: a card number
+ * is what a member is known by at the till, so it is the natural thing to type.
+ * Same credentials handling as the personas — the password stays here.
+ */
+demoRouter.post('/api/demo/card/:cardNumber/session', async (req, res) => {
+  try {
+    const wanted = req.params.cardNumber.trim().toUpperCase();
+    const member = (await olAdmin.members()).find(
+      (m) => (m.loyaltyCardNumber ?? cardNumberFromEmail(m.email))?.toUpperCase() === wanted,
+    );
+    if (!member) {
+      res.status(404).json({ message: 'No member holds that card number' });
+      return;
+    }
+    res.json(await sessionFor(member));
+  } catch (err) {
+    const status = err instanceof OpenLoyaltyError ? err.status : 502;
+    res.status(status === 401 ? 401 : 502).json({
+      message: status === 401 ? 'Sign-in failed' : 'Upstream error',
+    });
+  }
+});
+
+/**
+ * Sign a member in and hand back the session the app expects.
+ *
+ * Each demo password is tried rather than recording which one an account was
+ * created with. Only a 401 is worth moving on from — anything else is the
+ * platform failing, and retrying would bury the reason.
+ */
+async function sessionFor(member: AdminMember) {
+  let tokens = null;
+  let lastError: unknown = null;
+  for (const password of CANDIDATE_PASSWORDS) {
+    try {
+      tokens = await openLoyalty.memberLogin(member.email, password);
+      break;
+    } catch (err) {
+      lastError = err;
+      if (!(err instanceof OpenLoyaltyError) || err.status !== 401) throw err;
+    }
+  }
+  if (!tokens) throw lastError;
+
+  const memberId = memberIdFromToken(tokens.token) ?? member.customerId;
+  const status = await openLoyalty.status(tokens.token, memberId);
+
+  return {
+    token: tokens.token,
+    refreshToken: tokens.refresh_token,
+    member: {
+      customerId: status.customerId,
+      firstName: status.firstName,
+      lastName: status.lastName,
+      email: member.email,
+      loyaltyCardNumber:
+        member.loyaltyCardNumber ?? cardNumberFromEmail(member.email),
+      union: isUnion(member),
+    },
+    account: toAccount(status, await ladder()),
+  };
+}
+
 /** Start a session as one of the seeded personas. */
 demoRouter.post('/api/demo/personas/:personaId/session', async (req, res) => {
   try {
@@ -200,40 +266,7 @@ demoRouter.post('/api/demo/personas/:personaId/session', async (req, res) => {
       res.status(404).json({ message: 'Unknown persona' });
       return;
     }
-    const { member } = found;
-
-    // Try each demo password rather than recording which one this account was
-    // created with. Only a 401 is worth moving on from — anything else is the
-    // platform failing, and retrying would bury the reason.
-    let tokens = null;
-    let lastError: unknown = null;
-    for (const password of CANDIDATE_PASSWORDS) {
-      try {
-        tokens = await openLoyalty.memberLogin(member.email, password);
-        break;
-      } catch (err) {
-        lastError = err;
-        if (!(err instanceof OpenLoyaltyError) || err.status !== 401) throw err;
-      }
-    }
-    if (!tokens) throw lastError;
-
-    const memberId = memberIdFromToken(tokens.token) ?? member.customerId;
-    const status = await openLoyalty.status(tokens.token, memberId);
-
-    res.json({
-      token: tokens.token,
-      refreshToken: tokens.refresh_token,
-      member: {
-        customerId: status.customerId,
-        firstName: status.firstName,
-        lastName: status.lastName,
-        email: member.email,
-        loyaltyCardNumber: cardNumberFromEmail(member.email),
-        union: isUnion(member),
-      },
-      account: toAccount(status, await ladder()),
-    });
+    res.json(await sessionFor(found.member));
   } catch (err) {
     const status = err instanceof OpenLoyaltyError ? err.status : 502;
     res.status(status === 401 ? 401 : 502).json({

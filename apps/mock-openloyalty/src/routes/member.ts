@@ -191,6 +191,18 @@ memberRouter.get(
     const purchases = [...store.transactions.values()].filter(
       (t) => t.customerId === customer.customerId,
     ).length;
+
+    /**
+     * A finished challenge counts once and starts over.
+     *
+     * That is what the tenant does: `completedCount` goes up and the milestones
+     * go back to zero, ready for another run. A mock that left the milestones
+     * full instead would never show a caller the reset, and the screen built
+     * against it would treat a fresh run as a finished one.
+     */
+    const completedCount = reviews >= 1 && purchases >= 3 ? 1 : 0;
+    const reviewProgress = completedCount ? 0 : Math.min(reviews, 1);
+    const purchaseProgress = completedCount ? 0 : Math.min(purchases, 3);
     res.json(
       listEnvelope([
         {
@@ -200,12 +212,12 @@ memberRouter.get(
             'Leave a review and make three purchases.',
           limitReached: false,
           memberProgress: {
-            completedCount: 0,
+            completedCount,
             milestones: [
               {
                 milestoneId: 'baf87827-72cc-4096-b3eb-a159c90de989',
                 periodGoal: 1,
-                currentPeriodValue: Math.min(reviews, 1),
+                currentPeriodValue: reviewProgress,
                 consecutivePeriods: null,
                 completedConsecutivePeriods: 0,
                 periodType: 'overall',
@@ -215,7 +227,7 @@ memberRouter.get(
               {
                 milestoneId: 'f8a94daa-b113-44ba-be49-4a93d10ad1fa',
                 periodGoal: 3,
-                currentPeriodValue: Math.min(purchases, 3),
+                currentPeriodValue: purchaseProgress,
                 consecutivePeriods: null,
                 completedConsecutivePeriods: 0,
                 periodType: 'overall',

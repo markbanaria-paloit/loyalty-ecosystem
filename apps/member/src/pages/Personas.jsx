@@ -20,7 +20,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Loader2, Sparkles, History, Users, User, RotateCw } from 'lucide-react';
+import { Loader2, Sparkles, History, Users, User, RotateCw, CreditCard } from 'lucide-react';
 import { useApp } from '../context/AppContext.jsx';
 import { fetchPersonas } from '../lib/loyalty.js';
 import ntucLogo from '../assets/icons/ntuc-club-logo.png';
@@ -41,12 +41,13 @@ const NEW_PERSONAS = [
 ];
 
 export default function Personas() {
-  const { signInAsPersona } = useApp();
+  const { signInAsPersona, signInWithCard } = useApp();
   const navigate = useNavigate();
   const [existing, setExisting] = useState([]);
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(null);
   const [error, setError] = useState(null);
+  const [card, setCard] = useState('');
 
   /**
    * Re-read the members on the platform.
@@ -66,6 +67,18 @@ export default function Personas() {
   useEffect(() => {
     load();
   }, [load]);
+
+  async function resumeCard() {
+    setBusy('card');
+    setError(null);
+    try {
+      await signInWithCard(card);
+      navigate('/', { replace: true });
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Could not find that loyalty ID');
+      setBusy(null);
+    }
+  }
 
   async function resume(personaId) {
     setBusy(personaId);
@@ -160,6 +173,37 @@ export default function Personas() {
             />
           ))}
         </div>
+
+        {/*
+          * The way in for a particular person rather than a story. Discovery
+          * offers the newest of each kind, which is right for a demo and no use
+          * at all when you want the member you were just looking at in the
+          * console — the card number is what identifies them there.
+          */}
+        <p className="mt-7 flex items-center gap-1.5 px-1 text-[11px] font-bold uppercase tracking-wider text-white/50">
+          <CreditCard size={12} /> Or use a loyalty ID
+        </p>
+        <form
+          className="mt-2 flex gap-2"
+          onSubmit={(e) => {
+            e.preventDefault();
+            resumeCard();
+          }}
+        >
+          <input
+            value={card}
+            onChange={(e) => setCard(e.target.value)}
+            placeholder="NCXXXXXXXX"
+            className="min-w-0 flex-1 rounded-2xl bg-white/95 px-4 py-3.5 font-mono text-[13px] uppercase tracking-wide text-gray-900 placeholder:normal-case placeholder:tracking-normal placeholder:text-gray-400"
+          />
+          <button
+            type="submit"
+            disabled={!card.trim() || busy === 'card'}
+            className="shrink-0 rounded-2xl bg-white px-4 py-3.5 text-[13px] font-bold text-brand-700 shadow-lg disabled:opacity-50"
+          >
+            {busy === 'card' ? <Loader2 size={16} className="animate-spin" /> : 'Sign in'}
+          </button>
+        </form>
 
         <p className="mt-8 text-center text-[11px] leading-relaxed text-white/45">
           Tier and welcome points are decided by the loyalty platform, not by this app.

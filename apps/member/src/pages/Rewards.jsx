@@ -11,7 +11,8 @@
  * coupon — so those are listed as entitlements rather than priced, and only the
  * points voucher goes through the cart.
  */
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Check, Plus, Ticket, Store, QrCode, X, CalendarDays, Gift, Loader2 } from 'lucide-react';
 import { useApp } from '../context/AppContext.jsx';
@@ -91,7 +92,20 @@ function normalise(state) {
 
 export default function Rewards() {
   const { state, loyaltySync, redeemCart } = useApp();
-  const [view, setView] = useState('catalog');
+  // A completion toast links straight here, so the tab it names wins.
+  const [params, setParams] = useSearchParams();
+  const [view, setView] = useState(params.get('tab') === 'vouchers' ? 'vouchers' : 'catalog');
+
+  /**
+   * A mark that a coupon arrived, and nothing more.
+   *
+   * Kept in the component rather than in app state on purpose: app state is
+   * written to storage and would bring the dot back on every reload, long after
+   * it stopped meaning anything. It is noticed once, cleared by looking, and
+   * gone for good on a refresh — which is all a notification dot should be.
+   */
+  const [unseenVouchers, setUnseenVouchers] = useState(false);
+  const knownVouchers = useRef(null);
   const [cart, setCart] = useState([]);
   const [drawerVoucher, setDrawerVoucher] = useState(null);
   const [rewards, setRewards] = useState([]);
@@ -101,6 +115,17 @@ export default function Rewards() {
 
   const vouchers = useMemo(() => normalise(state), [state]);
   const activeCount = vouchers.filter((v) => v.status === 'active').length;
+
+  useEffect(() => {
+    const count = state.platformVouchers.length;
+    // The first read is the baseline, not an arrival.
+    if (knownVouchers.current === null) {
+      knownVouchers.current = count;
+      return;
+    }
+    if (count > knownVouchers.current && view !== 'vouchers') setUnseenVouchers(true);
+    knownVouchers.current = count;
+  }, [state.platformVouchers.length, view]);
 
   /**
    * Wait for the session before asking.
@@ -214,10 +239,21 @@ export default function Rewards() {
           ].map((t) => (
             <button
               key={t.id}
-              onClick={() => setView(t.id)}
+              onClick={() => {
+                setView(t.id);
+                if (t.id === 'vouchers') {
+                  setUnseenVouchers(false);
+                  if (params.get('tab')) setParams({}, { replace: true });
+                }
+              }}
               className={`flex-1 rounded-lg py-2 text-xs font-bold transition-colors ${view === t.id ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-400'}`}
             >
-              {t.label}
+              <span className="relative inline-flex items-center">
+                {t.label}
+                {t.id === 'vouchers' && unseenVouchers && (
+                  <span className="absolute -right-2.5 -top-0.5 h-2 w-2 rounded-full bg-brand-500" />
+                )}
+              </span>
             </button>
           ))}
         </div>
