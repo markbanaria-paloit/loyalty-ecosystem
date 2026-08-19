@@ -27,12 +27,25 @@ export const couponsRouter = Router();
 
 couponsRouter.use('/api/console/coupons', requireOperator);
 
+/**
+ * The coupon's code, exactly as the platform holds it.
+ *
+ * Not uppercased. Comparing codes case-insensitively is right — a cashier keys
+ * what they see — but sending the uppercased form back is not: a store whose
+ * codes carry mixed case ("Points to $ Coupon") will not find it, and the
+ * failure reads as a coupon that cannot be settled rather than one we asked for
+ * by the wrong name.
+ */
 function codeOf(issued: {
   couponCode?: string | null;
   issuedCoupon?: { code?: string | null } | null;
 }): string {
-  return (issued.issuedCoupon?.code ?? issued.couponCode ?? '').toUpperCase();
+  return issued.issuedCoupon?.code ?? issued.couponCode ?? '';
 }
+
+/** For matching only. */
+const sameCode = (a: string, b: string) =>
+  a.trim().toLowerCase() === b.trim().toLowerCase();
 
 /** The most the spec allows per page, so this walks the list in as few calls as it can. */
 const PAGE_SIZE = 50;
@@ -55,10 +68,10 @@ const MAX_PAGES = 40;
  * one, quietly, at the till.
  */
 async function findByCode(couponCode: string) {
-  const wanted = couponCode.trim().toUpperCase();
+  const wanted = couponCode.trim();
   for (let page = 1; page <= MAX_PAGES; page += 1) {
     const { items } = await openLoyalty.redemptions(page, PAGE_SIZE);
-    const found = items.find((r) => codeOf(r) === wanted);
+    const found = items.find((r) => sameCode(codeOf(r), wanted));
     if (found) return found;
     // A short page is the last page.
     if (items.length < PAGE_SIZE) return null;
@@ -88,6 +101,7 @@ couponsRouter.get('/api/console/coupons/:couponCode', async (req, res) => {
     const status = err instanceof OpenLoyaltyError ? err.status : 502;
     res.status(status >= 400 && status < 500 ? status : 502).json({
       message: 'Could not look that coupon up',
+      detail: err instanceof OpenLoyaltyError ? err.detail : undefined,
     });
   }
 });
@@ -137,6 +151,7 @@ couponsRouter.post('/api/console/coupons/:couponCode/consume', async (req, res) 
     const status = err instanceof OpenLoyaltyError ? err.status : 502;
     res.status(status >= 400 && status < 500 ? status : 502).json({
       message: 'Could not settle that coupon',
+      detail: err instanceof OpenLoyaltyError ? err.detail : undefined,
     });
   }
 });
@@ -158,6 +173,7 @@ couponsRouter.post('/api/console/coupons/:couponCode/reissue', async (req, res) 
     const status = err instanceof OpenLoyaltyError ? err.status : 502;
     res.status(status >= 400 && status < 500 ? status : 502).json({
       message: 'Could not reissue that coupon',
+      detail: err instanceof OpenLoyaltyError ? err.detail : undefined,
     });
   }
 });

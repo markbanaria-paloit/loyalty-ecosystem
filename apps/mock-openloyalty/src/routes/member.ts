@@ -361,7 +361,10 @@ memberRouter.post(
       issuedRewardId,
       rewardId: reward.rewardId,
       customerId: customer.customerId,
-      couponCode: `OL-${issuedRewardId.slice(0, 6).toUpperCase()}`,
+      // Mixed case on purpose. A store's codes are whatever an administrator
+      // typed, and an all-caps mock hid a bug where the code was uppercased on
+      // the way back out and then not found.
+      couponCode: `OL-${issuedRewardId.slice(0, 6)}`,
       // Bought, not yet spent. Buying puts a coupon in the member's hand;
       // consuming it is a separate act, at a separate endpoint.
       usedAt: null,
