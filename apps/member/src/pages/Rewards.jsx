@@ -313,10 +313,14 @@ export default function Rewards() {
                     </div>
                     <button
                       onClick={() => claim(r)}
-                      disabled={busy}
+                      // Costing nothing is not the same as being available.
+                      // These are coupons drawn from a pool like any other, and
+                      // offering one the store has none of produces a refusal
+                      // the member can do nothing about.
+                      disabled={busy || !r.canRedeem}
                       className="shrink-0 rounded-full bg-green-600 px-3 py-1.5 text-[11px] font-bold text-white disabled:opacity-40"
                     >
-                      Claim free
+                      {r.canRedeem ? 'Claim free' : 'None left'}
                     </button>
                   </div>
                 ))}
