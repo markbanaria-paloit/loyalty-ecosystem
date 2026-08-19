@@ -46,6 +46,10 @@ function handleError(err: unknown, res: Response): void {
     }
     res.status(err.status >= 400 && err.status < 500 ? err.status : 502).json({
       message: err.message,
+      // What the platform actually said, for whoever is diagnosing. The apps
+      // show `message`; this is here so a refusal can be understood without
+      // reading a deployment's logs.
+      detail: err.detail,
     });
     return;
   }

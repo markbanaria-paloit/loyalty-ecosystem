@@ -15,6 +15,14 @@ export class OpenLoyaltyError extends Error {
   constructor(
     public status: number,
     message: string,
+    /**
+     * The upstream body, kept whole for a rejection that explains nothing.
+     *
+     * Open Loyalty sometimes answers a bad payload with a bare "Validation
+     * failed" and no structure to read, and without this there is no way to
+     * learn which field it objected to short of guessing.
+     */
+    public detail?: string,
   ) {
     super(message);
     this.name = 'OpenLoyaltyError';
@@ -235,9 +243,19 @@ async function request<T>(
   const body = text ? JSON.parse(text) : {};
   if (!res.ok) {
     const detail = formErrors(body);
+    // A rejection that explains nothing is worth logging whole. Open Loyalty
+    // sometimes answers a bad payload with a bare "Validation failed", and
+    // without the body there is no way to learn which field it objected to
+    // short of guessing — which is how this cost an afternoon.
+    if (!detail && res.status >= 400 && res.status < 500) {
+      console.error(
+        `Open Loyalty rejected ${init.method ?? 'GET'} ${path}: ${text.slice(0, 800)}`,
+      );
+    }
     throw new OpenLoyaltyError(
       res.status,
       detail || body?.message || res.statusText,
+      text.slice(0, 800),
     );
   }
   return body as T;
