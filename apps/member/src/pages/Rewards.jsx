@@ -11,7 +11,7 @@
  * coupon — so those are listed as entitlements rather than priced, and only the
  * points voucher goes through the cart.
  */
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Check, Plus, Ticket, Store, QrCode, X, CalendarDays, Gift, Loader2 } from 'lucide-react';
 import { useApp } from '../context/AppContext.jsx';
@@ -112,6 +112,8 @@ export default function Rewards() {
   const [drawerVoucher, setDrawerVoucher] = useState(null);
   const [rewards, setRewards] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState(null);
 
   const vouchers = useMemo(() => normalise(state), [state]);
   const activeCount = vouchers.filter((v) => v.status === 'active').length;
@@ -126,20 +128,23 @@ export default function Rewards() {
    * with.
    */
   const linked = loyaltySync.status === 'linked';
-  useEffect(() => {
-    if (!linked) return undefined;
-    let live = true;
+  const reload = useCallback(async () => {
+    if (!linked) return;
     setLoading(true);
-    fetchRewards()
-      .then((r) => live && setRewards(r))
+    try {
+      setRewards(await fetchRewards());
+    } catch {
       // An empty catalogue is the honest answer when the platform cannot be
       // reached; inventing one would show rewards nobody can actually claim.
-      .catch(() => live && setRewards([]))
-      .finally(() => live && setLoading(false));
-    return () => {
-      live = false;
-    };
+      setRewards([]);
+    } finally {
+      setLoading(false);
+    }
   }, [linked]);
+
+  useEffect(() => {
+    reload();
+  }, [reload]);
 
   // Split on cost, not on name: the platform decides what is bought and what is
   // granted, and it says so in the price.
@@ -161,17 +166,54 @@ export default function Rewards() {
     setCart((c) => (c.includes(id) ? c.filter((x) => x !== id) : [...c, id]));
   }
 
-  function redeem() {
-    const items = cart
-      .map((id) => priced.find((r) => r.campaignId === id))
-      .filter(Boolean)
-      .map(asVoucher);
-    // Takes them on the platform, which issues the coupons and debits the
-    // points; the vouchers tab shows what came back.
-    redeemCart(items);
-    setCart([]);
-    setView('vouchers');
+  /**
+   * Take rewards on the platform, and say so if it would not.
+   *
+   * Awaited, because what happens next depends on the answer. This used to fire
+   * and forget — the cart emptied and the tab switched whether or not anything
+   * had been redeemed, so a refusal looked exactly like a success that produced
+   * no voucher. Anything that failed stays selected with the reason on screen.
+   */
+  async function take(items) {
+    if (!items.length || busy) return;
+    setBusy(true);
+    setError(null);
+    try {
+      const { redeemed, failures } = await redeemCart(items);
+      // The catalogue prices affordability at fetch time, so it is re-read:
+      // spending changes what the member can still take.
+      await reload();
+      if (failures.length) {
+        setError(failures[0].message);
+        setCart(failures.map((f) => f.id));
+        return;
+      }
+      if (redeemed > 0) {
+        setCart([]);
+        setView('vouchers');
+      }
+    } finally {
+      setBusy(false);
+    }
   }
+
+  const redeem = () =>
+    take(
+      cart
+        .map((id) => priced.find((r) => r.campaignId === id))
+        .filter(Boolean)
+        .map(asVoucher),
+    );
+
+  /**
+   * Claim a reward that costs nothing.
+   *
+   * Taken one at a time rather than through the cart. The cart exists to total
+   * up a price and check it against a balance, and a free reward has neither —
+   * putting one in it makes "0 pts / Redeem Now" the prompt, and mixes an
+   * outcome that can be refused with one that cannot.
+   */
+  const claim = (reward) => take([asVoucher(reward)]);
 
   return (
     <div className="min-h-screen bg-gray-50 pb-28">
@@ -192,6 +234,12 @@ export default function Rewards() {
             </button>
           ))}
         </div>
+
+        {error && (
+          <p className="mt-4 rounded-xl bg-red-50 px-3 py-2.5 text-center text-[12px] font-semibold text-red-600">
+            {error}
+          </p>
+        )}
 
         {view === 'catalog' ? (
           <div className="mt-4 space-y-3">
@@ -263,9 +311,13 @@ export default function Rewards() {
                       <p className="truncate text-[13.5px] font-bold text-gray-900">{r.name}</p>
                       <p className="truncate text-[11px] text-gray-400">{r.description}</p>
                     </div>
-                    <span className="shrink-0 rounded-full bg-green-50 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-green-600">
-                      Free
-                    </span>
+                    <button
+                      onClick={() => claim(r)}
+                      disabled={busy}
+                      className="shrink-0 rounded-full bg-green-600 px-3 py-1.5 text-[11px] font-bold text-white disabled:opacity-40"
+                    >
+                      Claim free
+                    </button>
                   </div>
                 ))}
               </>
@@ -301,10 +353,10 @@ export default function Rewards() {
           </div>
           <button
             onClick={redeem}
-            disabled={!canAfford}
+            disabled={!canAfford || busy}
             className="rounded-xl bg-brand-500 px-4 py-2.5 text-xs font-bold disabled:opacity-40"
           >
-            {canAfford ? 'Redeem Now' : 'Not Enough Points'}
+            {busy ? 'Redeeming…' : canAfford ? 'Redeem Now' : 'Not Enough Points'}
           </button>
         </motion.div>
       )}

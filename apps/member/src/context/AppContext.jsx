@@ -618,19 +618,30 @@ export function AppProvider({ children }) {
     async (rewards) => {
       let redeemed = 0;
       let spent = 0;
+      const failures = [];
       for (const reward of rewards) {
         try {
           await redeemReward(reward.id);
           redeemed += 1;
           spent += reward.pointsCost;
         } catch (e) {
-          console.error(`Could not redeem ${reward.title}`, e);
+          // Handed back rather than logged. A redemption can be refused — not
+          // enough points, a reward that ran out while the page was open — and
+          // the member is owed the reason. Swallowing it here left the screen
+          // doing nothing at all, which reads as the app being broken.
+          failures.push({
+            id: reward.id,
+            title: reward.title,
+            message: e instanceof Error ? e.message : 'Could not redeem this reward',
+          });
         }
       }
-      dispatch({ type: 'REDEEMED', payload: { count: redeemed, cost: spent } });
+      if (redeemed > 0) {
+        dispatch({ type: 'REDEEMED', payload: { count: redeemed, cost: spent } });
+      }
       // The refresh brings back both the debited balance and the new coupons.
       await refreshAccount().catch(() => {});
-      return redeemed;
+      return { redeemed, failures };
     },
     [refreshAccount],
   );
