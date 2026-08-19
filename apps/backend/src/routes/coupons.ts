@@ -121,6 +121,19 @@ couponsRouter.post('/api/console/coupons/:couponCode/consume', async (req, res) 
       return;
     }
 
+    /**
+     * Refuse a spent coupon here, before asking.
+     *
+     * The record already says whether it has been used, so this does not depend
+     * on reading an upstream refusal — which is just as well: a store answers a
+     * second attempt with a bare 400, not the 409 the spec implies, and a 400
+     * is indistinguishable from every other way a form can be wrong.
+     */
+    if (issued.issuedCoupon?.usedAt) {
+      res.status(409).json({ message: 'This coupon has already been used' });
+      return;
+    }
+
     try {
       await openLoyalty.consumeCoupon(issued.customerId, codeOf(issued));
     } catch (err) {

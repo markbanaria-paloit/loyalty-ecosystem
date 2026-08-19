@@ -55,7 +55,6 @@ export default function Onboarding() {
    */
   const welcomePoints = state.enrolment?.welcomePoints ?? state.account.points ?? 0;
   const awardedBy = state.enrolment?.payouts?.[0]?.name ?? null;
-  const bundleVouchers = state.vouchers.filter((v) => v.fromWelcomeBundle);
 
   return (
     <div className="flex min-h-screen flex-col bg-gradient-to-b from-brand-50 to-white px-6 pb-10 pt-16">
@@ -123,21 +122,6 @@ export default function Onboarding() {
         </div>
       </motion.div>
 
-      {bundleVouchers.length > 0 && (
-        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.55 }} className="mt-4 space-y-2">
-          {bundleVouchers.map((v) => (
-            <div key={v.id} className="flex items-center gap-3 rounded-2xl border border-gray-100 bg-white p-3.5 shadow-sm">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-brand-50 text-brand-500">
-                <Ticket size={18} />
-              </div>
-              <div className="min-w-0 flex-1">
-                <p className="truncate text-sm font-semibold text-gray-800">{v.title}</p>
-                <p className="text-[11px] text-gray-400">{tenantName(v.tenantId)} · Digital deal bundle</p>
-              </div>
-            </div>
-          ))}
-        </motion.div>
-      )}
 
       <motion.button
         initial={{ opacity: 0 }}

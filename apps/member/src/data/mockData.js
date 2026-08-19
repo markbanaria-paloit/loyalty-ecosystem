@@ -79,14 +79,6 @@ export const DEFAULT_CONFIG = {
     tenantId: 't4',
   },
   parkingCapMinutes: { tier1: 60, tier2: 120 },
-  welcomeBonus: {
-    points: 500,
-    validDays: 30,
-    bundle: [
-      { title: '$2 off at Foodfare', tenantId: 't5' },
-      { title: '10% off at Unity Pharmacy', tenantId: 't3' },
-    ],
-  },
   tier2Eligibility: 'ntuc-member-auto', // open item O-2: 'ntuc-member-auto' | 'spend-based'
   tier2SpendThreshold: 500, // used only when tier2Eligibility === 'spend-based'
 };

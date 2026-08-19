@@ -37,11 +37,9 @@ const initialState = {
   user: null,
   points: 0,
   ledger: [],
-  vouchers: [],
   parkingCoupons: [],
   consent: { email: true, sms: true, push: true, mail: false },
   parkingUsage: {}, // { [monthKey]: minutesUsed }
-  welcomeBonusClaimed: false,
   /** Coupons issued by the loyalty platform. The till's status lives here. */
   platformVouchers: [],
   birthdayClaimedMonthKey: null,
@@ -130,44 +128,18 @@ function reducer(state, action) {
   switch (action.type) {
     case 'SIGN_IN': {
       const { user } = action.payload;
-      const cfg = state.config;
 
-      // Points and history are no longer invented here. The BFF grants the
-      // enrolment bonus against the loyalty platform and reports the balance,
-      // so anything fabricated locally would simply be overwritten by the next
-      // sync — and would disagree with what the till sees in the meantime.
-      let vouchers = state.vouchers;
-      let welcomeBonusClaimed = state.welcomeBonusClaimed;
-
-      if (!welcomeBonusClaimed) {
-        const bonus = cfg.welcomeBonus;
-        const expiryDate = addDaysISO(bonus.validDays);
-        // The welcome *bundle* stays local: these are tenant vouchers, not
-        // points, and the loyalty platform holds no equivalent.
-        vouchers = [
-          ...bonus.bundle.map((b) => ({
-            id: uid('vc'),
-            rewardId: null,
-            title: b.title,
-            tenantId: b.tenantId,
-            cashValue: null,
-            code: genCode(),
-            issuedDate: new Date().toISOString(),
-            expiryDate,
-            status: 'active',
-            fromWelcomeBundle: true,
-          })),
-          ...vouchers,
-        ];
-        welcomeBonusClaimed = true;
-      }
-
-      // No celebration here. At this point the platform has not been asked what
-      // the member was given, so a toast fired now says "your welcome bonus has
-      // been credited" before anything has been credited — and the confetti is
-      // over by the time the number arrives. It is dispatched once enrolment
-      // has resolved, carrying the real figure.
-      return { ...state, user, vouchers, welcomeBonusClaimed };
+      // Nothing is invented here — not points, not vouchers. The programme
+      // grants what a member joins with, the BFF reports it, and anything
+      // fabricated locally would be a coupon no till could accept. A welcome
+      // bundle is a reward on the platform like any other; it arrives through
+      // the same list as the rest.
+      //
+      // No celebration either. At this point the platform has not been asked
+      // what the member was given, so a toast fired now would announce a bonus
+      // before anything had been credited. It is dispatched once enrolment has
+      // resolved, carrying the real figure.
+      return { ...state, user };
     }
 
     // The loyalty record landed from the BFF — it replaces whatever we held,

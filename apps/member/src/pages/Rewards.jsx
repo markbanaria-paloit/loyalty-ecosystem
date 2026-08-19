@@ -63,15 +63,14 @@ const PLATFORM_STATUS = {
 };
 
 /**
- * One display shape for coupons from two places.
+ * The member's coupons, in the shape the cards render.
  *
- * The platform holds the ones that cost points, and it holds the fact of their
- * being spent — which is the whole point: the till writes it there. The welcome
- * bundle is local, because those are tenant deals the platform has no record
- * of, and it carries an expiry the platform's coupons do not.
+ * All of them come from the platform. There is no local set any more: a coupon
+ * this app invented could not be looked up at a till, so the only ones worth
+ * showing are the ones the programme actually issued.
  */
 function normalise(state) {
-  const fromPlatform = state.platformVouchers.map((v) => ({
+  return state.platformVouchers.map((v) => ({
     key: v.issuedRewardId,
     id: v.issuedRewardId,
     title: v.title ?? 'Reward',
@@ -87,22 +86,7 @@ function normalise(state) {
       : (PLATFORM_STATUS[String(v.status).toLowerCase()] ?? 'active'),
     issuedDate: v.issuedDate,
     expiryDate: null,
-    local: false,
   }));
-
-  const fromBundle = state.vouchers.map((v) => ({
-    key: v.id,
-    id: v.id,
-    title: v.title,
-    tenantId: v.tenantId,
-    code: v.code,
-    status: v.status === 'used' ? 'used' : daysUntil(v.expiryDate) < 0 ? 'expired' : 'active',
-    issuedDate: v.issuedDate,
-    expiryDate: v.expiryDate,
-    local: true,
-  }));
-
-  return [...fromPlatform, ...fromBundle];
 }
 
 export default function Rewards() {
