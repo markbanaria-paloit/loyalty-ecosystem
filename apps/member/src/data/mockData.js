@@ -51,7 +51,7 @@ export const PROMOTIONS = [
     tenantId: 't3',
     audience: 'all',
     tag: 'Members Only',
-    image: 'https://cdn-ilechch.nitrocdn.com/sbApufdroVezSnYYNdPXraFCnxooVRvO/assets/images/optimized/rev-e75b124/www.fairpricegroup.com.sg/wp-content/uploads/2024/09/4-unity.jpg',
+    image: 'https://unity.com.sg/wp-content/uploads/2025/11/og-unity.jpg',
   },
   {
     id: 'p4',

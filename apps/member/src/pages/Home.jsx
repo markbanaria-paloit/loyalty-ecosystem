@@ -1,10 +1,12 @@
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { QrCode, ChevronRight, Bell, Cake, Target, Star, Check } from 'lucide-react';
+import { QrCode, ChevronRight, Bell, Cake, Target, Star, Check, Gift, Coins, Package } from 'lucide-react';
 import { useApp, isBirthdayMonthNow } from '../context/AppContext.jsx';
 import { TierBadge, TenantAvatar, tenantName } from '../components/Ui.jsx';
 import { PROMOTIONS } from '../data/mockData.js';
+import { CLUB_VENUES, PROPOSED_CHALLENGES } from '../data/proposedChallenges.js';
+import ScratchCard from '../components/ScratchCard.jsx';
 import { fmtDate, formatTierMetric } from '../lib/helpers.js';
 import scanIcon from '../assets/icons/scan.png';
 import rewardsIcon from '../assets/icons/rewards.png';
@@ -129,6 +131,8 @@ export default function Home() {
           </div>
         </div>
 
+        <ProposedChallenges />
+
         <div>
           <div className="mb-3 flex items-center justify-between">
             <h2 className="text-[15px] font-bold text-gray-900">Recent Activity</h2>
@@ -178,6 +182,111 @@ function milestoneLabel(m) {
   if (m.trigger === 'transaction') return `${m.goal} purchases`;
   if (m.trigger === 'custom_event') return 'Leave a rating';
   return 'Goal';
+}
+
+const REWARD_ICON = { voucher: Gift, points: Coins, product: Package, scratch: Gift };
+
+/**
+ * Challenge concepts, offered for review rather than play.
+ *
+ * Wide cards on purpose: each one has a name, who it is for, the venue it is
+ * meant to fill and what it pays, and that does not fit in the width a promo
+ * tile gets. Clearly marked as ideas — the live challenge sits at the top of
+ * this screen and comes from the platform, and nothing down here is scored,
+ * awarded or configured anywhere.
+ */
+function ProposedChallenges() {
+  return (
+    <div>
+      <div className="mb-3 flex items-baseline justify-between">
+        <h2 className="text-[15px] font-bold text-gray-900">Challenge ideas</h2>
+        <span className="rounded-full bg-gray-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-gray-500">
+          Concepts
+        </span>
+      </div>
+      <p className="mb-3 text-[11px] leading-snug text-gray-400">
+        Shapes the programme could run in the quiet month after the school
+        holidays. Not live — nothing here awards anything yet.
+      </p>
+      <div className="no-scrollbar -mx-4 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-1">
+        {PROPOSED_CHALLENGES.map((c) => (
+          <ProposedChallengeCard key={c.id} challenge={c} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function ProposedChallengeCard({ challenge }) {
+  const [scratched, setScratched] = useState(null);
+  const RewardIcon = REWARD_ICON[challenge.reward.kind] ?? Gift;
+  // A streak card earns its scratch on the last step, so the card only appears
+  // once the goal is in reach — otherwise it is a prize before the work.
+  const streak = challenge.milestones[0];
+  const scratchReady =
+    challenge.reward.kind === 'scratch' && streak.current >= streak.goal - 1;
+
+  return (
+    <div className="w-[88%] shrink-0 snap-start overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm">
+      <div className={`bg-gradient-to-br ${challenge.accent} px-4 py-3 text-white`}>
+        <p className="text-[10px] font-bold uppercase tracking-widest text-white/75">
+          {challenge.theme}
+        </p>
+        <p className="mt-0.5 text-[15px] font-extrabold leading-tight">{challenge.name}</p>
+        <p className="mt-1 text-[11px] leading-snug text-white/85">{challenge.blurb}</p>
+      </div>
+
+      <div className="space-y-2.5 px-4 py-3">
+        {challenge.milestones.map((m) => {
+          const pct = Math.min(100, Math.round((m.current / m.goal) * 100));
+          return (
+            <div key={m.label}>
+              <div className="flex items-center justify-between text-[11px]">
+                <span className="text-gray-600">{m.label}</span>
+                <span className="font-semibold text-gray-400">
+                  {m.current}/{m.goal}
+                </span>
+              </div>
+              <div className="mt-1 h-1.5 w-full overflow-hidden rounded-full bg-gray-100">
+                <div
+                  className="h-full rounded-full bg-brand-500 transition-all duration-500"
+                  style={{ width: `${pct}%` }}
+                />
+              </div>
+            </div>
+          );
+        })}
+
+        {scratchReady && (
+          <div className="pt-1">
+            <ScratchCard
+              prize={challenge.prizes[0]}
+              onRevealed={(p) => setScratched(p)}
+            />
+            {scratched && (
+              <p className="mt-1.5 text-center text-[10.5px] text-gray-400">
+                Concept only — nothing has been credited.
+              </p>
+            )}
+          </div>
+        )}
+
+        <div className="flex items-center gap-2 border-t border-dashed border-gray-100 pt-2.5">
+          <RewardIcon size={14} className="shrink-0 text-brand-500" />
+          <p className="min-w-0 flex-1 truncate text-[11.5px] font-semibold text-gray-700">
+            {challenge.reward.label}
+          </p>
+        </div>
+
+        <p className="text-[10.5px] leading-snug text-gray-400">
+          {challenge.segment}
+          {challenge.venues.length > 0 && (
+            <> · {challenge.venues.map((v) => CLUB_VENUES[v]).join(', ')}</>
+          )}
+        </p>
+      </div>
+    </div>
+  );
 }
 
 function ChallengeSkeleton() {
