@@ -278,8 +278,8 @@ loyaltyRouter.get("/api/me/vouchers", async (req: TokenRequest, res) => {
     res.json({
       vouchers: items.map((v) => ({
         issuedRewardId: v.issuedRewardId,
-        couponCode: v.issuedCoupon?.code ?? v.couponCode,
-        title: v.reward,
+        couponCode: v.issuedCoupon?.code ?? v.couponCode ?? null,
+        title: v.name ?? v.reward ?? null,
         /** The platform's own fulfilment vocabulary; the client maps it. */
         status: v.status,
         /**
@@ -344,7 +344,10 @@ loyaltyRouter.post(
       );
       res.status(201).json({
         issuedRewardId,
-        couponCode: coupon?.couponCode ?? null,
+        // Read the same way the vouchers list reads it: the code is nested
+        // under `issuedCoupon` on a real store and flat on the mock, and taking
+        // only the flat one answered a freshly bought coupon with `null`.
+        couponCode: coupon?.issuedCoupon?.code ?? coupon?.couponCode ?? null,
         pointsRemaining: status.activePoints,
       });
     } catch (err) {

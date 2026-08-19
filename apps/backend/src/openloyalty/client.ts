@@ -133,8 +133,15 @@ export interface Transfer {
  */
 export interface IssuedReward {
   issuedRewardId: string;
-  couponCode: string;
-  reward: string | null;
+  /** Flat on some stores, nested under `issuedCoupon` on others. */
+  couponCode?: string | null;
+  /**
+   * The reward's name. `name` is what the spec's `issuedReward` calls it; the
+   * mock has historically used `reward`, so both are read — a voucher with no
+   * title is a card that says "Reward" and nothing useful.
+   */
+  name?: string | null;
+  reward?: string | null;
   status: string;
   createdAt: string;
   /**

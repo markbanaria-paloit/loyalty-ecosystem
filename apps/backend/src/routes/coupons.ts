@@ -27,7 +27,10 @@ export const couponsRouter = Router();
 
 couponsRouter.use('/api/console/coupons', requireOperator);
 
-function codeOf(issued: { couponCode?: string; issuedCoupon?: { code: string } }): string {
+function codeOf(issued: {
+  couponCode?: string | null;
+  issuedCoupon?: { code?: string | null } | null;
+}): string {
   return (issued.issuedCoupon?.code ?? issued.couponCode ?? '').toUpperCase();
 }
 
