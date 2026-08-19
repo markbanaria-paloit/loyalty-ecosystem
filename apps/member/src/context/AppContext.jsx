@@ -681,13 +681,23 @@ export function AppProvider({ children }) {
    */
   const rate = useCallback(
     async (score) => {
-      const memberId = stateRef.current.account.customerId ?? 'anon';
-      const day = new Date().toISOString().slice(0, 10);
+      /**
+       * A fresh id per rating.
+       *
+       * It used to be the member and the day, so that a double tap counted
+       * once — but a repeated id is an error upstream, not a quiet no-op, and
+       * the second rating of the day came back "custom event with such event
+       * id already exists". A member may rate again; the challenge repeats.
+       *
+       * The id still guards the thing it can: one tap makes one id, so a
+       * request sent twice in flight is one event rather than two.
+       */
+      const eventId = crypto.randomUUID();
       // No body. A store declares what a custom event may carry, and this one
       // declares nothing — sending the score had the whole call rejected as
       // "this form should not contain extra fields", so the rating never
       // registered while the stars sat there looking as though it had.
-      await logEvent('onlinereview', `review-${memberId}-${day}`);
+      await logEvent('onlinereview', eventId);
 
       /**
        * Wait for the platform to score it before showing the result.

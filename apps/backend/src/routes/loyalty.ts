@@ -292,6 +292,20 @@ loyaltyRouter.post('/api/me/events', async (req: TokenRequest, res) => {
     });
     res.status(201).json({ logged: true, type });
   } catch (err) {
+    /**
+     * An id the platform already holds means the event is recorded.
+     *
+     * That is what an idempotency key is for, and answering an error for it
+     * turns a harmless repeat — a retry, a second tap that got through — into
+     * a failure the member is shown. The event happened; say so.
+     */
+    if (
+      err instanceof OpenLoyaltyError &&
+      /already exists/i.test(err.message)
+    ) {
+      res.status(200).json({ logged: true, type, duplicate: true });
+      return;
+    }
     handleError(err, res);
   }
 });
