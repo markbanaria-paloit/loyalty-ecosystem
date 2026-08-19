@@ -1,9 +1,11 @@
 /**
- * OpenLoyalty admin API client.
+ * Campaign Admin API client.
  *
- * Unlike the PWA (which goes through the BFF), the cockpit speaks raw
- * OpenLoyalty — same as the real admin console. Paths and payloads follow
- * `spec/openloyalty-openapi.json`.
+ * Speaks Open Loyalty's vocabulary — paths and payloads follow
+ * `spec/openloyalty-openapi.json` — but reaches it through the backend rather
+ * than directly. The store credential that used to ship in this bundle now
+ * stays on the server; the console signs in as an operator and gets a session
+ * scoped to programme configuration.
  */
 
 /**
@@ -13,6 +15,11 @@
  * browser sees a single origin. A static deploy has no proxy, so the origin has
  * to be baked in at build time — that is what `VITE_API_BASE_URL` is for.
  * Trailing slashes are trimmed so path concatenation stays predictable.
+ */
+/**
+ * Absolute origin of the **backend**, not of Open Loyalty. This used to point at
+ * the loyalty platform; pointing it back would send unauthenticated calls at a
+ * service that has never heard of an operator session.
  */
 const API_BASE = (import.meta.env.VITE_API_BASE_URL ?? '').replace(/\/$/, '');
 const TOKEN_KEY = 'cockpit.token';
@@ -60,7 +67,11 @@ async function req<T>(path: string, init: RequestInit = {}): Promise<T> {
   return body as T;
 }
 
-const s = () => `/api/${STORE_CODE}`;
+/**
+ * Operator-scoped route to Open Loyalty. The store code lives on the server, so
+ * the console no longer needs to know which tenant it is configuring.
+ */
+const s = () => '/api/ol';
 
 export interface Member {
   customerId: string;
@@ -302,7 +313,7 @@ export interface Stats {
 
 export const api = {
   async login(username: string, password: string) {
-    const res = await req<{ token: string }>('/api/admin/login_check', {
+    const res = await req<{ token: string }>('/api/console/login', {
       method: 'POST',
       body: JSON.stringify({ username, password }),
     });
@@ -312,7 +323,23 @@ export const api = {
 
   stats: () => req<Stats>(`${s()}/admin/stats`),
   members: () => req<ListResponse<Member>>(`${s()}/member`),
-  tiers: () => req<ListResponse<Tier>>(`${s()}/tier`),
+  /**
+   * Tiers, lowest first.
+   *
+   * Sorted here because the platform returns them in creation order — a live
+   * tenant answers with Tier 2 ahead of Tier 1 — and everything that reads this
+   * treats position as rank.
+   */
+  tiers: async () => {
+    const res = await req<ListResponse<Tier>>(`${s()}/tier`);
+    const threshold = (t: Tier) => {
+      const values = (t.conditions ?? [])
+        .map((c) => Number(c.value))
+        .filter((n) => Number.isFinite(n));
+      return values.length ? Math.min(...values) : 0;
+    };
+    return { ...res, items: [...res.items].sort((a, b) => threshold(a) - threshold(b)) };
+  },
   rewards: () => req<ListResponse<Reward>>(`${s()}/reward`),
   transfers: () => req<ListResponse<Transfer>>(`${s()}/points`),
   redemptions: () => req<ListResponse<Redemption>>(`${s()}/redemption`),

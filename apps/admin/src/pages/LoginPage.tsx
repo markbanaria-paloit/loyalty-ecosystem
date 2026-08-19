@@ -28,7 +28,7 @@ export function LoginPage({ onSuccess }: { onSuccess: () => void }) {
           <span className="logo-mark">◆</span>
           <strong>Campaign Admin</strong>
         </div>
-        <p className="muted sm">Sign in with your OpenLoyalty admin account.</p>
+        <p className="muted sm">Sign in with your Campaign Admin operator account.</p>
         <label>
           Username
           <input value={username} onChange={(e) => setUsername(e.target.value)} />

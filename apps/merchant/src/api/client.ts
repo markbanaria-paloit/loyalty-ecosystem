@@ -1,18 +1,21 @@
 /**
- * OpenLoyalty POS client.
+ * POS client.
  *
- * A till publishes transactions straight to the loyalty engine. It never reads
- * the member list — it attaches `customerData` to the sale and OpenLoyalty
- * matches the member server-side, then applies earning rules.
+ * Every call reaches Open Loyalty, but through the backend rather than
+ * directly. The store credential that used to sit in this bundle — readable by
+ * anyone who opened devtools, and able to read every member — now stays on the
+ * server. The till signs in as an operator and gets a session scoped to what a
+ * till does: identify the card in front of it, publish the sale, read back what
+ * it earned, settle a voucher. Nothing that changes programme configuration.
  */
 
 /**
- * Absolute API origin for deployed builds.
+ * Absolute origin of the **backend**, not of Open Loyalty.
  *
- * Empty in development, where Vite proxies `/api` to the upstream and the
- * browser sees a single origin. A static deploy has no proxy, so the origin has
- * to be baked in at build time — that is what `VITE_API_BASE_URL` is for.
- * Trailing slashes are trimmed so path concatenation stays predictable.
+ * This used to point at the loyalty platform; it does not any more, and
+ * pointing it back would send unauthenticated calls at a service that has never
+ * heard of an operator session. Empty in development, where Vite proxies
+ * `/api`.
  */
 const API_BASE = (import.meta.env.VITE_API_BASE_URL ?? '').replace(/\/$/, '');
 
@@ -23,9 +26,7 @@ const API_BASE = (import.meta.env.VITE_API_BASE_URL ?? '').replace(/\/$/, '');
  * fact. Unset in a deployment without a backend, in which case nothing is
  * published and member apps fall back to polling.
  */
-const EVENT_ENDPOINT = import.meta.env.VITE_BFF_BASE_URL
-  ? `${String(import.meta.env.VITE_BFF_BASE_URL).replace(/\/$/, '')}/api/events/member-changed`
-  : '';
+const EVENT_ENDPOINT = `${API_BASE}/api/events/member-changed`;
 const EVENT_SECRET = import.meta.env.VITE_EVENT_PUBLISH_SECRET ?? '';
 const TOKEN_KEY = 'pos.token';
 export const STORE_CODE = import.meta.env.VITE_STORE_CODE ?? 'default';
@@ -72,7 +73,11 @@ async function req<T>(path: string, init: RequestInit = {}): Promise<T> {
   return body as T;
 }
 
-const s = () => `/api/${STORE_CODE}`;
+/**
+ * Operator-scoped route to Open Loyalty. The store code lives on the server —
+ * the till no longer needs to know which tenant it is talking to.
+ */
+const s = () => '/api/ol';
 
 export interface CartLine {
   sku: string;
@@ -106,7 +111,7 @@ export interface CouponLookup {
 
 export const api = {
   async login(username: string, password: string) {
-    const res = await req<{ token: string }>('/api/admin/login_check', {
+    const res = await req<{ token: string }>('/api/console/login', {
       method: 'POST',
       body: JSON.stringify({ username, password }),
     });

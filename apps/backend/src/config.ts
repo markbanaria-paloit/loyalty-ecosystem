@@ -18,6 +18,31 @@ export const config = {
      */
     apiKey: process.env.OPENLOYALTY_API_KEY ?? null,
   },
+  console: {
+    /**
+     * Signs operator sessions. Rotating it signs everyone out, which is the
+     * intended way to revoke access.
+     */
+    sessionSecret: process.env.CONSOLE_SESSION_SECRET ?? 'dev-console-secret-change-me',
+    /**
+     * Who may sign in, and how far each reaches. Separate credentials rather
+     * than one shared login: a till and a campaign console are different jobs,
+     * and the till's is the one left unattended on a counter.
+     */
+    operators: [
+      {
+        username: process.env.CONSOLE_USERNAME ?? 'admin',
+        password: process.env.CONSOLE_PASSWORD ?? 'admin',
+        role: 'console' as const,
+      },
+      {
+        username: process.env.TILL_USERNAME ?? 'till',
+        password: process.env.TILL_PASSWORD ?? 'till',
+        role: 'till' as const,
+      },
+    ],
+  },
+
   member: {
     /**
      * Label that marks a member as belonging to the union, and the tier they
@@ -28,9 +53,13 @@ export const config = {
      * the tier rather than hardcoding an id keeps it survivable across tenants,
      * where the ids differ.
      */
-    unionLabelKey: process.env.UNION_LABEL_KEY ?? 'customerType',
-    unionLabelValue: process.env.UNION_LABEL_VALUE ?? 'union_member',
-    unionTierName: process.env.UNION_TIER_NAME ?? 'Tier 2',
+    /**
+     * Exactly as the tenant's campaign matches it — `membertype` /
+     * `unionmember`, no underscore, all lowercase. The label is a string
+     * comparison on their side, so a near-miss silently grants nothing.
+     */
+    unionLabelKey: process.env.UNION_LABEL_KEY ?? 'membertype',
+    unionLabelValue: process.env.UNION_LABEL_VALUE ?? 'unionmember',
   },
 
   /*

@@ -14,6 +14,8 @@ import { authRouter } from './routes/auth.js';
 import { loyaltyRouter } from './routes/loyalty.js';
 import { demoRouter } from './routes/demo.js';
 import { eventsRouter } from './routes/events.js';
+import { consoleRouter } from './routes/console.js';
+import { olProxyRouter } from './routes/ol-proxy.js';
 
 export const app = express();
 
@@ -36,6 +38,8 @@ app.use(authRouter);
 app.use(loyaltyRouter);
 app.use(demoRouter);
 app.use(eventsRouter);
+app.use(consoleRouter);
+app.use(olProxyRouter);
 
 /**
  * The campaign studio is mounted by the caller, not here.

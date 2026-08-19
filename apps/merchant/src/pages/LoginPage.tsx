@@ -2,8 +2,10 @@ import { useState, type FormEvent } from 'react';
 import { api } from '../api/client';
 
 export function LoginPage({ onSuccess }: { onSuccess: () => void }) {
-  const [username, setUsername] = useState('admin');
-  const [password, setPassword] = useState('admin');
+  // The till signs in as a till operator, not as an administrator — the
+  // session it gets back cannot reach programme configuration.
+  const [username, setUsername] = useState('till');
+  const [password, setPassword] = useState('till');
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 

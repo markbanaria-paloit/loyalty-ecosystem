@@ -98,32 +98,53 @@ authRouter.post('/api/auth/register', async (req, res) => {
     // registration answers 404 here, and that is not an error.
     await openLoyalty.activate(created.customerId).catch(() => {});
 
-    // Membership-based tiering has to be assigned. Tier conditions are
-    // metric-only, so a union member cannot qualify for their tier — the
-    // platform will never put them there on its own.
-    const { unionLabelKey, unionLabelValue, unionTierName } = config.member;
+    const { unionLabelKey, unionLabelValue } = config.member;
     const isUnionMember = (parsed.data.labels ?? []).some(
       (l) => l.key === unionLabelKey && l.value === unionLabelValue,
     );
-    if (isUnionMember) {
-      const tiers = await ladder();
-      const tier = tiers.find((t) => t.name === unionTierName);
-      if (tier) {
-        await openLoyalty.assignTier(created.customerId, tier.levelId).catch((err) => {
-          // A member who is enrolled but on the wrong tier is recoverable; one
-          // whose registration failed outright is not. Log and continue.
-          console.error('Union tier assignment failed for', created.customerId, err);
-        });
-      } else {
-        console.error(`Union tier "${unionTierName}" not found in the configured ladder`);
-      }
-    }
+
+    // Nothing here assigns a tier. The programme grants the union tier itself:
+    // a campaign listening for `MemberWasActivated` matches the member's
+    // `membertype` label and awards enough points to cross the tier's
+    // threshold. Activating the member above is what triggers it — which is why
+    // that call is not merely tidy-up, it is the whole mechanism.
+    //
+    // Assigning the tier here as well would put a member on it who had not been
+    // given the points, and the two would disagree the moment either changed.
 
     // Immediately log the new member in for a smooth onboarding flow.
     const tokens = await openLoyalty.memberLogin(
       parsed.data.email,
       parsed.data.password,
     );
+
+    /**
+     * Wait for the enrolment award to land before answering.
+     *
+     * The platform scores campaigns after it accepts the activation, not
+     * during, so a status read straight afterwards shows a member with no
+     * points and the entry tier — and the member app would render exactly that,
+     * then correct itself a beat later.
+     *
+     * Only members the programme should award are waited on: everyone else has
+     * nothing coming and should not pay for the check.
+     */
+    if (isUnionMember) {
+      // The tier is what we are waiting for, not the points. The award lands
+      // first and the tier recalculates after it, so breaking on a non-zero
+      // balance returns a member who has been paid but not yet promoted.
+      const startedOn = await openLoyalty
+        .status(tokens.token, created.customerId)
+        .catch(() => null);
+      const deadline = Date.now() + 8000;
+      while (Date.now() < deadline) {
+        const settling = await openLoyalty
+          .status(tokens.token, created.customerId)
+          .catch(() => null);
+        if (settling && settling.levelName !== startedOn?.levelName) break;
+        await new Promise((resolve) => setTimeout(resolve, 500));
+      }
+    }
 
     // Read the record back through the member's own token rather than trusting
     // the registration response, so what the client renders is the same view it
