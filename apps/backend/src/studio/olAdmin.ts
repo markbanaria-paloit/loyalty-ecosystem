@@ -186,24 +186,40 @@ export const olAdmin = {
    * right on an empty tenant and to quietly miss almost everyone on a real one.
    */
   /**
-   * The members this store returns for a plain listing.
+   * Every member the store will actually hand over.
    *
-   * Not "every member": this tenant ignores `page` — every page answers with
-   * the same ten — so a listing is the most recent handful and nothing more.
-   * Good enough for finding the newest member of a kind, which is what the
-   * persona picker wants; useless for finding a particular person, which is
-   * what `findMembers` is for.
+   * Paged, but defensively: `page` is a request, and this tenant ignores it —
+   * every page answers with the same records. So the walk stops on an empty
+   * page, on having seen the reported total, or on a page that begins with the
+   * record the last one began with, which is what "this store does not page"
+   * looks like from out here. Trusting the parameter either loops forever or,
+   * if the size is trusted too, stops after the first ten and calls that
+   * everybody.
    */
   async members(): Promise<AdminMember[]> {
-    const { items } = await request<ListEnvelope<AdminMember>>(`${s()}/member`);
-    return items;
+    const all: AdminMember[] = [];
+    let previousFirst: string | null = null;
+    for (let page = 1; page <= 200; page += 1) {
+      const { items, total } = await request<
+        ListEnvelope<AdminMember> & { total?: { all?: number } }
+      >(`${s()}/member?page=${page}&itemsOnPage=50`);
+      if (items.length === 0) break;
+
+      const first = items[0]?.customerId ?? null;
+      if (page > 1 && first !== null && first === previousFirst) break;
+      previousFirst = first;
+
+      all.push(...items);
+      if (typeof total?.all === 'number' && all.length >= total.all) break;
+    }
+    return all;
   },
 
   /**
    * Members matching a filter, asked of the store rather than sifted here.
    *
    * The filters are honoured where the paging is not, so this finds anyone —
-   * including the 34 members a listing does not mention.
+   * including the members a listing will never mention.
    */
   async findMembers(filter: Record<string, string>): Promise<AdminMember[]> {
     const query = new URLSearchParams(filter).toString();
