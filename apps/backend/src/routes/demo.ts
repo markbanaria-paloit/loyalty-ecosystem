@@ -136,11 +136,27 @@ async function personas(): Promise<Persona[]> {
     .filter((m) => cardNumberFromEmail(m.email))
     .sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt));
 
+  const entryTier = (await ladder())[0]?.name ?? null;
   const found: Persona[] = [];
+
   const union = candidates.find(isUnion);
   if (union) found.push({ id: FOUND_UNION, member: union });
-  const publicMember = candidates.find((m) => !isUnion(m));
+
+  /**
+   * The public persona has to actually be on the entry tier.
+   *
+   * "Existing public member" is offered as the other half of the story, and a
+   * member who happens to have been promoted tells the same story as the one
+   * above it. So the tier is part of what is being looked for, not just the
+   * absence of a union label. Falling back to any non-union member keeps the
+   * card present on a tenant where nobody is on the entry tier, which is better
+   * than offering nothing.
+   */
+  const publicMember =
+    candidates.find((m) => !isUnion(m) && (!entryTier || m.levelName === entryTier)) ??
+    candidates.find((m) => !isUnion(m));
   if (publicMember) found.push({ id: FOUND_PUBLIC, member: publicMember });
+
   return found;
 }
 

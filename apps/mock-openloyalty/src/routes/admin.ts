@@ -41,10 +41,31 @@ export const adminRouter = Router();
 
 adminRouter.get('/api/:storeCode/member', requireAdmin, (req: AuthedRequest, res) => {
   const store = req.store;
-  const items = [...store.customers.values()]
-    .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
-    .map((c) => serializeCustomer(store, c));
-  res.json(listEnvelope(items));
+  /**
+   * The filters a caller actually uses, honoured rather than ignored.
+   *
+   * A till scans a card and asks for that member by `loyaltyCardNumber`. This
+   * used to answer with every member in the store, newest first, and the till
+   * took the first — so it identified whoever had signed up most recently
+   * instead of the person at the counter, and did it silently.
+   */
+  const wantedCard = String(req.query.loyaltyCardNumber ?? '').trim();
+  const wantedEmail = String(req.query.email ?? '').trim().toLowerCase();
+
+  const matched = [...store.customers.values()]
+    .filter((c) => !wantedCard || c.loyaltyCardNumber === wantedCard)
+    .filter((c) => !wantedEmail || c.email.toLowerCase() === wantedEmail)
+    .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+
+  // Paged like the real list, so a caller that reads one response and stops
+  // finds out here rather than against a tenant with real membership.
+  const perPage = Math.min(Math.max(Number(req.query.itemsOnPage ?? 10) || 10, 1), 50);
+  const page = Math.max(Number(req.query.page ?? 1) || 1, 1);
+  const start = (page - 1) * perPage;
+  res.json({
+    items: matched.slice(start, start + perPage).map((c) => serializeCustomer(store, c)),
+    total: { all: matched.length, filtered: matched.length, estimated: false },
+  });
 });
 
 adminRouter.get(

@@ -63,12 +63,22 @@ authRouter.post('/api/auth/login', async (req, res) => {
 });
 
 const registerSchema = z.object({
-  firstName: z.string().min(1),
-  lastName: z.string().min(1),
-  email: z.string().email(),
   password: z.string().min(6),
+  /**
+   * The identifier the member's QR encodes, and the only thing that identifies
+   * them upstream. Required, because the profile Open Loyalty is given is
+   * derived from it — there is nothing else to build one from.
+   */
+  loyaltyCardNumber: z.string().min(1),
+  /**
+   * Accepted and deliberately not forwarded. Older clients still send these;
+   * taking them without using them is what lets those clients keep working
+   * while the platform stops being told who anybody is.
+   */
+  firstName: z.string().optional(),
+  lastName: z.string().optional(),
+  email: z.string().optional(),
   phone: z.string().optional(),
-  loyaltyCardNumber: z.string().min(1).optional(),
   /**
    * Member type and other tags, passed straight through in the spec's `Labels`
    * shape. Enrolment campaigns filter on them upstream, which is what decides
@@ -78,6 +88,29 @@ const registerSchema = z.object({
     .array(z.object({ key: z.string().min(1), value: z.string().min(1) }))
     .optional(),
 });
+
+/**
+ * The identity Open Loyalty is given, and the whole of it.
+ *
+ * The loyalty platform runs the programme; it does not need to know who anyone
+ * is. Everything it is told is derived from the card number: a name that is the
+ * card, and an address in a domain that receives no mail. The member's real
+ * name, address and NRIC stay in this service's callers and are never
+ * transmitted, so a tenant, an export or a support screen upstream cannot
+ * disclose them.
+ *
+ * Derived rather than random so it is stable: the same card always resolves to
+ * the same record, which is what makes enrolment idempotent and lets a returning
+ * member be found again.
+ */
+function pseudonym(loyaltyCardNumber: string) {
+  const card = loyaltyCardNumber.trim();
+  return {
+    firstName: 'Member',
+    lastName: card.toUpperCase(),
+    email: `${card.toLowerCase()}@ntucclub.demo`,
+  };
+}
 
 authRouter.post('/api/auth/register', async (req, res) => {
   const parsed = registerSchema.safeParse(req.body);
@@ -91,7 +124,18 @@ authRouter.post('/api/auth/register', async (req, res) => {
     // Enrolment takes more than one call against a real tenant, and the member
     // is not usable until all of them have run — so none of it happens after
     // this handler responds.
-    const created = await openLoyalty.register(parsed.data);
+    //
+    // What goes up is the pseudonym, never what the client sent. Enforcing it
+    // here rather than asking clients to behave means one place decides what
+    // the platform learns, and a client that sends a real name simply does not
+    // get it forwarded.
+    const identity = pseudonym(parsed.data.loyaltyCardNumber);
+    const created = await openLoyalty.register({
+      ...identity,
+      password: parsed.data.password,
+      loyaltyCardNumber: parsed.data.loyaltyCardNumber,
+      labels: parsed.data.labels,
+    });
 
     // Open Loyalty creates members inactive, and an inactive member cannot
     // transact. Tolerated if it fails: a platform that activates on
@@ -136,7 +180,7 @@ authRouter.post('/api/auth/register', async (req, res) => {
 
     // Immediately log the new member in for a smooth onboarding flow.
     const tokens = await openLoyalty.memberLogin(
-      parsed.data.email,
+      identity.email,
       parsed.data.password,
     );
 
@@ -189,9 +233,11 @@ authRouter.post('/api/auth/register', async (req, res) => {
       refreshToken: tokens.refresh_token,
       member: {
         customerId: created.customerId,
+        // The pseudonymous record, so a caller can see what the platform holds.
+        // Whatever the member is actually called stays with the caller.
         email: created.email,
-        firstName: parsed.data.firstName,
-        lastName: parsed.data.lastName,
+        firstName: identity.firstName,
+        lastName: identity.lastName,
       },
       // The settled loyalty record. The client can render the dashboard
       // straight from this — no second round trip, no window where the balance

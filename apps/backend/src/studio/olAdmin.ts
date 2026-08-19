@@ -176,10 +176,24 @@ interface ListEnvelope<T> {
 export const olAdmin = {
   storeCode,
 
-  /** Every member on the store. */
+  /**
+   * Every member on the store, walked page by page.
+   *
+   * `GET /member` answers ten at a time by default and fifty at most, so a
+   * single call is the ten newest members and nothing else — enough to look
+   * right on an empty tenant and to quietly miss almost everyone on a real one.
+   */
   async members(): Promise<AdminMember[]> {
-    const { items } = await request<ListEnvelope<AdminMember>>(`${s()}/member`);
-    return items;
+    const perPage = 50;
+    const all: AdminMember[] = [];
+    for (let page = 1; page <= 40; page += 1) {
+      const { items } = await request<ListEnvelope<AdminMember>>(
+        `${s()}/member?page=${page}&itemsOnPage=${perPage}`,
+      );
+      all.push(...items);
+      if (items.length < perPage) break;
+    }
+    return all;
   },
 
   /**

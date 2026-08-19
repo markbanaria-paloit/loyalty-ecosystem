@@ -70,20 +70,33 @@ async function req(path, { auth = false, ...init } = {}) {
 }
 
 /**
- * Registration email, always derived from the card number.
+ * The address a card is enrolled under. Derived from the card and nothing else.
  *
- * This is what makes enrolment idempotent. The address is unique to this card,
- * so a conflict can only mean *this* member is already enrolled with *this*
- * card — never a different member we would need to work around. Registering
- * under the raw sign-in address instead would collide whenever the demo is
- * reset and the same person returns with a fresh card, and the retry would
- * quietly create a duplicate member holding the same card.
+ * Two things at once. It makes enrolment idempotent — the address is unique to
+ * this card, so a conflict can only mean *this* member is already enrolled with
+ * *this* card. And it keeps the member's real address out of the loyalty
+ * platform, which has no use for it: the programme is run on the card number,
+ * not on who anybody is.
  */
-function registrationEmail(cardNumber, email) {
-  const slug = cardNumber.toLowerCase();
-  if (!email) return `${slug}@ntucclub.demo`;
+function registrationEmail(cardNumber) {
+  return `${cardNumber.toLowerCase()}@ntucclub.demo`;
+}
+
+/**
+ * The address a card used to be enrolled under, when one was derived from the
+ * member's own.
+ *
+ * Kept only to find those members again. Enrolment answers 409 for an address
+ * it already holds, so without this a member enrolled under the old scheme
+ * would not be recognised and a second record would be created against the same
+ * card — two members, one card number, and a till that matches whichever it
+ * finds first.
+ */
+function legacyRegistrationEmail(cardNumber, email) {
+  if (!email) return null;
   const [local, domain] = email.split('@');
-  return `${local}+${slug}@${domain}`;
+  if (!local || !domain) return null;
+  return `${local}+${cardNumber.toLowerCase()}@${domain}`;
 }
 
 /**
@@ -130,16 +143,39 @@ export async function ensureMember(user) {
   const cardNumber = user.loyaltyCardNumber;
   if (!cardNumber) throw new Error('user has no loyaltyCardNumber');
 
-  const [firstName, ...rest] = String(user.name || 'Member').trim().split(' ');
-  const email = registrationEmail(cardNumber, user.email);
+  const email = registrationEmail(cardNumber);
+
+  // Whoever the member is stays here. The platform is sent the card number and
+  // the member type, and builds its own pseudonymous profile from the first —
+  // it never learns a name, an address or an NRIC, because it never needs one.
   const credentials = {
-    firstName,
-    lastName: rest.join(' ') || 'Member',
-    email,
     password: DEMO_PASSWORD,
     loyaltyCardNumber: cardNumber,
     labels: labelsFor(user),
   };
+
+  // A member enrolled before addresses were derived from the card alone is
+  // holding an account under the old one. Finding them first is what stops a
+  // second record being opened against the same card.
+  const legacy = legacyRegistrationEmail(cardNumber, user.email);
+  if (legacy) {
+    try {
+      const session = await req('/api/auth/login', {
+        method: 'POST',
+        body: JSON.stringify({ email: legacy, password: DEMO_PASSWORD }),
+      });
+      setToken(session.token);
+      return {
+        cardNumber,
+        email: legacy,
+        enrolled: false,
+        account: session.account ?? null,
+        enrolment: null,
+      };
+    } catch {
+      // No such member: this card has not been enrolled under the old scheme.
+    }
+  }
 
   try {
     const created = await req('/api/auth/register', {
