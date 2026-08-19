@@ -70,15 +70,26 @@ const MAX_PAGES = 200;
 async function findByCode(couponCode: string) {
   const wanted = couponCode.trim();
   let seen = 0;
+  let previousFirst: string | null = null;
   for (let page = 1; page <= MAX_PAGES; page += 1) {
     const { items, total } = await openLoyalty.redemptions(page, PAGE_SIZE);
     const found = items.find((r) => sameCode(codeOf(r), wanted));
     if (found) return found;
-    seen += items.length;
-    // Empty page, not short page: `itemsOnPage` is a request and this store
-    // answers ten at a time regardless, so stopping at a page smaller than the
-    // one asked for searched the ten most recent redemptions and no others.
     if (items.length === 0) return null;
+
+    /**
+     * Give up when the pages stop moving.
+     *
+     * This tenant ignores `page` on its listings — every page answers with the
+     * same records — so a walk that trusts the parameter never ends and never
+     * finds anything new. Repeating the first record is the signal that paging
+     * is not supported here, and one pass is all there is to search.
+     */
+    const first = items[0]?.issuedRewardId ?? null;
+    if (page > 1 && first !== null && first === previousFirst) return null;
+    previousFirst = first;
+
+    seen += items.length;
     if (typeof total?.all === 'number' && seen >= total.all) return null;
   }
   throw new Error(

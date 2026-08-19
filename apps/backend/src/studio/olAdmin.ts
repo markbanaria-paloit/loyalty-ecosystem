@@ -185,26 +185,32 @@ export const olAdmin = {
    * single call is the ten newest members and nothing else — enough to look
    * right on an empty tenant and to quietly miss almost everyone on a real one.
    */
+  /**
+   * The members this store returns for a plain listing.
+   *
+   * Not "every member": this tenant ignores `page` — every page answers with
+   * the same ten — so a listing is the most recent handful and nothing more.
+   * Good enough for finding the newest member of a kind, which is what the
+   * persona picker wants; useless for finding a particular person, which is
+   * what `findMembers` is for.
+   */
   async members(): Promise<AdminMember[]> {
-    const all: AdminMember[] = [];
-    for (let page = 1; page <= 200; page += 1) {
-      const { items, total } = await request<
-        ListEnvelope<AdminMember> & { total?: { all?: number } }
-      >(`${s()}/member?page=${page}&itemsOnPage=50`);
-      all.push(...items);
-      /**
-       * Stop on an empty page, not a short one.
-       *
-       * `itemsOnPage` is a request, not a promise: this store answers ten at a
-       * time whatever is asked for. Treating a page smaller than the one asked
-       * for as the last page therefore ended the walk after ten members, and
-       * every member past the newest ten was invisible — to the persona picker,
-       * and to anyone looked up by card number.
-       */
-      if (items.length === 0) break;
-      if (typeof total?.all === 'number' && all.length >= total.all) break;
-    }
-    return all;
+    const { items } = await request<ListEnvelope<AdminMember>>(`${s()}/member`);
+    return items;
+  },
+
+  /**
+   * Members matching a filter, asked of the store rather than sifted here.
+   *
+   * The filters are honoured where the paging is not, so this finds anyone —
+   * including the 34 members a listing does not mention.
+   */
+  async findMembers(filter: Record<string, string>): Promise<AdminMember[]> {
+    const query = new URLSearchParams(filter).toString();
+    const { items } = await request<ListEnvelope<AdminMember>>(
+      `${s()}/member?${query}`,
+    );
+    return items;
   },
 
   /**

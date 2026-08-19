@@ -209,15 +209,34 @@ demoRouter.post('/api/demo/card/:cardNumber/session', async (req, res) => {
      * and an id, and a field that accepts only one of the three is a field that
      * says "not found" about a member sitting right there.
      */
-    const wanted = req.params.cardNumber.trim().toLowerCase();
-    const member = (await olAdmin.members()).find((m) => {
-      const card = (m.loyaltyCardNumber ?? cardNumberFromEmail(m.email) ?? '').toLowerCase();
-      return (
-        (card && card === wanted) ||
-        m.email?.toLowerCase() === wanted ||
-        m.customerId?.toLowerCase() === wanted
+    /**
+     * Whatever identifies the member, asked of the store one way at a time.
+     *
+     * Filtered rather than searched: this tenant ignores `page`, so listing
+     * members returns the same ten however many there are, and anyone else is
+     * unreachable by sifting. The filters are honoured, so each is tried in
+     * turn — the card the label asks for, the address the console shows, the id
+     * in its URL.
+     */
+    const wanted = req.params.cardNumber.trim();
+    const byField = ['loyaltyCardNumber', 'email', 'customerId'];
+    let member: AdminMember | undefined;
+    for (const field of byField) {
+      const [hit] = await olAdmin.findMembers({ [field]: wanted });
+      if (hit) {
+        member = hit;
+        break;
+      }
+    }
+    // A card derived from the address is the last resort, for a store that
+    // records no card number of its own.
+    if (!member) {
+      member = (await olAdmin.members()).find(
+        (m) =>
+          cardNumberFromEmail(m.email)?.toLowerCase() === wanted.toLowerCase(),
       );
-    });
+    }
+
     if (!member) {
       res.status(404).json({ message: 'No member found for that loyalty ID' });
       return;
