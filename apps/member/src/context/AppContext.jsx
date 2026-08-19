@@ -344,11 +344,6 @@ function reducer(state, action) {
 function addMonthsISO(months) {
   return addMonths(new Date(), months).toISOString();
 }
-function addDaysISO(days) {
-  const d = new Date();
-  d.setDate(d.getDate() + days);
-  return d.toISOString();
-}
 function genCode(prefix = 'NC') {
   return `${prefix}-${Math.random().toString(36).slice(2, 6).toUpperCase()}-${Math.random().toString(36).slice(2, 6).toUpperCase()}`;
 }

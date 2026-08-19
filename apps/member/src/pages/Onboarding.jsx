@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Sparkles, Ticket, Car, BadgePercent, Gift, Zap, TrendingUp, Star } from 'lucide-react';
 import { useApp } from '../context/AppContext.jsx';
-import { TierBadge, tenantName } from '../components/Ui.jsx';
+import { TierBadge } from '../components/Ui.jsx';
 import { TIER_INFO } from '../data/mockData.js';
 
 export default function Onboarding() {
