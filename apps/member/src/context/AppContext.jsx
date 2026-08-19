@@ -17,7 +17,9 @@ import {
   fetchHistory,
   fetchTierProgress,
   fetchTiers,
+  fetchChallenges,
   fetchVouchers,
+  logEvent,
   redeemReward,
   startPersonaSession,
 } from '../lib/loyalty.js';
@@ -42,6 +44,8 @@ const initialState = {
   parkingUsage: {}, // { [monthKey]: minutesUsed }
   /** Coupons issued by the loyalty platform. The till's status lives here. */
   platformVouchers: [],
+  /** Challenges and their progress, as the platform scores them. */
+  challenges: [],
   birthdayClaimedMonthKey: null,
   demoBirthdayMode: false,
   config: DEFAULT_CONFIG,
@@ -283,6 +287,9 @@ function reducer(state, action) {
     case 'SET_PLATFORM_VOUCHERS':
       return { ...state, platformVouchers: action.payload };
 
+    case 'SET_CHALLENGES':
+      return { ...state, challenges: action.payload };
+
     case 'UPDATE_CONSENT': {
       return { ...state, consent: { ...state.consent, [action.payload.channel]: action.payload.value } };
     }
@@ -376,15 +383,19 @@ export function AppProvider({ children }) {
    */
   const refreshAccount = useCallback(async (announce = false) => {
     if (!card) return;
-    const [account, history, progress, vouchers] = await Promise.all([
+    const [account, history, progress, vouchers, challenges] = await Promise.all([
       fetchAccount(),
       fetchHistory(),
       fetchTierProgress().catch(() => null),
       fetchVouchers().catch(() => null),
+      // Read on the same beat as the balance: a challenge advances off the same
+      // sale, so seeing one move and not the other would be the odd thing.
+      fetchChallenges().catch(() => null),
     ]);
     dispatch({ type: announce ? 'SYNC_ACCOUNT' : 'SET_ACCOUNT', payload: { ...account, history } });
     dispatch({ type: 'SET_TIER_PROGRESS', payload: progress });
     if (vouchers) dispatch({ type: 'SET_PLATFORM_VOUCHERS', payload: vouchers });
+    if (challenges) dispatch({ type: 'SET_CHALLENGES', payload: challenges });
   }, [card]);
 
   /**
@@ -581,6 +592,23 @@ export function AppProvider({ children }) {
    * Nothing is debited here afterwards — redeeming spends the points upstream,
    * and a second debit would charge the member twice.
    */
+  /**
+   * Tell the programme the member rated us.
+   *
+   * The id is derived from the member and the day, so tapping twice in one
+   * sitting is one event. What a rating is worth — whether it finishes a
+   * challenge, what that pays — is the platform's to decide.
+   */
+  const rate = useCallback(
+    async (score) => {
+      const memberId = stateRef.current.account.customerId ?? 'anon';
+      const day = new Date().toISOString().slice(0, 10);
+      await logEvent('onlinereview', `review-${memberId}-${day}`, { score });
+      await refreshAccount().catch(() => {});
+    },
+    [refreshAccount],
+  );
+
   const redeemCart = useCallback(
     async (rewards) => {
       let redeemed = 0;
@@ -623,8 +651,9 @@ export function AppProvider({ children }) {
       syncMember,
       refreshAccount,
       redeemCart,
+      rate,
     }),
-    [state, loyaltySync, signIn, signInAsPersona, syncMember, refreshAccount, redeemCart],
+    [state, loyaltySync, signIn, signInAsPersona, syncMember, refreshAccount, redeemCart, rate],
   );
   return <AppCtx.Provider value={value}>{children}</AppCtx.Provider>;
 }

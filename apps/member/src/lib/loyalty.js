@@ -260,6 +260,33 @@ export async function fetchRewards() {
 }
 
 /**
+ * The challenges this member is in, with their progress.
+ *
+ * Progress is the platform's to keep — it advances when a sale or an event
+ * matches a milestone — so this only ever reads.
+ */
+export async function fetchChallenges() {
+  const { challenges } = await req('/api/me/challenges', { auth: true });
+  return challenges ?? [];
+}
+
+/**
+ * Tell the programme something happened that no till would have seen.
+ *
+ * A rating is one of these: nothing is bought, but a challenge is waiting on
+ * it. `eventId` is sent so a double tap is the same event rather than a second
+ * one — the platform counts occurrences, and a member who rated once should
+ * count once.
+ */
+export async function logEvent(type, eventId, body) {
+  return req('/api/me/events', {
+    auth: true,
+    method: 'POST',
+    body: JSON.stringify({ type, eventId, body }),
+  });
+}
+
+/**
  * The coupons this member holds, straight from the loyalty platform.
  *
  * Their status is the platform's, not a copy: the till marks a coupon fulfilled

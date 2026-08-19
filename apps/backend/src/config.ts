@@ -53,6 +53,18 @@ export const config = {
      * moving between them.
      */
     unionTierName: process.env.UNION_TIER_NAME ?? 'Tier 2',
+    /**
+     * Custom events a member's own app is allowed to raise.
+     *
+     * An allow-list because an event is a trigger: challenges and campaigns
+     * wait on them, and a member able to post any type at will could advance
+     * any challenge and collect whatever it pays. Only the ones the app has a
+     * screen for belong here.
+     */
+    memberEventTypes: (process.env.MEMBER_EVENT_TYPES ?? 'onlinereview')
+      .split(',')
+      .map((t) => t.trim())
+      .filter(Boolean),
   },
 
   /*

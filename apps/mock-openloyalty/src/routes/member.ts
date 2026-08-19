@@ -17,6 +17,7 @@ import { randomUUID } from 'node:crypto';
 import {
   findCustomerByEmail,
   listEnvelope,
+  customEventCount,
   serializeCustomerStatus,
   serializeIssuedReward,
   serializeReward,
@@ -186,25 +187,38 @@ memberRouter.get(
       res.status(404).json({ code: 404, message: 'Member not found' });
       return;
     }
-    const spent = Math.max(0, customer.earnedPoints);
+    const reviews = customEventCount(store, customer.customerId, 'onlinereview');
+    const purchases = [...store.transactions.values()].filter(
+      (t) => t.customerId === customer.customerId,
+    ).length;
     res.json(
       listEnvelope([
         {
           campaignId: '60c2989b-b7ea-4cdd-adbb-77c69857a3ac',
-          campaignName: 'Shop three weeks running',
+          campaignName: 'Purchase & review',
           campaignDescription:
-            'Make a qualifying purchase in three consecutive weeks.',
+            'Leave a review and make three purchases.',
           limitReached: false,
           memberProgress: {
             completedCount: 0,
             milestones: [
               {
-                milestoneId: 'e0f1b6a2-0000-4000-8000-000000000001',
+                milestoneId: 'baf87827-72cc-4096-b3eb-a159c90de989',
                 periodGoal: 1,
-                currentPeriodValue: spent > 0 ? 1 : 0,
-                consecutivePeriods: 3,
-                completedConsecutivePeriods: spent > 0 ? 1 : 0,
-                periodType: 'week',
+                currentPeriodValue: Math.min(reviews, 1),
+                consecutivePeriods: null,
+                completedConsecutivePeriods: 0,
+                periodType: 'overall',
+                type: 'frequency',
+                trigger: 'custom_event',
+              },
+              {
+                milestoneId: 'f8a94daa-b113-44ba-be49-4a93d10ad1fa',
+                periodGoal: 3,
+                currentPeriodValue: Math.min(purchases, 3),
+                consecutivePeriods: null,
+                completedConsecutivePeriods: 0,
+                periodType: 'overall',
                 type: 'frequency',
                 trigger: 'transaction',
               },

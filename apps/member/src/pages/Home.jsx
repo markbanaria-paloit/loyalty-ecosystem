@@ -1,7 +1,7 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { QrCode, ChevronRight, Bell, Cake } from 'lucide-react';
+import { QrCode, ChevronRight, Bell, Cake, Target, Star, Check } from 'lucide-react';
 import { useApp, isBirthdayMonthNow } from '../context/AppContext.jsx';
 import { TierBadge, TenantAvatar, tenantName } from '../components/Ui.jsx';
 import { PROMOTIONS } from '../data/mockData.js';
@@ -18,6 +18,8 @@ export default function Home() {
   // Both come from the loyalty record the BFF reports — the app no longer
   // keeps a points history of its own.
   const expiringSoon = state.account.pointsExpiringNextMonth ?? 0;
+
+  const challenge = useMemo(() => currentChallenge(state.challenges), [state.challenges]);
 
   const recent = useMemo(
     () =>
@@ -75,7 +77,18 @@ export default function Home() {
 
       <div className="mt-5 space-y-5 px-4">
         <TierProgressCard progress={state.tierProgress} />
-        {(isBirthdayMonthNow(user) || state.demoBirthdayMode) && <BirthdayBanner tier={user.tier} />}
+        {/*
+          * A challenge takes this slot when there is one to show. It is the
+          * thing the member can act on today, where a birthday is a standing
+          * fact about the month; when no challenge is running the birthday
+          * banner has the space back.
+          */}
+        {challenge ? (
+          <ChallengeBanner challenge={challenge} />
+        ) : (
+          (isBirthdayMonthNow(user) || state.demoBirthdayMode) && <BirthdayBanner tier={user.tier} />
+        )}
+        {challenge && <RatingCard challenge={challenge} />}
 
         <div>
           <div className="mb-3 flex items-center justify-between">
@@ -120,6 +133,127 @@ export default function Home() {
             ))}
           </div>
         </div>
+      </div>
+    </div>
+  );
+}
+
+/**
+ * The challenge the member is closest to finishing, or nothing.
+ *
+ * One at a time: a list of goals is a chore, and the useful thing on a home
+ * screen is the next step. Completed and closed-out challenges are dropped —
+ * a goal already met is not something to announce.
+ */
+function currentChallenge(challenges) {
+  const open = (challenges ?? []).filter(
+    (c) => !c.limitReached && c.milestones.some((m) => m.goal && m.current < m.goal),
+  );
+  if (!open.length) return null;
+  const remaining = (c) =>
+    c.milestones.reduce((sum, m) => sum + Math.max(0, (m.goal ?? 0) - m.current), 0);
+  return [...open].sort((a, b) => remaining(a) - remaining(b))[0];
+}
+
+/** Wording for a milestone, in the terms the member did the thing in. */
+function milestoneLabel(m) {
+  if (m.trigger === 'transaction') return `${m.goal} purchases`;
+  if (m.trigger === 'custom_event') return 'Leave a rating';
+  return 'Goal';
+}
+
+function ChallengeBanner({ challenge }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="overflow-hidden rounded-2xl bg-gradient-to-br from-brand-600 to-brand-800 p-4 text-white shadow-lg"
+    >
+      <div className="flex items-center gap-2">
+        <Target size={18} />
+        <p className="text-sm font-bold">{challenge.name}</p>
+      </div>
+      {challenge.description && (
+        <p className="mt-0.5 text-xs text-white/80">{challenge.description}</p>
+      )}
+      <div className="mt-3 space-y-2">
+        {challenge.milestones.map((m) => {
+          const goal = m.goal ?? 0;
+          const done = goal > 0 && m.current >= goal;
+          const pct = goal > 0 ? Math.min(100, Math.round((m.current / goal) * 100)) : 0;
+          return (
+            <div key={m.milestoneId}>
+              <div className="flex items-center justify-between text-[11px]">
+                <span className="flex items-center gap-1 text-white/85">
+                  {done && <Check size={12} />} {milestoneLabel(m)}
+                </span>
+                <span className="font-semibold text-white/85">
+                  {Math.min(m.current, goal)}/{goal}
+                </span>
+              </div>
+              <div className="mt-1 h-1.5 w-full overflow-hidden rounded-full bg-white/25">
+                <div
+                  className="h-full rounded-full bg-white transition-all duration-500"
+                  style={{ width: `${pct}%` }}
+                />
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </motion.div>
+  );
+}
+
+/**
+ * Rate us — which is how the review milestone advances.
+ *
+ * Shown only while that milestone is outstanding: a member who has already
+ * rated has nothing to do here, and a card asking again would be asking for a
+ * thing that no longer counts.
+ */
+function RatingCard({ challenge }) {
+  const { rate } = useApp();
+  const [score, setScore] = useState(0);
+  const [busy, setBusy] = useState(false);
+  const [done, setDone] = useState(false);
+
+  const milestone = challenge.milestones.find((m) => m.trigger === 'custom_event');
+  const alreadyRated = milestone && milestone.goal && milestone.current >= milestone.goal;
+  if (!milestone || alreadyRated || done) return null;
+
+  async function send(value) {
+    setScore(value);
+    setBusy(true);
+    try {
+      await rate(value);
+      setDone(true);
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  return (
+    <div className="rounded-2xl border border-gray-100 bg-white p-4 shadow-sm">
+      <p className="text-sm font-bold text-gray-900">How are we doing?</p>
+      <p className="mt-0.5 text-[11px] text-gray-400">
+        Leave a rating to complete this part of the challenge.
+      </p>
+      <div className="mt-3 flex gap-1.5">
+        {[1, 2, 3, 4, 5].map((n) => (
+          <button
+            key={n}
+            disabled={busy}
+            onClick={() => send(n)}
+            aria-label={`${n} star${n > 1 ? 's' : ''}`}
+            className="p-1 disabled:opacity-40"
+          >
+            <Star
+              size={26}
+              className={n <= score ? 'fill-gold-500 text-gold-500' : 'text-gray-300'}
+            />
+          </button>
+        ))}
       </div>
     </div>
   );

@@ -20,6 +20,7 @@ import {
   type TierSet,
   type Transaction,
   type Transfer,
+  type CustomEventRecord,
 } from './data.js';
 
 /** The store as JSON: every `Map` becomes a plain object keyed the same way. */
@@ -32,6 +33,7 @@ interface StoreSnapshot {
   issuedRewards: Record<string, IssuedReward>;
   transactions: Record<string, Transaction>;
   campaigns: Record<string, Campaign>;
+  customEvents: Record<string, CustomEventRecord>;
   basePointsPerCurrencyUnit: number;
 }
 
@@ -46,6 +48,7 @@ export function serialize(store: Store): StoreSnapshot {
     issuedRewards: Object.fromEntries(store.issuedRewards),
     transactions: Object.fromEntries(store.transactions),
     campaigns: Object.fromEntries(store.campaigns),
+    customEvents: Object.fromEntries(store.customEvents),
     basePointsPerCurrencyUnit: store.basePointsPerCurrencyUnit,
   };
 }
@@ -58,6 +61,7 @@ export function hydrate(snapshot: StoreSnapshot): Store {
     tiers: new Map(Object.entries(snapshot.tiers ?? {})),
     customers: new Map(Object.entries(snapshot.customers ?? {})),
     transfers: new Map(Object.entries(snapshot.transfers ?? {})),
+    customEvents: new Map(Object.entries(snapshot.customEvents ?? {})),
     rewards: new Map(Object.entries(snapshot.rewards ?? {})),
     issuedRewards: new Map(Object.entries(snapshot.issuedRewards ?? {})),
     transactions: new Map(Object.entries(snapshot.transactions ?? {})),

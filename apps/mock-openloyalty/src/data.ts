@@ -119,6 +119,26 @@ export interface Tier {
   updatedAt: string;
 }
 
+/** A custom event as the platform records it. */
+export interface CustomEventRecord {
+  customEventId: string;
+  eventId: string;
+  type: string;
+  customerId: string;
+  createdAt: string;
+}
+
+/** How many times a member has raised an event of this type. */
+export function customEventCount(
+  store: Store,
+  customerId: string,
+  type: string,
+): number {
+  return [...store.customEvents.values()].filter(
+    (e) => e.customerId === customerId && e.type === type,
+  ).length;
+}
+
 /** A key/value tag on a member, per the spec's `Labels` schema. */
 export interface MemberLabel {
   key: string;
@@ -651,6 +671,8 @@ export interface Store {
   rewards: Map<string, Reward>;
   issuedRewards: Map<string, IssuedReward>;
   transactions: Map<string, Transaction>;
+  /** Custom events raised for members — what a challenge milestone counts. */
+  customEvents: Map<string, CustomEventRecord>;
   campaigns: Map<string, Campaign>;
   /** Baseline earn rate before any campaign applies. */
   basePointsPerCurrencyUnit: number;
@@ -1047,6 +1069,7 @@ export function seedStore(code: string): Store {
     rewards: new Map(),
     issuedRewards: new Map(),
     transactions: new Map(),
+    customEvents: new Map(),
     campaigns: new Map(),
     basePointsPerCurrencyUnit: 1,
   };

@@ -104,6 +104,65 @@ for (const action of ['activate', 'deactivate'] as const) {
   );
 }
 
+/* --------------------------- Custom events ------------------------- *
+ * How the programme hears about something that did not happen at a till — a
+ * review left, a form filled. A challenge milestone or a campaign can wait on
+ * one, so raising it is the whole of the integration: what it is worth is
+ * decided upstream.
+ * ------------------------------------------------------------------- */
+
+adminRouter.post(
+  '/api/:storeCode/customEvent',
+  requireAdmin,
+  (req: AuthedRequest, res) => {
+    const store = req.store;
+    const event = (req.body?.event ?? {}) as Record<string, unknown>;
+    const type = String(event.type ?? '').trim();
+    const customerData = (event.customerData ?? {}) as Record<string, string>;
+    const customerId =
+      customerData.customerId ??
+      [...store.customers.values()].find(
+        (c) =>
+          (customerData.email && c.email === customerData.email) ||
+          (customerData.loyaltyCardNumber &&
+            c.loyaltyCardNumber === customerData.loyaltyCardNumber),
+      )?.customerId;
+
+    if (!type || !event.eventDate) {
+      res.status(400).json({
+        code: 400,
+        message: 'Invalid form',
+        errors: [{ path: 'type', message: 'type and eventDate are required.' }],
+      });
+      return;
+    }
+    if (!customerId || !store.customers.has(customerId)) {
+      res.status(404).json({ code: 404, message: 'Member not found' });
+      return;
+    }
+
+    // `eventId` exists to make a repeat harmless. A double-tapped button sends
+    // the same one, and counting it twice would advance a challenge for a
+    // thing the member only did once.
+    const eventId = String(event.eventId ?? randomUUID());
+    const seen = [...store.customEvents.values()].find((e) => e.eventId === eventId);
+    if (seen) {
+      res.json({ customEventId: seen.customEventId, duplicate: true });
+      return;
+    }
+
+    const customEventId = randomUUID();
+    store.customEvents.set(customEventId, {
+      customEventId,
+      eventId,
+      type,
+      customerId,
+      createdAt: new Date().toISOString(),
+    });
+    res.status(201).json({ customEventId });
+  },
+);
+
 /* ------------------------------ Points ----------------------------- */
 
 /** Spec wraps the payload as `{ transfer: { customer, points, comment } }`. */

@@ -16,6 +16,8 @@ import {
   openLoyalty,
   OpenLoyaltyError,
 } from "../openloyalty/client.js";
+import { randomUUID } from 'node:crypto';
+import { config } from '../config.js';
 import { olAdmin } from "../studio/olAdmin.js";
 import { ladder, toAccount } from "./account.js";
 
@@ -259,6 +261,36 @@ loyaltyRouter.get("/api/rewards", async (req: TokenRequest, res) => {
         };
       }),
     });
+  } catch (err) {
+    handleError(err, res);
+  }
+});
+
+/**
+ * Raise a custom event for this member — a review left, say.
+ *
+ * The type is checked against a configured list rather than taken as given. An
+ * event is a trigger: challenges and campaigns wait on them, and a route that
+ * forwarded whatever it was handed would let a member advance any challenge on
+ * the store and collect whatever it pays out. What the event is worth remains
+ * the platform's business; this only reports that it happened.
+ */
+loyaltyRouter.post('/api/me/events', async (req: TokenRequest, res) => {
+  const type = String(req.body?.type ?? '').trim();
+  if (!config.member.memberEventTypes.includes(type)) {
+    res.status(400).json({ message: 'Unknown event type' });
+    return;
+  }
+  try {
+    await openLoyalty.logCustomEvent({
+      memberId: req.memberId!,
+      type,
+      // Supplied by the caller where it can be, so a retry or a double tap is
+      // the same event rather than a second one.
+      eventId: String(req.body?.eventId ?? randomUUID()),
+      body: typeof req.body?.body === 'object' && req.body.body ? req.body.body : undefined,
+    });
+    res.status(201).json({ logged: true, type });
   } catch (err) {
     handleError(err, res);
   }

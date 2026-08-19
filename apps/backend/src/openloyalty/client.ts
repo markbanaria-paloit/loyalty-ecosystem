@@ -455,6 +455,35 @@ export const openLoyalty = {
     return request(`/api/${storeCode}/member/${memberId}/challenge`);
   },
 
+  /**
+   * Log a custom event for a member.
+   *
+   * Custom events are how the programme learns about things that happen
+   * outside a till — a review left, a form filled, a visit — and they are a
+   * trigger like any other: a challenge milestone or a campaign can be waiting
+   * on one. `eventId` makes a repeated call harmless, which matters because a
+   * double-tapped button should not count twice.
+   */
+  logCustomEvent(input: {
+    memberId: string;
+    type: string;
+    eventId: string;
+    body?: Record<string, unknown>;
+  }): Promise<unknown> {
+    return request(`/api/${storeCode}/customEvent`, {
+      method: 'POST',
+      body: JSON.stringify({
+        event: {
+          type: input.type,
+          eventDate: new Date().toISOString(),
+          customerData: { customerId: input.memberId },
+          eventId: input.eventId,
+          ...(input.body ? { body: input.body } : {}),
+        },
+      }),
+    });
+  },
+
   /** Rewards available to the logged member. */
   rewards(token: string): Promise<ListResponse<MemberReward>> {
     return request(`/api/${storeCode}/member/reward`, { token });
