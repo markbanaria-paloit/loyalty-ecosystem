@@ -89,12 +89,27 @@ export interface AdminMember {
   createdAt: string;
 }
 
+/**
+ * A tier's position on the ladder, as a single number.
+ *
+ * The lowest of its condition values: a tier is reached by meeting all of them,
+ * so the smallest is what separates it from the tier below. Values arrive as
+ * strings from a live tenant ("1500.000000000000"), hence the coercion.
+ */
+function tierThreshold(tier: Tier): number {
+  const values = (tier.conditions ?? [])
+    .map((c) => Number(c.value))
+    .filter((n) => Number.isFinite(n));
+  return values.length ? Math.min(...values) : 0;
+}
+
 export interface Tier {
   levelId: string;
   name: string;
   /** Tiers ordered by rank; entered only by assignment when true. */
   assignmentOnly?: boolean;
-  conditions: Array<{ attribute: string; value: number }>;
+  /** A live tenant sends these as decimal strings, not numbers. */
+  conditions: Array<{ attribute: string; value: number | string }>;
 }
 
 export interface Campaign {
@@ -161,9 +176,17 @@ export const olAdmin = {
     return items.filter((m) => (m.labels ?? []).some((l) => l.key === key));
   },
 
+  /**
+   * The tier ladder, lowest first.
+   *
+   * Sorted here rather than trusted: a live tenant returns tiers in creation
+   * order, which put Tier 2 ahead of Tier 1 — and rank is what the member app
+   * keys its presentation off, so an unsorted list styles every member as the
+   * wrong tier. Ordering by threshold is the only ordering that means anything.
+   */
   async tiers(): Promise<Tier[]> {
     const { items } = await request<ListEnvelope<Tier>>(`${s()}/tier`);
-    return items;
+    return [...items].sort((a, b) => tierThreshold(a) - tierThreshold(b));
   },
 
   async campaigns(): Promise<Campaign[]> {

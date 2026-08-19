@@ -122,20 +122,25 @@ only thing that works.
 
 → `200 {"transactionId":"…"}`
 
-Three differences from what our till sends:
+`sku` and `category` are **plain strings**. Sending `{"code":"SALE"}` fails with
+`items.0.sku: This value is not valid`, and a `categories: [{name}]` array fails
+with `items.0.category: This value should not be blank`. Our till already sends
+strings, so no change was needed there — the failure above was a hand-written
+probe, not the app.
 
-- **`sku` is a plain string.** Sending `{"code":"SALE"}` fails with
-  `items.0.sku: This value is not valid`.
-- **`category` is a plain string**, singular. A `categories: [{name}]` array
-  fails with `items.0.category: This value should not be blank`.
+Two things that do affect us:
+
 - **The response carries only `transactionId`** — no `matched`, no
-  `pointsEarned`. Our till prints the points on the receipt from that response,
-  so it must instead re-read the member.
+  `pointsEarned`. Our till printed the award from that response and now measures
+  it instead, by reading the member's balance either side of the sale.
+- **Point awards are asynchronous.** The transaction returns once accepted, not
+  once scored. A balance read immediately afterwards still showed the old
+  figure; the credit appeared under a second later. Reading once would print a
+  receipt saying zero for a sale that earned. The till now waits for the balance
+  to move, and gives up rather than hanging.
 
-**Point awards are synchronous.** The member's balance was `42.5` on the very
-next request — no polling, no delay. Note the value is **fractional**: 42.50 of
-spend earned 42.5 points, so the earn rate is 1 point per SGD and points are not
-rounded. Our engine floors them.
+Points are **fractional**: $42.50 earned 42.5, so the rate is 1 point per SGD and
+nothing is rounded. Our engine floors.
 
 ## What this changes for us
 
@@ -146,8 +151,8 @@ rounded. Our engine floors them.
 | Auth | `X-AUTH-TOKEN` (already supported) |
 | Enrolment | Must call `/activate` after registering |
 | Union members | Register → activate → assign tier; three calls, all before responding |
-| Transaction items | `sku` and `category` are strings |
-| Receipt points | Re-read the member; the response does not carry them |
+| Receipt points | Measured across the sale; the response does not carry them, and the award lands asynchronously |
+| Tier ordering | `/tier` returns Tier 2 first — sort by threshold, never trust the order |
 | Points | Fractional, not integers |
 | `levelId` | Absent from status — derive rank from the ladder, or read `/member/{id}` |
 

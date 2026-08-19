@@ -8,7 +8,7 @@
  */
 import { config } from '../config.js';
 
-const { baseUrl, storeCode } = config.openLoyalty;
+const { baseUrl, storeCode, apiKey } = config.openLoyalty;
 
 export class OpenLoyaltyError extends Error {
   constructor(
@@ -81,6 +81,19 @@ export interface TierProgress {
   nextTierMissingLabels?: Array<{ key: string; value: string }>;
 }
 
+/** The member record as the admin endpoints return it. */
+export interface AdminMemberRecord {
+  customerId: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  loyaltyCardNumber?: string | null;
+  active: boolean;
+  labels?: Array<{ key: string; value: string }>;
+  currentLevel?: { levelId: string; name: string } | null;
+  manuallyAssignedLevelId?: string | null;
+}
+
 /** What an enrolment campaign did for a member as they joined. */
 export interface CampaignPayout {
   campaignId: string;
@@ -122,7 +135,15 @@ async function request<T>(
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
-      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      // A member token identifies the member and is used when one is supplied.
+      // Everything else here is admin-scoped — activating a member, assigning a
+      // tier — and authenticates with the store's API key. Without this those
+      // calls go out unauthenticated and come back 401.
+      ...(token
+        ? { Authorization: `Bearer ${token}` }
+        : apiKey
+          ? { 'X-AUTH-TOKEN': apiKey }
+          : {}),
       ...headers,
     },
   });
@@ -203,6 +224,40 @@ export const openLoyalty = {
         },
       }),
     });
+  },
+
+  /**
+   * Activate a member.
+   *
+   * Open Loyalty creates members inactive, and an inactive member cannot
+   * transact. Registration is therefore not complete until this has run.
+   */
+  activate(memberId: string): Promise<unknown> {
+    return request(`/api/${storeCode}/member/${memberId}/activate`, { method: 'POST' });
+  },
+
+  /**
+   * Put a member on a tier directly.
+   *
+   * The only way to express membership-based tiering: tier conditions are
+   * metric-only, so a member type that should confer a tier cannot qualify for
+   * one. An assigned tier overrides the metric and survives later activity.
+   */
+  assignTier(memberId: string, levelId: string): Promise<unknown> {
+    return request(`/api/${storeCode}/member/${memberId}/tier`, {
+      method: 'POST',
+      body: JSON.stringify({ levelId }),
+    });
+  },
+
+  /**
+   * The full member record.
+   *
+   * `CustomerStatus` carries neither `levelId` nor `labels`; both live here,
+   * as `currentLevel.levelId` and `labels`.
+   */
+  member(memberId: string): Promise<AdminMemberRecord> {
+    return request(`/api/${storeCode}/member/${memberId}`);
   },
 
   status(token: string, memberId: string): Promise<CustomerStatus> {

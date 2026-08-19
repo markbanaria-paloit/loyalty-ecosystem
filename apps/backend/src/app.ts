@@ -13,6 +13,7 @@ import { config } from './config.js';
 import { authRouter } from './routes/auth.js';
 import { loyaltyRouter } from './routes/loyalty.js';
 import { demoRouter } from './routes/demo.js';
+import { eventsRouter } from './routes/events.js';
 
 export const app = express();
 
@@ -34,6 +35,7 @@ app.get('/health', (_req, res) => {
 app.use(authRouter);
 app.use(loyaltyRouter);
 app.use(demoRouter);
+app.use(eventsRouter);
 
 /**
  * The campaign studio is mounted by the caller, not here.

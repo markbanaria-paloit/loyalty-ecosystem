@@ -108,6 +108,11 @@ export function TillPage() {
     try {
       // Document numbers must be unique per store.
       const documentNumber = `POS-${Date.now().toString().slice(-9)}`;
+      // A real Open Loyalty answers a published sale with an id and nothing
+      // else, so the award has to be measured rather than read. Captured before
+      // the sale; the difference afterwards is what the member earned.
+      const scanned = card ? await api.memberByCard(card).catch(() => null) : null;
+
       const res = await api.postTransaction({
         documentNumber,
         documentType,
@@ -122,10 +127,26 @@ export function TillPage() {
         ],
         loyaltyCardNumber: card || undefined,
       });
+      let pointsEarned = res.pointsEarned;
+      let matched = res.matched ?? Boolean(scanned);
+      if (pointsEarned === undefined && scanned) {
+        // The award is scored after the sale is accepted, so this waits for the
+        // balance to move rather than reading it once and printing zero.
+        const after = await api.awaitPointsChange(scanned.customerId, scanned.activePoints);
+        pointsEarned =
+          after === null ? 0 : Math.max(0, Math.round((after - scanned.activePoints) * 100) / 100);
+        matched = after !== null;
+
+        // The award is confirmed, so the member's app can be told to refresh —
+        // the till is the only party that knows both that a sale happened and
+        // that it has been scored.
+        if (after !== null) void api.publishMemberChanged(scanned.customerId);
+      }
+
       setReceipt({
         documentNumber,
-        matched: res.matched,
-        pointsEarned: res.pointsEarned,
+        matched,
+        pointsEarned: pointsEarned ?? 0,
         total,
         card,
       });

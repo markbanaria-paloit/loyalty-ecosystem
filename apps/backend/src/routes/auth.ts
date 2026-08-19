@@ -14,6 +14,7 @@ import {
   OpenLoyaltyError,
 } from '../openloyalty/client.js';
 import { ladder, toAccount } from './account.js';
+import { config } from '../config.js';
 import { olAdmin } from '../studio/olAdmin.js';
 
 export const authRouter = Router();
@@ -87,13 +88,36 @@ authRouter.post('/api/auth/register', async (req, res) => {
     return;
   }
   try {
-    // Enrolment is settled entirely by the loyalty platform: registering raises
-    // its `CustomerRegistered` event, and the campaigns listening for it assign
-    // the tier and mint the welcome points before this call returns. The BFF
-    // grants nothing itself — a welcome award is programme configuration, and
-    // crediting it here would double it and put the amount out of the
-    // programme's reach.
+    // Enrolment takes more than one call against a real tenant, and the member
+    // is not usable until all of them have run — so none of it happens after
+    // this handler responds.
     const created = await openLoyalty.register(parsed.data);
+
+    // Open Loyalty creates members inactive, and an inactive member cannot
+    // transact. Tolerated if it fails: a platform that activates on
+    // registration answers 404 here, and that is not an error.
+    await openLoyalty.activate(created.customerId).catch(() => {});
+
+    // Membership-based tiering has to be assigned. Tier conditions are
+    // metric-only, so a union member cannot qualify for their tier — the
+    // platform will never put them there on its own.
+    const { unionLabelKey, unionLabelValue, unionTierName } = config.member;
+    const isUnionMember = (parsed.data.labels ?? []).some(
+      (l) => l.key === unionLabelKey && l.value === unionLabelValue,
+    );
+    if (isUnionMember) {
+      const tiers = await ladder();
+      const tier = tiers.find((t) => t.name === unionTierName);
+      if (tier) {
+        await openLoyalty.assignTier(created.customerId, tier.levelId).catch((err) => {
+          // A member who is enrolled but on the wrong tier is recoverable; one
+          // whose registration failed outright is not. Log and continue.
+          console.error('Union tier assignment failed for', created.customerId, err);
+        });
+      } else {
+        console.error(`Union tier "${unionTierName}" not found in the configured ladder`);
+      }
+    }
 
     // Immediately log the new member in for a smooth onboarding flow.
     const tokens = await openLoyalty.memberLogin(

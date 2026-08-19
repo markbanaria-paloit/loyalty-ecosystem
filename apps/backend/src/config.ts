@@ -18,6 +18,21 @@ export const config = {
      */
     apiKey: process.env.OPENLOYALTY_API_KEY ?? null,
   },
+  member: {
+    /**
+     * Label that marks a member as belonging to the union, and the tier they
+     * are placed on because of it.
+     *
+     * Tier conditions are metric-only, so this cannot be configured as a
+     * qualification rule on the platform — the tier has to be assigned. Naming
+     * the tier rather than hardcoding an id keeps it survivable across tenants,
+     * where the ids differ.
+     */
+    unionLabelKey: process.env.UNION_LABEL_KEY ?? 'customerType',
+    unionLabelValue: process.env.UNION_LABEL_VALUE ?? 'union_member',
+    unionTierName: process.env.UNION_TIER_NAME ?? 'Tier 2',
+  },
+
   /*
    * There is deliberately no welcome-bonus setting here. Enrolment awards are
    * campaigns configured in the loyalty platform (Campaign Admin → Campaigns),
