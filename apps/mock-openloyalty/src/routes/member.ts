@@ -354,16 +354,44 @@ memberRouter.post(
      * the first time it met one.
      */
     const body = (req.body ?? {}) as Record<string, unknown>;
-    const missing = ['customerId']
-      .concat(
-        reward.type === 'conversion_coupon' ? [] : ['quantity', 'withoutPoints'],
-      )
-      .concat(reward.type === 'dynamic_coupon' ? ['couponValue'] : [])
+
+    /**
+     * What a member buying for themselves may send.
+     *
+     * Only the amount. `customerId` and `withoutPoints` are an administrator's
+     * fields — who the reward is for, and whether to charge — and the member's
+     * token already answers the first while the second is not theirs to decide.
+     * A store refuses both, and this refuses them too: accepting them here let
+     * a payload pass every test and fail against a tenant.
+     */
+    const allowed =
+      reward.type === 'conversion_coupon'
+        ? ['units']
+        : reward.type === 'dynamic_coupon'
+          ? ['quantity', 'couponValue']
+          : ['quantity'];
+    const extra = Object.keys(body).filter((k) => !allowed.includes(k));
+    if (extra.length) {
+      res.status(400).json({
+        code: 400,
+        message: 'Validation failed',
+        errors: [
+          {
+            path: '',
+            message: 'This form should not contain extra fields.',
+            parameters: { '{{ extra_fields }}': extra.map((f) => `"${f}"`).join(', ') },
+          },
+        ],
+      });
+      return;
+    }
+    const missing = allowed
+      .filter((f) => f !== 'couponValue')
       .filter((field) => body[field] === undefined);
     if (missing.length) {
       res.status(400).json({
         code: 400,
-        message: 'Invalid form',
+        message: 'Validation failed',
         errors: missing.map((path) => ({ path, message: 'This value is required.' })),
       });
       return;

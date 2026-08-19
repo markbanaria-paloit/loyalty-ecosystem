@@ -399,7 +399,6 @@ loyaltyRouter.post(
       const issued = await openLoyalty.buyReward(
         req.memberToken!,
         req.params.rewardId,
-        req.memberId!,
         {
           type: reward?.reward ?? null,
           couponValue: reward?.couponValue ?? null,

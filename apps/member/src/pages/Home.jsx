@@ -20,6 +20,14 @@ export default function Home() {
   const expiringSoon = state.account.pointsExpiringNextMonth ?? 0;
 
   const challenge = useMemo(() => currentChallenge(state.challenges), [state.challenges]);
+  /**
+   * Whether we have heard from the platform yet.
+   *
+   * Until we have, neither banner is the right answer: showing the birthday
+   * and swapping it for a challenge a few seconds later is a worse thing to
+   * watch than a placeholder that resolves once.
+   */
+  const challengesUnknown = state.challenges === null;
 
   const recent = useMemo(
     () =>
@@ -83,7 +91,9 @@ export default function Home() {
           * fact about the month; when no challenge is running the birthday
           * banner has the space back.
           */}
-        {challenge ? (
+        {challengesUnknown ? (
+          <ChallengeSkeleton />
+        ) : challenge ? (
           <ChallengeBanner challenge={challenge} />
         ) : (
           (isBirthdayMonthNow(user) || state.demoBirthdayMode) && <BirthdayBanner tier={user.tier} />
@@ -160,6 +170,16 @@ function milestoneLabel(m) {
   if (m.trigger === 'transaction') return `${m.goal} purchases`;
   if (m.trigger === 'custom_event') return 'Leave a rating';
   return 'Goal';
+}
+
+function ChallengeSkeleton() {
+  return (
+    <div className="animate-pulse rounded-2xl bg-gray-200/70 p-4">
+      <div className="h-4 w-40 rounded bg-gray-300/80" />
+      <div className="mt-3 h-1.5 w-full rounded-full bg-gray-300/80" />
+      <div className="mt-3 h-1.5 w-full rounded-full bg-gray-300/80" />
+    </div>
+  );
 }
 
 function ChallengeBanner({ challenge }) {

@@ -517,7 +517,6 @@ export const openLoyalty = {
   buyReward(
     token: string,
     rewardId: string,
-    member: string,
     reward?: {
       type?: string | null;
       couponValue?: number | null;
@@ -526,13 +525,23 @@ export const openLoyalty = {
     },
   ): Promise<Array<{ issuedRewardId: string }>> {
     const type = reward?.type ?? 'static_coupon';
+    /**
+     * What a member may send when buying for themselves.
+     *
+     * Only the amount. `customerId` and `withoutPoints` belong to an
+     * administrator granting a reward to someone else — the member's own token
+     * already says who they are, and whether to charge is not theirs to
+     * decide — and a store rejects both outright: "this form should not
+     * contain extra fields: customerId, withoutPoints".
+     *
+     * The spec's schemas describe the administrator's form, which is why
+     * following them literally here was wrong.
+     */
     const body =
       type === 'conversion_coupon'
-        ? { customerId: member, units: reward?.units ?? null }
+        ? { units: reward?.units ?? null }
         : {
-            customerId: member,
             quantity: 1,
-            withoutPoints: false,
             ...(type === 'dynamic_coupon'
               ? { couponValue: reward?.couponValue ?? 0 }
               : {}),

@@ -169,7 +169,10 @@ export default function Rewards() {
       await reload();
       if (failures.length) {
         setError(failures[0].message);
-        setCart(failures.map((f) => f.id));
+        // Only things that were in the cart go back into it. A free reward is
+        // claimed on its own and has no price to total, so putting a failed
+        // one there produced a checkout bar offering "1 item selected, 0 pts".
+        setCart((current) => current.filter((id) => failures.some((f) => f.id === id)));
         return;
       }
       if (redeemed > 0) {

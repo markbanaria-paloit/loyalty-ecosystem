@@ -44,8 +44,14 @@ const initialState = {
   parkingUsage: {}, // { [monthKey]: minutesUsed }
   /** Coupons issued by the loyalty platform. The till's status lives here. */
   platformVouchers: [],
-  /** Challenges and their progress, as the platform scores them. */
-  challenges: [],
+  /**
+   * Challenges and their progress, as the platform scores them.
+   *
+   * `null` until the platform has answered — an empty list is a real answer
+   * ("no challenges"), and a screen cannot tell the two apart if they share a
+   * value.
+   */
+  challenges: null,
   birthdayClaimedMonthKey: null,
   demoBirthdayMode: false,
   config: DEFAULT_CONFIG,
