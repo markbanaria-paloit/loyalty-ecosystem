@@ -267,14 +267,20 @@ export const openLoyalty = {
     );
   },
 
-  /** Tier sets this member belongs to. */
-  memberTierSets(token: string, memberId: string): Promise<ListResponse<{ tierSetId: string }>> {
-    return request(`/api/${storeCode}/member/${memberId}/tierSet`, { token });
+  /**
+   * Tier sets this member belongs to.
+   *
+   * Admin-scoped: a member's own token is refused here (403), even for their
+   * own record. Bridging that is what this service is for — the caller has
+   * already been authenticated as the member by the route.
+   */
+  memberTierSets(memberId: string): Promise<ListResponse<{ tierSetId: string }>> {
+    return request(`/api/${storeCode}/member/${memberId}/tierSet`);
   },
 
   /** Where the member stands against the next tier, condition by condition. */
-  tierProgress(token: string, memberId: string, tierSetId: string): Promise<TierProgress> {
-    return request(`/api/${storeCode}/member/${memberId}/tierSet/${tierSetId}`, { token });
+  tierProgress(memberId: string, tierSetId: string): Promise<TierProgress> {
+    return request(`/api/${storeCode}/member/${memberId}/tierSet/${tierSetId}`);
   },
 
   /** Logged member's points transfers. */

@@ -75,17 +75,13 @@ loyaltyRouter.get('/api/me', async (req: TokenRequest, res) => {
  */
 loyaltyRouter.get('/api/me/tier-progress', async (req: TokenRequest, res) => {
   try {
-    const sets = await openLoyalty.memberTierSets(req.memberToken!, req.memberId!);
+    const sets = await openLoyalty.memberTierSets(req.memberId!);
     const tierSetId = sets.items[0]?.tierSetId;
     if (!tierSetId) {
       res.json({ progress: null });
       return;
     }
-    const progress = await openLoyalty.tierProgress(
-      req.memberToken!,
-      req.memberId!,
-      tierSetId,
-    );
+    const progress = await openLoyalty.tierProgress(req.memberId!, tierSetId);
     res.json({ progress });
   } catch (err) {
     handleError(err, res);
