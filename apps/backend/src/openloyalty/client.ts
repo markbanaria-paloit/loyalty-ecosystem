@@ -448,10 +448,17 @@ export const openLoyalty = {
                 : {}),
             },
           ],
+      // "This form should not contain extra fields" is a complaint about
+      // surplus, not absence, so the shapes below strip fields away one at a
+      // time rather than adding them. `withoutPoints` is the first to go: it
+      // decides whether the platform charges for the reward, which is an
+      // administrator's choice and not a member's to send.
+      ['without withoutPoints', { customerId: member, quantity: 1 }],
+      ['quantity only', { quantity: 1 }],
       ['customerId only', { customerId: member }],
       // The member's own token already says who they are, so a store may treat
       // naming them as the surplus field.
-      ['quantity only', { quantity: 1, withoutPoints: false }],
+      ['quantity and withoutPoints', { quantity: 1, withoutPoints: false }],
       ['empty', {}],
     ];
 
@@ -476,7 +483,12 @@ export const openLoyalty = {
         const rejectedForm =
           err instanceof OpenLoyaltyError &&
           err.status === 400 &&
-          /extra fields|should not contain|required|not valid/i.test(err.message);
+          // "Validation failed" belongs here too. It is what this store says
+          // when it will not name a field, and leaving it out stopped the
+          // search at the first shape — which is the same as not searching.
+          /extra fields|should not contain|required|not valid|validation failed/i.test(
+            err.message,
+          );
         if (!rejectedForm) throw err;
       }
     }
