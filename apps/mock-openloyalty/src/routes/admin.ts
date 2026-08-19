@@ -217,7 +217,13 @@ adminRouter.post('/api/:storeCode/reward', requireAdmin, (req: AuthedRequest, re
   }
   const reward: Reward = {
     rewardId: randomUUID(),
-    reward: String(name).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
+    // The kind, taken from the caller where given. A fixed-value coupon is the
+    // ordinary case and the default.
+    type: ['static_coupon', 'dynamic_coupon', 'conversion_coupon', 'material'].includes(
+      String(req.body?.reward),
+    )
+      ? (String(req.body?.reward) as Reward['type'])
+      : 'static_coupon',
     name,
     shortDescription: shortDescription ?? '',
     costInPoints: cost,

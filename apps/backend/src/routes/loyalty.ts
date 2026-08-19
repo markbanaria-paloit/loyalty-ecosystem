@@ -238,9 +238,19 @@ loyaltyRouter.post(
   '/api/rewards/:rewardId/redeem',
   async (req: TokenRequest, res) => {
     try {
+      // Buying needs the reward's kind, because the payload is shaped to it.
+      // Read from the member's own catalogue rather than taken on trust from
+      // the client: the client knows an id, and the platform decides what that
+      // id is.
+      const catalogue = await openLoyalty.rewards(req.memberToken!);
+      const reward = catalogue.items.find(
+        (r) => r.rewardId === req.params.rewardId,
+      );
       const issued = await openLoyalty.buyReward(
         req.memberToken!,
         req.params.rewardId,
+        req.memberId!,
+        { type: reward?.reward ?? null, couponValue: reward?.couponValue ?? null },
       );
       const issuedRewardId = issued[0]?.issuedRewardId;
       const [status, bought] = await Promise.all([

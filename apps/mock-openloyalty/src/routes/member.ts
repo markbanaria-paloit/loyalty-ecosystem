@@ -282,6 +282,30 @@ memberRouter.post(
       res.status(404).json({ code: 404, message: 'Not found' });
       return;
     }
+
+    /**
+     * The body is required, and its shape follows the reward's kind.
+     *
+     * Enforced because the real platform enforces it. This used to accept
+     * anything, including the empty object the backend was sending, so a call
+     * that could never work against a tenant passed every test here and failed
+     * the first time it met one.
+     */
+    const body = (req.body ?? {}) as Record<string, unknown>;
+    const missing = ['customerId']
+      .concat(
+        reward.type === 'conversion_coupon' ? [] : ['quantity', 'withoutPoints'],
+      )
+      .concat(reward.type === 'dynamic_coupon' ? ['couponValue'] : [])
+      .filter((field) => body[field] === undefined);
+    if (missing.length) {
+      res.status(400).json({
+        code: 400,
+        message: 'Invalid form',
+        errors: missing.map((path) => ({ path, message: 'This value is required.' })),
+      });
+      return;
+    }
     if (!reward.active) {
       res.status(400).json({ code: 400, message: 'Reward is not active' });
       return;

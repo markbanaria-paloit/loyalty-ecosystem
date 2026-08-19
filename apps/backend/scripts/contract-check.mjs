@@ -95,6 +95,37 @@ function findSpecPath(candidate, method) {
   return best?.specPath;
 }
 
+/**
+ * Whether an operation can be called with no body at all.
+ *
+ * A request body described with `oneOf` is satisfied by any one branch, so an
+ * empty object is only impossible when every branch requires something. That is
+ * the case worth reporting, and it is the one that bit: `reward/{id}/buy`
+ * accepts four shapes and every one of them wants a `customerId`, so the empty
+ * object we were sending could never have been valid.
+ */
+function resolveSchema(node) {
+  if (!node) return null;
+  if (node.$ref) {
+    const name = node.$ref.split('/').pop();
+    return spec.components?.schemas?.[name] ?? null;
+  }
+  return node;
+}
+
+function bodyRequired(op) {
+  const schema = op?.requestBody?.content?.['application/json']?.schema;
+  if (!schema) return null;
+  const branches = schema.oneOf ?? schema.anyOf ?? [schema];
+  const resolved = branches.map(resolveSchema).filter(Boolean);
+  if (!resolved.length) return null;
+  if (!resolved.every((b) => (b.required ?? []).length > 0)) return null;
+  // Report the smallest branch: the least a caller could get away with.
+  return resolved
+    .map((b) => b.required)
+    .sort((a, b) => a.length - b.length)[0];
+}
+
 /** Every upstream call site: a template-literal path plus its HTTP method. */
 function calls() {
   const found = [];
@@ -108,7 +139,14 @@ function calls() {
       const rawPath = m[1];
       if (!rawPath.includes('/api/') && !rawPath.includes('${s()}')) continue;
       const method = (m[2]?.match(/method:\s*'([A-Z]+)'/)?.[1] ?? 'GET').toLowerCase();
-      found.push({ file: file.replace(`${backendSrc}/`, ''), rawPath, method });
+      // Read the body from the source itself, not from the captured options.
+      // The capture stops at the first `}`, which for `JSON.stringify({})` is
+      // the one inside the call — so the empty body it is looking for is
+      // exactly the text the capture cuts off.
+      const window = text.slice(m.index, m.index + 500);
+      const emptyBody =
+        !/\bbody:/.test(window) || /body:\s*JSON\.stringify\(\s*\{\s*\}\s*\)/.test(window);
+      found.push({ file: file.replace(`${backendSrc}/`, ''), rawPath, method, emptyBody });
     }
   }
   return found;
@@ -117,8 +155,12 @@ function calls() {
 const results = calls().map((call) => {
   const candidate = toSpecPath(call.rawPath);
   const specPath = findSpecPath(candidate, call.method);
-  const ok = Boolean(specPath && spec.paths[specPath][call.method]);
-  return { ...call, candidate, specPath, ok };
+  const op = specPath ? spec.paths[specPath][call.method] : null;
+  const required = op ? bodyRequired(op) : null;
+  // A call that sends nothing to an operation that cannot accept nothing.
+  const missingBody = Boolean(required && call.emptyBody);
+  const ok = Boolean(op) && !missingBody;
+  return { ...call, candidate, specPath, op, required, missingBody, ok };
 });
 
 const failures = results.filter((r) => !r.ok);
@@ -129,7 +171,13 @@ for (const r of results.sort((a, b) => a.candidate.localeCompare(b.candidate))) 
   console.log(`  ${mark}  ${r.method.toUpperCase().padEnd(6)} ${r.candidate}`);
   if (!r.ok) {
     console.log(
-      `        ${r.specPath ? `path exists but has no ${r.method.toUpperCase()}` : 'no such path in the spec'} — ${r.file}`,
+      `        ${
+        r.missingBody
+          ? `sends no body, but the spec requires ${r.required.join(', ')}`
+          : r.specPath
+            ? `path exists but has no ${r.method.toUpperCase()}`
+            : 'no such path in the spec'
+      } — ${r.file}`,
     );
   }
 }

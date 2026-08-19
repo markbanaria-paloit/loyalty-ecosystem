@@ -140,6 +140,12 @@ export interface IssuedReward {
 /** Subset of the spec's MemberRewardResponse schema. */
 export interface MemberReward {
   rewardId: string;
+  /**
+   * What kind of reward this is — `static_coupon`, `dynamic_coupon`,
+   * `conversion_coupon`, `material`. Not a name or a slug: the spec's create
+   * bodies use this same field for the type, and buying one requires a payload
+   * shaped to match it.
+   */
   reward: string;
   name: string;
   shortDescription: string;
@@ -147,6 +153,8 @@ export interface MemberReward {
   active: boolean;
   usageLimit: number | null;
   canBeBoughtByCustomer?: boolean;
+  /** Carried on a dynamic coupon, whose value is set when it is bought. */
+  couponValue?: number | null;
 }
 
 async function request<T>(
@@ -338,15 +346,43 @@ export const openLoyalty = {
     return request(`/api/${storeCode}/member/reward`, { token });
   },
 
-  /** Spec returns an array of `{ issuedRewardId }`. */
+  /**
+   * Buy a reward for a member. Returns an array of `{ issuedRewardId }`.
+   *
+   * The body is not optional and its shape depends on what kind of reward this
+   * is: every kind wants `customerId`, the counted kinds want `quantity` and
+   * `withoutPoints`, and a dynamic coupon wants the value to put on it. Sending
+   * an empty object is a 400 — which is what this used to do, and what the mock
+   * used to accept.
+   *
+   * `withoutPoints` is false because this is the member spending their own
+   * balance. True is for a reward granted without charging for it, which is an
+   * administrator's act, not a member's.
+   */
   buyReward(
     token: string,
     rewardId: string,
+    member: string,
+    reward?: { type?: string | null; couponValue?: number | null },
   ): Promise<Array<{ issuedRewardId: string }>> {
+    const type = reward?.type ?? 'static_coupon';
+    // A conversion coupon is bought by the member alone — it carries no
+    // quantity, and sending one is rejected as a field the form does not have.
+    const body =
+      type === 'conversion_coupon'
+        ? { customerId: member }
+        : {
+            customerId: member,
+            quantity: 1,
+            withoutPoints: false,
+            ...(type === 'dynamic_coupon'
+              ? { couponValue: reward?.couponValue ?? 0 }
+              : {}),
+          };
     return request(`/api/${storeCode}/reward/${rewardId}/buy`, {
       method: 'POST',
       token,
-      body: JSON.stringify({}),
+      body: JSON.stringify(body),
     });
   },
 

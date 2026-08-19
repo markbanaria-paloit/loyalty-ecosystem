@@ -206,10 +206,22 @@ export interface Transfer {
   };
 }
 
+export type RewardType =
+  | 'static_coupon'
+  | 'dynamic_coupon'
+  | 'conversion_coupon'
+  | 'material';
+
 export interface Reward {
   rewardId: string;
-  /** OpenLoyalty's `reward` field carries the identifier/slug. */
-  reward: string;
+  /**
+   * What kind of reward this is, which is what `reward` carries on the wire.
+   *
+   * Not a slug. This mock used to put a made-up identifier here, so a caller
+   * reading the type got a name and could not shape the buy payload the
+   * platform requires — a divergence that only showed up against a real tenant.
+   */
+  type: RewardType;
   name: string;
   shortDescription: string;
   costInPoints: number;
@@ -1083,7 +1095,7 @@ export function seedStore(code: string): Store {
   const rewards: Reward[] = [
     {
       rewardId: randomUUID(),
-      reward: 'points-voucher-5',
+      type: 'static_coupon',
       name: '1k points = $5 voucher',
       shortDescription: 'Convert 1,000 points into a $5 voucher, redeemable at participating tenants.',
       costInPoints: 1000,
@@ -1096,7 +1108,7 @@ export function seedStore(code: string): Store {
     },
     {
       rewardId: randomUUID(),
-      reward: 'percentage-10-off',
+      type: 'static_coupon',
       name: '10% off next shopping',
       shortDescription: 'A percentage coupon off your next shop at a participating tenant.',
       costInPoints: 0,
@@ -1109,7 +1121,7 @@ export function seedStore(code: string): Store {
     },
     {
       rewardId: randomUUID(),
-      reward: 'parking-coupon-20-tier2',
+      type: 'static_coupon',
       name: 'Parking coupon $20, Tier 2',
       shortDescription: 'A $20 parking coupon. Tier 2 members only.',
       costInPoints: 0,
@@ -1124,7 +1136,7 @@ export function seedStore(code: string): Store {
     },
     {
       rewardId: randomUUID(),
-      reward: 'parking-coupon-birthday',
+      type: 'static_coupon',
       name: '2-hour parking coupon (birthday)',
       shortDescription: 'Two hours of complimentary parking during your birthday month.',
       costInPoints: 0,
@@ -1137,7 +1149,7 @@ export function seedStore(code: string): Store {
     },
     {
       rewardId: randomUUID(),
-      reward: 'welcome-bundle-50',
+      type: 'static_coupon',
       name: 'Welcome bundle $50',
       shortDescription: 'The digital deal bundle granted on joining, valid 30 days at participating tenants.',
       costInPoints: 0,
@@ -1150,7 +1162,7 @@ export function seedStore(code: string): Store {
     },
     {
       rewardId: randomUUID(),
-      reward: 'conversion-15-voucher',
+      type: 'conversion_coupon',
       name: '15% voucher',
       shortDescription: 'A conversion coupon worth 15% off a qualifying purchase.',
       costInPoints: 0,
@@ -2149,7 +2161,8 @@ export function serializeCustomer(store: Store, customer: Customer) {
 export function serializeReward(reward: Reward, customer?: Customer) {
   return {
     rewardId: reward.rewardId,
-    reward: reward.reward,
+    // The wire field is the type — see `Reward.type`.
+    reward: reward.type,
     name: reward.name,
     shortDescription: reward.shortDescription,
     costInPoints: reward.costInPoints,
