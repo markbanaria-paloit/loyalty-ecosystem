@@ -282,7 +282,10 @@ export async function logEvent(type, eventId, body) {
   return req('/api/me/events', {
     auth: true,
     method: 'POST',
-    body: JSON.stringify({ type, eventId, body }),
+    // `body` is omitted unless a caller has one: a store declares what an event
+    // may carry, and sending a field it does not know about is refused outright
+    // rather than ignored.
+    body: JSON.stringify(body ? { type, eventId, body } : { type, eventId }),
   });
 }
 

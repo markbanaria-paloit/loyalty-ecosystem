@@ -618,7 +618,11 @@ export function AppProvider({ children }) {
     async (score) => {
       const memberId = stateRef.current.account.customerId ?? 'anon';
       const day = new Date().toISOString().slice(0, 10);
-      await logEvent('onlinereview', `review-${memberId}-${day}`, { score });
+      // No body. A store declares what a custom event may carry, and this one
+      // declares nothing — sending the score had the whole call rejected as
+      // "this form should not contain extra fields", so the rating never
+      // registered while the stars sat there looking as though it had.
+      await logEvent('onlinereview', `review-${memberId}-${day}`);
 
       /**
        * Wait for the platform to score it before showing the result.
@@ -634,7 +638,11 @@ export function AppProvider({ children }) {
        * staleness rather than an error.
        */
       const before = progressSignature(stateRef.current);
-      const deadline = Date.now() + 3000;
+      // Ten seconds, because that is what this platform takes. Scoring is not
+      // quick — a milestone measured here moved between five and ten seconds
+      // after the event was accepted — and giving up at three left the member
+      // watching a rating that appeared not to count.
+      const deadline = Date.now() + 10000;
       do {
         await refreshAccount().catch(() => {});
         if (progressSignature(stateRef.current) !== before) return;

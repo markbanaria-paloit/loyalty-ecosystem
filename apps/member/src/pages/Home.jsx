@@ -217,17 +217,24 @@ function RatingCard({ challenge }) {
   const [score, setScore] = useState(0);
   const [busy, setBusy] = useState(false);
   const [done, setDone] = useState(false);
+  const [error, setError] = useState(null);
 
   const milestone = challenge.milestones.find((m) => m.trigger === 'custom_event');
   const alreadyRated = milestone && milestone.goal && milestone.current >= milestone.goal;
-  if (!milestone || alreadyRated || done) return null;
+  if (!milestone || alreadyRated) return null;
 
   async function send(value) {
     setScore(value);
     setBusy(true);
+    setError(null);
     try {
       await rate(value);
       setDone(true);
+    } catch (e) {
+      // Said out loud. A rating that fails silently leaves the stars filled and
+      // the goal untouched, which reads as an app that ignored the tap.
+      setError(e instanceof Error ? e.message : 'Could not send your rating');
+      setScore(0);
     } finally {
       setBusy(false);
     }
@@ -239,14 +246,14 @@ function RatingCard({ challenge }) {
       <p className="mt-0.5 text-[11px] text-gray-400">
         Leave a rating to complete this part of the challenge.
       </p>
-      <div className="mt-3 flex gap-1.5">
+      <div className="mt-3 flex items-center gap-1.5">
         {[1, 2, 3, 4, 5].map((n) => (
           <button
             key={n}
-            disabled={busy}
+            disabled={busy || done}
             onClick={() => send(n)}
             aria-label={`${n} star${n > 1 ? 's' : ''}`}
-            className="p-1 disabled:opacity-40"
+            className="p-1 disabled:opacity-60"
           >
             <Star
               size={26}
@@ -254,7 +261,17 @@ function RatingCard({ challenge }) {
             />
           </button>
         ))}
+        {/*
+          * The platform takes several seconds to score an event, so the rating
+          * is acknowledged here rather than left to look ignored until the
+          * challenge catches up.
+          */}
+        {busy && <span className="ml-1 text-[11px] text-gray-400">Sending…</span>}
+        {done && !busy && (
+          <span className="ml-1 text-[11px] font-semibold text-green-600">Thanks!</span>
+        )}
       </div>
+      {error && <p className="mt-2 text-[11px] font-semibold text-red-600">{error}</p>}
     </div>
   );
 }
