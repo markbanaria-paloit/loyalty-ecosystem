@@ -41,9 +41,15 @@ export default function SignIn() {
    * Union membership would come from MyInfo in production. Here it is carried
    * in the URL, sent to the loyalty platform as a member label, and the tier
    * and welcome award that follow are decided there — not by this screen.
+   *
+   * Public unless the URL says union. Union is a claim that has to be made,
+   * not a default to fall into: anyone reaching this screen without the
+   * parameter — a shared link, a typed URL on the deployed build — is a
+   * member of the public, and the old union default was quietly enrolling
+   * them onto the union tier.
    */
   const [params] = useSearchParams();
-  const customerType = params.get('type') === 'public' ? 'public' : 'union';
+  const customerType = params.get('type') === 'union' ? 'union' : 'public';
 
   /**
    * Hold the sign-in spinner until the loyalty platform has settled the member.

@@ -20,7 +20,7 @@
  */
 
 import goldenHourPark from '../assets/1024x682_147e6d56d-aacc-428a-8f7e-9d0a713ea3b2.jpg';
-import kopitiamHall from '../assets/images.jpeg';
+import clubBowling from '../assets/club-bowling.jpg';
 import confettiNight from '../assets/checkin-confetti.jpg';
 import krakenRacers from '../assets/kraken-racers-2a.jpg';
 import golfClubhouse from '../assets/golf-clubhouse.jpg';
@@ -82,7 +82,7 @@ export const PROPOSED_CHALLENGES = [
     milestones: [{ label: 'Days checked in', goal: 5, current: 4 }],
     reward: { kind: 'scratch', label: 'Scratch card on day five' },
     accent: 'from-amber-500 to-orange-600',
-    image: kopitiamHall,
+    image: clubBowling,
     /** What the card can turn up. Weightings are a programme decision. */
     prizes: [
       '$5 Kopitiam voucher',
