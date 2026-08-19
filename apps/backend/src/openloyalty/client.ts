@@ -159,7 +159,13 @@ export interface MemberReward {
   shortDescription: string;
   costInPoints: number;
   active: boolean;
-  usageLimit: number | null;
+  /**
+   * How many are left, as the platform reports it: `-1` is unlimited and `0` is
+   * none. Not a number — this is an object with a store-wide `general` count
+   * and a `perUser` one, and reading it as a number made "none left" look like
+   * an ordinary truthy value.
+   */
+  usageLimit: { general?: number; perUser?: number } | number | null;
   canBeBoughtByCustomer?: boolean;
   /** Carried on a dynamic coupon, whose value is set when it is bought. */
   couponValue?: number | null;

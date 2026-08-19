@@ -5,14 +5,19 @@
  * This layer also normalizes OpenLoyalty's vocabulary into the flatter shape
  * the PWA consumes (`items` envelopes unwrapped, point fields renamed).
  */
-import { Router, type NextFunction, type Request, type Response } from 'express';
+import {
+  Router,
+  type NextFunction,
+  type Request,
+  type Response,
+} from "express";
 import {
   memberIdFromToken,
   openLoyalty,
   OpenLoyaltyError,
-} from '../openloyalty/client.js';
-import { olAdmin } from '../studio/olAdmin.js';
-import { ladder, toAccount } from './account.js';
+} from "../openloyalty/client.js";
+import { olAdmin } from "../studio/olAdmin.js";
+import { ladder, toAccount } from "./account.js";
 
 export const loyaltyRouter = Router();
 
@@ -21,16 +26,20 @@ interface TokenRequest extends Request {
   memberId?: string;
 }
 
-function requireToken(req: TokenRequest, res: Response, next: NextFunction): void {
-  const header = req.header('authorization') ?? '';
-  const [scheme, token] = header.split(' ');
-  if (scheme?.toLowerCase() !== 'bearer' || !token) {
-    res.status(401).json({ message: 'Not authenticated' });
+function requireToken(
+  req: TokenRequest,
+  res: Response,
+  next: NextFunction,
+): void {
+  const header = req.header("authorization") ?? "";
+  const [scheme, token] = header.split(" ");
+  if (scheme?.toLowerCase() !== "bearer" || !token) {
+    res.status(401).json({ message: "Not authenticated" });
     return;
   }
   const memberId = memberIdFromToken(token);
   if (!memberId) {
-    res.status(401).json({ message: 'Malformed token' });
+    res.status(401).json({ message: "Malformed token" });
     return;
   }
   req.memberToken = token;
@@ -41,7 +50,7 @@ function requireToken(req: TokenRequest, res: Response, next: NextFunction): voi
 function handleError(err: unknown, res: Response): void {
   if (err instanceof OpenLoyaltyError) {
     if (err.status === 401) {
-      res.status(401).json({ message: 'Session expired' });
+      res.status(401).json({ message: "Session expired" });
       return;
     }
     res.status(err.status >= 400 && err.status < 500 ? err.status : 502).json({
@@ -53,14 +62,14 @@ function handleError(err: unknown, res: Response): void {
     });
     return;
   }
-  res.status(502).json({ message: 'Upstream error' });
+  res.status(502).json({ message: "Upstream error" });
 }
 
-loyaltyRouter.use('/api/me', requireToken);
-loyaltyRouter.use('/api/rewards', requireToken);
+loyaltyRouter.use("/api/me", requireToken);
+loyaltyRouter.use("/api/rewards", requireToken);
 
 // Profile + points + tier summary.
-loyaltyRouter.get('/api/me', async (req: TokenRequest, res) => {
+loyaltyRouter.get("/api/me", async (req: TokenRequest, res) => {
   try {
     const status = await openLoyalty.status(req.memberToken!, req.memberId!);
     res.json(toAccount(status, await ladder()));
@@ -77,7 +86,7 @@ loyaltyRouter.get('/api/me', async (req: TokenRequest, res) => {
  * itself would be re-deriving rules it does not own — and would drift the
  * moment a threshold changed in the console.
  */
-loyaltyRouter.get('/api/me/tier-progress', async (req: TokenRequest, res) => {
+loyaltyRouter.get("/api/me/tier-progress", async (req: TokenRequest, res) => {
   try {
     const sets = await openLoyalty.memberTierSets(req.memberId!);
     const tierSetId = sets.items[0]?.tierSetId;
@@ -96,7 +105,7 @@ loyaltyRouter.get('/api/me/tier-progress', async (req: TokenRequest, res) => {
     // told the app its token was dead and made it throw a working session away
     // — and every later call failed with it. Progress is presentational and
     // every caller already tolerates its absence.
-    console.error('Tier progress unavailable:', err);
+    console.error("Tier progress unavailable:", err);
     res.json({ progress: null });
   }
 });
@@ -112,7 +121,7 @@ loyaltyRouter.get('/api/me/tier-progress', async (req: TokenRequest, res) => {
  * Unauthenticated on purpose — it is programme configuration, not member data,
  * and the sign-in screen needs it before a member exists.
  */
-loyaltyRouter.get('/api/tiers', async (_req, res) => {
+loyaltyRouter.get("/api/tiers", async (_req, res) => {
   try {
     const tiers = await olAdmin.tiers();
     res.json({
@@ -140,11 +149,14 @@ loyaltyRouter.get('/api/tiers', async (_req, res) => {
  * operation upstream, so it is performed here on the authenticated member's
  * behalf and never trusted from the client beyond the amount.
  */
-loyaltyRouter.post('/api/me/points/spend', async (req: TokenRequest, res) => {
+loyaltyRouter.post("/api/me/points/spend", async (req: TokenRequest, res) => {
   const points = Number(req.body?.points);
-  const comment = typeof req.body?.comment === 'string' ? req.body.comment : 'Reward redemption';
+  const comment =
+    typeof req.body?.comment === "string"
+      ? req.body.comment
+      : "Reward redemption";
   if (!Number.isFinite(points) || points <= 0) {
-    res.status(400).json({ message: 'points must be a positive number' });
+    res.status(400).json({ message: "points must be a positive number" });
     return;
   }
   try {
@@ -153,7 +165,7 @@ loyaltyRouter.post('/api/me/points/spend', async (req: TokenRequest, res) => {
     const status = await openLoyalty.status(req.memberToken!, req.memberId!);
     if (status.activePoints < points) {
       res.status(409).json({
-        message: 'Insufficient points',
+        message: "Insufficient points",
         points: status.activePoints,
       });
       return;
@@ -167,7 +179,7 @@ loyaltyRouter.post('/api/me/points/spend', async (req: TokenRequest, res) => {
 });
 
 // Points-transfer history.
-loyaltyRouter.get('/api/me/transactions', async (req: TokenRequest, res) => {
+loyaltyRouter.get("/api/me/transactions", async (req: TokenRequest, res) => {
   try {
     const { items } = await openLoyalty.points(req.memberToken!);
     res.json({
@@ -185,25 +197,44 @@ loyaltyRouter.get('/api/me/transactions', async (req: TokenRequest, res) => {
 });
 
 // Available rewards.
-loyaltyRouter.get('/api/rewards', async (req: TokenRequest, res) => {
+loyaltyRouter.get("/api/rewards", async (req: TokenRequest, res) => {
   try {
     const { items } = await openLoyalty.rewards(req.memberToken!);
     res.json({
-      rewards: items.map((r) => ({
-        campaignId: r.rewardId,
-        name: r.name,
-        description: r.shortDescription,
-        costInPoints: r.costInPoints,
-        unitsAvailable: r.usageLimit,
-        canRedeem: r.canBeBoughtByCustomer ?? false,
-        /**
-         * What kind of reward this is, as the store reports it. Passed through
-         * rather than kept back: buying one takes a payload shaped to its kind,
-         * so this is the field that says which — and when a store's answer
-         * differs from the vendored schema, this is where it shows.
-         */
-        type: r.reward ?? null,
-      })),
+      rewards: items.map((r) => {
+        // `-1` is unlimited, `0` is none left, and a plain number is a legacy
+        // shape this still tolerates.
+        const limit = r.usageLimit;
+        const general =
+          typeof limit === "number"
+            ? limit
+            : typeof limit?.general === "number"
+              ? limit.general
+              : null;
+        return {
+          campaignId: r.rewardId,
+          name: r.name,
+          description: r.shortDescription,
+          costInPoints: r.costInPoints,
+          unitsAvailable: general,
+          /**
+           * Affordable *and* issuable.
+           *
+           * The platform's own answer covers the balance and nothing else, so a
+           * reward whose coupons have run out still came back as redeemable —
+           * and taking it failed with a validation error that named nothing. A
+           * count of zero means there is none to give.
+           */
+          canRedeem: (r.canBeBoughtByCustomer ?? false) && general !== 0,
+          /**
+           * What kind of reward this is, as the store reports it. Passed through
+           * rather than kept back: buying one takes a payload shaped to its kind,
+           * so this is the field that says which — and when a store's answer
+           * differs from the vendored schema, this is where it shows.
+           */
+          type: r.reward ?? null,
+        };
+      }),
     });
   } catch (err) {
     handleError(err, res);
@@ -218,7 +249,7 @@ loyaltyRouter.get('/api/rewards', async (req: TokenRequest, res) => {
  * the only way the member app can show a coupon as used the moment it is —
  * anything cached would say "active" until it happened to refresh.
  */
-loyaltyRouter.get('/api/me/vouchers', async (req: TokenRequest, res) => {
+loyaltyRouter.get("/api/me/vouchers", async (req: TokenRequest, res) => {
   try {
     const { items } = await openLoyalty.boughtRewards(req.memberToken!);
     res.json({
@@ -246,7 +277,7 @@ loyaltyRouter.get('/api/me/vouchers', async (req: TokenRequest, res) => {
 // Redeem a reward. OpenLoyalty returns the issued-reward id; we look up the
 // resulting coupon code so the PWA can show it immediately.
 loyaltyRouter.post(
-  '/api/rewards/:rewardId/redeem',
+  "/api/rewards/:rewardId/redeem",
   async (req: TokenRequest, res) => {
     try {
       // Buying needs the reward's kind, because the payload is shaped to it.
@@ -261,7 +292,10 @@ loyaltyRouter.post(
         req.memberToken!,
         req.params.rewardId,
         req.memberId!,
-        { type: reward?.reward ?? null, couponValue: reward?.couponValue ?? null },
+        {
+          type: reward?.reward ?? null,
+          couponValue: reward?.couponValue ?? null,
+        },
       );
       const issuedRewardId = issued[0]?.issuedRewardId;
       const [status, bought] = await Promise.all([

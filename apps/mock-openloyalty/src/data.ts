@@ -2170,7 +2170,13 @@ export function serializeReward(reward: Reward, customer?: Customer) {
     featured: reward.featured,
     public: reward.public,
     levels: reward.levels,
-    usageLimit: reward.usageLimit,
+    // The platform reports availability as counts, not a bare number: `-1` is
+    // unlimited and `0` is none left. A mock that answered with a number let a
+    // caller treat "none left" as an ordinary value.
+    usageLimit: {
+      general: reward.usageLimit === null ? -1 : reward.usageLimit,
+      perUser: -1,
+    },
     createdAt: reward.createdAt,
     ...(customer
       ? { canBeBoughtByCustomer: customer.activePoints >= reward.costInPoints }
