@@ -21,6 +21,11 @@ export class OpenLoyaltyAdminError extends Error {
 
 let cachedToken: string | null = null;
 
+/** Drop the cached admin JWT so the next call logs in again. */
+export function clearAdminToken(): void {
+  cachedToken = null;
+}
+
 async function login(): Promise<string> {
   const res = await fetch(`${baseUrl}/api/admin/login_check`, {
     method: 'POST',
@@ -40,8 +45,12 @@ async function login(): Promise<string> {
  *
  * A configured API key wins and needs no login round trip; otherwise we hold a
  * JWT from `login_check` and re-authenticate when it expires.
+ *
+ * Exported because the member-facing client makes admin-scoped calls too — tier
+ * progress is read that way — and it has no business holding a second copy of
+ * the login, the cache and the expiry handling.
  */
-async function authHeaders(): Promise<Record<string, string>> {
+export async function authHeaders(): Promise<Record<string, string>> {
   if (apiKey) return { 'X-AUTH-TOKEN': apiKey };
   const token = cachedToken ?? (await login());
   return { Authorization: `Bearer ${token}` };
@@ -60,7 +69,7 @@ async function request<T>(path: string, init: RequestInit = {}, retry = true): P
 
   // A static API key cannot be refreshed, so only the JWT path retries.
   if (res.status === 401 && retry && !apiKey) {
-    cachedToken = null;
+    clearAdminToken();
     return request<T>(path, init, false);
   }
 
@@ -167,13 +176,20 @@ interface ListEnvelope<T> {
 export const olAdmin = {
   storeCode,
 
+  /** Every member on the store. */
+  async members(): Promise<AdminMember[]> {
+    const { items } = await request<ListEnvelope<AdminMember>>(`${s()}/member`);
+    return items;
+  },
+
   /**
    * Members carrying a given label, used to find the platform's seeded demo
    * personas without this service holding their ids.
    */
   async membersWithLabel(key: string): Promise<AdminMember[]> {
-    const { items } = await request<{ items: AdminMember[] }>(`${s()}/member`);
-    return items.filter((m) => (m.labels ?? []).some((l) => l.key === key));
+    return (await olAdmin.members()).filter((m) =>
+      (m.labels ?? []).some((l) => l.key === key),
+    );
   },
 
   /**

@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import confetti from 'canvas-confetti';
-import { PartyPopper, Sparkles, RotateCcw, Gift, Ticket, Bell, ParkingCircle, XCircle } from 'lucide-react';
+import { PartyPopper, Sparkles, RotateCcw, Gift, Bell, ParkingCircle, XCircle } from 'lucide-react';
 import { useApp } from '../context/AppContext.jsx';
 
 function fire() {
@@ -24,7 +24,9 @@ function toastContent(toast) {
         title: 'Welcome to NTUC Club!',
         body: toast.earned
           ? `${toast.earned.toLocaleString()} welcome points credited${toast.tierName ? ` · ${toast.tierName}` : ''}`
-          : 'Your membership is ready.',
+          : toast.tierName
+            ? `Your membership is ready · ${toast.tierName}`
+            : 'Your membership is ready.',
         confetti: true,
       };
     case 'tier-up':
@@ -53,8 +55,6 @@ function toastContent(toast) {
       };
     case 'redeem':
       return { icon: Gift, title: 'Redeemed!', body: `${toast.count} voucher${toast.count > 1 ? 's' : ''} added to My Vouchers`, confetti: true };
-    case 'voucher-used':
-      return { icon: Ticket, title: 'Voucher marked as used', body: 'Enjoy your reward!', confetti: false };
     case 'parking-issued':
       return { icon: ParkingCircle, title: 'Parking coupon requested', body: `${toast.minutes} min — collect physical coupon at Member Service counter`, confetti: false };
     case 'parking-denied':

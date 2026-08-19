@@ -39,3 +39,22 @@ export function monthKey(date = new Date()) {
   const d = new Date(date);
   return `${d.getFullYear()}-${d.getMonth() + 1}`;
 }
+
+/**
+ * A tier condition in the unit that condition is measured in.
+ *
+ * Tiers can be qualified on points, on spend or on tenure, and the same number
+ * means something different in each — so the attribute the platform reports
+ * decides the label rather than the screen assuming "points".
+ */
+export function formatTierMetric(attribute, value) {
+  const n = Math.round(value ?? 0);
+  switch (attribute) {
+    case 'totalSpending':
+      return `$${n.toLocaleString()}`;
+    case 'monthsSinceJoiningProgram':
+      return `${n} mo`;
+    default:
+      return `${n.toLocaleString()} pts`;
+  }
+}

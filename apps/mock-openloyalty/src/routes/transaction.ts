@@ -19,6 +19,7 @@ import {
   matchCustomer,
   type RedemptionStatus,
   registerTransaction,
+  serializeIssuedReward,
   type TransactionItem,
 } from '../data.js';
 import { requireAdmin, type AuthedRequest } from '../auth.js';
@@ -250,28 +251,12 @@ transactionRouter.post(
   },
 );
 
-/** Look up an issued reward by coupon code, so a POS can validate a coupon. */
-transactionRouter.get(
-  '/api/:storeCode/redemption/by-code/:couponCode',
-  requireAdmin,
-  (req: AuthedRequest, res) => {
-    const store = req.store;
-    const code = req.params.couponCode.trim().toUpperCase();
-    const issued = [...store.issuedRewards.values()].find(
-      (r) => r.couponCode.toUpperCase() === code,
-    );
-    if (!issued) {
-      res.status(404).json({ code: 404, message: 'Coupon not found' });
-      return;
-    }
-    const customer = store.customers.get(issued.customerId);
-    const reward = store.rewards.get(issued.rewardId);
-    res.json({
-      ...issued,
-      rewardName: reward?.name ?? 'Unknown',
-      customerName: customer
-        ? `${customer.firstName} ${customer.lastName}`.trim()
-        : 'Unknown',
-    });
-  },
-);
+/*
+ * There is deliberately no `redemption/by-code/{code}` here.
+ *
+ * This mock used to offer one and the till used it, which worked until anyone
+ * looked: Open Loyalty has no such endpoint. Finding an issued reward by its
+ * coupon code is done against `GET /redemption`, and the BFF does it there. A
+ * convenience the real platform does not have is not a convenience — it is a
+ * failure deferred to the first call against a real tenant.
+ */

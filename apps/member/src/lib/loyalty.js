@@ -208,20 +208,42 @@ export async function fetchHistory() {
 }
 
 /**
- * Debit the member's real balance for a redemption.
+ * The reward catalogue this member is entitled to, from the loyalty platform.
  *
- * The voucher itself is issued locally from the app's own catalogue, but the
- * points it costs must leave the loyalty record — otherwise the balance the
- * dashboard shows drifts from what the member has actually spent. Returns the
- * balance after the debit.
+ * Fetched rather than listed in the app: which rewards exist, what they cost
+ * and which tiers may have them are all programme configuration, and the
+ * platform has already filtered the list to this member's tier — so a reward
+ * the member cannot have never arrives, rather than arriving and being hidden.
+ *
+ * Most of them cost nothing. The programme grants coupons as well as selling
+ * them, so a zero cost is a real entitlement, not missing data.
  */
-export async function spendPoints(points, comment) {
-  const { points: remaining } = await req('/api/me/points/spend', {
-    auth: true,
-    method: 'POST',
-    body: JSON.stringify({ points, comment }),
-  });
-  return remaining;
+export async function fetchRewards() {
+  const { rewards } = await req('/api/rewards', { auth: true });
+  return rewards ?? [];
+}
+
+/**
+ * The coupons this member holds, straight from the loyalty platform.
+ *
+ * Their status is the platform's, not a copy: the till marks a coupon fulfilled
+ * against the same record, so re-reading is what lets this app show a coupon as
+ * used the moment it is handed over.
+ */
+export async function fetchVouchers() {
+  const { vouchers } = await req('/api/me/vouchers', { auth: true });
+  return vouchers ?? [];
+}
+
+/**
+ * Take a reward, on the platform.
+ *
+ * The coupon code has to be the platform's — the till validates by looking the
+ * code up there — so it cannot be minted locally. Debits the points upstream as
+ * part of the same call, which is why nothing here spends them separately.
+ */
+export async function redeemReward(rewardId) {
+  return req(`/api/rewards/${rewardId}/redeem`, { auth: true, method: 'POST' });
 }
 
 /* --------------------------- Demo personas --------------------------- *

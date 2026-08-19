@@ -50,7 +50,7 @@ print('— A member registered now must outlive the process —')
 email=f'durable-{RUN}@example.com'
 reg=call(A,'POST','/api/default/member/register',{'customer':{'firstName':'Dura','lastName':'Ble',
   'email':email,'plainPassword':'pw','agreement1':True,
-  'labels':[{'key':'customerType','value':'union_member'}]}})
+  'labels':[{'key':'membertype','value':'unionmember'}]}})
 cid=reg['customerId']
 check('registered, admitted to Tier 2 with 500 pts',
       reg['status']['levelName']=='Tier 2' and reg['status']['activePoints']==500,

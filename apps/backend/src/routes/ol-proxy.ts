@@ -21,18 +21,23 @@ const { baseUrl, storeCode, apiKey, adminUsername, adminPassword } = config.open
 type Rule = `${string}`;
 
 /**
- * What the till does: identify the card in front of it, publish the sale, read
- * back what it earned, and settle a voucher.
+ * What the till does: identify the card in front of it, publish the sale, and
+ * read back what it earned.
  *
  * This is the whole allow-list. Programme configuration — tiers, campaigns,
  * rewards, manual point adjustments — is not here because it is not ours to
  * do: Open Loyalty's own console owns that, and re-exposing it through this
  * service would be duplicating a backoffice that already exists and is
  * maintained by the people who ship the platform.
+ *
+ * Settling a coupon is not here either, though the till does it. It takes two
+ * upstream calls that have to happen in order and stop if the first refuses, so
+ * it is a route of its own (`routes/coupons.ts`) rather than something a client
+ * assembles from proxied parts.
  */
 const TILL_RULES: Record<string, Rule[]> = {
-  GET: ['member/check', 'member', 'member/{}/status', 'transaction', 'redemption/by-code/{}'],
-  POST: ['transaction', 'transaction/assign', 'redemption/{}/status'],
+  GET: ['member/check', 'member', 'member/{}/status', 'transaction'],
+  POST: ['transaction', 'transaction/assign'],
 };
 
 const RULES: Record<OperatorRole, Record<string, Rule[]>> = {

@@ -5,7 +5,7 @@ import { QrCode, ChevronRight, Bell, Cake } from 'lucide-react';
 import { useApp, isBirthdayMonthNow } from '../context/AppContext.jsx';
 import { TierBadge, TenantAvatar, tenantName } from '../components/Ui.jsx';
 import { PROMOTIONS } from '../data/mockData.js';
-import { fmtDate } from '../lib/helpers.js';
+import { fmtDate, formatTierMetric } from '../lib/helpers.js';
 import scanIcon from '../assets/icons/scan.png';
 import rewardsIcon from '../assets/icons/rewards.png';
 import parkingIcon from '../assets/icons/parking.png';
@@ -188,7 +188,7 @@ function TierProgressCard({ progress }) {
         <div className="flex items-baseline justify-between gap-2">
           <p className="text-[12px] font-bold text-gray-800">
             {eligible
-              ? `${formatMetric(
+              ? `${formatTierMetric(
                   condition?.attribute,
                   Math.max(0, (condition?.valueGoal ?? 0) - (condition?.currentValue ?? 0)),
                 )} to ${progress.nextTierName}`
@@ -196,8 +196,8 @@ function TierProgressCard({ progress }) {
           </p>
           {eligible && condition && (
             <p className="text-[11px] font-semibold text-gray-400">
-              {formatMetric(condition.attribute, condition.currentValue)} /{' '}
-              {formatMetric(condition.attribute, condition.valueGoal)}
+              {formatTierMetric(condition.attribute, condition.currentValue)} /{' '}
+              {formatTierMetric(condition.attribute, condition.valueGoal)}
             </p>
           )}
         </div>
@@ -227,19 +227,6 @@ function TierProgressCard({ progress }) {
   );
 }
 
-/** Tier conditions are measured in different units; label them honestly. */
-function formatMetric(attribute, value) {
-  const n = Math.round(value ?? 0);
-  switch (attribute) {
-    case 'totalSpending':
-      return `$${n.toLocaleString()}`;
-    case 'monthsSinceJoiningProgram':
-      return `${n} mo`;
-    default:
-      return `${n.toLocaleString()} pts`;
-  }
-}
-
 /**
  * How much further to the next tier, in the unit that tier is measured in.
  *
@@ -261,7 +248,7 @@ function ToNextTier({ progress }) {
 
   return (
     <p className="mt-1 text-[12px] font-semibold text-white/85">
-      {formatMetric(condition.attribute, remaining)} to {progress.nextTierName}
+      {formatTierMetric(condition.attribute, remaining)} to {progress.nextTierName}
     </p>
   );
 }

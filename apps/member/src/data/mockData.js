@@ -91,17 +91,37 @@ export const DEFAULT_CONFIG = {
   tier2SpendThreshold: 500, // used only when tier2Eligibility === 'spend-based'
 };
 
+/**
+ * The two tiers of Phase 1, with the benefits as the programme states them.
+ *
+ * Scenario 1 of the tier deck: both tiers convert 1,000 points to a $5 voucher
+ * and earn 1 point per $1 spent, so what separates them is the benefit list
+ * rather than the rate. The deck's Tier 3 is deliberately absent — it is
+ * Phase 2, and Phase 1 is a two-tier programme.
+ */
 export const TIER_INFO = {
   tier1: {
     name: 'Tier 1',
     label: 'Tier 1',
     color: '#8a8f98',
-    perks: ['1 hour free parking / month', 'Base earn rate', 'Birthday 2X points'],
+    perks: [
+      '1 hour free parking / month',
+      'Birthday 2x points',
+      'Welcome deal bundle, 30 days',
+      '2 Wild Wild Wet day passes / year',
+    ],
   },
   tier2: {
     name: 'Tier 2',
     label: 'Tier 2',
     color: 'linear-gradient(135deg, #f5c842 0%, #e8832e 100%)',
-    perks: ['2 hours free parking / month', 'Priority promotions', 'Birthday 3x points', 'Early-bird deals'],
+    perks: [
+      '2 hours free parking / month',
+      'Birthday 3x points',
+      'Welcome insider pack',
+      'Early-bird facility booking',
+      '4 Wild Wild Wet day passes / year',
+      "Up to 35% off D'Resort rooms",
+    ],
   },
 };

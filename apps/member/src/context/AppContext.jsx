@@ -8,9 +8,8 @@ import {
   useRef,
   useState,
 } from 'react';
-import { DEFAULT_CONFIG, REWARDS_CATALOG } from '../data/mockData.js';
+import { DEFAULT_CONFIG } from '../data/mockData.js';
 import { addMonths, monthKey, roundPoints, uid } from '../lib/helpers.js';
-import { realtimeConfigured, subscribeToMemberEvents } from '../lib/realtime.js';
 import {
   cardNumberFor,
   ensureMember,
@@ -18,23 +17,21 @@ import {
   fetchHistory,
   fetchTierProgress,
   fetchTiers,
-  spendPoints,
+  fetchVouchers,
+  redeemReward,
   startPersonaSession,
 } from '../lib/loyalty.js';
 
 const STORAGE_KEY = 'ntuc-club-state-v1';
 
 /**
- * How often to re-read the balance while the app is on screen.
+ * How often to re-read the balance and coupons while the app is on screen.
  *
  * Short enough that points appear to land while the member is still at the
- * counter, long enough not to hammer the platform. A push channel would make
- * this unnecessary — see docs/deployment.md.
+ * counter, long enough not to hammer the platform. Everything this app knows
+ * comes from the BFF and Open Loyalty behind it — there is no second channel.
  */
 const LIVE_REFRESH_MS = 4000;
-
-/** Backstop when the push channel is doing the work — a missed event, a dropped socket. */
-const FALLBACK_REFRESH_MS = 30000;
 
 const initialState = {
   user: null,
@@ -45,6 +42,8 @@ const initialState = {
   consent: { email: true, sms: true, push: true, mail: false },
   parkingUsage: {}, // { [monthKey]: minutesUsed }
   welcomeBonusClaimed: false,
+  /** Coupons issued by the loyalty platform. The till's status lives here. */
+  platformVouchers: [],
   birthdayClaimedMonthKey: null,
   demoBirthdayMode: false,
   config: DEFAULT_CONFIG,
@@ -287,44 +286,30 @@ function reducer(state, action) {
       return { ...state, ledger: [entry, ...ledger], toast: { kind: 'refund', amount: original.amount, flagged: true } };
     }
 
-    case 'REDEEM_CART': {
-      const { rewardIds } = action.payload;
-      const items = rewardIds.map((id) => REWARDS_CATALOG.find((r) => r.id === id)).filter(Boolean);
-      const totalCost = items.reduce((s, r) => s + r.pointsCost, 0);
-      if (totalCost > state.points || items.length === 0) return state;
-      const cfg = state.config;
-      const newVouchers = items.map((r) => ({
-        id: uid('vc'),
-        rewardId: r.id,
-        title: r.title,
-        tenantId: r.tenantId,
-        cashValue: r.cashValue,
-        code: genCode(),
-        issuedDate: new Date().toISOString(),
-        expiryDate: addMonthsISO(cfg.voucherExpiryMonths),
-        status: 'active',
-      }));
-      const entry = {
-        id: uid('lg'),
-        date: new Date().toISOString(),
-        type: 'redeem',
-        desc: items.length > 1 ? `Redeemed ${items.length} rewards` : `Redeemed: ${items[0].title}`,
-        amount: -totalCost,
-        expiryDate: null,
-      };
-      return {
-        ...state,
-        points: state.points - totalCost,
-        vouchers: [...newVouchers, ...state.vouchers],
-        ledger: [entry, ...state.ledger],
-        toast: { kind: 'redeem', count: items.length, cost: totalCost },
-      };
+    /**
+     * Record a redemption the platform has already made.
+     *
+     * Nothing is recorded here — not the voucher, not the spend. The coupon
+     * code has to be the one the platform issued, because the till validates by
+     * looking that code up, and the spend is a points transfer the platform
+     * writes and the activity list reads back from it. All this does is
+     * celebrate what has already happened.
+     */
+    case 'REDEEMED': {
+      const { count, cost } = action.payload;
+      if (!count) return state;
+      return { ...state, toast: { kind: 'redeem', count, cost } };
     }
 
-    case 'USE_VOUCHER': {
-      const vouchers = state.vouchers.map((v) => (v.id === action.payload.voucherId ? { ...v, status: 'used', usedDate: new Date().toISOString() } : v));
-      return { ...state, vouchers, toast: { kind: 'voucher-used' } };
-    }
+    /**
+     * The coupons the platform holds for this member.
+     *
+     * Kept separate from the welcome bundle, which is local by design: those are
+     * tenant deals with no platform equivalent. The two are merged for display,
+     * not in state, so a platform read can never drop the bundle.
+     */
+    case 'SET_PLATFORM_VOUCHERS':
+      return { ...state, platformVouchers: action.payload };
 
     case 'UPDATE_CONSENT': {
       return { ...state, consent: { ...state.consent, [action.payload.channel]: action.payload.value } };
@@ -414,42 +399,36 @@ export function AppProvider({ children }) {
 
   const card = state.user?.loyaltyCardNumber;
 
-  /** Pull the loyalty record from the BFF; it is the authority on points. */
+  /**
+   * Pull the loyalty record from the BFF; it is the authority on points.
+   *
+   * The member's coupons come with it. Their status is written by the till when
+   * it fulfils one, so reading them on the same beat as the balance is what
+   * makes a coupon go from active to used while the member is still standing at
+   * the counter — the same reason the balance is polled at all.
+   */
   const refreshAccount = useCallback(async (announce = false) => {
     if (!card) return;
-    const [account, history, progress] = await Promise.all([
+    const [account, history, progress, vouchers] = await Promise.all([
       fetchAccount(),
       fetchHistory(),
       fetchTierProgress().catch(() => null),
+      fetchVouchers().catch(() => null),
     ]);
     dispatch({ type: announce ? 'SYNC_ACCOUNT' : 'SET_ACCOUNT', payload: { ...account, history } });
     dispatch({ type: 'SET_TIER_PROGRESS', payload: progress });
+    if (vouchers) dispatch({ type: 'SET_PLATFORM_VOUCHERS', payload: vouchers });
   }, [card]);
 
   /**
-   * Push: the platform tells the app when this member's record changed.
+   * Keep the balance and coupons current while the member is actually looking.
    *
-   * Preferred over asking, because it lands in about the time it takes the till
-   * to finish the sale rather than on the next tick.
-   */
-  useEffect(() => {
-    const memberId = state.account.customerId;
-    if (!memberId) return undefined;
-    return subscribeToMemberEvents(memberId, () => {
-      refreshAccount(true).catch(() => {});
-    });
-    // Only re-subscribe when the member changes, not on every balance update.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state.account.customerId, refreshAccount]);
-
-  /**
-   * Keep the balance current while the member is actually looking.
-   *
-   * There is no push channel from the loyalty platform, so the app asks. It
-   * asks only while the tab is visible — a backgrounded phone polling all day
-   * is a battery and request cost for nothing — and it asks again the moment
-   * the member comes back, which is when a scan at the till has just happened
-   * and the answer has changed.
+   * Asking is the whole mechanism: the loyalty platform pushes nothing, and
+   * everything the member sees — points from a sale, a coupon the till has just
+   * marked used — reaches this app by being read back through the BFF. It asks
+   * only while the tab is visible, and again the moment the member comes back,
+   * which is when a scan at the till has just happened and the answer has
+   * changed.
    */
   useEffect(() => {
     if (!card) return undefined;
@@ -460,9 +439,7 @@ export function AppProvider({ children }) {
       }
     };
 
-    // With a push channel this is only a safety net, so it can be lazy. Without
-    // one it is the whole mechanism, so it has to be prompt.
-    const interval = setInterval(tick, realtimeConfigured ? FALLBACK_REFRESH_MS : LIVE_REFRESH_MS);
+    const interval = setInterval(tick, LIVE_REFRESH_MS);
     document.addEventListener('visibilitychange', tick);
     window.addEventListener('focus', tick);
     return () => {
@@ -623,19 +600,37 @@ export function AppProvider({ children }) {
   }, []);
 
   /**
-   * Redeem from the local catalogue, then debit the real balance. The reducer
-   * issues the voucher optimistically; the refresh afterwards reconciles the
-   * points against whatever the platform actually recorded.
+   * Issue the vouchers, then debit the real balance. The reducer issues them
+   * optimistically; the refresh afterwards reconciles the points against
+   * whatever the platform actually recorded.
+   */
+  /**
+   * Take the selected rewards on the platform.
+   *
+   * One at a time rather than in parallel: each redemption is checked against
+   * the balance and then debits it, so two in flight together can both pass a
+   * check that only one of them should.
+   *
+   * Nothing is debited here afterwards — redeeming spends the points upstream,
+   * and a second debit would charge the member twice.
    */
   const redeemCart = useCallback(
-    async (rewardIds, totalCost, description) => {
-      dispatch({ type: 'REDEEM_CART', payload: { rewardIds } });
-      try {
-        await spendPoints(totalCost, description);
-      } catch (e) {
-        console.error('Redemption debit failed', e);
+    async (rewards) => {
+      let redeemed = 0;
+      let spent = 0;
+      for (const reward of rewards) {
+        try {
+          await redeemReward(reward.id);
+          redeemed += 1;
+          spent += reward.pointsCost;
+        } catch (e) {
+          console.error(`Could not redeem ${reward.title}`, e);
+        }
       }
+      dispatch({ type: 'REDEEMED', payload: { count: redeemed, cost: spent } });
+      // The refresh brings back both the debited balance and the new coupons.
       await refreshAccount().catch(() => {});
+      return redeemed;
     },
     [refreshAccount],
   );

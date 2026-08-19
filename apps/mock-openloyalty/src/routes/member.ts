@@ -18,6 +18,7 @@ import {
   findCustomerByEmail,
   listEnvelope,
   serializeCustomerStatus,
+  serializeIssuedReward,
   serializeReward,
   spendPointsInternal,
   MEMBER_REGISTERED_EVENT,
@@ -176,7 +177,10 @@ memberRouter.get(
     const items = [...store.issuedRewards.values()]
       .filter((r) => r.customerId === req.auth!.id)
       .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
-      .map((r) => ({ ...r, reward: store.rewards.get(r.rewardId)?.name ?? null }));
+      .map((r) => ({
+        ...serializeIssuedReward(r),
+        reward: store.rewards.get(r.rewardId)?.name ?? null,
+      }));
     res.json(listEnvelope(items));
   },
 );
@@ -197,6 +201,63 @@ memberRouter.get(
       return;
     }
     res.json(serializeCustomerStatus(store, customer));
+  },
+);
+
+/**
+ * Mark a coupon as used — the member has spent it.
+ *
+ * The spec's integration endpoint for a point of sale, and the counterpart to
+ * buying rather than a later stage of it: buying puts the coupon in the
+ * member's hand, this consumes it. The code is scoped to the member in the
+ * path, so one member's coupon cannot be spent against another's account.
+ *
+ * A second attempt is a conflict, not a no-op. That is the whole value of
+ * doing it here: a coupon shown at two tills is refused the second time, which
+ * a fulfilment status change — settable over and over — would not catch.
+ */
+memberRouter.post(
+  '/api/:storeCode/member/:member/reward/redeem',
+  (req: AuthedRequest, res) => {
+    const store = req.store;
+    const code = String(req.body?.couponCode ?? '').trim().toUpperCase();
+    if (!code) {
+      res.status(400).json({ code: 400, message: 'couponCode is required' });
+      return;
+    }
+    const issued = [...store.issuedRewards.values()].find(
+      (r) =>
+        r.customerId === req.params.member && r.couponCode.toUpperCase() === code,
+    );
+    if (!issued) {
+      res.status(404).json({ code: 404, message: 'Coupon not found' });
+      return;
+    }
+    if (issued.usedAt) {
+      res.status(409).json({ code: 409, message: 'Coupon already used' });
+      return;
+    }
+    issued.usedAt = new Date().toISOString();
+    res.json({ code: issued.couponCode, used: true, customerId: issued.customerId });
+  },
+);
+
+/** Mark a coupon as unused again — the undo for the call above. */
+memberRouter.post(
+  '/api/:storeCode/member/:member/reward/reissue',
+  (req: AuthedRequest, res) => {
+    const store = req.store;
+    const code = String(req.body?.couponCode ?? '').trim().toUpperCase();
+    const issued = [...store.issuedRewards.values()].find(
+      (r) =>
+        r.customerId === req.params.member && r.couponCode.toUpperCase() === code,
+    );
+    if (!issued) {
+      res.status(404).json({ code: 404, message: 'Coupon not found' });
+      return;
+    }
+    issued.usedAt = null;
+    res.json({ code: issued.couponCode, used: false, customerId: issued.customerId });
   },
 );
 
@@ -247,6 +308,9 @@ memberRouter.post(
       rewardId: reward.rewardId,
       customerId: customer.customerId,
       couponCode: `OL-${issuedRewardId.slice(0, 6).toUpperCase()}`,
+      // Bought, not yet spent. Buying puts a coupon in the member's hand;
+      // consuming it is a separate act, at a separate endpoint.
+      usedAt: null,
       // Spec: rewards are redeemed with `issued` status by default.
       status: 'issued',
       createdAt: now,

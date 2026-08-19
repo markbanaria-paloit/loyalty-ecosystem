@@ -125,9 +125,17 @@ export interface MemberLabel {
   value: string;
 }
 
-/** The label that marks a member as a union member. */
-export const CUSTOMER_TYPE_LABEL = 'customerType';
-export const UNION_MEMBER = 'union_member';
+/**
+ * The label that marks a member as a union member.
+ *
+ * Exactly the pair the stage tenant's campaign matches — `membertype` /
+ * `unionmember`, lowercase, no underscore. Their rule compares the label as a
+ * string, so the mock has to use the same one or a member who is union here
+ * would not be union there, and the tier path would only ever be exercised
+ * against one of the two.
+ */
+export const CUSTOMER_TYPE_LABEL = 'membertype';
+export const UNION_MEMBER = 'unionmember';
 
 /**
  * Marks a seeded member as a demo persona, so a caller can find the
@@ -233,9 +241,34 @@ export interface IssuedReward {
   rewardId: string;
   customerId: string;
   couponCode: string;
+  /**
+   * Whether the coupon itself has been spent, and when.
+   *
+   * Deliberately not the same thing as `status`. `status` is the fulfilment
+   * pipeline an order moves through — issued, packing, shipped, completed —
+   * and `usedAt` is the single fact of the code having been handed over and
+   * consumed. The spec keeps them apart: the status endpoints drive one, and
+   * `member/{id}/reward/redeem` drives the other. A coupon can be completed and
+   * never used, or used while still issued.
+   */
+  usedAt: string | null;
   status: RedemptionStatus;
   createdAt: string;
   statusHistory: Array<{ status: RedemptionStatus; comment?: string; at: string }>;
+}
+
+/**
+ * An issued reward in the shape the spec's `issuedReward` schema describes.
+ *
+ * The coupon is nested there, carrying its own `usedAt`, which is where a
+ * caller learns the code has been spent. `couponCode` is kept alongside it
+ * because this mock's own callers read it flat; nothing new should.
+ */
+export function serializeIssuedReward(issued: IssuedReward) {
+  return {
+    ...issued,
+    issuedCoupon: { code: issued.couponCode, usedAt: issued.usedAt },
+  };
 }
 
 export interface TransactionItem {
@@ -1036,13 +1069,24 @@ export function seedStore(code: string): Store {
   tier2.qualifyingLabels = [{ key: CUSTOMER_TYPE_LABEL, value: UNION_MEMBER }];
   [tier1, tier2].forEach((t) => store.tiers.set(t.levelId, t));
 
+  /**
+   * The reward catalogue, as the stage tenant holds it.
+   *
+   * Only the points voucher costs points. Everything else is a coupon the
+   * programme grants — at enrolment, on a birthday, or by tier — so it is
+   * carried here at zero cost rather than left out, because the member app
+   * lists what a member is entitled to, not only what they can buy.
+   *
+   * The conversion is the programme's: 1,000 points for a $5 voucher, which is
+   * the $0.005 redemption rebate yield both tiers are on.
+   */
   const rewards: Reward[] = [
     {
       rewardId: randomUUID(),
-      reward: 'free-coffee',
-      name: 'Free Coffee',
-      shortDescription: 'Redeem a free medium coffee at any partner cafe.',
-      costInPoints: 100,
+      reward: 'points-voucher-5',
+      name: '1k points = $5 voucher',
+      shortDescription: 'Convert 1,000 points into a $5 voucher, redeemable at participating tenants.',
+      costInPoints: 1000,
       active: true,
       featured: true,
       public: true,
@@ -1052,29 +1096,70 @@ export function seedStore(code: string): Store {
     },
     {
       rewardId: randomUUID(),
-      reward: 'voucher-10',
-      name: '$10 Off Voucher',
-      shortDescription: 'A $10 discount voucher for your next purchase.',
-      costInPoints: 250,
+      reward: 'percentage-10-off',
+      name: '10% off next shopping',
+      shortDescription: 'A percentage coupon off your next shop at a participating tenant.',
+      costInPoints: 0,
       active: true,
       featured: false,
       public: true,
       levels: [],
-      usageLimit: 500,
-      createdAt: iso(120),
+      usageLimit: null,
+      createdAt: iso(118),
     },
     {
       rewardId: randomUUID(),
-      reward: 'vip-event',
-      name: 'VIP Event Ticket',
-      shortDescription: 'Exclusive invite to a members-only event. Tier 2 only.',
-      costInPoints: 1500,
+      reward: 'parking-coupon-20-tier2',
+      name: 'Parking coupon $20, Tier 2',
+      shortDescription: 'A $20 parking coupon. Tier 2 members only.',
+      costInPoints: 0,
       active: true,
-      featured: true,
+      featured: false,
       public: true,
+      // Gated on the tier itself, which is what makes this the reward that
+      // proves tier filtering works end to end.
       levels: [tier2.levelId],
-      usageLimit: 20,
-      createdAt: iso(120),
+      usageLimit: null,
+      createdAt: iso(116),
+    },
+    {
+      rewardId: randomUUID(),
+      reward: 'parking-coupon-birthday',
+      name: '2-hour parking coupon (birthday)',
+      shortDescription: 'Two hours of complimentary parking during your birthday month.',
+      costInPoints: 0,
+      active: true,
+      featured: false,
+      public: true,
+      levels: [],
+      usageLimit: null,
+      createdAt: iso(116),
+    },
+    {
+      rewardId: randomUUID(),
+      reward: 'welcome-bundle-50',
+      name: 'Welcome bundle $50',
+      shortDescription: 'The digital deal bundle granted on joining, valid 30 days at participating tenants.',
+      costInPoints: 0,
+      active: true,
+      featured: false,
+      public: true,
+      levels: [],
+      usageLimit: null,
+      createdAt: iso(115),
+    },
+    {
+      rewardId: randomUUID(),
+      reward: 'conversion-15-voucher',
+      name: '15% voucher',
+      shortDescription: 'A conversion coupon worth 15% off a qualifying purchase.',
+      costInPoints: 0,
+      active: true,
+      featured: false,
+      public: true,
+      levels: [],
+      usageLimit: null,
+      createdAt: iso(115),
     },
   ];
   rewards.forEach((r) => store.rewards.set(r.rewardId, r));

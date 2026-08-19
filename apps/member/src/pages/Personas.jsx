@@ -13,12 +13,14 @@
  *
  * The existing personas are read from the platform with their live tier and
  * balance, so the cards state what those accounts actually hold rather than
- * what someone once wrote down.
+ * what someone once wrote down. On a tenant that seeds nothing they are the
+ * newest union and public members this app has already enrolled — so testing
+ * the same journey twice does not leave two members behind.
  */
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Loader2, Sparkles, History, Users, User } from 'lucide-react';
+import { Loader2, Sparkles, History, Users, User, RotateCw } from 'lucide-react';
 import { useApp } from '../context/AppContext.jsx';
 import { fetchPersonas } from '../lib/loyalty.js';
 import ntucLogo from '../assets/icons/ntuc-club-logo.png';
@@ -46,12 +48,24 @@ export default function Personas() {
   const [busy, setBusy] = useState(null);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    fetchPersonas()
+  /**
+   * Re-read the members on the platform.
+   *
+   * Exposed as a refresh because the list is discovered rather than fixed: a
+   * tester who has just enrolled someone should be able to pull them into the
+   * resumable list without reloading the app.
+   */
+  const load = useCallback(() => {
+    setLoading(true);
+    return fetchPersonas()
       .then(setExisting)
       .catch(() => setExisting([]))
       .finally(() => setLoading(false));
   }, []);
+
+  useEffect(() => {
+    load();
+  }, [load]);
 
   async function resume(personaId) {
     setBusy(personaId);
@@ -101,9 +115,19 @@ export default function Personas() {
           ))}
         </div>
 
-        <p className="mt-7 flex items-center gap-1.5 px-1 text-[11px] font-bold uppercase tracking-wider text-white/50">
-          <History size={12} /> Already a member
-        </p>
+        <div className="mt-7 flex items-center justify-between px-1">
+          <p className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-white/50">
+            <History size={12} /> Already a member
+          </p>
+          <button
+            type="button"
+            onClick={load}
+            disabled={loading}
+            className="flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider text-white/50 disabled:opacity-40"
+          >
+            <RotateCw size={12} className={loading ? 'animate-spin' : undefined} /> Refresh
+          </button>
+        </div>
         <div className="mt-2 grid gap-2.5">
           {loading && (
             <div className="flex items-center justify-center gap-2 rounded-2xl bg-white/10 py-6 text-sm text-white/70">
@@ -112,7 +136,8 @@ export default function Personas() {
           )}
           {!loading && existing.length === 0 && (
             <p className="rounded-2xl bg-white/10 px-4 py-5 text-center text-xs text-white/70">
-              No seeded members found. Start the loyalty platform to resume an existing account.
+              No members found on this tenant yet. Join once above, then come back and
+              refresh — that account becomes the one you resume from here.
             </p>
           )}
           {existing.map((p) => (

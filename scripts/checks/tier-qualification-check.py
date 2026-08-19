@@ -28,7 +28,7 @@ print('Tier 2 gate:', tiers['Tier 2']['conditions'], tiers['Tier 2'].get('requir
 print('\n— A union member is admitted to Tier 2 outright —')
 u=call('POST','/api/default/member/register',{'customer':{'firstName':'U','lastName':'M',
   'email':addr('union'),'plainPassword':'pw','agreement1':True,
-  'labels':[{'key':'customerType','value':'union_member'}]}})
+  'labels':[{'key':'membertype','value':'unionmember'}]}})
 uid=u['customerId']
 check('union member is admitted to Tier 2 outright, with 500 pts',
       u['status']['levelName']=='Tier 2' and u['status']['activePoints']==500,

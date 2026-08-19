@@ -1,19 +1,160 @@
-import { useState } from 'react';
+/**
+ * Rewards — the programme's catalogue, as the loyalty platform holds it.
+ *
+ * The list is fetched, not written down here. Which rewards exist, what they
+ * cost and which tiers may have them are programme configuration, and the
+ * platform has already filtered to this member's tier, so a Tier 2 reward never
+ * reaches a Tier 1 member to be hidden.
+ *
+ * Most of the catalogue costs nothing. The programme grants coupons as well as
+ * selling them — the welcome bundle, the birthday parking, the tier parking
+ * coupon — so those are listed as entitlements rather than priced, and only the
+ * points voucher goes through the cart.
+ */
+import { useEffect, useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Check, Plus, Ticket, Store, QrCode, X, CalendarDays, Tag } from 'lucide-react';
+import { Check, Plus, Ticket, Store, QrCode, X, CalendarDays, Gift, Loader2 } from 'lucide-react';
 import { useApp } from '../context/AppContext.jsx';
 import PageHeader from '../components/PageHeader.jsx';
 import { TenantAvatar, tenantName, EmptyState } from '../components/Ui.jsx';
-import { REWARDS_CATALOG } from '../data/mockData.js';
+import { fetchRewards } from '../lib/loyalty.js';
 import { daysUntil, fmtDate } from '../lib/helpers.js';
 
+/**
+ * A platform reward in the shape the voucher model expects.
+ *
+ * `tenantId` is deliberately absent: a reward on the loyalty platform belongs
+ * to the programme, not to a tenant, and guessing one from the name would put a
+ * shop logo on a coupon that is not theirs.
+ */
+function asVoucher(reward) {
+  return {
+    id: reward.campaignId,
+    title: reward.name,
+    tenantId: null,
+    cashValue: null,
+    pointsCost: reward.costInPoints,
+  };
+}
+
+/**
+ * How the platform's fulfilment statuses read to a member.
+ *
+ * Only consulted when the coupon has not been spent — see `normalise`. This is
+ * the reward's progress through Open Loyalty's fulfilment pipeline, which for a
+ * coupon is mostly bookkeeping; the refusals are what a member needs to see.
+ *
+ * Note that `completed` does not retire a coupon here. Fulfilment finishing
+ * means the reward was handed over as an order, not that the code has been
+ * spent — only `usedAt` says that.
+ */
+const PLATFORM_STATUS = {
+  issued: 'active',
+  approved: 'active',
+  completed: 'active',
+  pending: 'pending',
+  packing: 'pending',
+  awaiting_shipping: 'pending',
+  shipped: 'pending',
+  returned: 'rejected',
+  rejected: 'rejected',
+  cancelled: 'rejected',
+  canceled: 'rejected',
+};
+
+/**
+ * One display shape for coupons from two places.
+ *
+ * The platform holds the ones that cost points, and it holds the fact of their
+ * being spent — which is the whole point: the till writes it there. The welcome
+ * bundle is local, because those are tenant deals the platform has no record
+ * of, and it carries an expiry the platform's coupons do not.
+ */
+function normalise(state) {
+  const fromPlatform = state.platformVouchers.map((v) => ({
+    key: v.issuedRewardId,
+    id: v.issuedRewardId,
+    title: v.title ?? 'Reward',
+    tenantId: null,
+    code: v.couponCode,
+    // `usedAt` decides, and is the only thing that can say "used". Spending a
+    // coupon and moving the reward's fulfilment status are separate acts
+    // upstream, so reading the status first would leave a coupon showing as
+    // available after it had been handed over — the one mistake here that costs
+    // the tenant money.
+    status: v.usedAt
+      ? 'used'
+      : (PLATFORM_STATUS[String(v.status).toLowerCase()] ?? 'active'),
+    issuedDate: v.issuedDate,
+    expiryDate: null,
+    local: false,
+  }));
+
+  const fromBundle = state.vouchers.map((v) => ({
+    key: v.id,
+    id: v.id,
+    title: v.title,
+    tenantId: v.tenantId,
+    code: v.code,
+    status: v.status === 'used' ? 'used' : daysUntil(v.expiryDate) < 0 ? 'expired' : 'active',
+    issuedDate: v.issuedDate,
+    expiryDate: v.expiryDate,
+    local: true,
+  }));
+
+  return [...fromPlatform, ...fromBundle];
+}
+
 export default function Rewards() {
-  const { state, redeemCart } = useApp();
+  const { state, loyaltySync, redeemCart } = useApp();
   const [view, setView] = useState('catalog');
   const [cart, setCart] = useState([]);
   const [drawerVoucher, setDrawerVoucher] = useState(null);
+  const [rewards, setRewards] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const totalCost = cart.reduce((s, id) => s + (REWARDS_CATALOG.find((r) => r.id === id)?.pointsCost || 0), 0);
+  const vouchers = useMemo(() => normalise(state), [state]);
+  const activeCount = vouchers.filter((v) => v.status === 'active').length;
+
+  /**
+   * Wait for the session before asking.
+   *
+   * The app re-asserts enrolment on every load and takes a fresh token doing
+   * it, so a catalogue fetched on mount goes out under the previous token and
+   * comes back 401 — an empty rewards page on every reload. Keying on the
+   * linked session means the request is made once there is a token to make it
+   * with.
+   */
+  const linked = loyaltySync.status === 'linked';
+  useEffect(() => {
+    if (!linked) return undefined;
+    let live = true;
+    setLoading(true);
+    fetchRewards()
+      .then((r) => live && setRewards(r))
+      // An empty catalogue is the honest answer when the platform cannot be
+      // reached; inventing one would show rewards nobody can actually claim.
+      .catch(() => live && setRewards([]))
+      .finally(() => live && setLoading(false));
+    return () => {
+      live = false;
+    };
+  }, [linked]);
+
+  // Split on cost, not on name: the platform decides what is bought and what is
+  // granted, and it says so in the price.
+  const [priced, included] = useMemo(
+    () => [
+      rewards.filter((r) => r.costInPoints > 0),
+      rewards.filter((r) => r.costInPoints === 0),
+    ],
+    [rewards],
+  );
+
+  const totalCost = cart.reduce(
+    (sum, id) => sum + (priced.find((r) => r.campaignId === id)?.costInPoints ?? 0),
+    0,
+  );
   const canAfford = totalCost <= state.points && cart.length > 0;
 
   function toggle(id) {
@@ -22,12 +163,12 @@ export default function Rewards() {
 
   function redeem() {
     const items = cart
-      .map((id) => REWARDS_CATALOG.find((r) => r.id === id))
-      .filter(Boolean);
-    const description =
-      items.length > 1 ? `Redeemed ${items.length} rewards` : `Redeemed: ${items[0]?.title}`;
-    // Issues the vouchers locally and debits the real balance via the BFF.
-    redeemCart(cart, totalCost, description);
+      .map((id) => priced.find((r) => r.campaignId === id))
+      .filter(Boolean)
+      .map(asVoucher);
+    // Takes them on the platform, which issues the coupons and debits the
+    // points; the vouchers tab shows what came back.
+    redeemCart(items);
     setCart([]);
     setView('vouchers');
   }
@@ -40,7 +181,7 @@ export default function Rewards() {
         <div className="flex gap-1 rounded-xl bg-gray-100 p-1">
           {[
             { id: 'catalog', label: 'Catalog' },
-            { id: 'vouchers', label: `My Vouchers (${state.vouchers.filter((v) => v.status === 'active').length})` },
+            { id: 'vouchers', label: `My Vouchers (${activeCount})` },
           ].map((t) => (
             <button
               key={t.id}
@@ -54,34 +195,95 @@ export default function Rewards() {
 
         {view === 'catalog' ? (
           <div className="mt-4 space-y-3">
-            <p className="text-[11px] text-gray-400">Tip: select multiple rewards to redeem together in one go.</p>
-            {REWARDS_CATALOG.map((r) => {
-              const selected = cart.includes(r.id);
-              return (
-                <div key={r.id} className={`flex items-center gap-3 rounded-2xl border p-3.5 shadow-sm ${selected ? 'border-brand-400 bg-brand-50/40' : 'border-gray-100 bg-white'}`}>
-                  <TenantAvatar tenantId={r.tenantId} size={44} />
-                  <div className="min-w-0 flex-1">
-                    <p className="truncate text-[13.5px] font-bold text-gray-900">{r.title}</p>
-                    <p className="truncate text-[11px] text-gray-400">{r.description}</p>
-                    <p className="mt-1 text-xs font-bold text-brand-600">{r.pointsCost.toLocaleString()} pts</p>
-                  </div>
-                  <button
-                    onClick={() => toggle(r.id)}
-                    className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full transition-colors ${
-                      selected ? 'bg-brand-600 text-white' : 'bg-gray-100 text-gray-500'
-                    }`}
+            {loading && (
+              <div className="flex items-center justify-center gap-2 rounded-2xl bg-white py-8 text-sm text-gray-400 shadow-sm">
+                <Loader2 size={16} className="animate-spin" /> Loading rewards…
+              </div>
+            )}
+
+            {!loading && rewards.length === 0 && (
+              <EmptyState
+                icon={Ticket}
+                title="No rewards available"
+                body="The programme has no rewards configured for your tier right now."
+              />
+            )}
+
+            {priced.length > 0 && (
+              <>
+                <p className="text-[11px] text-gray-400">
+                  Tip: select multiple rewards to redeem together in one go.
+                </p>
+                {priced.map((r) => {
+                  const selected = cart.includes(r.campaignId);
+                  return (
+                    <div
+                      key={r.campaignId}
+                      className={`flex items-center gap-3 rounded-2xl border p-3.5 shadow-sm ${selected ? 'border-brand-400 bg-brand-50/40' : 'border-gray-100 bg-white'}`}
+                    >
+                      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-brand-50 text-brand-600">
+                        <Ticket size={20} />
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <p className="truncate text-[13.5px] font-bold text-gray-900">{r.name}</p>
+                        <p className="truncate text-[11px] text-gray-400">{r.description}</p>
+                        <p className="mt-1 text-xs font-bold text-brand-600">
+                          {r.costInPoints.toLocaleString()} pts
+                        </p>
+                      </div>
+                      <button
+                        onClick={() => toggle(r.campaignId)}
+                        disabled={!r.canRedeem && !selected}
+                        className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full transition-colors disabled:opacity-40 ${
+                          selected ? 'bg-brand-600 text-white' : 'bg-gray-100 text-gray-500'
+                        }`}
+                      >
+                        {selected ? <Check size={16} /> : <Plus size={16} />}
+                      </button>
+                    </div>
+                  );
+                })}
+              </>
+            )}
+
+            {included.length > 0 && (
+              <>
+                <p className="pt-2 text-[11px] font-bold uppercase tracking-wider text-gray-400">
+                  Included with your membership
+                </p>
+                {included.map((r) => (
+                  <div
+                    key={r.campaignId}
+                    className="flex items-center gap-3 rounded-2xl border border-gray-100 bg-white p-3.5 shadow-sm"
                   >
-                    {selected ? <Check size={16} /> : <Plus size={16} />}
-                  </button>
-                </div>
-              );
-            })}
+                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-green-50 text-green-600">
+                      <Gift size={20} />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <p className="truncate text-[13.5px] font-bold text-gray-900">{r.name}</p>
+                      <p className="truncate text-[11px] text-gray-400">{r.description}</p>
+                    </div>
+                    <span className="shrink-0 rounded-full bg-green-50 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-green-600">
+                      Free
+                    </span>
+                  </div>
+                ))}
+              </>
+            )}
+
+            {!loading && rewards.length > 0 && (
+              <p className="pt-2 text-[11px] leading-relaxed text-gray-400">
+                Points are valid for 1 year from the date they are earned and expire
+                automatically. Tier 2 members must redeem 1,000 points before the expiry date
+                to hold Tier 2 for the following membership year.
+              </p>
+            )}
           </div>
         ) : (
           <div className="mt-4 space-y-3">
-            {state.vouchers.length === 0 && <EmptyState icon={Ticket} title="No vouchers yet" body="Redeem points from the catalog to see them here." />}
-            {state.vouchers.map((v) => (
-              <VoucherCard key={v.id} voucher={v} onUseNow={(voucher) => setDrawerVoucher(voucher)} />
+            {vouchers.length === 0 && <EmptyState icon={Ticket} title="No vouchers yet" body="Redeem points from the catalog to see them here." />}
+            {vouchers.map((v) => (
+              <VoucherCard key={v.key} voucher={v} onUseNow={(voucher) => setDrawerVoucher(voucher)} />
             ))}
           </div>
         )}
@@ -109,42 +311,49 @@ export default function Rewards() {
 
       <AnimatePresence>
         {drawerVoucher && (
-          <VoucherDrawer
-            voucher={drawerVoucher}
-            onClose={() => setDrawerVoucher(null)}
-            onMarkUsed={() => {
-              dispatch({ type: 'USE_VOUCHER', payload: { voucherId: drawerVoucher.id } });
-              setDrawerVoucher(null);
-            }}
-          />
+          <VoucherDrawer voucher={drawerVoucher} onClose={() => setDrawerVoucher(null)} />
         )}
       </AnimatePresence>
     </div>
   );
 }
 
+/** Status is decided upstream in `normalise`, so this only has to dress it. */
+const STATUS_BADGE = {
+  active: 'bg-green-50 text-green-600',
+  pending: 'bg-amber-50 text-amber-600',
+  used: 'bg-gray-100 text-gray-400',
+  expired: 'bg-red-50 text-red-500',
+  rejected: 'bg-red-50 text-red-500',
+};
+
 function VoucherCard({ voucher, onUseNow }) {
-  const expired = daysUntil(voucher.expiryDate) < 0;
-  const status = voucher.status === 'used' ? 'used' : expired ? 'expired' : 'active';
-  const badge = {
-    active: 'bg-green-50 text-green-600',
-    used: 'bg-gray-100 text-gray-400',
-    expired: 'bg-red-50 text-red-500',
-  }[status];
+  const { status } = voucher;
 
   return (
     <div className="overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm">
       <div className="flex items-center gap-3 p-3.5">
-        <TenantAvatar tenantId={voucher.tenantId} size={40} />
+        {voucher.tenantId ? (
+          <TenantAvatar tenantId={voucher.tenantId} size={40} />
+        ) : (
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-brand-50 text-brand-600">
+            <Ticket size={18} />
+          </div>
+        )}
         <div className="min-w-0 flex-1">
           <p className="truncate text-[13px] font-bold text-gray-900">{voucher.title}</p>
-          <p className="text-[11px] text-gray-400">{tenantName(voucher.tenantId)} · Code {voucher.code}</p>
+          <p className="truncate text-[11px] text-gray-400">
+            {voucher.tenantId ? `${tenantName(voucher.tenantId)} · ` : ''}Code {voucher.code}
+          </p>
         </div>
-        <span className={`shrink-0 rounded-full px-2 py-0.5 text-[10px] font-bold capitalize ${badge}`}>{status}</span>
+        <span className={`shrink-0 rounded-full px-2 py-0.5 text-[10px] font-bold capitalize ${STATUS_BADGE[status]}`}>
+          {status}
+        </span>
       </div>
       <div className="flex items-center justify-between border-t border-dashed border-gray-100 bg-gray-50/60 px-3.5 py-2">
         <p className="flex items-center gap-1 text-[10.5px] text-gray-400">
-          <Store size={11} /> Valid in-app &amp; at tenant POS · Exp {fmtDate(voucher.expiryDate)}
+          <Store size={11} /> Valid in-app &amp; at tenant POS
+          {voucher.expiryDate ? ` · Exp ${fmtDate(voucher.expiryDate)}` : ''}
         </p>
         {status === 'active' && (
           <button onClick={() => onUseNow(voucher)} className="flex items-center gap-1 rounded-lg bg-gray-900 px-2.5 py-1.5 text-[10.5px] font-bold text-white">
@@ -156,8 +365,10 @@ function VoucherCard({ voucher, onUseNow }) {
   );
 }
 
-function VoucherDrawer({ voucher, onClose, onMarkUsed }) {
-  const daysLeft = daysUntil(voucher.expiryDate);
+function VoucherDrawer({ voucher, onClose }) {
+  // Only the local bundle carries an expiry; a platform coupon's life is its
+  // status, which the till writes when it fulfils the coupon.
+  const daysLeft = voucher.expiryDate ? daysUntil(voucher.expiryDate) : null;
   const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(voucher.code)}&bgcolor=ffffff&color=111111&margin=8`;
 
   return (
@@ -189,10 +400,18 @@ function VoucherDrawer({ voucher, onClose, onMarkUsed }) {
         <div className="px-6">
           {/* header */}
           <div className="flex items-center gap-3 mb-5">
-            <TenantAvatar tenantId={voucher.tenantId} size={44} />
+            {voucher.tenantId ? (
+              <TenantAvatar tenantId={voucher.tenantId} size={44} />
+            ) : (
+              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-brand-50 text-brand-600">
+                <Ticket size={20} />
+              </div>
+            )}
             <div className="min-w-0">
               <p className="text-base font-bold text-gray-900 leading-tight">{voucher.title}</p>
-              <p className="text-[12px] text-gray-400 mt-0.5">{tenantName(voucher.tenantId)}</p>
+              <p className="text-[12px] text-gray-400 mt-0.5">
+                {voucher.tenantId ? tenantName(voucher.tenantId) : 'NTUC Club reward'}
+              </p>
             </div>
           </div>
 
@@ -213,17 +432,19 @@ function VoucherDrawer({ voucher, onClose, onMarkUsed }) {
 
           {/* meta */}
           <div className="space-y-2.5 mb-6">
-            <div className="flex items-center gap-2.5 text-[12.5px] text-gray-500">
-              <CalendarDays size={14} className="shrink-0 text-gray-400" />
-              <span>
-                Expires {fmtDate(voucher.expiryDate)}
-                {daysLeft >= 0 && daysLeft <= 30 && (
-                  <span className="ml-1.5 rounded-full bg-amber-50 px-2 py-0.5 text-[10px] font-bold text-amber-600">
-                    {daysLeft === 0 ? 'Expires today' : `${daysLeft}d left`}
-                  </span>
-                )}
-              </span>
-            </div>
+            {voucher.expiryDate && (
+              <div className="flex items-center gap-2.5 text-[12.5px] text-gray-500">
+                <CalendarDays size={14} className="shrink-0 text-gray-400" />
+                <span>
+                  Expires {fmtDate(voucher.expiryDate)}
+                  {daysLeft >= 0 && daysLeft <= 30 && (
+                    <span className="ml-1.5 rounded-full bg-amber-50 px-2 py-0.5 text-[10px] font-bold text-amber-600">
+                      {daysLeft === 0 ? 'Expires today' : `${daysLeft}d left`}
+                    </span>
+                  )}
+                </span>
+              </div>
+            )}
             <div className="flex items-center gap-2.5 text-[12.5px] text-gray-500">
               <Store size={14} className="shrink-0 text-gray-400" />
               <span>Valid in-app &amp; at tenant POS</span>

@@ -7,6 +7,7 @@
  * `OPENLOYALTY_BASE_URL` at a real instance and nothing else changes.
  */
 import { config } from '../config.js';
+import { authHeaders, clearAdminToken } from '../studio/olAdmin.js';
 
 const { baseUrl, storeCode, apiKey } = config.openLoyalty;
 
@@ -113,6 +114,29 @@ export interface Transfer {
   createdAt: string;
 }
 
+/**
+ * A reward the member has taken, as the platform records it.
+ *
+ * `reward` carries the reward's name — the spec flattens it onto the issued
+ * record rather than nesting the reward itself. `status` is the platform's
+ * vocabulary (`issued`, `completed`, `rejected`, …), which is what makes this
+ * the answer to "has this coupon been used": the till writes it, and the member
+ * app reads it rather than tracking a copy.
+ */
+export interface IssuedReward {
+  issuedRewardId: string;
+  couponCode: string;
+  reward: string | null;
+  status: string;
+  createdAt: string;
+  /**
+   * The coupon itself. `usedAt` is set when it is spent, and is the fact a
+   * member cares about — `status` above tracks fulfilment, which is a different
+   * question and moves independently.
+   */
+  issuedCoupon?: { code: string; usedAt: string | null };
+}
+
 /** Subset of the spec's MemberRewardResponse schema. */
 export interface MemberReward {
   rewardId: string;
@@ -128,6 +152,7 @@ export interface MemberReward {
 async function request<T>(
   path: string,
   init: RequestInit & { token?: string } = {},
+  retry = true,
 ): Promise<T> {
   const { token, headers, ...rest } = init;
   const res = await fetch(`${baseUrl}${path}`, {
@@ -137,16 +162,22 @@ async function request<T>(
       'Content-Type': 'application/json',
       // A member token identifies the member and is used when one is supplied.
       // Everything else here is admin-scoped — activating a member, assigning a
-      // tier — and authenticates with the store's API key. Without this those
-      // calls go out unauthenticated and come back 401.
-      ...(token
-        ? { Authorization: `Bearer ${token}` }
-        : apiKey
-          ? { 'X-AUTH-TOKEN': apiKey }
-          : {}),
+      // tier, reading tier progress — and authenticates as the admin does: the
+      // store's API key where one is configured, a `login_check` JWT otherwise.
+      // Shared with the admin client rather than reimplemented, so an
+      // unconfigured key falls back here exactly as it does there instead of
+      // going out unauthenticated and coming back 401.
+      ...(token ? { Authorization: `Bearer ${token}` } : await authHeaders()),
       ...headers,
     },
   });
+
+  // An expired admin JWT is worth one retry; a member token is the caller's to
+  // renew, and a static API key cannot be refreshed at all.
+  if (res.status === 401 && retry && !token && !apiKey) {
+    clearAdminToken();
+    return request<T>(path, init, false);
+  }
 
   const text = await res.text();
   const body = text ? JSON.parse(text) : {};
@@ -319,10 +350,64 @@ export const openLoyalty = {
     });
   },
 
+  /**
+   * Mark a coupon as used, against the member who holds it.
+   *
+   * The spec's integration endpoint for a point of sale. Distinct from moving
+   * an issued reward's status: this consumes the coupon and answers 409 if it
+   * has already been consumed, which is what stops the same code being spent
+   * twice. A status change carries no such guard.
+   */
+  consumeCoupon(
+    memberId: string,
+    couponCode: string,
+  ): Promise<{ code: string; used: boolean; customerId: string }> {
+    return request(`/api/${storeCode}/member/${memberId}/reward/redeem`, {
+      method: 'POST',
+      body: JSON.stringify({ couponCode }),
+    });
+  },
+
+  /** The undo: mark a coupon unused again. */
+  reissueCoupon(
+    memberId: string,
+    couponCode: string,
+  ): Promise<{ code: string; used: boolean; customerId: string }> {
+    return request(`/api/${storeCode}/member/${memberId}/reward/reissue`, {
+      method: 'POST',
+      body: JSON.stringify({ couponCode }),
+    });
+  },
+
+  /**
+   * Every issued reward on the store, newest first.
+   *
+   * The only documented way to find one by its coupon code — Open Loyalty has
+   * no by-code lookup, so the match is made on the way back.
+   */
+  redemptions(
+    page = 1,
+    itemsOnPage = 50,
+  ): Promise<
+    ListResponse<
+      IssuedReward & { customerId: string; name?: string; costInPoints?: number }
+    >
+  > {
+    return request(
+      `/api/${storeCode}/redemption?page=${page}&itemsOnPage=${itemsOnPage}`,
+    );
+  },
+
+  /** Move an issued reward along the fulfilment pipeline. */
+  setRedemptionStatus(issuedRewardId: string, status: string): Promise<void> {
+    return request(`/api/${storeCode}/redemption/${issuedRewardId}/status`, {
+      method: 'POST',
+      body: JSON.stringify({ status }),
+    });
+  },
+
   /** Rewards the logged member has already bought. */
-  boughtRewards(
-    token: string,
-  ): Promise<ListResponse<{ issuedRewardId: string; couponCode: string; reward: string | null }>> {
+  boughtRewards(token: string): Promise<ListResponse<IssuedReward>> {
     return request(`/api/${storeCode}/member/reward/bought`, { token });
   },
 };

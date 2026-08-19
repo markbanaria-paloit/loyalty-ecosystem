@@ -39,6 +39,10 @@ function sources(dir) {
 function toSpecPath(raw) {
   return raw
     .replace(/^\$\{baseUrl\}/, '')
+    // A query string is not part of an OpenAPI path — `page`, `itemsOnPage` and
+    // the filters are declared as parameters on the operation. Comparing with
+    // one attached reports a documented call as missing from the spec.
+    .replace(/\?.*$/, '')
     .replace(/\$\{s\(\)\}/g, '/api/{storeCode}')
     .replace(/\$\{storeCode\}/g, '{storeCode}')
     .replace(/\$\{[^}]+\}/g, '{param}');

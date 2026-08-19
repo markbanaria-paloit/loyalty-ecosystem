@@ -23,6 +23,7 @@ import {
   listEnvelope,
   defaultTierSet,
   serializeCustomer,
+  serializeIssuedReward,
   serializeReward,
   serializeTier,
   sortedTiers,
@@ -261,16 +262,38 @@ adminRouter.get(
       .map((r) => {
         const customer = store.customers.get(r.customerId);
         const reward = store.rewards.get(r.rewardId);
+        // Field names follow the spec's `issuedReward`: the reward's name is
+        // `name`, and who holds it is `customerData`. A prettier `rewardName`
+        // here would only be a name a real tenant never sends.
         return {
-          ...r,
-          customerName: customer
-            ? `${customer.firstName} ${customer.lastName}`.trim()
-            : 'Unknown',
-          rewardName: reward?.name ?? 'Unknown',
+          ...serializeIssuedReward(r),
+          name: reward?.name ?? 'Unknown',
           costInPoints: reward?.costInPoints ?? 0,
+          customerData: customer
+            ? {
+                email: customer.email,
+                firstName: customer.firstName,
+                lastName: customer.lastName,
+                loyaltyCardNumber: customer.loyaltyCardNumber,
+              }
+            : null,
         };
       });
-    res.json(listEnvelope(items));
+
+    // Paged, because the real list is. The spec's default is ten per page and
+    // fifty is the ceiling — a caller that reads the response and stops has
+    // seen ten redemptions, not all of them, and the only place that mistake
+    // shows up is a tenant with more than a page of history.
+    const perPage = Math.min(
+      Math.max(Number(req.query.itemsOnPage ?? 10) || 10, 1),
+      50,
+    );
+    const page = Math.max(Number(req.query.page ?? 1) || 1, 1);
+    const start = (page - 1) * perPage;
+    res.json({
+      items: items.slice(start, start + perPage),
+      total: { all: items.length, filtered: items.length, estimated: false },
+    });
   },
 );
 

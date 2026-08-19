@@ -103,10 +103,12 @@ export interface TransactionRecord {
 export interface CouponLookup {
   issuedRewardId: string;
   couponCode: string;
+  /** Fulfilment stage on the platform — not whether the coupon was spent. */
   status: string;
-  createdAt: string;
+  /** Set once the coupon has been consumed. This is the one that blocks reuse. */
+  usedAt: string | null;
   rewardName: string;
-  customerName: string;
+  customerId: string;
 }
 
 export const api = {
@@ -263,11 +265,23 @@ export const api = {
     }),
 
   lookupCoupon: (code: string) =>
-    req<CouponLookup>(`${s()}/redemption/by-code/${encodeURIComponent(code)}`),
+    req<CouponLookup>(`/api/console/coupons/${encodeURIComponent(code)}`),
 
-  setRedemptionStatus: (issuedRewardId: string, status: string, comment?: string) =>
-    req<{ status: string }>(`${s()}/redemption/${issuedRewardId}/status`, {
+  /**
+   * Settle a coupon: spend it, then record the reward as fulfilled.
+   *
+   * Both happen server-side and in that order, so a code presented twice is
+   * refused with a 409 rather than quietly fulfilled again.
+   */
+  consumeCoupon: (code: string) =>
+    req<{ used: boolean; fulfilled: boolean }>(
+      `/api/console/coupons/${encodeURIComponent(code)}/consume`,
+      { method: 'POST' },
+    ),
+
+  /** Undo a coupon settled by mistake. */
+  reissueCoupon: (code: string) =>
+    req<{ used: boolean }>(`/api/console/coupons/${encodeURIComponent(code)}/reissue`, {
       method: 'POST',
-      body: JSON.stringify({ status, comment }),
     }),
 };

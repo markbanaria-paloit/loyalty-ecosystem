@@ -84,7 +84,16 @@ loyaltyRouter.get('/api/me/tier-progress', async (req: TokenRequest, res) => {
     const progress = await openLoyalty.tierProgress(req.memberId!, tierSetId);
     res.json({ progress });
   } catch (err) {
-    handleError(err, res);
+    // Answered as "no progress", never as an error.
+    //
+    // These are admin-scoped reads: the member's own token is not what
+    // authenticates them, so an upstream 401 says this service's credentials
+    // failed, not that the member's session did. Passing it through as a 401
+    // told the app its token was dead and made it throw a working session away
+    // — and every later call failed with it. Progress is presentational and
+    // every caller already tolerates its absence.
+    console.error('Tier progress unavailable:', err);
+    res.json({ progress: null });
   }
 });
 
@@ -183,6 +192,39 @@ loyaltyRouter.get('/api/rewards', async (req: TokenRequest, res) => {
         costInPoints: r.costInPoints,
         unitsAvailable: r.usageLimit,
         canRedeem: r.canBeBoughtByCustomer ?? false,
+      })),
+    });
+  } catch (err) {
+    handleError(err, res);
+  }
+});
+
+/**
+ * The coupons this member holds, and whether they have been used.
+ *
+ * Read from the platform on every call rather than mirrored here. The till
+ * marks a coupon fulfilled against the same record, so asking the platform is
+ * the only way the member app can show a coupon as used the moment it is —
+ * anything cached would say "active" until it happened to refresh.
+ */
+loyaltyRouter.get('/api/me/vouchers', async (req: TokenRequest, res) => {
+  try {
+    const { items } = await openLoyalty.boughtRewards(req.memberToken!);
+    res.json({
+      vouchers: items.map((v) => ({
+        issuedRewardId: v.issuedRewardId,
+        couponCode: v.issuedCoupon?.code ?? v.couponCode,
+        title: v.reward,
+        /** The platform's own fulfilment vocabulary; the client maps it. */
+        status: v.status,
+        /**
+         * Set once a till has spent the coupon. Carried separately from
+         * `status` because it answers a different question — whether the member
+         * can still use this, rather than how far the reward's fulfilment got —
+         * and the two move independently upstream.
+         */
+        usedAt: v.issuedCoupon?.usedAt ?? null,
+        issuedDate: v.createdAt,
       })),
     });
   } catch (err) {

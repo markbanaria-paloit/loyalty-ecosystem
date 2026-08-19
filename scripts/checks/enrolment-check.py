@@ -30,7 +30,7 @@ check('one campaign paid out', [ (p['name'],p['points']) for p in r['campaignPay
 print('\n— A union member —')
 u=call('POST','/api/default/member/register',{'customer':{'firstName':'Wei','lastName':'Lim',
    'email':addr('wei'),'plainPassword':'pw','agreement1':True,
-   'labels':[{'key':'customerType','value':'union_member'}]}})
+   'labels':[{'key':'membertype','value':'unionmember'}]}})
 uid=u['customerId']
 check('is admitted to Tier 2 on enrolment, with no spend',
       u['status']['levelName']=='Tier 2', u['status']['levelName'])
@@ -84,7 +84,7 @@ p1=bff('POST','/api/auth/register',{'firstName':'B','lastName':'Pub','email':add
 check('public enrols Tier 1 with 250, settled in the register response',
       p1['account']['levelName']=='Tier 1' and p1['account']['points']==250 and p1['enrolment']['welcomePoints']==250,
       "%s / %s" % (p1['account']['levelName'], p1['account']['points']))
-u1=bff('POST','/api/auth/register',{'firstName':'B','lastName':'Uni','email':addr('bffuni'),'password':'ntuc-club-demo','loyaltyCardNumber':'NCB2'+RUN,'labels':[{'key':'customerType','value':'union_member'}]})
+u1=bff('POST','/api/auth/register',{'firstName':'B','lastName':'Uni','email':addr('bffuni'),'password':'ntuc-club-demo','loyaltyCardNumber':'NCB2'+RUN,'labels':[{'key':'membertype','value':'unionmember'}]})
 check('union enrols straight into Tier 2 with 500, settled in the register response',
       u1['account']['levelName']=='Tier 2' and u1['account']['points']==500 and u1['enrolment']['welcomePoints']==500,
       "%s / %s" % (u1['account']['levelName'], u1['account']['points']))
