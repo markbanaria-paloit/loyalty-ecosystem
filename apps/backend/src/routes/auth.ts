@@ -103,14 +103,36 @@ authRouter.post('/api/auth/register', async (req, res) => {
       (l) => l.key === unionLabelKey && l.value === unionLabelValue,
     );
 
-    // Nothing here assigns a tier. The programme grants the union tier itself:
-    // a campaign listening for `MemberWasActivated` matches the member's
-    // `membertype` label and awards enough points to cross the tier's
-    // threshold. Activating the member above is what triggers it — which is why
-    // that call is not merely tidy-up, it is the whole mechanism.
-    //
-    // Assigning the tier here as well would put a member on it who had not been
-    // given the points, and the two would disagree the moment either changed.
+    /**
+     * Put a union member on their tier, here, before answering.
+     *
+     * This used to be left to the enrolment campaign: activate the member, and
+     * a rule matching the `membertype` label would award enough points to cross
+     * the threshold. It works, eventually — and "eventually" is the problem. The
+     * platform scores campaigns after it accepts the activation, so the member
+     * saw the entry tier and no points, then watched both change underneath
+     * them a beat later.
+     *
+     * Membership is not a thing you earn by degrees; it is true at the moment
+     * you join. So the tier is assigned outright, which the platform holds
+     * rather than recalculating away, and the member is on it the instant
+     * enrolment returns. Whatever the campaign pays is then a welcome award and
+     * nothing more — it no longer decides the tier.
+     */
+    if (isUnionMember) {
+      const target = (await ladder()).find(
+        (t) => t.name === config.member.unionTierName,
+      );
+      if (target) {
+        await openLoyalty.assignTier(created.customerId, target.levelId);
+      } else {
+        // Worth saying out loud: the member is enrolled and will be answered
+        // for, but on the entry tier, and the reason is configuration.
+        console.error(
+          `No tier named ${config.member.unionTierName} on this store — union member left on the entry tier.`,
+        );
+      }
+    }
 
     // Immediately log the new member in for a smooth onboarding flow.
     const tokens = await openLoyalty.memberLogin(
@@ -119,31 +141,42 @@ authRouter.post('/api/auth/register', async (req, res) => {
     );
 
     /**
-     * Wait for the enrolment award to land before answering.
+     * Give the enrolment award a moment to land.
      *
      * The platform scores campaigns after it accepts the activation, not
-     * during, so a status read straight afterwards shows a member with no
-     * points and the entry tier — and the member app would render exactly that,
-     * then correct itself a beat later.
+     * during, so a status read straight afterwards shows a member with nothing
+     * credited. Waiting briefly means the welcome screen usually has the real
+     * figure to celebrate rather than correcting itself a beat later.
      *
-     * Only members the programme should award are waited on: everyone else has
-     * nothing coming and should not pay for the check.
+     * The tier does not depend on this — it was assigned above. This is only
+     * about the number, so it gives up quietly: a campaign that is slow, or a
+     * store with no enrolment campaign at all, leaves a member correctly on
+     * their tier with nothing credited, and the screen says exactly that.
+     *
+     * The balance is what is watched. Watching the tier name was the old
+     * mistake: with no baseline to compare against, "changed" was true on the
+     * first pass and the wait ended immediately.
+     *
+     * Three seconds, not eight. An award lands in well under a second when a
+     * campaign is configured, so a longer ceiling only makes every member on a
+     * store without one wait for nothing — and the app polls, so a late award
+     * still arrives, just without the confetti.
      */
-    if (isUnionMember) {
-      // The tier is what we are waiting for, not the points. The award lands
-      // first and the tier recalculates after it, so breaking on a non-zero
-      // balance returns a member who has been paid but not yet promoted.
-      const startedOn = await openLoyalty
-        .status(tokens.token, created.customerId)
-        .catch(() => null);
-      const deadline = Date.now() + 8000;
+    const awaitedAward = await (async () => {
+      const deadline = Date.now() + 3000;
       while (Date.now() < deadline) {
         const settling = await openLoyalty
           .status(tokens.token, created.customerId)
           .catch(() => null);
-        if (settling && settling.levelName !== startedOn?.levelName) break;
+        if (settling && settling.activePoints > 0) return true;
         await new Promise((resolve) => setTimeout(resolve, 500));
       }
+      return false;
+    })();
+    if (!awaitedAward) {
+      console.warn(
+        `No enrolment award landed for ${created.customerId} within 8s — answering without one.`,
+      );
     }
 
     // Read the record back through the member's own token rather than trusting
@@ -164,13 +197,21 @@ authRouter.post('/api/auth/register', async (req, res) => {
       // straight from this — no second round trip, no window where the balance
       // reads zero.
       account: toAccount(status, await ladder()),
-      /** What enrolment actually did, for the welcome screen to show. */
+      /**
+       * What enrolment actually did, for the welcome screen to show.
+       *
+       * The award is read from the settled balance rather than from the
+       * registration response. Registration itself grants nothing on a real
+       * tenant — the campaigns run on activation — so the payouts it returns
+       * are empty there, and a figure taken from them would always be zero.
+       * A member who has just joined has been given exactly one thing, so
+       * their balance is the award.
+       */
       enrolment: {
         payouts: created.campaignPayouts ?? [],
-        welcomePoints: (created.campaignPayouts ?? []).reduce(
-          (sum, p) => sum + p.points,
-          0,
-        ),
+        welcomePoints:
+          (created.campaignPayouts ?? []).reduce((sum, p) => sum + p.points, 0) ||
+          status.activePoints,
       },
     });
   } catch (err) {

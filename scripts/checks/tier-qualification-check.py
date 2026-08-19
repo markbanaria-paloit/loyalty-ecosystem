@@ -30,9 +30,13 @@ u=call('POST','/api/default/member/register',{'customer':{'firstName':'U','lastN
   'email':addr('union'),'plainPassword':'pw','agreement1':True,
   'labels':[{'key':'membertype','value':'unionmember'}]}})
 uid=u['customerId']
+# Activation is what scores the enrolment campaigns, so nothing is credited
+# until it has happened — the same two calls the BFF makes.
+call('POST',f'/api/default/member/{uid}/activate',{},tok)
+us=call('GET',f'/api/default/member/{uid}/status',tok=tok)
 check('union member is admitted to Tier 2 outright, with 500 pts',
-      u['status']['levelName']=='Tier 2' and u['status']['activePoints']==500,
-      f"{u['status']['levelName']} / {u['status']['activePoints']}")
+      us['levelName']=='Tier 2' and us['activePoints']==500,
+      f"{us['levelName']} / {us['activePoints']}")
 buy(addr('union'), 1400, 'u1')
 st=call('GET',f'/api/default/member/{uid}/status',tok=tok)
 check('stays Tier 2 regardless of spend', st['levelName']=='Tier 2', st['levelName'])
@@ -44,9 +48,11 @@ print('\n— A public member gets there by spending —')
 p=call('POST','/api/default/member/register',{'customer':{'firstName':'P','lastName':'M',
   'email':addr('pub'),'plainPassword':'pw','agreement1':True}})
 pid=p['customerId']
+call('POST',f'/api/default/member/{pid}/activate',{},tok)
+ps=call('GET',f'/api/default/member/{pid}/status',tok=tok)
 check('public member starts on Tier 1 with 250 pts',
-      p['status']['levelName']=='Tier 1' and p['status']['activePoints']==250,
-      f"{p['status']['levelName']} / {p['status']['activePoints']}")
+      ps['levelName']=='Tier 1' and ps['activePoints']==250,
+      f"{ps['levelName']} / {ps['activePoints']}")
 buy(addr('pub'), 5000, 'p1')
 st=call('GET',f'/api/default/member/{pid}/status',tok=tok)
 check('a public member reaches Tier 2 by spending past $1,500', st['levelName']=='Tier 2', st['levelName'])

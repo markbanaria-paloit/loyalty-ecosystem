@@ -21,23 +21,29 @@ tiers={t['name']:t for t in call('GET','/api/default/tier',tok=tok)['items']}
 check('ladder is Tier 1 / Tier 2', sorted(tiers)==['Tier 1','Tier 2'], str(sorted(tiers)))
 
 print('\n— A regular customer —')
+# Register then activate, as the platform requires and the BFF does: a member is
+# created inactive and the enrolment campaigns are scored when they are turned
+# on, so the balance is nothing until that second call.
 r=call('POST','/api/default/member/register',{'customer':{'firstName':'Alex','lastName':'Tan',
    'email':addr('alex'),'plainPassword':'pw','agreement1':True}})
-check('lands on Tier 1', r['status']['levelName']=='Tier 1', r['status']['levelName'])
-check('gets exactly 250 points', r['status']['activePoints']==250, str(r['status']['activePoints']))
-check('one campaign paid out', [ (p['name'],p['points']) for p in r['campaignPayouts']]==[('Welcome Bonus',250)], str(r['campaignPayouts']))
+check('registers with nothing credited yet', r['status']['activePoints']==0, str(r['status']['activePoints']))
+call('POST',f"/api/default/member/{r['customerId']}/activate",{},tok)
+rs=call('GET',f"/api/default/member/{r['customerId']}/status",tok=tok)
+check('lands on Tier 1', rs['levelName']=='Tier 1', rs['levelName'])
+check('gets exactly 250 points once activated', rs['activePoints']==250, str(rs['activePoints']))
 
 print('\n— A union member —')
 u=call('POST','/api/default/member/register',{'customer':{'firstName':'Wei','lastName':'Lim',
    'email':addr('wei'),'plainPassword':'pw','agreement1':True,
    'labels':[{'key':'membertype','value':'unionmember'}]}})
 uid=u['customerId']
-check('is admitted to Tier 2 on enrolment, with no spend',
-      u['status']['levelName']=='Tier 2', u['status']['levelName'])
-check('gets exactly 500 — not 750', u['status']['activePoints']==500, str(u['status']['activePoints']))
-check('only the union campaign ran', [p['name'] for p in u['campaignPayouts']]==['Union Member Welcome'], str([p['name'] for p in u['campaignPayouts']]))
+call('POST',f"/api/default/member/{uid}/activate",{},tok)
+us=call('GET',f"/api/default/member/{uid}/status",tok=tok)
+check('is admitted to Tier 2 on activation, with no spend',
+      us['levelName']=='Tier 2', us['levelName'])
+check('gets exactly 500 — not 750', us['activePoints']==500, str(us['activePoints']))
 check('and holds it by membership, not by an admin assignment',
-      u['status']['levelManuallyAssigned'] is False)
+      us['levelManuallyAssigned'] is False)
 
 print('\n— An explicitly assigned tier survives activity (the demotion test) —')
 tiers_by_name={t['name']:t for t in call('GET','/api/default/tier',tok=tok)['items']}

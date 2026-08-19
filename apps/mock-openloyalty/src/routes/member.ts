@@ -25,6 +25,7 @@ import {
   recomputeTier,
   runInternalEventCampaigns,
   type MemberLabel,
+  type Store,
   tierThreshold,
   type Customer,
 } from '../data.js';
@@ -88,7 +89,10 @@ memberRouter.post('/api/:storeCode/member/register', (req, res) => {
     agreement1: true,
     agreement2: body.agreement2 === true,
     agreement3: body.agreement3 === true,
-    active: true,
+    // Inactive, as Open Loyalty creates them. Activation is a separate call and
+    // is what scores the enrolment campaigns — a member minted active here
+    // would never have one to score.
+    active: false,
     createdAt: body.registeredAt ?? new Date().toISOString(),
     labels,
     // Enrolment opens the member's first qualification period.
@@ -106,24 +110,30 @@ memberRouter.post('/api/:storeCode/member/register', (req, res) => {
   };
   store.customers.set(customer.customerId, customer);
 
-  // Enrolment raises an internal event. Campaigns listening for it run in
-  // display order and settle the member completely: a campaign may put them on
-  // a tier and award points, and a later tier-scoped campaign sees the tier the
-  // earlier one assigned. The member is fully minted and tiered by the time
-  // this handler returns — nothing is left for the client to resolve.
-  const payouts = runInternalEventCampaigns(store, customer, MEMBER_REGISTERED_EVENT);
-  recomputeTier(store, customer);
-
-  // Spec returns 200 with customerId + email; the campaign payouts are an
-  // addition, so the member app can acknowledge the welcome points.
+  // Nothing is awarded here. Open Loyalty creates a member inactive and scores
+  // enrolment campaigns when they are activated, so a mock that paid out during
+  // registration made a race disappear that a real tenant has — and the code
+  // written to survive it was never once exercised. See `/activate`.
   res.json({
     customerId: customer.customerId,
     email: customer.email,
-    campaignPayouts: payouts,
-    // The settled loyalty record, so a caller never has to poll for it.
+    campaignPayouts: [],
     status: serializeCustomerStatus(store, customer),
   });
 });
+
+/**
+ * Score a member's enrolment campaigns, as activation does upstream.
+ *
+ * Exported so the activate route can call it without importing half of this
+ * file's context: activation is an admin operation and lives over there, but
+ * what it triggers belongs with enrolment.
+ */
+export function settleEnrolment(store: Store, customer: Customer) {
+  const payouts = runInternalEventCampaigns(store, customer, MEMBER_REGISTERED_EVENT);
+  recomputeTier(store, customer);
+  return payouts;
+}
 
 /** Everything below needs a token. */
 memberRouter.use('/api/:storeCode/member', requireAuth);

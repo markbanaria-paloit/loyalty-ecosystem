@@ -32,6 +32,7 @@ import {
   type Reward,
 } from '../data.js';
 import { requireAdmin, type AuthedRequest } from '../auth.js';
+import { settleEnrolment } from './member.js';
 import { resetStore } from '../persistence.js';
 
 export const adminRouter = Router();
@@ -71,7 +72,12 @@ for (const action of ['activate', 'deactivate'] as const) {
         res.status(404).json({ code: 404, message: 'Member not found' });
         return;
       }
+      const wasActive = customer.active;
       customer.active = action === 'activate';
+      // Activating is what pays the welcome award: Open Loyalty scores
+      // enrolment campaigns here, not at registration, which is why a caller
+      // that reads the balance straight after registering sees nothing.
+      if (customer.active && !wasActive) settleEnrolment(store, customer);
       res.json({ customerId: customer.customerId, active: customer.active });
     },
   );

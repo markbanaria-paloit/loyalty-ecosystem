@@ -36,21 +36,23 @@ export const config = {
 
   member: {
     /**
-     * Label that marks a member as belonging to the union, and the tier they
-     * are placed on because of it.
+     * Label that marks a member as belonging to the union.
      *
-     * Tier conditions are metric-only, so this cannot be configured as a
-     * qualification rule on the platform — the tier has to be assigned. Naming
-     * the tier rather than hardcoding an id keeps it survivable across tenants,
-     * where the ids differ.
-     */
-    /**
      * Exactly as the tenant's campaign matches it — `membertype` /
      * `unionmember`, no underscore, all lowercase. The label is a string
      * comparison on their side, so a near-miss silently grants nothing.
      */
     unionLabelKey: process.env.UNION_LABEL_KEY ?? 'membertype',
     unionLabelValue: process.env.UNION_LABEL_VALUE ?? 'unionmember',
+    /**
+     * The tier a union member is placed on.
+     *
+     * Tier conditions are metric-only, so membership cannot be expressed as a
+     * qualification rule — the tier has to be assigned outright. Named rather
+     * than given as an id, because ids differ per tenant and a name survives
+     * moving between them.
+     */
+    unionTierName: process.env.UNION_TIER_NAME ?? 'Tier 2',
   },
 
   /*

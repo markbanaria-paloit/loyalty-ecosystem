@@ -78,10 +78,26 @@ export default function Onboarding() {
               You have been auto-upgraded to {state.user.tierName ?? `Tier ${rank}`}
             </p>
           </div>
-          <p className="mt-1 text-3xl font-extrabold">+{welcomePoints.toLocaleString()} pts</p>
-          <p className="text-xs text-white/80">
-            {awardedBy ? `${awardedBy} · credited to your account` : 'Credited to your account'}
-          </p>
+          {welcomePoints > 0 ? (
+            <>
+              <p className="mt-1 text-3xl font-extrabold">
+                +{welcomePoints.toLocaleString()} pts
+              </p>
+              <p className="text-xs text-white/80">
+                {awardedBy ? `${awardedBy} · credited to your account` : 'Credited to your account'}
+              </p>
+            </>
+          ) : (
+            /*
+             * The tier is granted on membership, the points by a campaign, and
+             * the two are independent. Where no award has landed there is no
+             * figure to show — printing "+0 pts" under a promotion announces a
+             * bonus that was never given.
+             */
+            <p className="mt-1 text-xs text-white/80">
+              Your membership tier is yours from today.
+            </p>
+          )}
         </motion.div>
       )}
 
