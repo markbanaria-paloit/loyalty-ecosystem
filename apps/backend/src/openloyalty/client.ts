@@ -189,6 +189,33 @@ export interface MemberReward {
 }
 
 /**
+ * A challenge as the member sees it: the goal, and how far along they are.
+ *
+ * Milestones are the individual goals inside one challenge — up to six, and
+ * completable in any order. `currentPeriodValue` against `periodGoal` is the
+ * progress bar; `consecutivePeriods` is what makes a streak a streak.
+ */
+export interface MemberChallenge {
+  campaignId: string;
+  campaignName: string;
+  campaignDescription?: string | null;
+  limitReached?: boolean;
+  memberProgress?: {
+    completedCount?: number;
+    milestones?: Array<{
+      milestoneId: string;
+      periodGoal?: number;
+      currentPeriodValue?: number;
+      consecutivePeriods?: number;
+      completedConsecutivePeriods?: number;
+      periodType?: string;
+      type?: string;
+      trigger?: string;
+    }>;
+  } | null;
+}
+
+/**
  * The reasons behind a rejected form.
  *
  * Open Loyalty answers a bad payload with a flat "Validation failed" and puts
@@ -414,6 +441,18 @@ export const openLoyalty = {
   /** Logged member's points transfers. */
   points(token: string): Promise<ListResponse<Transfer>> {
     return request(`/api/${storeCode}/member/points`, { token });
+  },
+
+  /**
+   * The challenges this member is in, with their progress.
+   *
+   * Read-only here on purpose. Progress is advanced by the platform when a
+   * transaction or event matches a milestone's rule — the same engine that
+   * awards points — so an app that wrote progress itself would be scoring the
+   * programme rather than reporting it.
+   */
+  memberChallenges(memberId: string): Promise<ListResponse<MemberChallenge>> {
+    return request(`/api/${storeCode}/member/${memberId}/challenge`);
   },
 
   /** Rewards available to the logged member. */

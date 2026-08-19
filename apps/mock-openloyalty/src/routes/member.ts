@@ -168,6 +168,54 @@ memberRouter.get('/api/:storeCode/member/reward', (req: AuthedRequest, res) => {
   res.json(listEnvelope(items));
 });
 
+/**
+ * A member's challenges and their progress.
+ *
+ * Seeded rather than scored: this mock does not run the challenge engine, and
+ * pretending to would teach a caller the wrong shape of the wrong thing. What
+ * it does model faithfully is the response — one challenge, milestones with a
+ * goal and a current value — so an app can be built against it and will find
+ * the same fields on a tenant that really is scoring them.
+ */
+memberRouter.get(
+  '/api/:storeCode/member/:member/challenge',
+  (req: AuthedRequest, res) => {
+    const store = req.store;
+    const customer = store.customers.get(req.params.member);
+    if (!customer) {
+      res.status(404).json({ code: 404, message: 'Member not found' });
+      return;
+    }
+    const spent = Math.max(0, customer.earnedPoints);
+    res.json(
+      listEnvelope([
+        {
+          campaignId: '60c2989b-b7ea-4cdd-adbb-77c69857a3ac',
+          campaignName: 'Shop three weeks running',
+          campaignDescription:
+            'Make a qualifying purchase in three consecutive weeks.',
+          limitReached: false,
+          memberProgress: {
+            completedCount: 0,
+            milestones: [
+              {
+                milestoneId: 'e0f1b6a2-0000-4000-8000-000000000001',
+                periodGoal: 1,
+                currentPeriodValue: spent > 0 ? 1 : 0,
+                consecutivePeriods: 3,
+                completedConsecutivePeriods: spent > 0 ? 1 : 0,
+                periodType: 'week',
+                type: 'frequency',
+                trigger: 'transaction',
+              },
+            ],
+          },
+        },
+      ]),
+    );
+  },
+);
+
 /** Logged member's tier. */
 memberRouter.get('/api/:storeCode/member/tier', (req: AuthedRequest, res) => {
   const { store, customer } = currentCustomer(req);

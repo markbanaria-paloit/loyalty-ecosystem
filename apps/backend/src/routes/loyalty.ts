@@ -265,6 +265,46 @@ loyaltyRouter.get("/api/rewards", async (req: TokenRequest, res) => {
 });
 
 /**
+ * The challenges this member is in, and how far through them they are.
+ *
+ * A challenge is a goal made of milestones — spend this often, in this many
+ * consecutive weeks — that the platform advances as transactions and events
+ * arrive, and that pays out through the same effects a campaign uses: points,
+ * a reward, an attribute. So this is a read and only a read. Progress is scored
+ * by the loyalty engine off the sale the till already publishes; an app that
+ * pushed progress of its own would be running the programme rather than showing
+ * it, and the two would disagree the first time a rule changed.
+ */
+loyaltyRouter.get('/api/me/challenges', async (req: TokenRequest, res) => {
+  try {
+    const { items } = await openLoyalty.memberChallenges(req.memberId!);
+    res.json({
+      challenges: items.map((c) => ({
+        campaignId: c.campaignId,
+        name: c.campaignName,
+        description: c.campaignDescription ?? null,
+        /** True once the member has had all of this challenge they may have. */
+        limitReached: c.limitReached ?? false,
+        completedCount: c.memberProgress?.completedCount ?? 0,
+        milestones: (c.memberProgress?.milestones ?? []).map((m) => ({
+          milestoneId: m.milestoneId,
+          /** What the member has done, against what the milestone asks for. */
+          current: m.currentPeriodValue ?? 0,
+          goal: m.periodGoal ?? null,
+          /** Streaks: how many consecutive periods are needed, and are done. */
+          periodsRequired: m.consecutivePeriods ?? null,
+          periodsCompleted: m.completedConsecutivePeriods ?? 0,
+          periodType: m.periodType ?? null,
+          trigger: m.trigger ?? null,
+        })),
+      })),
+    });
+  } catch (err) {
+    handleError(err, res);
+  }
+});
+
+/**
  * The coupons this member holds, and whether they have been used.
  *
  * Read from the platform on every call rather than mirrored here. The till
