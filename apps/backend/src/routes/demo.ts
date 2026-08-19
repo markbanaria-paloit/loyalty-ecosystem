@@ -136,7 +136,7 @@ async function personas(): Promise<Persona[]> {
     .filter((m) => cardNumberFromEmail(m.email))
     .sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt));
 
-  const entryTier = (await ladder())[0]?.name ?? null;
+  const entryTier = (await ladder())[0] ?? null;
   const found: Persona[] = [];
 
   const union = candidates.find(isUnion);
@@ -148,12 +148,17 @@ async function personas(): Promise<Persona[]> {
    * "Existing public member" is offered as the other half of the story, and a
    * member who happens to have been promoted tells the same story as the one
    * above it. So the tier is part of what is being looked for, not just the
-   * absence of a union label. Falling back to any non-union member keeps the
-   * card present on a tenant where nobody is on the entry tier, which is better
-   * than offering nothing.
+   * absence of a union label. Matched by tier id first: the live tenant's
+   * member list does not put a level name on every row, and a name-only match
+   * quietly skipped every Tier 1 member there — which is how this card came to
+   * offer a tier-less account. Falling back to any non-union member keeps the
+   * card present on a tenant where nobody is on the entry tier, which is
+   * better than offering nothing.
    */
+  const onEntryTier = (m: AdminMember) =>
+    m.levelId === entryTier?.levelId || (m.levelName != null && m.levelName === entryTier?.name);
   const publicMember =
-    candidates.find((m) => !isUnion(m) && (!entryTier || m.levelName === entryTier)) ??
+    candidates.find((m) => !isUnion(m) && (!entryTier || onEntryTier(m))) ??
     candidates.find((m) => !isUnion(m));
   if (publicMember) found.push({ id: FOUND_PUBLIC, member: publicMember });
 
@@ -168,6 +173,7 @@ async function personas(): Promise<Persona[]> {
  */
 demoRouter.get('/api/demo/personas', async (_req, res) => {
   try {
+    const tiers = await ladder();
     res.json({
       personas: (await personas()).map(({ id, member }) => ({
         personaId: id,
@@ -179,10 +185,14 @@ demoRouter.get('/api/demo/personas', async (_req, res) => {
         /**
          * Live figures, so the card shows what this member actually holds —
          * where the platform reports them. A tenant's member list is not
-         * obliged to carry a balance or a tier on every row, and a missing one
-         * is a figure to omit, not a reason to fail.
+         * obliged to carry a balance or a tier on every row; a missing tier
+         * name is looked up from the ladder by id, and a balance the row does
+         * not carry is a figure to omit, not a reason to fail.
          */
-        levelName: member.levelName ?? null,
+        levelName:
+          member.levelName ??
+          tiers.find((t) => t.levelId === member.levelId)?.name ??
+          null,
         points: typeof member.activePoints === 'number' ? member.activePoints : null,
       })),
     });
