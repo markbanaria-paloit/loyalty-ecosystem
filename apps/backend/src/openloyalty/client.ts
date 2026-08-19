@@ -157,6 +157,50 @@ export interface MemberReward {
   couponValue?: number | null;
 }
 
+/**
+ * The reasons behind a rejected form.
+ *
+ * Open Loyalty answers a bad payload with a flat "Validation failed" and puts
+ * what was actually wrong somewhere else — sometimes a list of
+ * `{path, message}`, more often a Symfony form tree where each field hangs off
+ * `errors.children.<field>.errors`. Reading only the message threw away the one
+ * part that says what to fix, which is how a rejected purchase reached a member
+ * as three words that named neither the field nor the reason.
+ */
+function formErrors(body: unknown): string {
+  const seen: string[] = [];
+
+  const walk = (node: unknown, path: string) => {
+    if (!node || typeof node !== 'object') return;
+    const n = node as Record<string, unknown>;
+
+    if (Array.isArray(n.errors)) {
+      for (const e of n.errors) {
+        const text =
+          typeof e === 'string'
+            ? e
+            : ((e as { message?: string })?.message ?? '');
+        const at = (e as { path?: string })?.path ?? path;
+        if (text) seen.push(at ? `${at}: ${text}` : text);
+      }
+    } else if (n.errors) {
+      walk(n.errors, path);
+    }
+
+    if (n.children && typeof n.children === 'object') {
+      for (const [field, child] of Object.entries(
+        n.children as Record<string, unknown>,
+      )) {
+        walk(child, path ? `${path}.${field}` : field);
+      }
+    }
+  };
+
+  walk(body, '');
+  // Deduplicated: a form tree repeats the same complaint at several depths.
+  return [...new Set(seen)].join('; ');
+}
+
 async function request<T>(
   path: string,
   init: RequestInit & { token?: string } = {},
@@ -190,17 +234,7 @@ async function request<T>(
   const text = await res.text();
   const body = text ? JSON.parse(text) : {};
   if (!res.ok) {
-    // Open Loyalty answers a rejected form with a generic message and the real
-    // reasons in `errors[]`. Carrying only the message loses the one thing that
-    // says what to fix.
-    const detail = Array.isArray(body?.errors)
-      ? body.errors
-          .map((e: { path?: string; message?: string }) =>
-            e.path ? `${e.path}: ${e.message}` : e.message,
-          )
-          .filter(Boolean)
-          .join('; ')
-      : '';
+    const detail = formErrors(body);
     throw new OpenLoyaltyError(
       res.status,
       detail || body?.message || res.statusText,
