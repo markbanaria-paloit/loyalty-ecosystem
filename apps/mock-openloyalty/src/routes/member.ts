@@ -320,7 +320,27 @@ memberRouter.post(
       res.status(400).json({ code: 400, message: 'Reward is sold out' });
       return;
     }
-    if (customer.activePoints < reward.costInPoints) {
+    /**
+     * What this costs the member.
+     *
+     * A conversion coupon has no price: the member says how many points to
+     * convert and the platform turns them into value at the reward's ratio. So
+     * the cost is what they asked to convert, not the reward's `costInPoints`,
+     * which is zero — charging that would hand out coupons for nothing.
+     */
+    const cost =
+      reward.type === 'conversion_coupon'
+        ? Number(body.units) || 0
+        : reward.costInPoints;
+    if (cost <= 0 && reward.type === 'conversion_coupon') {
+      res.status(400).json({
+        code: 400,
+        message: 'Invalid form',
+        errors: [{ path: 'units', message: 'This value should be greater than 0.' }],
+      });
+      return;
+    }
+    if (customer.activePoints < cost) {
       res.status(400).json({ code: 400, message: 'Not enough points' });
       return;
     }
@@ -329,7 +349,7 @@ memberRouter.post(
     spendPointsInternal(
       store,
       customer.customerId,
-      reward.costInPoints,
+      cost,
       `Redeemed: ${reward.name}`,
       new Date().toISOString(),
       { rewardId: reward.rewardId, issuedRewardId },

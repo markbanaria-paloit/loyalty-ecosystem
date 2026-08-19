@@ -21,6 +21,14 @@ import { ladder, toAccount } from "./account.js";
 
 export const loyaltyRouter = Router();
 
+/**
+ * Points converted in one go, when the caller does not say.
+ *
+ * The programme is written in thousands — "1,000 points = $5" — so a conversion
+ * with no amount converts one step rather than a whole balance.
+ */
+const CONVERSION_STEP = Number(process.env.CONVERSION_STEP_POINTS ?? 1000);
+
 interface TokenRequest extends Request {
   memberToken?: string;
   memberId?: string;
@@ -233,6 +241,21 @@ loyaltyRouter.get("/api/rewards", async (req: TokenRequest, res) => {
            * differs from the vendored schema, this is where it shows.
            */
           type: r.reward ?? null,
+          /**
+           * What a point is worth, and how a fractional result rounds.
+           *
+           * A conversion coupon has no fixed price: the member says how many
+           * points to convert and the platform applies this ratio. "1,000
+           * points = $5" is a ratio of 0.005, which makes the programme's
+           * rebate rate a single number held on the platform rather than a sum
+           * done here.
+           */
+          conversion: r.unitsConversion
+            ? {
+                ratio: r.unitsConversion.ratio ?? null,
+                rounding: r.unitsConversion.rounding ?? null,
+              }
+            : null,
         };
       }),
     });
@@ -288,6 +311,19 @@ loyaltyRouter.post(
       const reward = catalogue.items.find(
         (r) => r.rewardId === req.params.rewardId,
       );
+      /**
+       * How many points to convert, when the reward converts them.
+       *
+       * The caller may say; otherwise one step is converted rather than a
+       * balance — a conversion coupon with no amount would otherwise be a
+       * member handing over everything they hold by accident. The programme's
+       * step is a thousand points, which is what "1,000 points = $5" means.
+       */
+      const units =
+        reward?.reward === 'conversion_coupon'
+          ? Number(req.body?.units) || CONVERSION_STEP
+          : null;
+
       const issued = await openLoyalty.buyReward(
         req.memberToken!,
         req.params.rewardId,
@@ -295,6 +331,7 @@ loyaltyRouter.post(
         {
           type: reward?.reward ?? null,
           couponValue: reward?.couponValue ?? null,
+          units,
         },
       );
       const issuedRewardId = issued[0]?.issuedRewardId;

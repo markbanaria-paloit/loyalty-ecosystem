@@ -215,6 +215,11 @@ export type RewardType =
 export interface Reward {
   rewardId: string;
   /**
+   * How units become money, on a conversion coupon: `ratio` is what one point
+   * is worth. The programme's "1,000 points = $5" is a ratio of 0.005.
+   */
+  unitsConversion?: { ratio: number; rounding: 'up' | 'down' | 'default' };
+  /**
    * What kind of reward this is, which is what `reward` carries on the wire.
    *
    * Not a slug. This mock used to put a made-up identifier here, so a caller
@@ -1163,6 +1168,9 @@ export function seedStore(code: string): Store {
     {
       rewardId: randomUUID(),
       type: 'conversion_coupon',
+      // The programme's rebate rate: a point is worth half a cent, so a
+      // thousand of them convert to five dollars.
+      unitsConversion: { ratio: 0.005, rounding: 'down' },
       name: '15% voucher',
       shortDescription: 'A conversion coupon worth 15% off a qualifying purchase.',
       costInPoints: 0,
@@ -2177,6 +2185,7 @@ export function serializeReward(reward: Reward, customer?: Customer) {
       general: reward.usageLimit === null ? -1 : reward.usageLimit,
       perUser: -1,
     },
+    unitsConversion: reward.unitsConversion ?? null,
     createdAt: reward.createdAt,
     ...(customer
       ? { canBeBoughtByCustomer: customer.activePoints >= reward.costInPoints }

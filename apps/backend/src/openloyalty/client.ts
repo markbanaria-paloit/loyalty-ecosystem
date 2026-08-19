@@ -169,6 +169,16 @@ export interface MemberReward {
   canBeBoughtByCustomer?: boolean;
   /** Carried on a dynamic coupon, whose value is set when it is bought. */
   couponValue?: number | null;
+  /**
+   * How units become money, on a conversion coupon.
+   *
+   * `ratio` is what a single point is worth — 0.005 for the programme's
+   * "1,000 points = $5" — and `rounding` decides which way a fractional result
+   * goes. This is the whole of the rebate rate, and it lives on the platform
+   * rather than in this code, which is why converting is configuration and not
+   * a calculation anybody here performs.
+   */
+  unitsConversion?: { ratio?: number; rounding?: string } | null;
 }
 
 /**
@@ -421,9 +431,15 @@ export const openLoyalty = {
     token: string,
     rewardId: string,
     member: string,
-    reward?: { type?: string | null; couponValue?: number | null },
+    reward?: {
+      type?: string | null;
+      couponValue?: number | null;
+      /** Points to convert, for a conversion coupon. */
+      units?: number | null;
+    },
   ): Promise<Array<{ issuedRewardId: string }>> {
     const type = reward?.type ?? 'static_coupon';
+    const units = reward?.units ?? null;
 
     /**
      * The shapes worth trying, best first.
@@ -442,7 +458,17 @@ export const openLoyalty = {
      */
     const candidates: Array<[string, Record<string, unknown>]> = [
       type === 'conversion_coupon'
-        ? ['customerId only (conversion)', { customerId: member }]
+        ? [
+            'conversion',
+            {
+              customerId: member,
+              // How many points to turn into a coupon. A conversion coupon has
+              // no fixed price — the member says how much to convert and the
+              // platform applies its own ratio — so this is the one field that
+              // has to be supplied.
+              units,
+            },
+          ]
         : [
             'spec shape',
             {
