@@ -1,16 +1,13 @@
 /**
- * Operator access to Open Loyalty.
+ * Till access to Open Loyalty.
  *
- * The console and the till used to call Open Loyalty straight from the browser
- * with a store credential. That works, and it means anyone who opens devtools
- * on either app holds a key that can read every member and post transactions
- * for anyone. The credential now stays here, and the browser gets a session
- * instead.
+ * The till used to call Open Loyalty straight from the browser with a store
+ * credential — readable by anyone who opened devtools, and able to read every
+ * member. The credential now stays here and the till signs in for a session
+ * scoped to what a till does.
  *
- * Two roles, deliberately unequal. A till publishes sales and looks up the card
- * in front of it; it has no business rewriting the tier ladder or granting
- * points. Giving both roles the same reach would rebuild the shared admin key
- * with extra steps, which is the thing this replaces.
+ * Programme configuration is deliberately not reachable from here. Open
+ * Loyalty's own console owns that.
  */
 import { Router, type NextFunction, type Request, type Response } from 'express';
 import { createHmac, timingSafeEqual } from 'node:crypto';
@@ -18,7 +15,7 @@ import { config } from '../config.js';
 
 export const consoleRouter = Router();
 
-export type OperatorRole = 'console' | 'till';
+export type OperatorRole = 'till';
 
 interface OperatorRequest extends Request {
   operator?: { username: string; role: OperatorRole };

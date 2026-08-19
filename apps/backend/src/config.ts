@@ -20,21 +20,12 @@ export const config = {
   },
   console: {
     /**
-     * Signs operator sessions. Rotating it signs everyone out, which is the
+     * Signs till sessions. Rotating it signs every till out, which is the
      * intended way to revoke access.
      */
     sessionSecret: process.env.CONSOLE_SESSION_SECRET ?? 'dev-console-secret-change-me',
-    /**
-     * Who may sign in, and how far each reaches. Separate credentials rather
-     * than one shared login: a till and a campaign console are different jobs,
-     * and the till's is the one left unattended on a counter.
-     */
+    /** Who may sign a till in. */
     operators: [
-      {
-        username: process.env.CONSOLE_USERNAME ?? 'admin',
-        password: process.env.CONSOLE_PASSWORD ?? 'admin',
-        role: 'console' as const,
-      },
       {
         username: process.env.TILL_USERNAME ?? 'till',
         password: process.env.TILL_PASSWORD ?? 'till',

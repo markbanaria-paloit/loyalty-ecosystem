@@ -9,7 +9,6 @@ and the split is what decides how each is configured.
 | `apps/backend` | Node service (BFF) | OpenLoyalty | 4000 |
 | `apps/member` | Vite static | BFF | 5180 |
 | `apps/studio` | Vite static | BFF | 5176 |
-| `apps/admin` | Vite static | OpenLoyalty | 5174 |
 | `apps/merchant` | Vite static | OpenLoyalty | 5175 |
 | `apps/pwa` | Vite static | BFF | 5173 |
 
@@ -23,7 +22,7 @@ the browser sees a single origin. **A static deploy has no proxy.** Set
 `VITE_API_BASE_URL` on every frontend to the absolute origin it should call:
 
 - `member`, `studio`, `pwa` → the deployed **backend** URL
-- `admin`, `merchant` → the deployed **OpenLoyalty** URL
+- `merchant` → the deployed **backend** URL (it reaches Open Loyalty through it)
 
 Leave it empty and the deployed app will request `/api/...` against its own
 static host and 404.
@@ -45,7 +44,6 @@ one host that is not Vercel.
 | Workspace | Deploy? | Where | Why |
 |-----------|---------|-------|-----|
 | `apps/member` | **Yes** | Vercel | The member app. |
-| `apps/admin` | **Yes** | Vercel | Campaign Admin — tiers and campaigns. |
 | `apps/merchant` | **Yes** | Vercel | The till that publishes transactions. |
 | `apps/backend` | **Yes** | Vercel | The BFF. Stateless, so serverless is fine. |
 | `apps/mock-openloyalty` | **Yes** | Vercel | Deployable once `DATABASE_URL` is set. See below. |
@@ -119,8 +117,13 @@ Only two workspaces hold anything sensitive, and both are server-side:
 | `ANTHROPIC_API_KEY` | `apps/backend` | Absent, the studio uses its offline planner. |
 | `MOCK_OL_JWT_SECRET` | `apps/mock-openloyalty` | Set a real value anywhere reachable. |
 
-The `admin` and `merchant` apps authenticate against OpenLoyalty from the
-browser with credentials a user types — no key is baked into either bundle.
+No Open Loyalty credential is baked into any bundle. The till signs in for a
+session against the backend, which holds the store credential and forwards only
+the calls a till is allowed to make.
+
+Programme configuration is done in Open Loyalty's own console. This repo does
+not ship an admin surface — re-skinning a backoffice the vendor maintains would
+only drift from it.
 
 ## Pointing at a real OpenLoyalty
 

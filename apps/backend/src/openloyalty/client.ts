@@ -151,7 +151,21 @@ async function request<T>(
   const text = await res.text();
   const body = text ? JSON.parse(text) : {};
   if (!res.ok) {
-    throw new OpenLoyaltyError(res.status, body?.message ?? res.statusText);
+    // Open Loyalty answers a rejected form with a generic message and the real
+    // reasons in `errors[]`. Carrying only the message loses the one thing that
+    // says what to fix.
+    const detail = Array.isArray(body?.errors)
+      ? body.errors
+          .map((e: { path?: string; message?: string }) =>
+            e.path ? `${e.path}: ${e.message}` : e.message,
+          )
+          .filter(Boolean)
+          .join('; ')
+      : '';
+    throw new OpenLoyaltyError(
+      res.status,
+      detail || body?.message || res.statusText,
+    );
   }
   return body as T;
 }

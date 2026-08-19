@@ -182,6 +182,18 @@ authRouter.post('/api/auth/register', async (req, res) => {
       res.status(409).json({ message: 'Email already registered' });
       return;
     }
+
+    // Pass a rejected registration back as a rejection, not as "upstream
+    // error". Collapsing a 400 into a 502 cost real time here: the platform was
+    // saying the password failed its policy, and all anyone could see was that
+    // something had gone wrong somewhere else.
+    if (err instanceof OpenLoyaltyError && err.status >= 400 && err.status < 500) {
+      console.error('Registration rejected by the loyalty platform:', err.message);
+      res.status(err.status).json({ message: err.message });
+      return;
+    }
+
+    console.error('Registration failed:', err);
     res.status(502).json({ message: 'Upstream error' });
   }
 });

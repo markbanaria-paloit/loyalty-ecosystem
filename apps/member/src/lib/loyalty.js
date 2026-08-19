@@ -86,8 +86,14 @@ function registrationEmail(cardNumber, email) {
   return `${local}+${slug}@${domain}`;
 }
 
-/** Fixed for the demo — the app's own sign-in is the real authentication. */
-const DEMO_PASSWORD = 'ntuc-club-demo';
+/**
+ * Fixed for the demo — the app's own sign-in is the real authentication.
+ *
+ * Must satisfy the loyalty platform's password policy — upper, lower, digit and
+ * a special character — which rejects the registration outright otherwise. The
+ * member never types it; the app's own sign-in is the real authentication.
+ */
+const DEMO_PASSWORD = 'NtucClub#2026';
 
 /**
  * Member-type tag, in the loyalty platform's own label shape.
@@ -96,8 +102,13 @@ const DEMO_PASSWORD = 'ntuc-club-demo';
  * member lands on, and what they are given for joining, are campaign
  * configuration on the platform — the app only reports who the member is.
  */
-export const CUSTOMER_TYPE_LABEL = 'customerType';
-export const UNION_MEMBER = 'union_member';
+/**
+ * Exactly as the tenant's campaign matches it — lowercase, no underscore. Their
+ * rule compares the label as a string, so a near-miss grants nothing and looks
+ * like the member simply was not eligible.
+ */
+export const CUSTOMER_TYPE_LABEL = 'membertype';
+export const UNION_MEMBER = 'unionmember';
 
 function labelsFor(user) {
   return user?.isNtucMember ? [{ key: CUSTOMER_TYPE_LABEL, value: UNION_MEMBER }] : [];

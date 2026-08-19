@@ -1,14 +1,13 @@
 /**
- * Operator access to Open Loyalty, one allow-listed call at a time.
+ * Till access to Open Loyalty, one allow-listed call at a time.
  *
- * A blanket proxy would move the exposure rather than remove it: sign in once
- * and you reach every endpoint the store credential can. So each role carries
- * the list of calls its app actually makes, taken from those apps' clients, and
- * anything not on it is refused.
+ * The till used to hold a store credential in its bundle, readable by anyone
+ * who opened devtools and able to read every member. The credential now lives
+ * here and the till gets a session instead.
  *
- * The list is the security boundary, so it fails closed — an unmatched path is
- * never forwarded, and a path that is allowed for one role is not thereby
- * allowed for another.
+ * A blanket proxy would have moved the exposure rather than removed it: sign in
+ * once and you reach everything the credential can. So the list is the security
+ * boundary and it fails closed — an unmatched path is never forwarded.
  */
 import { Router } from 'express';
 import { config } from '../config.js';
@@ -23,39 +22,21 @@ type Rule = `${string}`;
 
 /**
  * What the till does: identify the card in front of it, publish the sale, read
- * back what it earned, and settle a voucher. Nothing that changes programme
- * configuration, and nothing that moves points by hand.
+ * back what it earned, and settle a voucher.
+ *
+ * This is the whole allow-list. Programme configuration — tiers, campaigns,
+ * rewards, manual point adjustments — is not here because it is not ours to
+ * do: Open Loyalty's own console owns that, and re-exposing it through this
+ * service would be duplicating a backoffice that already exists and is
+ * maintained by the people who ship the platform.
  */
 const TILL_RULES: Record<string, Rule[]> = {
   GET: ['member/check', 'member', 'member/{}/status', 'transaction', 'redemption/by-code/{}'],
   POST: ['transaction', 'transaction/assign', 'redemption/{}/status'],
 };
 
-/**
- * What the campaign console does: everything the till does not — the tier
- * ladder, campaigns, rewards, members and manual point adjustments.
- */
-const CONSOLE_RULES: Record<string, Rule[]> = {
-  GET: [
-    'admin/stats', 'member', 'member/{}', 'member/{}/status', 'points', 'redemption',
-    'reward', 'tier', 'tierSet', 'tierSet/{}', 'tierSet/{}/tiers', 'campaign', 'campaign/{}',
-    'transaction',
-  ],
-  POST: [
-    'points/add', 'points/spend', 'member/{}/activate', 'member/{}/deactivate',
-    'member/{}/tier', 'member/{}/remove-manually-level', 'reward', 'reward/{}/activate',
-    'reward/{}/deactivate', 'tier/{}/activate', 'tier/{}/deactivate', 'tier/recalculate',
-    'tier/recalculate-periods', 'tierSet', 'campaign', 'campaign/simulate',
-    'campaign/{}/activate', 'campaign/{}/deactivate',
-  ],
-  PUT: ['reward/{}', 'tierSet/{}', 'tierSet/{}/tiers', 'campaign/{}'],
-  PATCH: ['campaign/{}'],
-  DELETE: ['tier/{}', 'campaign/{}'],
-};
-
 const RULES: Record<OperatorRole, Record<string, Rule[]>> = {
   till: TILL_RULES,
-  console: CONSOLE_RULES,
 };
 
 /** Segment-by-segment match; `{}` stands for exactly one segment. */
