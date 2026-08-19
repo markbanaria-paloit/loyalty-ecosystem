@@ -186,14 +186,23 @@ export const olAdmin = {
    * right on an empty tenant and to quietly miss almost everyone on a real one.
    */
   async members(): Promise<AdminMember[]> {
-    const perPage = 50;
     const all: AdminMember[] = [];
-    for (let page = 1; page <= 40; page += 1) {
-      const { items } = await request<ListEnvelope<AdminMember>>(
-        `${s()}/member?page=${page}&itemsOnPage=${perPage}`,
-      );
+    for (let page = 1; page <= 200; page += 1) {
+      const { items, total } = await request<
+        ListEnvelope<AdminMember> & { total?: { all?: number } }
+      >(`${s()}/member?page=${page}&itemsOnPage=50`);
       all.push(...items);
-      if (items.length < perPage) break;
+      /**
+       * Stop on an empty page, not a short one.
+       *
+       * `itemsOnPage` is a request, not a promise: this store answers ten at a
+       * time whatever is asked for. Treating a page smaller than the one asked
+       * for as the last page therefore ended the walk after ten members, and
+       * every member past the newest ten was invisible — to the persona picker,
+       * and to anyone looked up by card number.
+       */
+      if (items.length === 0) break;
+      if (typeof total?.all === 'number' && all.length >= total.all) break;
     }
     return all;
   },

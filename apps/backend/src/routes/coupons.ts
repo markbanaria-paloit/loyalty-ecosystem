@@ -57,7 +57,7 @@ const PAGE_SIZE = 50;
  * rather than answered as "not found" — a cashier told a real coupon does not
  * exist would turn a customer away.
  */
-const MAX_PAGES = 40;
+const MAX_PAGES = 200;
 
 /**
  * Find an issued reward by the code printed on the member's coupon.
@@ -69,12 +69,17 @@ const MAX_PAGES = 40;
  */
 async function findByCode(couponCode: string) {
   const wanted = couponCode.trim();
+  let seen = 0;
   for (let page = 1; page <= MAX_PAGES; page += 1) {
-    const { items } = await openLoyalty.redemptions(page, PAGE_SIZE);
+    const { items, total } = await openLoyalty.redemptions(page, PAGE_SIZE);
     const found = items.find((r) => sameCode(codeOf(r), wanted));
     if (found) return found;
-    // A short page is the last page.
-    if (items.length < PAGE_SIZE) return null;
+    seen += items.length;
+    // Empty page, not short page: `itemsOnPage` is a request and this store
+    // answers ten at a time regardless, so stopping at a page smaller than the
+    // one asked for searched the ten most recent redemptions and no others.
+    if (items.length === 0) return null;
+    if (typeof total?.all === 'number' && seen >= total.all) return null;
   }
   throw new Error(
     `Searched ${MAX_PAGES * PAGE_SIZE} redemptions without finding ${wanted}`,

@@ -57,9 +57,15 @@ adminRouter.get('/api/:storeCode/member', requireAdmin, (req: AuthedRequest, res
     .filter((c) => !wantedEmail || c.email.toLowerCase() === wantedEmail)
     .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
 
-  // Paged like the real list, so a caller that reads one response and stops
-  // finds out here rather than against a tenant with real membership.
-  const perPage = Math.min(Math.max(Number(req.query.itemsOnPage ?? 10) || 10, 1), 50);
+  /**
+   * Ten a page, whatever was asked for.
+   *
+   * `itemsOnPage` is a request and a store need not honour it — this tenant
+   * answers ten regardless. A mock that gave fifty when fifty were asked for
+   * let a caller treat "fewer than I asked for" as "that was the last page",
+   * which stopped every walk after ten records and hid everyone else.
+   */
+  const perPage = 10;
   const page = Math.max(Number(req.query.page ?? 1) || 1, 1);
   const start = (page - 1) * perPage;
   res.json({
@@ -376,10 +382,9 @@ adminRouter.get(
     // fifty is the ceiling — a caller that reads the response and stops has
     // seen ten redemptions, not all of them, and the only place that mistake
     // shows up is a tenant with more than a page of history.
-    const perPage = Math.min(
-      Math.max(Number(req.query.itemsOnPage ?? 10) || 10, 1),
-      50,
-    );
+    // Ten a page whatever is asked for, as this tenant does — see the member
+    // list above for why that matters.
+    const perPage = 10;
     const page = Math.max(Number(req.query.page ?? 1) || 1, 1);
     const start = (page - 1) * perPage;
     res.json({
